@@ -27,6 +27,7 @@ jobs:
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           rustup default nightly
+          rustup target add wasm32-unknown-unknown
       - name: Install tooling dependencies
         run: cargo install cargo-make
       - name: Cache Rust dependencies
@@ -56,8 +57,8 @@ jobs:
       - name: Build for testing
         if: matrix.cargo-make-command == 'tests'
         run: cargo make builds
-      - name: Run `cargo make {{ matrix.cargo-make-command }}`
-        run: cargo make {{ matrix.cargo-make-command }}
+      - name: Run `cargo make ${{ matrix.cargo-make-command }}`
+        run: cargo make ${{ matrix.cargo-make-command }}
       - name: Upload test results
         if: matrix.cargo-make-command == 'tests'
         uses: actions/upload-artifact@v3

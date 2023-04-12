@@ -51,6 +51,7 @@ You'll find useful to only run certain tests for development displaying the GUI,
 - `macros/`: It provides compile time macros used in the website. Used to generate the data provided by the simple-icons npm package.
 - `simple-icons/`: Simple Icons Rust library. It provides the data provided by the simple-icons npm package.
 - `scripts/`: Scripts used to generate data needed by the website.
+- `end2end/`: End to end tests.
 
 ### Where to look
 
