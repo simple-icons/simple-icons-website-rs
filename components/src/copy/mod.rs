@@ -2,7 +2,7 @@ use leptos::leptos_dom::helpers::set_timeout_with_handle;
 use log::error;
 use std::time::Duration;
 use wasm_bindgen_futures;
-use web_sys::{window, HtmlElement};
+use web_sys;
 
 /// Copy a value to the clipboard and sets a transition in copy button
 /// to properly show the user that the value has been copied.
@@ -10,10 +10,10 @@ use web_sys::{window, HtmlElement};
 /// See the `.copy-button` class component in stylesheet.
 pub async fn copy_setting_copied_transition_in_element(
     value: String,
-    button: HtmlElement,
+    button: web_sys::HtmlElement,
 ) {
     let navigator_clipboard =
-        window().unwrap().navigator().clipboard().unwrap();
+        web_sys::window().unwrap().navigator().clipboard().unwrap();
     match wasm_bindgen_futures::JsFuture::from(
         navigator_clipboard.write_text(&value),
     )

@@ -45,20 +45,28 @@ script = [
 ]
 workspace = false
 
-[tasks.doc]
+[tasks.docs]
 description = "Open components documentation"
 command = "cargo"
 args = ["doc", "--open", "--no-deps"]
+workspace = false
 
 [tasks.formats]
 description = "Format files"
 run_task = { name = ["format-rust", "format-prettier"], parallel = false }
 workspace = false
 
+[tasks.lint]
+description = "Check format of files and run linters"
+run_task = { name = ["lint-prettier", "lint-rust"], parallel = false }
+workspace = false
+
 [tasks.tests]
 description = "Run tests"
-run_task = { name = ["serve-for-tests", "run-tests"], parallel = true }
+command = "npx"
+args = ["playwright", "test", "--trace", "on"]
 workspace = false
+cwd = "./end2end"
 
 [tasks.watch-css]
 description = "Build CSS with Tailwind on development"
@@ -73,6 +81,7 @@ cwd = "./app"
 # see the cargo-make documentation:
 # "Setting the task’s current working directory via cwd attribute will
 # result in all parallel tasks being affected."
+# TODO: can we define these options in a single place?
 description = "Build CSS with Tailwind on development"
 command = "../node_modules/.bin/tailwindcss"
 args = [
@@ -98,6 +107,7 @@ run_task = { name = ["run-pre-build-scripts", "build-css", "build-wasm"] }
 workspace = false
 
 [tasks.build-wasm]
+description = "Build the WASM app for production"
 install_crate = "trunk"
 command = "trunk"
 args = ["build", "--release"]
@@ -105,6 +115,7 @@ cwd = "./app"
 workspace = false
 
 [tasks.build-css]
+description = "Build CSS with TailwindCSS for production"
 command = "../node_modules/.bin/tailwindcss"
 args = [
     "-i",
@@ -116,40 +127,54 @@ args = [
 cwd = "./app"
 workspace = false
 
-[tasks.run-tests]
-command = "npx"
-args = ["playwright", "test"]
-workspace = false
-
-[tasks.serve-for-tests]
-install_crate = "trunk"
-command = "trunk"
-args = ["serve", "--watch", "../.vscode", "--port", "8081"]
-workspace = false
-cwd = "./app"
-
 [tasks.format-rust-code]
+description = "Format Rust code with rustfmt"
 install_crate = "rustfmt"
 workspace = false
 command = "cargo"
 args = ["fmt", "--all"]
 
+[tasks.lint-rust-code]
+description = "Format Rust code with rustfmt"
+install_crate = "rustfmt"
+workspace = false
+command = "cargo"
+args = ["fmt", "--all", "--check"]
+
 [tasks.format-leptos-code]
+description = "Format leptos view! macros"
 install_crate = "leptosfmt"
 workspace = false
 command = "leptosfmt"
 args = ["*/src/**/*.rs"]
 
 [tasks.format-rust]
+description = "Format Rust code and leptos view! macros"
 run_task = { name = [
     "format-rust-code",
     "format-leptos-code"
 ], parallel = false }
 workspace = false
 
+[tasks.lint-rust]
+description = "Lint Rust code and leptos view! macros"
+run_task = { name = [
+    "lint-rust-code",
+    # https://github.com/bram209/leptosfmt/issues/12
+
+], parallel = false }
+workspace = false
+
 [tasks.format-prettier]
+description = "Format non Rust files in the project with prettier"
 command = "prettier"
 args = ["--write", ".", "--ignore-path", ".gitignore"]
+workspace = false
+
+[tasks.lint-prettier]
+description = "Check formatting of non Rust files in the project with prettier"
+command = "prettier"
+args = ["--check", ".", "--ignore-path", ".gitignore"]
 workspace = false
 
 [tasks.fetch-deprecated-icons]
@@ -169,6 +194,7 @@ args = [
 workspace = false
 
 [tasks.run-pre-build-scripts]
+description = "Run pre-build scripts"
 run_task = { name = [
     "fetch-deprecated-icons",
     "build-fast-fuzzy",

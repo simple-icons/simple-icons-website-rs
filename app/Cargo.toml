@@ -15,5 +15,5 @@ console_log.workspace = true
 log.workspace = true
 console_error_panic_hook.workspace = true
 wasm-bindgen.workspace = true
-web-sys = { workspace = true, features = ["MediaQueryList"] }
+web-sys.workspace = true
 serde_json.workspace = true

@@ -8,8 +8,9 @@
     "fetch-deprecated-icons": "path-exists target/release/fetch-deprecated-icons && target/release/fetch-deprecated-icons || cargo build --release --bin fetch-deprecated-icons && target/release/fetch-deprecated-icons"
   },
   "devDependencies": {
-    "@playwright/test": "1.32.1",
+    "@playwright/test": "1.32.3",
     "@types/node": "18.15.5",
+    "anywhere": "1.6.0",
     "autoprefixer": "10.4.14",
     "esbuild": "0.17.16",
     "path-exists-cli": "2.0.0",

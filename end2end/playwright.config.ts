@@ -1,7 +1,7 @@
 import type { PlaywrightTestConfig } from "@playwright/test";
 import { devices } from "@playwright/test";
 
-const TIMEOUT = 100 * 1000;
+const TIMEOUT = 10 * 1000;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -32,10 +32,16 @@ const config: PlaywrightTestConfig = {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://localhost:3000',
+    baseURL: "http://0.0.0.0:8081",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+  },
+  /* Run web server with anywhere before running tests. */
+  webServer: {
+    command: "anywhere -d ../app/dist -p 8081 -s",
+    url: "http://0.0.0.0:8081",
+    timeout: 10 * 1000,
   },
 
   /* Configure projects for major browsers */

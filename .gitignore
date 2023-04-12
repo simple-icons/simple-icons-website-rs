@@ -1,6 +1,5 @@
 /target/
 pkg
-package-lock.json
 Cargo.lock
 app/dist/
 /dist/
