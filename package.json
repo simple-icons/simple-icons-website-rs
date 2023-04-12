@@ -5,6 +5,8 @@
   "author": "Simple Icons contributors",
   "license": "CS0",
   "scripts": {
+    "postinstall": "npm run setup:husky",
+    "setup:husky": "is-ci || husky install",
     "fetch-deprecated-icons": "path-exists target/release/fetch-deprecated-icons && target/release/fetch-deprecated-icons || cargo build --release --bin fetch-deprecated-icons && target/release/fetch-deprecated-icons"
   },
   "devDependencies": {
@@ -13,6 +15,8 @@
     "anywhere": "1.6.0",
     "autoprefixer": "10.4.14",
     "esbuild": "0.17.16",
+    "husky": "8.0.3",
+    "is-ci": "3.0.1",
     "path-exists-cli": "2.0.0",
     "postcss": "8.4.21",
     "postcss-cli": "10.1.0",
