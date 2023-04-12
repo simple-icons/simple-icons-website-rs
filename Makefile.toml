@@ -160,7 +160,7 @@ workspace = false
 description = "Lint Rust code and leptos view! macros"
 run_task = { name = [
     "lint-rust-code",
-    # https://github.com/bram209/leptosfmt/issues/12
+    # TODO: https://github.com/bram209/leptosfmt/issues/12
 
 ], parallel = false }
 workspace = false
@@ -185,7 +185,7 @@ workspace = false
 
 [tasks.build-fast-fuzzy]
 description = "Build the fast-fuzzy JS library for the web"
-command = "esbuild"
+command = "node_modules/.bin/esbuild"
 args = [
     "components/src/controls/search/fast-fuzzy.js",
     "--bundle",

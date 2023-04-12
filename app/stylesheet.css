@@ -1,17 +1,17 @@
 /* Header */
-@import "./../components/src/header/mod.css";
+@import './../components/src/header/mod.css';
 /* Controls */
-@import "./../components/src/controls/mod.css";
+@import './../components/src/controls/mod.css';
 /* Grid */
-@import "./../components/src/grid/mod.css";
+@import './../components/src/grid/mod.css';
 /* Footer */
-@import "./../components/src/footer/mod.css";
+@import './../components/src/footer/mod.css';
 /* Copy buttons */
-@import "./../components/src/copy/mod.css";
+@import './../components/src/copy/mod.css';
 /* Modal */
-@import "./../components/src/modal.css";
+@import './../components/src/modal.css';
 /* Scroll buttons */
-@import "./../components/src/scroll.css";
+@import './../components/src/scroll.css';
 
 @tailwind base;
 @tailwind components;

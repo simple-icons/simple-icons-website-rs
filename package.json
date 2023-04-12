@@ -4,6 +4,9 @@
   "description": "",
   "author": "Simple Icons contributors",
   "license": "CS0",
+  "engines": {
+    "node": "^14.15.0 || >=16.0.0"
+  },
   "scripts": {
     "postinstall": "npm run setup:husky",
     "setup:husky": "is-ci || husky install",

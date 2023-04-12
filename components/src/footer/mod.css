@@ -1,4 +1,4 @@
-@import "./about.css";
+@import './about.css';
 
 footer {
   @apply flex flex-col justify-between pb-8 pt-4 text-sm 

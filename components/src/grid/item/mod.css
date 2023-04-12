@@ -1,10 +1,10 @@
 /* Grid items are composed to generate the minimum HTML possible */
-@import "./icon_preview.css";
-@import "./deprecated.css";
-@import "./details.css";
-@import "./links.css";
-@import "./title.css";
-@import "./footer.css";
+@import './icon_preview.css';
+@import './deprecated.css';
+@import './details.css';
+@import './links.css';
+@import './title.css';
+@import './footer.css';
 
 /* Grid item */
 main > ul > li {

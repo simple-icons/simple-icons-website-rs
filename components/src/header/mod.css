@@ -1,5 +1,5 @@
-@import "./nav/button.css";
-@import "./nav/language_selector.css";
+@import './nav/button.css';
+@import './nav/language_selector.css';
 
 header {
   @apply flex flex-row md:columns-2 justify-between
