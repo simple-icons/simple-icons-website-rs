@@ -167,13 +167,13 @@ workspace = false
 
 [tasks.format-prettier]
 description = "Format non Rust files in the project with prettier"
-command = "prettier"
+command = "node_modules/.bin/prettier"
 args = ["--write", ".", "--ignore-path", ".gitignore"]
 workspace = false
 
 [tasks.lint-prettier]
 description = "Check formatting of non Rust files in the project with prettier"
-command = "prettier"
+command = "node_modules/.bin/prettier"
 args = ["--check", ".", "--ignore-path", ".gitignore"]
 workspace = false
 
