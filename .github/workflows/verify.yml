@@ -17,9 +17,9 @@ jobs:
       matrix:
         include:
           - name: Test
-            cargo-make-command: build
+            cargo-make-command: tests
           - name: Lint
-            cargo-make-command: lints
+            cargo-make-command: lint
     steps:
       - name: Checkout
         uses: actions/checkout@v3
