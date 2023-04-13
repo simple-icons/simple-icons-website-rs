@@ -60,12 +60,15 @@ const config: PlaywrightTestConfig = {
       },
     },
 
+    /* // TODO: Safari fails on production with the next message:
+       // https://github.com/rustwasm/wasm-bindgen/issues/2646
     {
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
       },
     },
+    */
 
     /* Test against mobile viewports. */
     {
@@ -74,12 +77,15 @@ const config: PlaywrightTestConfig = {
         ...devices['Pixel 5'],
       },
     },
+
+    /* Safari fails on production
     {
       name: 'Mobile Safari',
       use: {
         ...devices['iPhone 12'],
       },
     },
+    */
 
     /* Test against branded browsers. */
     {
