@@ -1,5 +1,5 @@
 export async function download_pdf_(slug, errorMessageSchema) {
-  let icon_svg_url = `/icons/${slug}.svg`;
+  const icon_svg_url = `/icons/${slug}.svg`;
   const res = await fetch(icon_svg_url);
   const svg = await res.text();
   const svg_path = svg.split('"')[7];
@@ -24,7 +24,7 @@ export async function download_pdf_(slug, errorMessageSchema) {
   doc.end();
   stream.on('finish', () => {
     const url = stream.toBlobURL('application/pdf');
-    var a = document.createElement('a');
+    const a = document.createElement('a');
     a.href = url;
     a.download = `${slug}.pdf`;
     document.body.appendChild(a);

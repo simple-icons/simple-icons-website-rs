@@ -1,15 +1,15 @@
-const fs = require('fs');
-const path = require('path');
+import type { Config } from 'tailwindcss';
+import fs from 'node:fs';
+import path from 'node:path';
 
-const defaultTheme = require('tailwindcss/defaultTheme');
+import defaultTheme from 'tailwindcss/defaultTheme';
+import postcssImportPlugin from 'postcss-import';
 
 /**
  * Parse theme variables from stylesheet to automatically insert
  * all custom colors into TailwindCSS configuration.
- *
- * @returns {Array<String>}
  */
-const parseRootCssVariables = () => {
+const parseRootCssVariables = (): Array<string> => {
   return fs
     .readFileSync(path.resolve(`${__dirname}/stylesheet.css`), 'utf8')
     .split('body.dark {', 2)[1]
@@ -19,8 +19,7 @@ const parseRootCssVariables = () => {
     .map((line) => line.split('--')[1].split(':')[0]);
 };
 
-/** @type {import('tailwindcss').Config} */
-const config = {
+export default {
   content: {
     files: ['index.html', '../{app,components}/src/**/*.{css,rs}'],
   },
@@ -59,7 +58,5 @@ const config = {
     },
   },
   darkMode: 'class',
-  plugins: ['postcss-import'],
-};
-
-module.exports = config;
+  plugins: [postcssImportPlugin],
+} satisfies Config;
