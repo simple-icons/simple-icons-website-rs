@@ -59,6 +59,7 @@ jobs:
         run: cargo make builds
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_GITHUB_TOKEN }}
+          CARGO_PROFILE_RELEASE_BUILD_OVERRIDE_DEBUG: 'true'
       - name: Run `cargo make ${{ matrix.cargo-make-command }}`
         run: cargo make ${{ matrix.cargo-make-command }}
       - name: Upload test results

@@ -4,10 +4,10 @@
 
 - Install Rust with [rustup](https://rustup.rs/) and setup nightly as default.
 - Add `wasm32-unknown-unknown` target with `rustup target add wasm32-unknown-unknown`.
-- Install [cargo-make](https://sagiegurari.github.io/cargo-make/): `cargo install --force cargo-make`
+- Install [cargo-make](https://sagiegurari.github.io/cargo-make/) with `cargo install --force cargo-make`.
 - Install NodeJS with npm and dependencies with `npm install`.
 - Install Playwright browsers and dependencies with `npx playwright install --with-deps`.
-- Create an _.env_ file at the root with a Github personal token with the variable `GITHUB_TOKEN`.
+- Create an _.env_ file at the root including a Github personal token with the variable `GITHUB_TOKEN`.
 
 ## Commands
 
@@ -20,13 +20,6 @@
 - `cargo make builds`: Build the website for production.
 - `cargo make docs`: Build and open documentation.
 - `cargo make locales`: Extract new translations. See [Localization](#localization) section.
-
-## Recommended VSCode extensions
-
-- Install [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss) extension.
-- Install [Rust Analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer) extension.
-- Install [Run On Save](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave) extension.
-- Install [Prettier Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extension.
 
 ## Testing
 
@@ -51,11 +44,10 @@ You'll find useful to only run certain tests for development displaying the GUI,
 - `macros/`: It provides compile time macros used in the website. Used to generate the data provided by the simple-icons npm package.
 - `simple-icons/`: Simple Icons Rust library. It provides the data provided by the simple-icons npm package.
 - `scripts/`: Scripts used to generate data needed by the website.
-- `end2end/`: End to end tests.
 
 ### Where to look
 
-- End to end tests are located in `app/tests/`. They are written with [Playwright](https://playwright.dev/). Configuration is located at `app/playwright.config.js`.
+- End to end tests are located in `end2end/tests/`. They are written with [Playwright](https://playwright.dev/). Configuration is located at `end2end/playwright.config.ts`.
 - The main stylesheet is located at `app/stylesheet.css` other assets are located at `app/assets/`. Hopefully you don't need to change this style due to the class-based approach of TailwindCSS framework. Configuration is located at `app/tailwind.config.ts`.
 - The initial HTML is located at `app/index.html`. It is used by Trunk to generate the final HTML.
 
@@ -69,3 +61,10 @@ You'll find useful to only run certain tests for development displaying the GUI,
 
 - Add the locale to the `LANGUAGES` array in `i18n/src/lib.rs`.
 - Copy the file `i18n/messages.pot` to the new locale po file at `i18n/locales/{code}.po`.
+
+## Recommended VSCode extensions
+
+- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+- [Rust Analyzer](https://marketplace.visualstudio.com/items?itemName=matklad.rust-analyzer)
+- [Run On Save](https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave)
+- [Prettier Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
