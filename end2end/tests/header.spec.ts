@@ -10,6 +10,6 @@ test('title and description', async ({ page }) => {
 
   await expect(page.locator('h1')).toHaveText('Simple Icons');
   await expect(page.locator('header > :first-child > p')).toHaveText(
-    `${Object.keys(icons).length - 1} free SVG icons for popular brands`,
+    `${Object.keys(icons).length} free SVG icons for popular brands`,
   );
 });

@@ -1,0 +1,47 @@
+name: Automated Releases
+on: workflow_dispatch
+
+permissions:
+  contents: write
+
+# This Workflow is triggered through the GitHub API:
+#   curl -X Post \
+#        -H "Authorization: Bearer <token>" \
+#        -d '{"ref":"master"}' \
+#        https://api.github.com/repos/simple-icons/simple-icons-website/actions/workflows/auto-release.yml/dispatches
+# Replacing <token> by a personal access token with scope `public_repo`
+
+jobs:
+  auto-release:
+    name: Automated release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          # Ensure we are checked out on the master branch
+          ref: master
+          # Ensure custom credentials are used when pushing
+          persist-credentials: false
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Update simple-icons
+        id: update
+        run: echo "::set-output name=NEW_VERSION::$(node scripts/bump-simpleicons.js)"
+      - name: Commit updates
+        run: |
+          # Set up git credential
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          # Create a commit for the simple-icons dependency update
+          git add .
+          git commit -m "Update simple-icons to ${{ steps.update.outputs.NEW_VERSION }}"
+      - name: Push updates
+        run: |
+          # Set up remote using a Personal Access Token
+          git remote remove origin
+          git remote add origin https://${{secrets.RELEASE_TOKEN}}@github.com/simple-icons/simple-icons-website.git
+          # Push updates to origin
+          git push origin master
