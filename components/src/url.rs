@@ -50,7 +50,7 @@ pub mod params {
             .replace_state_with_url(
                 &wasm_bindgen::JsValue::NULL,
                 "",
-                Some(&match query == "?" {
+                Some(&match query.is_empty() {
                     true => (location.pathname)(),
                     false => query,
                 }),
