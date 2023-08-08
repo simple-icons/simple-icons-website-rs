@@ -1,6 +1,7 @@
 use crate::controls::button::ControlButtonSVGPath;
 use crate::storage::LocalStorage;
 use crate::Url;
+use config::CONFIG;
 use i18n::move_gettext;
 use leptos::{window, *};
 use std::fmt;
@@ -20,6 +21,13 @@ impl Layout {
             _ => None,
         }
     }
+
+    pub fn icons_per_page(&self) -> u32 {
+        match self {
+            Self::Comfortable => CONFIG.icons_per_page_comfortable,
+            Self::Compact => CONFIG.icons_per_page_compact,
+        }
+    }
 }
 
 impl fmt::Display for Layout {
@@ -34,8 +42,10 @@ impl fmt::Display for Layout {
 #[derive(Copy, Clone)]
 pub struct LayoutSignal(pub RwSignal<Layout>);
 
-pub fn provide_layout_context() {
-    provide_context(LayoutSignal(create_rw_signal(initial_layout())));
+pub fn provide_layout_context() -> Layout {
+    let layout = initial_layout();
+    provide_context(LayoutSignal(create_rw_signal(layout)));
+    layout
 }
 
 fn initial_layout() -> Layout {

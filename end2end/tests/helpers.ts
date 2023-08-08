@@ -28,7 +28,7 @@ const RUST_CONFIG_FILEPATH = path.resolve(ROOT_DIR, 'config/src/lib.rs');
  */
 export const getNumberOfIconsPerPageConfig = (): number => {
   const config = fs.readFileSync(RUST_CONFIG_FILEPATH, 'utf8');
-  const match = config.match(/icons_per_page: (\d+)/);
+  const match = config.match(/icons_per_page_comfortable: (\d+)/);
   if (!match) {
     throw new Error('Could not get number of icons per page from config');
   }

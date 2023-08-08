@@ -6,7 +6,6 @@ mod scroll;
 use crate::controls::layout::{Layout, LayoutSignal};
 use crate::controls::order::{sort_icons, OrderMode, OrderModeVariant};
 use crate::controls::search::search_icons_and_returns_first_page;
-use config::CONFIG;
 use icons_loader::{IconsLoader, IconsLoaderSignal};
 use item::{details::IconDetailsModal, IconGridItem};
 use leptos::{
@@ -33,11 +32,16 @@ pub struct IconsGrid {
 }
 
 impl IconsGrid {
-    pub fn new(search_value: &str, order_mode: &OrderModeVariant) -> Self {
+    pub fn new(
+        search_value: &str,
+        order_mode: &OrderModeVariant,
+        layout: &Layout,
+    ) -> Self {
         let (icons, loaded_icons) =
-            initial_icons_from_search_value_and_order_mode(
+            initial_icons_from_search_value_order_mode_and_layout(
                 search_value,
                 order_mode,
+                layout,
             );
         Self {
             icons,
@@ -45,13 +49,14 @@ impl IconsGrid {
         }
     }
 
-    pub fn load_next_icons(&mut self) {
+    pub fn load_next_icons(&mut self, layout: &Layout) {
+        let icons_per_page: usize = layout.icons_per_page() as usize;
         for i in self.loaded_icons.len()..self.icons.len() {
             if self.loaded_icons.len() == self.icons.len() {
                 break;
             }
             self.loaded_icons.push(self.icons[i]);
-            if self.loaded_icons.len() % CONFIG.icons_per_page as usize == 0 {
+            if self.loaded_icons.len() % icons_per_page == 0 {
                 break;
             }
         }
@@ -69,35 +74,36 @@ pub struct CurrentIconViewSignal(pub RwSignal<Option<&'static SimpleIcon>>);
 pub fn provide_icons_grid_contexts(
     initial_search_value: &str,
     initial_order_mode: &OrderMode,
+    initial_layout: &Layout,
 ) {
     provide_context(IconsGridSignal(create_rw_signal(IconsGrid::new(
         initial_search_value,
         &initial_order_mode.current,
+        initial_layout,
     ))));
     provide_context(IconsLoaderSignal(
         create_rw_signal(IconsLoader::default()),
     ));
 }
 
-fn initial_icons_from_search_value_and_order_mode(
+fn initial_icons_from_search_value_order_mode_and_layout(
     search_value: &str,
     order_mode: &OrderModeVariant,
+    layout: &Layout,
 ) -> (Vec<&'static SimpleIcon>, Vec<&'static SimpleIcon>) {
+    let icons_per_page: usize = layout.icons_per_page() as usize;
     if search_value.is_empty() {
         let mut icons: Vec<&'static SimpleIcon> = ICONS.iter().collect();
         if order_mode != &OrderModeVariant::Alphabetic {
             // Alphabetical is the default order of the icons in the static array
             sort_icons(order_mode, &mut icons);
         }
-        let loaded_icons: Vec<&'static SimpleIcon> = icons
-            .iter()
-            .take(CONFIG.icons_per_page as usize)
-            .copied()
-            .collect();
+        let loaded_icons: Vec<&'static SimpleIcon> =
+            icons.iter().take(icons_per_page).copied().collect();
 
         (icons, loaded_icons)
     } else {
-        search_icons_and_returns_first_page(search_value)
+        search_icons_and_returns_first_page(search_value, icons_per_page)
     }
 }
 
@@ -156,7 +162,8 @@ pub fn Grid() -> impl IntoView {
 
                 if footer_entry.is_intersecting() {
                     if icons_loader().load {
-                        icons_grid.update(|grid| grid.load_next_icons());
+                        icons_grid
+                            .update(|grid| grid.load_next_icons(&layout()));
                     }
                 } else if !icons_loader().load {
                     icons_loader.update(|state| state.load = true);

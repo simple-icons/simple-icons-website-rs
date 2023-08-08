@@ -14,8 +14,12 @@ pub fn Index() -> impl IntoView {
     let initial_search_value = provide_search_context();
     let initial_order_mode = provide_order_mode_context(&initial_search_value);
     provide_download_type_context();
-    provide_layout_context();
-    provide_icons_grid_contexts(&initial_search_value, &initial_order_mode);
+    let initial_layout = provide_layout_context();
+    provide_icons_grid_contexts(
+        &initial_search_value,
+        &initial_order_mode,
+        &initial_layout,
+    );
 
     view! {
         <SVGDefsDefinition/>

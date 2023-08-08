@@ -1,5 +1,6 @@
 mod fuzzy;
 
+use crate::controls::layout::LayoutSignal;
 use crate::controls::order::{
     set_order_mode, OrderMode, OrderModeSignal, OrderModeVariant,
 };
@@ -7,7 +8,6 @@ use crate::grid::{IconsGrid, IconsGridSignal, ICONS};
 use crate::storage::LocalStorage;
 use crate::Ids;
 use crate::Url;
-use config::CONFIG;
 use fuzzy::{build_searcher, search};
 use i18n::move_gettext;
 use js_sys::JsString;
@@ -112,13 +112,14 @@ fn init_searcher() {
 fn new_displayed_icons_from_search_result(
     search_result: &js_sys::Array,
     search_result_length: &u32,
+    icons_per_page: usize,
 ) -> Vec<&'static SimpleIcon> {
     let mut new_displayed_icons: Vec<&'static SimpleIcon> = Vec::new();
     for i in 0..*search_result_length {
         let result_icon_array = js_sys::Array::from(&search_result.get(i));
         let icon_order_alpha = result_icon_array.get(1).as_f64().unwrap();
         new_displayed_icons.push(&ICONS[icon_order_alpha as usize]);
-        if new_displayed_icons.len() >= (CONFIG.icons_per_page as usize) {
+        if new_displayed_icons.len() >= icons_per_page {
             break;
         }
     }
@@ -131,9 +132,10 @@ fn extend_new_icons_with_search_result(
     search_result: &js_sys::Array,
     search_result_length: &u32,
     new_icons: &mut Vec<&'static SimpleIcon>,
+    icons_per_page: u32,
 ) {
-    if *search_result_length > CONFIG.icons_per_page {
-        for i in CONFIG.icons_per_page..*search_result_length {
+    if *search_result_length > icons_per_page {
+        for i in icons_per_page..*search_result_length {
             let result_icon_array = js_sys::Array::from(&search_result.get(i));
             let icon_order_alpha = result_icon_array.get(1).as_f64().unwrap();
             new_icons.push(&ICONS[icon_order_alpha as usize]);
@@ -143,6 +145,7 @@ fn extend_new_icons_with_search_result(
 
 pub fn search_icons_and_returns_first_page(
     search_value: &str,
+    icons_per_page: usize,
 ) -> (Vec<&'static SimpleIcon>, Vec<&'static SimpleIcon>) {
     let search_result = js_sys::Array::from(&search(search_value));
     let search_result_length = search_result.length();
@@ -150,6 +153,7 @@ pub fn search_icons_and_returns_first_page(
     let new_displayed_icons = new_displayed_icons_from_search_result(
         &search_result,
         &search_result_length,
+        icons_per_page,
     );
 
     let mut new_icons = Vec::with_capacity(search_result_length as usize);
@@ -158,6 +162,7 @@ pub fn search_icons_and_returns_first_page(
         &search_result,
         &search_result_length,
         &mut new_icons,
+        icons_per_page as u32,
     );
 
     (new_icons, new_displayed_icons)
@@ -166,6 +171,7 @@ pub fn search_icons_and_returns_first_page(
 pub async fn search_icons(
     search_value: String,
     icons_grid_signal: RwSignal<IconsGrid>,
+    icons_per_page: usize,
 ) {
     let search_result = js_sys::Array::from(&search(&search_value));
     let search_result_length = search_result.length();
@@ -173,6 +179,7 @@ pub async fn search_icons(
     let new_displayed_icons = new_displayed_icons_from_search_result(
         &search_result,
         &search_result_length,
+        icons_per_page,
     );
     let new_displayed_icons_for_signal = new_displayed_icons.clone();
 
@@ -186,6 +193,7 @@ pub async fn search_icons(
         &search_result,
         &search_result_length,
         &mut new_icons,
+        icons_per_page as u32,
     );
 
     icons_grid_signal.update(move |grid| grid.icons = new_icons);
@@ -196,6 +204,7 @@ async fn on_search(
     search_signal: RwSignal<String>,
     icons_grid_signal: RwSignal<IconsGrid>,
     order_mode_signal: RwSignal<OrderMode>,
+    icons_per_page: usize,
 ) {
     let value = search_input_ref.get().unwrap().value();
     search_signal.update(move |state| {
@@ -205,12 +214,8 @@ async fn on_search(
             // Reset grid
             icons_grid_signal.update(|grid| {
                 grid.icons = ICONS.iter().collect();
-                grid.loaded_icons = grid
-                    .icons
-                    .iter()
-                    .take(CONFIG.icons_per_page as usize)
-                    .copied()
-                    .collect();
+                grid.loaded_icons =
+                    grid.icons.iter().take(icons_per_page).copied().collect();
             });
             // Set new order mode
             set_order_mode(
@@ -225,7 +230,7 @@ async fn on_search(
         }
 
         let search_value_copy = value.clone();
-        spawn_local(search_icons(value, icons_grid_signal));
+        spawn_local(search_icons(value, icons_grid_signal, icons_per_page));
         set_search_value_on_localstorage(&search_value_copy);
         set_order_mode(
             &OrderModeVariant::SearchMatch,
@@ -242,6 +247,7 @@ pub fn SearchControl() -> impl IntoView {
     let icons_grid = use_context::<IconsGridSignal>().unwrap().0;
     let search = use_context::<SearchValueSignal>().unwrap().0;
     let order_mode = use_context::<OrderModeSignal>().unwrap().0;
+    let layout = use_context::<LayoutSignal>().unwrap().0;
 
     let search_input_ref = create_node_ref::<Input>();
     // Focus on load. Fallback for Safari, see:
@@ -264,7 +270,15 @@ pub fn SearchControl() -> impl IntoView {
                     placeholder=move_gettext!("Search by brand...")
                     value=search
                     onfocus="var value = this.value; this.value = null; this.value = value;"
-                    on:input=move |_| { spawn_local(on_search(search_input_ref, search, icons_grid, order_mode)) }
+                    on:input=move |_| {
+                        spawn_local(on_search(
+                            search_input_ref,
+                            search,
+                            icons_grid,
+                            order_mode,
+                            layout().icons_per_page() as usize,
+                        ))
+                    }
                 />
                 <span
                     class:hidden=move || search().is_empty()

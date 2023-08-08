@@ -5,7 +5,11 @@ pub struct Config {
     /// Number of icons to load
     pub max_icons: Option<usize>,
     /// Number of icons per page in the grid
-    pub icons_per_page: u32,
+    /// when comfortable layout is selected
+    pub icons_per_page_comfortable: u32,
+    /// Number of icons per page in the grid
+    /// when compact layout is selected
+    pub icons_per_page_compact: u32,
     /// Public URL of the website
     pub domain: &'static str,
 }
@@ -16,7 +20,8 @@ pub const CONFIG: Config = Config {
     max_icons: None,
     // WARNING: If you put a great number here, the search functionality
     // will be very slow
-    icons_per_page: 30,
+    icons_per_page_comfortable: 30,
+    icons_per_page_compact: 60,
     domain: "127.0.0.1:8080",
 };
 
@@ -24,8 +29,7 @@ pub const CONFIG: Config = Config {
 #[cfg(not(debug_assertions))]
 pub const CONFIG: Config = Config {
     max_icons: None,
-    // WARNING: If you put a great number here, the search functionality
-    // will be very slow
-    icons_per_page: 30,
+    icons_per_page_comfortable: 30,
+    icons_per_page_compact: 60,
     domain: "wasm.simpleicons.org",
 };

@@ -1,3 +1,4 @@
+use crate::controls::layout::LayoutSignal;
 use crate::grid::IconsGridSignal;
 use crate::spinners::TripleDotsSpinner;
 use i18n::move_gettext;
@@ -35,6 +36,7 @@ pub struct IconsLoaderSignal(pub RwSignal<IconsLoader>);
 pub fn IconsLoader() -> impl IntoView {
     let icons_grid_signal = use_context::<IconsGridSignal>().unwrap().0;
     let icons_loader = use_context::<IconsLoaderSignal>().unwrap().0;
+    let layout = use_context::<LayoutSignal>().unwrap().0;
 
     let hide_load_more_icons_button = move || {
         let loader_state = icons_loader();
@@ -63,7 +65,9 @@ pub fn IconsLoader() -> impl IntoView {
                         .update(|state| {
                             state.loading = true;
                         });
-                    icons_grid_signal.update(|grid| grid.load_next_icons());
+                    icons_grid_signal.update(
+                        |grid| grid.load_next_icons(&layout())
+                    );
                     icons_loader
                         .update(|state| {
                             state.loading = false;
