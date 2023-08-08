@@ -23,11 +23,15 @@
   }
 
   .modal > :first-child > h2.copyable {
-    @apply copy-button-color-scheme before:[background-position-x:80%];
+    @apply copy-button-color-scheme
+      before:[background-position-x:100%]
+      max-w-[80%];
   }
 
+  /* Close button */
   .modal > :first-child > button {
-    @apply w-[1.3rem] h-[1.3rem] self-center 
+    @apply absolute right-[1.2rem] self-center
+      w-[1.3rem] h-[1.3rem] 
       fill-custom-text-default-color
       hover:opacity-80;
   }
