@@ -22,23 +22,23 @@ simple-icons-website-i18n = { path = "./i18n" }
 simple-icons-website-config = { path = "./config" }
 simple-icons-website-types = { path = "./types" }
 simple-icons-website-components = { path = "./components" }
-leptos = { version = "0.5.0-alpha", default-features = false, features = [
+leptos = { version = "0.5.0-beta", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos_meta = { version = "0.5.0-alpha", default-features = false, features = [
+leptos_meta = { version = "0.5.0-beta", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos_router = { version = "0.5.0-alpha", default-features = false, features = [
+leptos_router = { version = "0.5.0-beta", default-features = false, features = [
     "csr",
     "nightly"
 ] }
 console_log = "1.0.0"
 log = "0.4.17"
 console_error_panic_hook = "0.1.7"
-wasm-bindgen = "0.2.84"
-web-sys = { version = "0.3.61", default-features = false, features = [
+wasm-bindgen = "0.2.87"
+web-sys = { version = "0.3.64", default-features = false, features = [
     "Element",
     "HtmlDocument",
     "HtmlCollection",
@@ -61,15 +61,15 @@ web-sys = { version = "0.3.61", default-features = false, features = [
     "RequestInit",
     "RequestCache",
 ] }
-js-sys = "0.3.61"
-wasm-bindgen-futures = "0.4.34"
+js-sys = "0.3.64"
+wasm-bindgen-futures = "0.4.37"
 lazy_static = "1.4.0"
 rspolib = "0.0.5"
-syn = "2.0.9"
+syn = "2.0.28"
 colorsys = "0.6.7"
 dotenv = "0.15.0"
-serde_json = "1.0.94"
-nanoserde = "0.1.32"
+serde_json = "1.0.104"
+nanoserde = "0.1.33"
 unicode-normalization = "0.1.22"
 icu_collator = "1.1.0"
 reqwest = { version = "0.11", default-features = false, features = [
@@ -77,4 +77,4 @@ reqwest = { version = "0.11", default-features = false, features = [
     "blocking",
     "native-tls",
 ] }
-chrono = { version = "0.4.24", features = ["clock"] }
+chrono = { version = "0.4.26", features = ["clock"] }
