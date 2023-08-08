@@ -16,10 +16,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Test${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
-            cargo-make-command: tests
+          - name: Test on Chrome${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
+            command: tests
+            browser: chrome
+          - name: Test on Firefox
+            command: tests
+            browser: firefox
+          - name: Test on MsEdge
+            command: tests
+            browser: msedge
+          - name: Test on Webkit
+            command: tests
+            browser: webkit
           - name: Lint
-            cargo-make-command: lint
+            command: lint
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -40,7 +50,7 @@ jobs:
             ~/.cargo/.crates.toml
             ~/.cargo/.crates2.json
             target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.cargo-make-command }}-nightly
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.command }}-nightly
       - name: Use Node.js v18
         uses: actions/setup-node@v3
         with:
@@ -52,32 +62,28 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v18
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        if: matrix.cargo-make-command == 'tests'
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}-${{ hashFiles('**/package-lock.json') }}
       - name: Install Node.js dependencies
         run: npm ci
       - name: Install Playwright browsers
-        if: matrix.cargo-make-command == 'tests'
-        run: npx playwright install --with-deps
+        if: matrix.command == 'tests'
+        run: npx playwright install ${{ matrix.browser }} --with-deps
       - name: Install tooling dependencies
         run: cargo install cargo-make
       - name: Build
         run: cargo make builds
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_GITHUB_TOKEN }}
-      - name: Run `cargo make ${{ matrix.cargo-make-command }}`
-        run: cargo make ${{ matrix.cargo-make-command }}
+      - name: Run `cargo make ${{ matrix.command }}`
+        run: |
+          args=$(echo "${{ matrix.command == 'tests' && '--project=$BROWSER' || '' }}")
+          cargo make ${{ matrix.command }} $args
         id: test
         continue-on-error: true
+        env:
+          BROWSER: ${{ matrix.browser }}
       - name: Upload Playwright report
         if: |
-          matrix.cargo-make-command == 'tests' &&
+          matrix.command == 'tests' &&
           steps.test.outcome != 'success'
         uses: actions/upload-artifact@v3
         with:
@@ -85,12 +91,13 @@ jobs:
           path: playwright-report
       - name: Check test outcome
         if: |
-          matrix.cargo-make-command == 'tests' &&
+          matrix.command == 'tests' &&
           steps.test.outcome != 'success'
         run: exit 1
       - name: Publish website
         if: |
-          matrix.cargo-make-command == 'tests' &&
+          matrix.command == 'tests' &&
+          matrix.browser == 'chrome' &&
           github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4
         with:

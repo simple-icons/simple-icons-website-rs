@@ -73,7 +73,7 @@ workspace = false
 [tasks.tests]
 description = "Run tests"
 command = "npx"
-args = ["playwright", "test", "--trace", "on"]
+args = ["playwright", "test", "--trace", "on", "${@}"]
 workspace = false
 cwd = "./end2end"
 
