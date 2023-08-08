@@ -1137,6 +1137,7 @@ dependencies = [
  "futures",
  "indexmap 2.0.0",
  "js-sys",
+ "miniserde",
  "rustc-hash",
  "self_cell",
  "serde",
@@ -1255,10 +1256,32 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a"
 
 [[package]]
+name = "mini-internal"
+version = "0.1.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "261391cc14a85f1f05253c3f7b6f75937280f4171d72b3acf6548bad73b99626"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.28",
+]
+
+[[package]]
 name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
+
+[[package]]
+name = "miniserde"
+version = "0.1.30"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3f290fd592e7e59944141a818bcdf2823cd5996b1c3001e97f5c28b556305e31"
+dependencies = [
+ "itoa",
+ "mini-internal",
+ "ryu",
+]
 
 [[package]]
 name = "miniz_oxide"
