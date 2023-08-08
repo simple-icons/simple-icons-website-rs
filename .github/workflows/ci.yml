@@ -81,6 +81,8 @@ jobs:
         run: |
           echo "arguments=${{ matrix.command == 'tests' && '--project=$BROWSER' || '' }}" \
             >> $GITHUB_OUTPUT
+        env:
+          BROWSER: ${{ matrix.browser }}
       - name: List tests
         if: matrix.command == 'tests'
         run: |
@@ -91,8 +93,6 @@ jobs:
           cargo make ${{ matrix.command }} ${{ steps.args.outputs.arguments }}
         id: test
         continue-on-error: true
-        env:
-          BROWSER: ${{ matrix.browser }}
       - name: Upload Playwright report
         if: |
           matrix.command == 'tests' &&
