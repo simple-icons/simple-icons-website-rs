@@ -37,8 +37,8 @@
 }
 
 /*   Icon slug */
-.icon-details-modal > :first-child > :last-child > :nth-child(1) {
-  @apply copy-button-color-scheme before:bg-right;
+.icon-details-modal > :first-child > :last-child > :first-child {
+  @apply copy-button-color-scheme before:[background-position-x:95%] pr-12;
 }
 
 /*   Copy hex color button */
