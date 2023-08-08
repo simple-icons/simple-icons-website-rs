@@ -19,6 +19,9 @@ jobs:
           - name: Test on Chrome${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
             command: tests
             browser: chrome
+          - name: Test on Chromium
+            command: tests
+            browser: chromium
           - name: Test on Firefox
             command: tests
             browser: firefox
@@ -73,10 +76,19 @@ jobs:
         run: cargo make builds
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_GITHUB_TOKEN }}
+      - name: Get cargo-make arguments
+        id: args
+        run: |
+          echo "arguments=${{ matrix.command == 'tests' && '--project=$BROWSER' || '' }}" \
+            >> $GITHUB_OUTPUT
+      - name: List tests
+        if: matrix.command == 'tests'
+        run: |
+          cd end2end
+          npx playwright test --list ${{ steps.args.outputs.arguments }}
       - name: Run `cargo make ${{ matrix.command }}`
         run: |
-          args=$(echo "${{ matrix.command == 'tests' && '--project=$BROWSER' || '' }}")
-          cargo make ${{ matrix.command }} $args
+          cargo make ${{ matrix.command }} ${{ steps.args.outputs.arguments }}
         id: test
         continue-on-error: true
         env:
@@ -93,7 +105,9 @@ jobs:
         if: |
           matrix.command == 'tests' &&
           steps.test.outcome != 'success'
-        run: exit 1
+        run: |
+          echo "Tests failed, check the report"
+          exit 1
       - name: Publish website
         if: |
           matrix.command == 'tests' &&

@@ -71,16 +71,15 @@ const config: PlaywrightTestConfig = {
     /* Test against mobile viewports. */
     {
       // Mobile Chrome
-      name: 'chrome',
+      name: 'chromium',
       use: {
-        browserName: 'chromium',
         ...devices['Pixel 5'],
       },
     },
 
     {
       // Mobile Chrome landscape
-      name: 'chrome',
+      name: 'chromium',
       use: {
         ...devices['Pixel 5 landscape'],
         viewport: {
@@ -112,5 +111,5 @@ const config: PlaywrightTestConfig = {
     },
   ],
 };
-
+console.log(JSON.stringify(config, null, 2));
 export default config;
