@@ -112,7 +112,7 @@ jobs:
           steps.test.outcome != 'success'
         uses: actions/upload-artifact@v3
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}
           path: playwright-report
       - name: Check test outcome
         if: |
