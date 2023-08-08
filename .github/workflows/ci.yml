@@ -16,23 +16,36 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: Test on Chrome${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
-            command: tests
-            browser: chrome
-          - name: Test on Chromium
-            command: tests
-            browser: chromium
-          - name: Test on Firefox
-            command: tests
-            browser: firefox
-          - name: Test on MsEdge
-            command: tests
-            browser: msedge
-          - name: Test on Webkit
-            command: tests
-            browser: webkit
           - name: Lint
             command: lint
+          - name: Test on Chrome Desktop${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
+            command: tests
+            browser: chrome
+            project: chrome-desktop
+          - name: Test on MsEdge Desktop
+            command: tests
+            browser: msedge
+            project: msedge-desktop
+          - name: Test on Firefox Desktop
+            command: tests
+            browser: firefox
+            project: firefox-desktop
+          - name: Test on Safari Desktop
+            command: tests
+            browser: webkit
+            project: webkit-desktop
+          - name: Test on Chromium Mobile
+            command: tests
+            browser: chromium
+            project: chromium-mobile
+          - name: Test on Chromium Mobile Landscape
+            command: tests
+            browser: chromium
+            project: chromium-mobile-landscape
+          - name: Test on Safari Mobile
+            command: tests
+            browser: webkit
+            project: webkit-mobile
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -76,13 +89,13 @@ jobs:
         run: cargo make builds
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_GITHUB_TOKEN }}
-      - name: Get cargo-make arguments
+      - name: Get test arguments
         id: args
         run: |
-          echo "arguments=${{ matrix.command == 'tests' && '--project=$BROWSER' || '' }}" \
+          echo "arguments=${{ matrix.command == 'tests' && '--project=$PROJECT' || '' }}" \
             >> $GITHUB_OUTPUT
         env:
-          BROWSER: ${{ matrix.browser }}
+          PROJECT: ${{ matrix.project }}
       - name: List tests
         if: matrix.command == 'tests'
         run: |
@@ -111,7 +124,7 @@ jobs:
       - name: Publish website
         if: |
           matrix.command == 'tests' &&
-          matrix.browser == 'chrome' &&
+          matrix.project == 'chrome-desktop' &&
           github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4
         with:

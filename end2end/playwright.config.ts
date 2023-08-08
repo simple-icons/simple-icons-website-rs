@@ -49,37 +49,38 @@ const config: PlaywrightTestConfig = {
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chrome',
+      name: 'chrome-desktop',
       use: {
         channel: 'chrome',
       },
     },
-
     {
-      name: 'firefox',
+      name: 'msedge-desktop',
+      use: {
+        channel: 'msedge',
+      },
+    },
+    {
+      name: 'firefox-desktop',
       use: {
         ...devices['Desktop Firefox'],
       },
     },
     {
-      name: 'webkit',
+      name: 'webkit-desktop',
       use: {
         ...devices['Desktop Safari'],
       },
     },
-
-    /* Test against mobile viewports. */
     {
-      // Mobile Chrome
-      name: 'chromium',
+      name: 'chromium-mobile',
       use: {
         ...devices['Pixel 5'],
       },
     },
 
     {
-      // Mobile Chrome landscape
-      name: 'chromium',
+      name: 'chromium-mobile-landscape',
       use: {
         ...devices['Pixel 5 landscape'],
         viewport: {
@@ -96,17 +97,9 @@ const config: PlaywrightTestConfig = {
       },
     },
     {
-      // Mobile Safari
-      name: 'webkit',
+      name: 'webkit-mobile',
       use: {
         ...devices['iPhone 12'],
-      },
-    },
-    {
-      // Microsoft Edge
-      name: 'msedge',
-      use: {
-        channel: 'msedge',
       },
     },
   ],
