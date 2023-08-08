@@ -29,7 +29,7 @@ main > ul {
   --title-text-overflow: none;
   --title-white-space: normal;
   --title-copy-button-size: 1.25rem;
-  --title-copy-button-margin-top: 0.1rem;
+  --title-copy-button-margin-bottom: 0.15rem;
   --title-copy-button-margin-right: 2rem;
 
   --links-font-size: 0.75rem;
@@ -54,7 +54,7 @@ main > ul.layout-compact {
   --title-text-overflow: ellipsis;
   --title-white-space: nowrap;
   --title-copy-button-size: 1rem;
-  --title-copy-button-margin-top: 0rem;
+  --title-copy-button-margin-bottom: 0rem;
   --title-copy-button-margin-right: 1.3rem;
 
   --links-font-size: 0.65rem;
