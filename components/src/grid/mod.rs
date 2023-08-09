@@ -111,7 +111,7 @@ fn initial_icons_from_search_value_order_mode_and_layout(
     }
 }
 
-fn wait_for_first_grid_item_and_open_details() {
+fn wait_for_first_grid_item_and_open_details(attempt: u32) {
     if let Some(el) = document()
         .query_selector(
             "main > ul > :first-child > :last-child > :nth-child(2)",
@@ -124,10 +124,12 @@ fn wait_for_first_grid_item_and_open_details() {
         )
         .unwrap();
         el.dispatch_event(&event).unwrap();
-    } else {
+    } else if attempt < 40 {
         _ = set_timeout_with_handle(
-            wait_for_first_grid_item_and_open_details,
-            Duration::from_millis(5),
+            move || {
+                wait_for_first_grid_item_and_open_details(attempt + 1);
+            },
+            Duration::from_millis(50),
         );
     }
 }
@@ -215,7 +217,7 @@ pub fn Grid() -> impl IntoView {
     icons_list_ref.on_load(move |_| {
         let modal_param = Url::params::get(&Url::params::Names::Modal);
         if modal_param == Some(ModalOpen::Icon.to_string()) {
-            wait_for_first_grid_item_and_open_details();
+            wait_for_first_grid_item_and_open_details(1);
         }
     });
 
