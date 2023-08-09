@@ -1,10 +1,10 @@
 main > ul > li .deprecated {
-  @apply inline-flex flex-row justify-end relative
+  @apply inline-flex flex-row justify-end
     w-[95%] -top-[46px];
 }
 
 main > ul > li .deprecated > p {
-  @apply uppercase relative cursor-pointer
+  @apply uppercase cursor-pointer
     [font-size:11px]
     hover:opacity-70 text-right font-bold
     [display:var(--deprecated-advert-text-display)];
