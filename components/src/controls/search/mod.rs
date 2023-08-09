@@ -9,7 +9,7 @@ use crate::storage::LocalStorage;
 use crate::Ids;
 use crate::Url;
 use fuzzy::{build_searcher, search};
-use i18n::move_gettext;
+use i18n::move_tr;
 use js_sys::JsString;
 use leptos::{document, html::Input, window, *};
 use types::SimpleIcon;
@@ -259,7 +259,7 @@ pub fn SearchControl() -> impl IntoView {
     /* The onfocus attribute puts the cursor at the end of the input */
     view! {
         <div class="control">
-            <label for=Ids::SearchInput.as_str()>{move_gettext!("Search")}</label>
+            <label for=Ids::SearchInput.as_str()>{move_tr!("search")}</label>
             <div class="search">
                 <input
                     _ref=search_input_ref
@@ -267,7 +267,7 @@ pub fn SearchControl() -> impl IntoView {
                     type="search"
                     autocomplete="off"
                     autofocus
-                    placeholder=move_gettext!("Search by brand...")
+                    placeholder=move_tr!("search-by-brand")
                     value=search
                     onfocus="var value = this.value; this.value = null; this.value = value;"
                     on:input=move |_| {
@@ -282,7 +282,7 @@ pub fn SearchControl() -> impl IntoView {
                 />
                 <span
                     class:hidden=move || search().is_empty()
-                    title=move_gettext!("Clear search")
+                    title=move_tr!("clear-search")
                     on:click=move |_| {
                         search_input_ref.get().unwrap().set_value("");
                         fire_on_search_event();

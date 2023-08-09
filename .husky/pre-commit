@@ -4,6 +4,5 @@
 set -ex
 
 npm run fetch-deprecated-icons
-cargo make locales
 cargo make lint
 git diff --cached --name-only --diff-filter=ACM -z

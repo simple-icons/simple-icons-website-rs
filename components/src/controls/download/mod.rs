@@ -4,9 +4,10 @@ pub mod svg;
 use crate::controls::button::ControlButtonText;
 use crate::storage::LocalStorage;
 use crate::Url;
-use i18n::move_gettext;
+use i18n::{move_tr, tr};
 use leptos::{document, window, *};
 pub use pdf::download_pdf;
+use std::collections::HashMap;
 use std::fmt;
 pub use svg::download_svg;
 use wasm_bindgen::JsCast;
@@ -99,11 +100,15 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
 
     view! {
         <div class="control">
-            <label>{move_gettext!("Download")}</label>
+            <label>{move_tr!("download")}</label>
             <div class="flex flex-row">
                 <ControlButtonText
-                    text=move_gettext!("SVG")
-                    title=move_gettext!("Download SVG")
+                    text=move_tr!("svg")
+                    title=move_tr!("download-filetype", &{
+                        let mut map = HashMap::new();
+                        map.insert("filetype".to_string(), tr!("svg").into());
+                        map
+                    })
                     active=move || { download_type() == DownloadType::SVG }
                     on:click=move |_| {
                         download_type
@@ -114,8 +119,12 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                     }
                 />
                 <ControlButtonText
-                    text=move_gettext!("PDF")
-                    title=move_gettext!("Download PDF")
+                    text=move_tr!("pdf")
+                    title=move_tr!("download-filetype", &{
+                        let mut map = HashMap::new();
+                        map.insert("filetype".to_string(), tr!("pdf").into());
+                        map
+                    })
                     active=move || { download_type() == DownloadType::PDF }
                     on:click=move |_| {
                         download_type

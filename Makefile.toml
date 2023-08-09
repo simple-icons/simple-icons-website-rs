@@ -42,14 +42,6 @@ args = [
 workspace = false
 cwd = "./app"
 
-[tasks.locales]
-description = "Generate or update locales"
-install_crate = "xtr"
-script = [
-    "xtr components/src/lib.rs app/src/main.rs --keywords=gettext:2 --keywords=move_gettext:2 --output=i18n/messages.pot",
-]
-workspace = false
-
 [tasks.docs]
 description = "Open components documentation"
 command = "cargo"

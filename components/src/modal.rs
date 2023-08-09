@@ -2,7 +2,7 @@ use crate::copy::copy_inner_text_on_click;
 use crate::svg_defs::SVGDefs;
 use crate::Url;
 use core::fmt;
-use i18n::move_gettext;
+use i18n::move_tr;
 use leptos::{ev::MouseEvent, *};
 use web_sys;
 
@@ -37,7 +37,7 @@ where
             >
                 {title}
             </h2>
-            <button type="button" title=move_gettext!("Close") on:click=on_close>
+            <button type="button" title=move_tr!("close") on:click=on_close>
                 <svg role="img" viewBox="0 0 24 24">
                     <use_ href=format!("#{}", SVGDefs::CrossPath.id())></use_>
                 </svg>

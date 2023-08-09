@@ -18,7 +18,6 @@
 - `cargo make builds`: Build the website for production.
 - `cargo make serve`: Build the website for production and serve it with [anywhere](https://www.npmjs.com/package/anywhere).
 - `cargo make docs`: Build and open documentation.
-- `cargo make locales`: Extract new translations. See [Localization](#localization) section.
 - `cargo make watch-css`: Watch the CSS files with [TailwindCSS](https://tailwindcss.com/).
 
 ## Testing
@@ -57,13 +56,7 @@ Typically the development of tests involucrates two terminals:
 - The main stylesheet is located at `app/stylesheet.css` other assets are located at `app/assets/`. Hopefully you don't need to change this style due to the class-based approach of TailwindCSS framework. Configuration is located at `app/tailwind.config.ts`.
 - The initial HTML is located at `app/index.html`. It is used by Trunk to generate the final HTML.
 
-## Localization
-
-- Extract translations with `cargo make locales`.
-- Translate po files located at _i18n/locales_ with your favorite editor.
-- The translations are included in the website at compile time.
-
 ### How to add a new locale
 
 - Add the locale to the `LANGUAGES` array in `i18n/src/lib.rs`.
-- Copy the file `i18n/messages.pot` to the new locale po file at `i18n/locales/{code}.po`.
+- Copy an existing locale directory at `i18n/locales` and replace the translations.

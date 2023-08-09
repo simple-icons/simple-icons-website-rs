@@ -5,8 +5,9 @@ use crate::grid::item::icon_preview::on_click_copy_image_children_src_content;
 use crate::grid::CurrentIconViewSignal;
 use crate::modal::{Modal, ModalOpenSignal};
 use crate::Ids;
-use i18n::{gettext, move_gettext, Language};
+use i18n::{move_tr, tr, Language};
 use leptos::{document, *};
+use std::collections::HashMap;
 use types::SimpleIcon;
 use wasm_bindgen::JsCast;
 use web_sys;
@@ -56,7 +57,12 @@ pub fn fill_icon_details_modal_with_icon(
     modal_slug
         .set_attribute(
             "title",
-            &gettext!("Copy {} slug ({})", icon.title, icon.slug),
+            &tr!("copy-icon-slug", &{
+                let mut map = HashMap::new();
+                map.insert("icon".to_string(), icon.title.into());
+                map.insert("slug".to_string(), icon.slug.into());
+                map
+            }),
         )
         .unwrap();
 
@@ -97,7 +103,14 @@ pub fn fill_icon_details_modal_with_icon(
         .dyn_into::<web_sys::HtmlButtonElement>()
         .unwrap();
     modal_preview_button
-        .set_attribute("title", &gettext!("Copy {} SVG", icon.title))
+        .set_attribute(
+            "title",
+            &tr!("copy-icon-svg", &{
+                let mut map = HashMap::new();
+                map.insert("icon".to_string(), icon.title.into());
+                map
+            }),
+        )
         .unwrap();
     modal_preview_button
         .children()
@@ -169,28 +182,44 @@ pub fn fill_icon_details_modal_with_icon(
         .unwrap();
 
     if let Some(deprecation) = icon.deprecation {
-        modal_deprecation_paragraph.set_inner_html(&gettext!(
-            "{} will be removed at {} about {} (see {})",
-            icon.title,
-            &format!(
-                "<a href=\"{}\">v{}</a>",
-                deprecation.get_milestone_url(),
-                deprecation.removal_at_version,
-            ),
-            &js_sys::Date::new(&wasm_bindgen::JsValue::from(
-                deprecation.milestone_due_on,
-            ))
-            .to_locale_date_string(
-                locale.code,
-                &wasm_bindgen::JsValue::from(js_sys::Object::new())
-            )
-            .as_string()
-            .unwrap(),
-            &format!(
-                "<a href=\"{}\">#{}</a>",
-                deprecation.get_pull_request_url(),
-                deprecation.pull_request_number,
-            )
+        modal_deprecation_paragraph.set_inner_html(&tr!(
+            "will-be-remove-at-extended",
+            &{
+                let mut map = HashMap::new();
+                map.insert("icon".to_string(), icon.title.into());
+                map.insert(
+                    "version".to_string(),
+                    format!(
+                        "<a href=\"{}\">v{}</a>",
+                        deprecation.get_milestone_url(),
+                        deprecation.removal_at_version,
+                    )
+                    .into(),
+                );
+                map.insert(
+                    "date".to_string(),
+                    js_sys::Date::new(&wasm_bindgen::JsValue::from(
+                        deprecation.milestone_due_on,
+                    ))
+                    .to_locale_date_string(
+                        &locale.language.to_string(),
+                        &wasm_bindgen::JsValue::from(js_sys::Object::new()),
+                    )
+                    .as_string()
+                    .unwrap()
+                    .into(),
+                );
+                map.insert(
+                    "pr".to_string(),
+                    format!(
+                        "<a href=\"{}\">#{}</a>",
+                        deprecation.get_pull_request_url(),
+                        deprecation.pull_request_number,
+                    )
+                    .into(),
+                );
+                map
+            }
         ));
         modal_deprecation_paragraph
             .class_list()
@@ -256,10 +285,10 @@ fn IconDetailsModalInformation() -> impl IntoView {
             <h3 on:click=copy_inner_text_on_click></h3>
             <button
                 on:click=copy_inner_text_on_click
-                title=move_gettext!("Copy hex color")
+                title=move_tr!("copy-hex-color")
             ></button>
-            <a target="_blank">{move_gettext!("Brand guidelines")}</a>
-            <a target="_blank" title=move_gettext!("License")></a>
+            <a target="_blank">{move_tr!("brand-guidelines")}</a>
+            <a target="_blank" title=move_tr!("license")></a>
             <p></p>
         </div>
     }
@@ -267,22 +296,37 @@ fn IconDetailsModalInformation() -> impl IntoView {
 
 #[component]
 fn IconDetailsModalFooter() -> impl IntoView {
+    let download_svg_msg = move_tr!("download-filetype", &{
+        let mut map = HashMap::new();
+        map.insert("filetype".to_string(), tr!("svg").into());
+        map
+    });
+    let download_colored_svg_msg = move_tr!("download-filetype", &{
+        let mut map = HashMap::new();
+        map.insert("filetype".to_string(), tr!("colored-svg").into());
+        map
+    });
+    let download_pdf_msg = move_tr!("download-filetype", &{
+        let mut map = HashMap::new();
+        map.insert("filetype".to_string(), tr!("pdf").into());
+        map
+    });
     view! {
         <div>
             <button
                 on:click=move |_| download_svg(&get_slug_from_modal_container())
-                aria-label=move_gettext!("Download SVG")
+                aria-label=download_svg_msg
             >
-                {move_gettext!("Download SVG")}
+                {download_svg_msg}
             </button>
-            <a aria-label=move_gettext!("Download colored SVG")>
-                {move_gettext!("Download colored SVG")}
+            <a aria-label=download_colored_svg_msg>
+                {download_colored_svg_msg}
             </a>
             <button
                 on:click=move |_| download_pdf(&get_slug_from_modal_container())
-                aria-label=move_gettext!("Download PDF")
+                aria-label=download_pdf_msg
             >
-                {move_gettext!("Download PDF")}
+                {download_pdf_msg}
             </button>
         </div>
     }

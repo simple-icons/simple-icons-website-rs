@@ -1,4 +1,4 @@
-export const download_pdf_ = async (slug, errorGeneratingPdfMessageSchema) => {
+export const download_pdf_ = async (slug, errorGeneratingPdfMessage) => {
   const icon_svg_url = `/icons/${slug}.svg`;
   const res = await fetch(icon_svg_url);
   const svg = await res.text();
@@ -16,7 +16,7 @@ export const download_pdf_ = async (slug, errorGeneratingPdfMessageSchema) => {
     stream = doc.pipe(blobStream());
     console.error(e);
     doc.fontSize(12);
-    doc.text(errorGeneratingPdfMessageSchema.replace('{}', e.message), 0, 0, {
+    doc.text(`${errorGeneratingPdfMessage} ${e.message}`, 0, 0, {
       align: 'center',
     });
   }

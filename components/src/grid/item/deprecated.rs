@@ -1,5 +1,6 @@
-use i18n::move_gettext;
+use i18n::move_tr;
 use leptos::*;
+use std::collections::HashMap;
 
 #[component]
 pub fn IconIsDeprecatedNotice(
@@ -14,10 +15,15 @@ pub fn IconIsDeprecatedNotice(
         <a
             href=pull_request_url
             class="deprecated"
-            title=move_gettext!("{} will be removed at v{}", title, removal_at_version)
+            title=move_tr!("will-be-removed-at", &{
+                let mut map = HashMap::new();
+                map.insert("icon".to_string(), title.into());
+                map.insert("version".to_string(), removal_at_version.into());
+                map
+            })
         >
             <span></span>
-            <p>{move_gettext!("Deprecated")}</p>
+            <p>{move_tr!("deprecated")}</p>
         </a>
     }
 }

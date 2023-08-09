@@ -8,14 +8,14 @@ extern "C" {
 }
 
 pub fn download_pdf(slug: &str) {
-    let msg_schema = document()
-        .query_selector("[data-error-generating-pdf-msg-schema]")
+    let msg = document()
+        .query_selector("[data-error-generating-pdf-msg]")
         .unwrap()
         .unwrap()
         .dyn_into::<web_sys::HtmlButtonElement>()
         .unwrap()
-        .get_attribute("data-error-generating-pdf-msg-schema")
+        .get_attribute("data-error-generating-pdf-msg")
         .unwrap();
 
-    download_pdf_(slug, msg_schema);
+    download_pdf_(slug, msg);
 }

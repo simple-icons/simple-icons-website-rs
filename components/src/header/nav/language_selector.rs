@@ -1,7 +1,7 @@
 use crate::header::{nav::button::HeaderMenuButton, HeaderStateSignal};
 use crate::modal::{Modal, ModalOpen, ModalOpenSignal};
 use crate::Url;
-use i18n::{move_gettext, Language, LocaleSignal, LANGUAGES};
+use i18n::{move_tr, Language, LocaleSignal, LANGUAGES};
 use leptos::{window, *};
 
 pub fn provide_language_context() -> LocaleSignal {
@@ -59,7 +59,9 @@ fn initial_language_from_localstorage() -> Option<Language> {
 
 pub fn set_language_in_localstorage(lang: &Language) {
     let local_storage = window().local_storage().unwrap().unwrap();
-    local_storage.set_item("language", lang.code).unwrap();
+    local_storage
+        .set_item("language", &lang.language.to_string())
+        .unwrap();
 }
 
 /// Languages list
@@ -80,7 +82,7 @@ pub fn LanguagesList() -> impl IntoView {
                                 class:hidden=*lang == current_language
                                 on:click=move |_| {
                                     modal_open.set_none();
-                                    locale_state.update(|state: &mut Language| *state = *lang);
+                                    locale_state.update(|state| *state = lang.clone());
                                     set_language_in_localstorage(lang);
                                 }
                             >
@@ -102,7 +104,7 @@ pub fn LanguageSelectorButton() -> impl IntoView {
 
     view! {
         <HeaderMenuButton
-            title=move_gettext!("Change language")
+            title=move_tr!("change-language")
             additional_classes=move || {
                 if header_state().menu_open {
                     "block".to_string()
@@ -124,7 +126,7 @@ pub fn LanguageSelector() -> impl IntoView {
     view! {
         <LanguageSelectorButton/>
         <Modal
-            title=move_gettext!("Select a language")
+            title=move_tr!("select-a-language")
             is_open=move || modal_open.0() == Some(ModalOpen::Languages)
             on_close=move |_| modal_open.set_none()
         >

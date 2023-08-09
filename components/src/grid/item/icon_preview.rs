@@ -1,7 +1,8 @@
 use crate::copy::copy_setting_copied_transition_in_element;
 use crate::fetch::fetch_text_forcing_cache;
-use i18n::move_gettext;
+use i18n::move_tr;
 use leptos::{ev::MouseEvent, *};
+use std::collections::HashMap;
 use wasm_bindgen::JsCast;
 use web_sys;
 
@@ -36,10 +37,18 @@ pub fn IconGridItemPreview(
 ) -> impl IntoView {
     view! {
         <button
-            title=move_gettext!("Copy {} SVG", title)
+            title=move_tr!("copy-icon-svg", &{
+                let mut map = HashMap::new();
+                map.insert("icon".to_string(), title.into());
+                map
+            })
             on:click=on_click_copy_image_children_src_content
         >
-            <img src=format!("/icons/{}.svg", slug) alt=move_gettext!("{} icon", title)/>
+            <img src=format!("/icons/{}.svg", slug) alt=move_tr!("subject-icon", &{
+                let mut map = HashMap::new();
+                map.insert("icon".to_string(), title.into());
+                map
+            })/>
         </button>
     }
 }

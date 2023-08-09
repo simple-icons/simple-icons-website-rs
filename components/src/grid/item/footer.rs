@@ -6,9 +6,10 @@ use crate::grid::item::details::fill_icon_details_modal_with_icon;
 use crate::grid::CurrentIconViewSignal;
 use crate::modal::ModalOpenSignal;
 use crate::svg_defs::SVGDefs;
-use i18n::{move_gettext, LocaleSignal};
+use i18n::{move_tr, LocaleSignal};
 use leptos::ev::MouseEvent;
 use leptos::*;
+use std::collections::HashMap;
 use types::SimpleIcon;
 use web_sys;
 
@@ -38,7 +39,7 @@ pub fn IconGridItemFooter(
     view! {
         <div>
             <button
-                title=move_gettext!("Copy hex color")
+                title=move_tr!("copy-hex-color")
                 class:dark=icon.hex_is_relatively_light
                 style=format!("background: {}", css_hex)
                 on:click=move |ev: MouseEvent| {
@@ -50,7 +51,11 @@ pub fn IconGridItemFooter(
                 {css_hex}
             </button>
             <button
-                title=move_gettext!("View {}", icon.title)
+                title=move_tr!("view-icon", &{
+                    let mut map = HashMap::new();
+                    map.insert("icon".to_string(), icon.title.into());
+                    map
+                })
                 on:click=move |_| {
                     fill_icon_details_modal_with_icon(icon, &locale_state());
                     current_icon_view.update(|state| *state = Some(icon));
@@ -62,8 +67,8 @@ pub fn IconGridItemFooter(
                 </svg>
             </button>
             <button
-                title=move_gettext!("Download")
-                data-error-generating-pdf-msg-schema=move_gettext!("Error generating PDF with PDFKit library: {}")
+                title=move_tr!("download")
+                data-error-generating-pdf-msg=move_tr!("error-generating-pdf")
                 on:click=move |_| {
                     if download_type() == DownloadType::SVG {
                         download_svg(icon.slug);

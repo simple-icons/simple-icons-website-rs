@@ -1,7 +1,7 @@
 use crate::header::{nav::button::HeaderMenuButton, HeaderStateSignal};
 use crate::modal::Modal;
 use crate::modal::{ModalOpen, ModalOpenSignal};
-use i18n::move_gettext;
+use i18n::move_tr;
 use leptos::*;
 use macros::get_simple_icons_3rd_party_extensions;
 use types::ThirdPartyExtension;
@@ -48,7 +48,7 @@ pub fn ThirdPartyExtensionsButton() -> impl IntoView {
 
     view! {
         <HeaderMenuButton
-            title=move_gettext!("Third party extensions")
+            title=move_tr!("third-party-extensions")
             additional_classes=move || {
                 if header_state().menu_open {
                     "block".to_string()
@@ -70,7 +70,7 @@ pub fn ThirdPartyExtensions() -> impl IntoView {
     view! {
         <ThirdPartyExtensionsButton/>
         <Modal
-            title=move_gettext!("Third party extensions")
+            title=move_tr!("third-party-extensions")
             is_open=move || modal_open.0() == Some(ModalOpen::Extensions)
             on_close=move |_| modal_open.set_none()
         >

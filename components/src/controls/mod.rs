@@ -10,7 +10,7 @@ pub mod search;
 use crate::svg_defs::SVGDefs;
 use color_scheme::ColorSchemeControl;
 use download::DownloadFileTypeControl;
-use i18n::gettext;
+use i18n::tr;
 use layout::LayoutControl;
 use leptos::*;
 use order::OrderControl;
@@ -85,9 +85,9 @@ pub fn ControlsToggler() -> impl IntoView {
                 class="absolute right-0 bottom-0 rounded"
                 title=move || {
                     if controls_state().buttons_group_open {
-                        gettext!( "Open search bar")
+                        tr!("open-search-bar")
                     } else {
-                        gettext!( "Open controls")
+                        tr!("open-controls")
                     }
                 }
                 on:click=move |_| {

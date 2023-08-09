@@ -1,7 +1,7 @@
 use crate::controls::layout::LayoutSignal;
 use crate::grid::IconsGridSignal;
 use crate::spinners::TripleDotsSpinner;
-use i18n::move_gettext;
+use i18n::move_tr;
 use leptos::*;
 
 /// Data structure to control the loading of more icons
@@ -75,7 +75,7 @@ pub fn IconsLoader() -> impl IntoView {
                         });
                 }
             >
-                {move_gettext!("Load more icons")}
+                {move_tr!("load-more-icons")}
             </button>
             <TripleDotsSpinner hidden_frames=1 hidden=move || !icons_loader().loading/>
         </div>

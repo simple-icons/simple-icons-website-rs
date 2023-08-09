@@ -1,7 +1,8 @@
 use crate::header::HeaderStateSignal;
-use i18n::{gettext, move_gettext};
+use i18n::{move_tr, tr};
 use leptos::*;
 use macros::get_number_of_icons;
+use std::collections::HashMap;
 
 /// Header title
 ///
@@ -14,10 +15,24 @@ pub fn HeaderTitle() -> impl IntoView {
     view! {
         <div class:hidden=move || header_state().menu_open>
             <h1>"Simple Icons"</h1>
-            <p inner_html=move_gettext!(
-                 "{} free {} icons for popular brands", get_number_of_icons!() .to_string()
-                .as_str(), & format!("<abbr title=\"{}\">{}</abbr>", gettext!(
-                "Scalable Vector Graphic"), gettext!( "SVG"),)
+            <p inner_html=move_tr!(
+                "site-description",
+                &{
+                    let mut map = HashMap::new();
+                    map.insert(
+                        "n-icons".to_string(),
+                        get_number_of_icons!() .to_string().into(),
+                    );
+                    map.insert(
+                        "svg".to_string(),
+                        format!(
+                            "<abbr title=\"{}\">{}</abbr>",
+                            tr!("scalable-vector-graphics"),
+                            tr!("svg"),
+                        ).into()
+                    );
+                    map
+                }
             )></p>
         </div>
     }

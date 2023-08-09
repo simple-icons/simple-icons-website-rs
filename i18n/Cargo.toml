@@ -11,7 +11,4 @@ name = "i18n"
 [dependencies]
 leptos.workspace = true
 lazy_static.workspace = true
-rspolib.workspace = true
-
-[build-dependencies]
-rspolib.workspace = true
+fluent-templates.workspace = true

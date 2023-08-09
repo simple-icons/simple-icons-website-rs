@@ -1,19 +1,21 @@
 use crate::app::TITLE;
 use config::CONFIG;
-use i18n::{gettext, move_gettext};
+use i18n::{move_tr, tr};
 use leptos::*;
 use leptos_meta::*;
 use macros::get_number_of_icons;
+use std::collections::HashMap;
 
 #[component]
 pub fn Head() -> impl IntoView {
     provide_meta_context();
 
-    let description = move_gettext!(
-        "{} free {} icons for popular brands",
-        get_number_of_icons!().to_string().as_str(),
-        &gettext!("SVG")
-    );
+    let description = move_tr!("site-description", &{
+        let mut map = HashMap::new();
+        map.insert("n-icons".to_string(), get_number_of_icons!().into());
+        map.insert("svg".to_string(), tr!("svg").into());
+        map
+    });
 
     view! {
         <Title text=TITLE/>

@@ -1,4 +1,4 @@
-use i18n::{gettext, move_gettext};
+use i18n::{move_tr, tr};
 use leptos::*;
 
 #[component]
@@ -20,11 +20,11 @@ pub fn IconGridItemLinks(
                             view! {
                                 <a
                                     href=guidelines_url
-                                    title=move_gettext!("Brand guidelines")
+                                    title=move_tr!("brand-guidelines")
                                     class="brand-guidelines"
                                     target="_blank"
                                 >
-                                    {move_gettext!("Brand guidelines")}
+                                    {move_tr!("brand-guidelines")}
                                 </a>
                             },
                         );
@@ -32,10 +32,10 @@ pub fn IconGridItemLinks(
                 if license_type.is_some() || license_url.is_some() {
                     let title = move || match license_type {
                         Some(license_type) => match license_type {
-                            "custom" => gettext!("Custom license"),
+                            "custom" => tr!("custom-license"),
                             _ => license_type.to_string(),
                         },
-                        None => gettext!("License"),
+                        None => tr!("license"),
                     };
                     links
                         .push(
