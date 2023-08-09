@@ -3,21 +3,26 @@
  **/
 
 main > ul > li > .links {
-  @apply flex flex-col text-xs pl-[var(--links-container-padding-left)];
+  @apply flex flex-col text-xs
+    pl-[var(--links-container-padding-left)];
 }
 
 main > ul > li > .links > a {
-  @apply dark:before:invert hover:underline opacity-70 hover:opacity-100
-    bg-no-repeat bg-[size:0.9rem] bg-left whitespace-nowrap
+  @apply dark:before:invert hover:underline
+    opacity-70 hover:opacity-100
+    bg-no-repeat bg-[size:0.9rem] bg-left
+    whitespace-nowrap mt-[2px]
     [font-size:var(--links-font-size)]
     [line-height:var(--links-line-height)]
     [padding-left:var(--links-text-padding-left)];
 }
 
 main > ul > li > .links > a.brand-guidelines {
-  @apply bg-[url(./external-link.svg)] dark:bg-[url(./external-link-white.svg)];
+  @apply bg-[url(./external-link.svg)]
+    dark:bg-[url(./external-link-white.svg)];
 }
 
 main > ul > li > .links > a.license {
-  @apply bg-[url(./legal.svg)] dark:bg-[url(./legal-white.svg)];
+  @apply bg-[url(./legal.svg)]
+    dark:bg-[url(./legal-white.svg)];
 }

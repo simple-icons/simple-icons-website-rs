@@ -22,6 +22,7 @@ pub fn IconGridItemLinks(
                                     href=guidelines_url
                                     title=move_gettext!("Brand guidelines")
                                     class="brand-guidelines"
+                                    target="_blank"
                                 >
                                     {move_gettext!("Brand guidelines")}
                                 </a>
@@ -30,8 +31,11 @@ pub fn IconGridItemLinks(
                 }
                 if license_type.is_some() || license_url.is_some() {
                     let title = move || match license_type {
-                        Some(license_type) => license_type.to_string(),
-                        None => gettext!( "License"),
+                        Some(license_type) => match license_type {
+                            "custom" => gettext!("Custom license"),
+                            _ => license_type.to_string(),
+                        },
+                        None => gettext!("License"),
                     };
                     links
                         .push(
@@ -43,6 +47,7 @@ pub fn IconGridItemLinks(
                                     }
                                     title=title
                                     class="license"
+                                    target="_blank"
                                 >
                                     {title}
                                 </a>

@@ -6,10 +6,13 @@
 
   /* Modal */
   .modal {
-    @apply relative z-50 flex flex-col self-center justify-center m-auto
+    @apply relative z-50 flex flex-col
+      self-center justify-center m-auto
       mt-0 md:mt-10 rounded
-      max-w-full md:max-w-[80%] lg:max-w-[50%] max-h-full
-      bg-custom-background-color shadow-[0_0_3px_0_var(--shadows-color)];
+      max-w-full md:max-w-[80%]
+      lg:max-w-[50%] max-h-[86%]
+      bg-custom-background-color
+      shadow-[0_0_3px_0_var(--shadows-color)];
   }
 
   /* Modal header */
@@ -38,6 +41,7 @@
 
   /* Modal body */
   .modal > :last-child {
-    @apply w-full px-1 xs:px-4 py-4 overflow-auto;
+    @apply w-full px-1 xs:px-4 py-4
+      overflow-y-auto overflow-x-hidden;
   }
 }
