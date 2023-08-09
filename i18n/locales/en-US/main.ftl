@@ -1,4 +1,3 @@
-hello-world = Hello World!
 site-description = { $n-icons } free { $svg } icons for popular brands
 close = Close
 theme = Theme
@@ -42,7 +41,7 @@ deprecated = Deprecated
 will-be-removed-at = { $icon } will be removed at v{ $version }
 will-be-removed-at-extended = { $icon } will be removed at { $version } about { $date } (see { $pr })
 scalable-vector-graphics = Scalable Vector Graphics
-third-party-extensions = Third-party extensions
+third-party-extensions = Third party extensions
 main-repository = Main Repository
 jsdelivr = jsDelivr (Content Delivery Network)
 unpkg = UNPKG (Content Delivery Network)

@@ -71,7 +71,6 @@ web-sys = { version = "0.3.64", default-features = false, features = [
 js-sys = "0.3.64"
 wasm-bindgen-futures = "0.4.37"
 lazy_static = "1.4.0"
-rspolib = "0.0.5"
 syn = "2.0.28"
 colorsys = "0.6.7"
 dotenv = "0.15.0"

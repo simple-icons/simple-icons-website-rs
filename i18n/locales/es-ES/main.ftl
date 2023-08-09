@@ -1,4 +1,3 @@
-hello-world = ¡Hola mundo!
 site-description = { $n-icons } iconos { $svg } gratis para marcas populares
 close = Cerrar
 theme = Tema

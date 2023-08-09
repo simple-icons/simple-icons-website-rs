@@ -12,7 +12,7 @@ pub struct Language {
     pub name: &'static str,
 }
 
-pub static LANGUAGES: [Language; 2] = [
+pub static LANGUAGES: [Language; 5] = [
     Language {
         language: langid!("en-US"),
         name: "English",
@@ -21,22 +21,22 @@ pub static LANGUAGES: [Language; 2] = [
         language: langid!("es-ES"),
         name: "Español",
     },
-    /*
     Language {
-        code: "fr",
+        language: langid!("fr-FR"),
         name: "Français",
     },
     Language {
-        code: "it",
+        language: langid!("it-IT"),
         name: "Italiano",
     },
     Language {
+        language: langid!("pt-PT"),
+        name: "Português",
+    },
+    /*
+    Language {
         code: "ja-JP",
         name: "日本語",
-    },
-    Language {
-        code: "pt",
-        name: "Português",
     },
     Language {
         code: "zh-CN",

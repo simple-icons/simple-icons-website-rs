@@ -59,4 +59,4 @@ Typically the development of tests involucrates two terminals:
 ### How to add a new locale
 
 - Add the locale to the `LANGUAGES` array in `i18n/src/lib.rs`.
-- Copy an existing locale directory at `i18n/locales` and replace the translations.
+- Copy the `en-US` locale directory at `i18n/locales` and replace the translations.
