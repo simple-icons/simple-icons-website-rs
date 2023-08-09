@@ -214,10 +214,7 @@ pub fn Grid() -> impl IntoView {
     icons_list_ref.on_load(move |_| {
         let modal_param = Url::params::get(&Url::params::Names::Modal);
         if modal_param == Some(ModalOpen::Icon.to_string()) {
-            _ = set_timeout_with_handle(
-                wait_for_first_grid_item_and_open_details,
-                Duration::from_millis(1),
-            );
+            wait_for_first_grid_item_and_open_details();
         }
     });
 
