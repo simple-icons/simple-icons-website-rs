@@ -146,7 +146,7 @@ macro_rules! gettext {
 ///
 /// Use it like this:
 /// ```rust,ignore
-/// <p>{move_gettext!( "Hello world!")}</p>
+/// <p>{move_gettext!("Hello world!")}</p>
 /// ```
 ///
 /// The previous code is the same as:

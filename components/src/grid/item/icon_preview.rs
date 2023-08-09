@@ -36,10 +36,10 @@ pub fn IconGridItemPreview(
 ) -> impl IntoView {
     view! {
         <button
-            title=move_gettext!( "Copy {} SVG", title)
+            title=move_gettext!("Copy {} SVG", title)
             on:click=on_click_copy_image_children_src_content
         >
-            <img src=format!("/icons/{}.svg", slug) alt=move_gettext!( "{} icon", title)/>
+            <img src=format!("/icons/{}.svg", slug) alt=move_gettext!("{} icon", title)/>
         </button>
     }
 }

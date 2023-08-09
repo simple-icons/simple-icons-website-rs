@@ -42,7 +42,7 @@ pub fn ScrollToHeaderButton() -> impl IntoView {
         <ScrollButton
             class="scroll-to-header-button"
             hidden=move || icons_loader().load
-            title=move_gettext!( "Go to header")
+            title=move_gettext!("Go to header")
             on_click=move |_| {
                 let footer = document().query_selector("header").unwrap().unwrap();
                 footer.scroll_into_view();
@@ -63,7 +63,7 @@ pub fn ScrollToFooterButton() -> impl IntoView {
             hidden=move || {
                 !icons_loader().load || (icons_grid().loaded_icons.len() >= icons_grid().icons.len())
             }
-            title=move_gettext!( "Go to footer")
+            title=move_gettext!("Go to footer")
             on_click=move |_| {
                 icons_loader.update(|state| state.load = false);
                 let footer = document().query_selector("footer").unwrap().unwrap();

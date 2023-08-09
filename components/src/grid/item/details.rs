@@ -3,7 +3,7 @@ use crate::copy::copy_inner_text_on_click;
 use crate::fetch::fetch_text_forcing_cache;
 use crate::grid::item::icon_preview::on_click_copy_image_children_src_content;
 use crate::grid::CurrentIconViewSignal;
-use crate::modal::Modal;
+use crate::modal::{Modal, ModalOpenSignal};
 use crate::Ids;
 use i18n::{gettext, move_gettext, Language};
 use leptos::{document, *};
@@ -256,10 +256,10 @@ fn IconDetailsModalInformation() -> impl IntoView {
             <h3 on:click=copy_inner_text_on_click></h3>
             <button
                 on:click=copy_inner_text_on_click
-                title=move_gettext!( "Copy hex color")
+                title=move_gettext!("Copy hex color")
             ></button>
-            <a target="_blank">{move_gettext!( "Brand guidelines")}</a>
-            <a target="_blank" title=move_gettext!( "License")></a>
+            <a target="_blank">{move_gettext!("Brand guidelines")}</a>
+            <a target="_blank" title=move_gettext!("License")></a>
             <p></p>
         </div>
     }
@@ -271,18 +271,18 @@ fn IconDetailsModalFooter() -> impl IntoView {
         <div>
             <button
                 on:click=move |_| download_svg(&get_slug_from_modal_container())
-                aria-label=move_gettext!( "Download SVG")
+                aria-label=move_gettext!("Download SVG")
             >
-                {move_gettext!( "Download SVG")}
+                {move_gettext!("Download SVG")}
             </button>
-            <a aria-label=move_gettext!( "Download colored SVG")>
-                {move_gettext!( "Download colored SVG")}
+            <a aria-label=move_gettext!("Download colored SVG")>
+                {move_gettext!("Download colored SVG")}
             </a>
             <button
                 on:click=move |_| download_pdf(&get_slug_from_modal_container())
-                aria-label=move_gettext!( "Download PDF")
+                aria-label=move_gettext!("Download PDF")
             >
-                {move_gettext!( "Download PDF")}
+                {move_gettext!("Download PDF")}
             </button>
         </div>
     }
@@ -292,6 +292,7 @@ fn IconDetailsModalFooter() -> impl IntoView {
 #[component]
 pub fn IconDetailsModal() -> impl IntoView {
     let current_icon_view = use_context::<CurrentIconViewSignal>().unwrap().0;
+    let modal_open = use_context::<ModalOpenSignal>().unwrap();
 
     view! {
         <Modal
@@ -300,6 +301,7 @@ pub fn IconDetailsModal() -> impl IntoView {
             is_open=move || current_icon_view().is_some()
             on_close=move |_| {
                 current_icon_view.update(|state| *state = None);
+                modal_open.set_none();
             }
         >
             <div class="icon-details-modal" id=Ids::IconDetailsModal.as_str()>

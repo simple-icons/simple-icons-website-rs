@@ -9,7 +9,7 @@ pub mod footer;
 pub mod grid;
 pub mod header;
 mod ids;
-mod modal;
+pub mod modal;
 pub(crate) mod spinners;
 pub(crate) mod storage;
 pub mod svg_defs;

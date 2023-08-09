@@ -44,7 +44,7 @@ pub fn HeaderMenu() -> impl IntoView {
                 class
             }>
                 <HeaderMenuLink
-                    title=move_gettext!( "Main Repository")
+                    title=move_gettext!("Main Repository")
                     href="https://github.com/simple-icons/simple-icons"
                     svg_path=simple_icon_svg_path!("github")
                 />
@@ -59,12 +59,12 @@ pub fn HeaderMenu() -> impl IntoView {
                     svg_path=simple_icon_svg_path!("packagist")
                 />
                 <HeaderMenuLink
-                    title=move_gettext!( "jsDelivr (Content Delivery Network)")
+                    title=move_gettext!("jsDelivr (Content Delivery Network)")
                     href="https://www.jsdelivr.com/package/npm/simple-icons"
                     svg_path=simple_icon_svg_path!("jsdelivr")
                 />
                 <HeaderMenuLink
-                    title=move_gettext!( "UNPKG (Content Delivery Network)")
+                    title=move_gettext!("UNPKG (Content Delivery Network)")
                     href="https://unpkg.com/browse/simple-icons/"
                     svg_path=UNPKG_ICON_SVG_PATH
                 />
@@ -74,7 +74,7 @@ pub fn HeaderMenu() -> impl IntoView {
                     svg_path=simple_icon_svg_path!("opencollective")
                 />
                 <HeaderMenuLink
-                    title=move_gettext!( "Legal disclaimer")
+                    title=move_gettext!("Legal disclaimer")
                     href="https://github.com/simple-icons/simple-icons/blob/master/DISCLAIMER.md"
                     svg_path=LEGAL_DISCLAIMER_SVG_PATH
                 />
@@ -101,7 +101,7 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
             on:click=move |_| {
                 header_state.update(|state: &mut HeaderState| state.toggle_menu());
             }
-            title=move_gettext!( "Open menu")
+            title=move_gettext!("Open menu")
             additional_classes=move || {
                 if !header_state.get().menu_open {
                     "block lg:hidden".to_string()
@@ -121,7 +121,7 @@ pub fn HeaderMenuCloseButton() -> impl IntoView {
 
     view! {
         <HeaderMenuButton
-            title=move_gettext!( "Close menu")
+            title=move_gettext!("Close menu")
             on:click=move |_| {
                 header_state.update(|state: &mut HeaderState| state.toggle_menu());
             }

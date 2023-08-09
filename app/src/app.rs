@@ -7,6 +7,7 @@ use components::footer::Footer;
 use components::header::{
     nav::language_selector::provide_language_context, Header,
 };
+use components::modal::provide_modal_open_context;
 use leptos::{
     document, html::Footer as FooterHtmlElement, provide_context, window, *,
 };
@@ -64,6 +65,9 @@ pub fn App() -> impl IntoView {
     // to use it in other components of pages
     let footer_ref = create_node_ref::<FooterHtmlElement>();
     provide_context::<NodeRef<FooterHtmlElement>>(footer_ref);
+
+    // Create a context to store the current opened modal
+    provide_modal_open_context();
 
     view! {
         <Head/>

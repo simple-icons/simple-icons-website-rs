@@ -99,11 +99,11 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
 
     view! {
         <div class="control">
-            <label>{move_gettext!( "Download")}</label>
+            <label>{move_gettext!("Download")}</label>
             <div class="flex flex-row">
                 <ControlButtonText
-                    text=move_gettext!( "SVG")
-                    title=move_gettext!( "Download SVG")
+                    text=move_gettext!("SVG")
+                    title=move_gettext!("Download SVG")
                     active=move || { download_type() == DownloadType::SVG }
                     on:click=move |_| {
                         download_type
@@ -114,8 +114,8 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                     }
                 />
                 <ControlButtonText
-                    text=move_gettext!( "PDF")
-                    title=move_gettext!( "Download PDF")
+                    text=move_gettext!("PDF")
+                    title=move_gettext!("Download PDF")
                     active=move || { download_type() == DownloadType::PDF }
                     on:click=move |_| {
                         download_type

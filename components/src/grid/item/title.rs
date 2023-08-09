@@ -13,7 +13,7 @@ pub fn IconGridItemTitle(
 ) -> impl IntoView {
     view! {
         <h2
-            title=move_gettext!( "Copy {} slug ({})", title, slug)
+            title=move_gettext!("Copy {} slug ({})", title, slug)
             tabindex=0
             on:click=move |ev: MouseEvent| {
                 let target = event_target::<web_sys::HtmlElement>(&ev);

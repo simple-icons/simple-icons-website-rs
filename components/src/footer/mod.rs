@@ -30,7 +30,7 @@ pub fn Footer(
                 )
                 href="https://github.com/simple-icons/simple-icons-website"
             >
-                {move_gettext!( "Made with ❤️ on GitHub")}
+                {move_gettext!("Made with ❤️ on GitHub")}
             </a>
         </footer>
     }
@@ -61,15 +61,15 @@ pub fn ReportProblems() -> impl IntoView {
     view! {
         <div class="flex flex-col py-8">
             <p>
-                {move_gettext!( "Icon missing?")} {" "}
+                {move_gettext!("Icon missing?")} {" "}
                 <ReportLink href="https://github.com/simple-icons/simple-icons/issues/new?assignees=&labels=new+icon&template=icon_request.yml">
-                    {move_gettext!( "Submit a request")}
+                    {move_gettext!("Submit a request")}
                 </ReportLink>
             </p>
             <p>
-                {move_gettext!( "Icon outdated?")} {" "}
+                {move_gettext!("Icon outdated?")} {" "}
                 <ReportLink href="https://github.com/simple-icons/simple-icons/issues/new?assignees=&labels=icon+outdated&template=icon_update.yml">
-                    {move_gettext!( "Report outdated icon")}
+                    {move_gettext!("Report outdated icon")}
                 </ReportLink>
             </p>
         </div>
@@ -93,7 +93,7 @@ pub fn TwitterButton() -> impl IntoView {
             <svg fill="white" class="h-4 mr-3" role="img" viewBox="0 0 24 24">
                 <path d=TWITTER_ICON_SVG_PATH></path>
             </svg>
-            <span>{move_gettext!( "Share this on Twitter!")}</span>
+            <span>{move_gettext!("Share this on Twitter!")}</span>
         </a>
     }
 }

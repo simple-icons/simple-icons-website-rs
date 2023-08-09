@@ -75,7 +75,7 @@ pub fn IconsLoader() -> impl IntoView {
                         });
                 }
             >
-                {move_gettext!( "Load more icons")}
+                {move_gettext!("Load more icons")}
             </button>
             <TripleDotsSpinner hidden_frames=1 hidden=move || !icons_loader().loading/>
         </div>

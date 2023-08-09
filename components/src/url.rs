@@ -7,7 +7,7 @@
 /// Single source of thruth for the URL params state
 pub mod params {
     use leptos::window;
-    use leptos_router::use_location;
+    use leptos_router::Url;
     use wasm_bindgen;
 
     /// Enum to ensure that the params names are unique
@@ -17,6 +17,7 @@ pub mod params {
         DownloadType,
         Layout,
         ColorScheme,
+        Modal,
     }
 
     impl Names {
@@ -27,6 +28,7 @@ pub mod params {
                 Self::DownloadType => "download-type",
                 Self::Layout => "layout",
                 Self::ColorScheme => "color-scheme",
+                Self::Modal => "modal",
             }
         }
     }
@@ -34,8 +36,10 @@ pub mod params {
     /// Update a parameter value in the URL query using window history
     #[inline(always)]
     pub fn update(k: &Names, v: &str) {
-        let location = use_location();
-        let mut params = (location.query)();
+        let current_url =
+            Url::try_from(window().location().search().unwrap().as_str())
+                .unwrap();
+        let mut params = current_url.search_params;
         // Remove empty values from the URL!
         if v.is_empty() {
             params.remove(k.as_str());
@@ -50,9 +54,9 @@ pub mod params {
             .replace_state_with_url(
                 &wasm_bindgen::JsValue::NULL,
                 "",
-                Some(&match query.is_empty() {
-                    true => (location.pathname)(),
-                    false => query,
+                Some(match query.is_empty() {
+                    true => &current_url.pathname,
+                    false => &query,
                 }),
             )
             .ok();
@@ -65,19 +69,16 @@ pub mod params {
         if !query.starts_with('?') {
             return None;
         }
-        for key_value in query.split('?').last().unwrap().split('&') {
-            if key_value.contains('=') {
-                let mut split = key_value.split('=');
-                if split.next().unwrap() == k.as_str() {
-                    let ret = split.next().unwrap();
-                    return if ret.is_empty() {
-                        None
-                    } else {
-                        Some(ret.to_string())
-                    };
-                }
-            } else if key_value == k.as_str() {
+        for (key, value) in
+            Url::try_from(query.as_str()).unwrap().search_params.0
+        {
+            if key != k.as_str() {
+                continue;
+            }
+            if value.is_empty() {
                 return None;
+            } else {
+                return Some(value);
             }
         }
         None

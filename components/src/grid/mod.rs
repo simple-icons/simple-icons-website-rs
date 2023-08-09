@@ -6,6 +6,8 @@ mod scroll;
 use crate::controls::layout::{Layout, LayoutSignal};
 use crate::controls::order::{sort_icons, OrderMode, OrderModeVariant};
 use crate::controls::search::search_icons_and_returns_first_page;
+use crate::modal::ModalOpen;
+use crate::Url;
 use icons_loader::{IconsLoader, IconsLoaderSignal};
 use item::{details::IconDetailsModal, IconGridItem};
 use leptos::{
@@ -14,6 +16,7 @@ use leptos::{
 };
 use macros::{get_number_of_icons, icons_array};
 use scroll::ScrollButtons;
+use std::time::Duration;
 use types::SimpleIcon;
 use wasm_bindgen::{closure::Closure, JsCast};
 use web_sys::{
@@ -107,6 +110,27 @@ fn initial_icons_from_search_value_order_mode_and_layout(
     }
 }
 
+fn wait_for_first_grid_item_and_open_details() {
+    if let Some(el) = document()
+        .query_selector(
+            "main > ul > :first-child > :last-child > :nth-child(2)",
+        )
+        .unwrap()
+    {
+        let event = web_sys::Event::new_with_event_init_dict(
+            "click",
+            web_sys::EventInit::new().bubbles(true),
+        )
+        .unwrap();
+        el.dispatch_event(&event).unwrap();
+    } else {
+        _ = set_timeout_with_handle(
+            wait_for_first_grid_item_and_open_details,
+            Duration::from_millis(5),
+        );
+    }
+}
+
 /// Icons grid
 ///
 /// The icons grid items are lazy loaded with pagination. The first page is
@@ -173,8 +197,8 @@ pub fn Grid() -> impl IntoView {
 
         let intersection_observer = IntersectionObserver::new_with_options(
             intersection_callback.as_ref().unchecked_ref(),
-            // 300px before the footer is reached, load the next page
-            IntersectionObserverInit::new().root_margin("300px 0px 0px 0px"),
+            // 450px before the footer is reached, load the next page
+            IntersectionObserverInit::new().root_margin("450px 0px 0px 0px"),
         )
         .unwrap();
         intersection_observer.observe(&footer);
@@ -186,9 +210,20 @@ pub fn Grid() -> impl IntoView {
         intersection_callback.forget();
     });
 
+    let icons_list_ref = create_node_ref();
+    icons_list_ref.on_load(move |_| {
+        let modal_param = Url::params::get(&Url::params::Names::Modal);
+        if modal_param == Some(ModalOpen::Icon.to_string()) {
+            _ = set_timeout_with_handle(
+                wait_for_first_grid_item_and_open_details,
+                Duration::from_millis(1),
+            );
+        }
+    });
+
     view! {
         <IconDetailsModal/>
-        <ul class:layout-compact=move || layout() == Layout::Compact>
+        <ul _ref=icons_list_ref class:layout-compact=move || layout() == Layout::Compact>
             <Icons/>
         </ul>
         <IconsLoader/>

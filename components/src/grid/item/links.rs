@@ -20,10 +20,10 @@ pub fn IconGridItemLinks(
                             view! {
                                 <a
                                     href=guidelines_url
-                                    title=move_gettext!( "Brand guidelines")
+                                    title=move_gettext!("Brand guidelines")
                                     class="brand-guidelines"
                                 >
-                                    {move_gettext!( "Brand guidelines")}
+                                    {move_gettext!("Brand guidelines")}
                                 </a>
                             },
                         );
