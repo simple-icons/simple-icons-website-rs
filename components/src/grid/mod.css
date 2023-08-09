@@ -23,7 +23,7 @@ main > ul {
   --icon-preview-margin-top: 1.5rem;
   --icon-preview-margin-bottom: 1rem;
 
-  --deprecated-advert-text-display: block;
+  --deprecated-warning-text-display: block;
 
   --title-x-padding: 1rem;
   --title-font-size: 1.2rem;
@@ -50,7 +50,7 @@ main > ul.layout-compact {
   --icon-preview-margin-top: 0.5rem;
   --icon-preview-margin-bottom: 0.5rem;
 
-  --deprecated-advert-text-display: none;
+  --deprecated-warning-text-display: none;
 
   --title-x-padding: 0.5rem;
   --title-font-size: 1rem;

@@ -7,7 +7,7 @@ main > ul > li .deprecated > p {
   @apply uppercase cursor-pointer
     [font-size:11px]
     hover:opacity-70 text-right font-bold
-    [display:var(--deprecated-advert-text-display)];
+    [display:var(--deprecated-warning-text-display)];
 }
 
 main > ul > li .deprecated > span {
