@@ -127,6 +127,19 @@ impl fmt::Display for ModalOpen {
     }
 }
 
+impl TryFrom<&str> for ModalOpen {
+    type Error = ();
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value {
+            "extensions" => Ok(ModalOpen::Extensions),
+            "languages" => Ok(ModalOpen::Languages),
+            "icon" => Ok(ModalOpen::Icon),
+            _ => Err(()),
+        }
+    }
+}
+
 #[derive(Copy, Clone)]
 pub struct ModalOpenSignal(pub RwSignal<Option<ModalOpen>>);
 
@@ -163,12 +176,12 @@ impl ModalOpenSignal {
 
 fn modal_open_from_url() -> Option<ModalOpen> {
     match Url::params::get(&Url::params::Names::Modal) {
-        Some(modal) => match modal.as_str() {
-            "extensions" => Some(ModalOpen::Extensions),
-            "languages" => Some(ModalOpen::Languages),
-            "icon" => Some(ModalOpen::Icon),
-            _ => None,
-        },
+        Some(modal) => {
+            if let Ok(modal) = ModalOpen::try_from(modal.as_str()) {
+                return Some(modal);
+            }
+            None
+        }
         None => None,
     }
 }

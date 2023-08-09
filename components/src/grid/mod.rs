@@ -19,6 +19,7 @@ use scroll::ScrollButtons;
 use std::time::Duration;
 use types::SimpleIcon;
 use wasm_bindgen::{closure::Closure, JsCast};
+use web_sys;
 use web_sys::{
     IntersectionObserver, IntersectionObserverEntry, IntersectionObserverInit,
 };
