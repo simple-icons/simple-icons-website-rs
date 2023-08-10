@@ -1,3 +1,10 @@
+@import './about.css';
+
+footer {
+  @apply flex flex-col justify-between pb-8 pt-4 text-sm 
+    page-margin-x;
+}
+
 @layer components {
   .footer-about {
     @apply flex flex-col flex-grow text-center md:text-left;

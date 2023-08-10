@@ -1,6 +1,7 @@
 use crate::controls::button::ControlButtonSVGPath;
+use crate::controls::layout::{Layout, LayoutSignal};
 use crate::controls::search::{fire_on_search_event, SearchValueSignal};
-use crate::grid::{IconsGrid, IconsGridSignal};
+use crate::grid::{IconsGrid, IconsGridSignal, ICONS};
 use crate::storage::LocalStorage;
 use i18n::move_tr;
 use leptos::{window, *};
@@ -124,6 +125,7 @@ pub fn set_order_mode(
     order_mode: &OrderModeVariant,
     order_mode_signal: &RwSignal<OrderMode>,
     icons_grid_signal: &RwSignal<IconsGrid>,
+    layout_signal: Option<&Layout>,
     update_grid: bool,
 ) {
     order_mode_signal.update(move |state| {
@@ -137,8 +139,34 @@ pub fn set_order_mode(
         match order_mode {
             &OrderModeVariant::Alphabetic | &OrderModeVariant::Color => {
                 icons_grid_signal.update(|grid| {
-                    sort_icons(order_mode, &mut grid.icons);
-                    sort_icons(order_mode, &mut grid.loaded_icons);
+                    let local_storage =
+                        window().local_storage().unwrap().unwrap();
+
+                    let search_value = match local_storage
+                        .get_item(LocalStorage::Keys::SearchValue.as_str())
+                    {
+                        Ok(Some(search_value)) => match search_value.is_empty()
+                        {
+                            true => None,
+                            false => Some(search_value),
+                        },
+                        _ => None,
+                    };
+
+                    if search_value.is_some() {
+                        // If we are searching, just update the order of the current
+                        // icons
+                        sort_icons(order_mode, &mut grid.icons);
+                        sort_icons(order_mode, &mut grid.loaded_icons);
+                    } else {
+                        // If not searching, load the new icons in order
+                        grid.icons = ICONS.iter().collect();
+                        grid.loaded_icons = Vec::with_capacity(ICONS.len());
+                        sort_icons(order_mode, &mut grid.icons);
+                        if let Some(layout_signal) = layout_signal {
+                            grid.load_next_icons(layout_signal);
+                        }
+                    }
                 });
             }
             &OrderModeVariant::SearchMatch => {
@@ -154,6 +182,7 @@ pub fn OrderControl() -> impl IntoView {
     let order_mode = use_context::<OrderModeSignal>().unwrap().0;
     let icons_grid = use_context::<IconsGridSignal>().unwrap().0;
     let search_signal = use_context::<SearchValueSignal>().unwrap().0;
+    let layout_signal = use_context::<LayoutSignal>().unwrap().0;
 
     let render_buttons = move || {
         let mut buttons = vec![
@@ -166,6 +195,7 @@ pub fn OrderControl() -> impl IntoView {
                         &OrderModeVariant::Alphabetic,
                         &order_mode,
                         &icons_grid,
+                        Some(&layout_signal()),
                         true,
                     )
                 />
@@ -179,6 +209,7 @@ pub fn OrderControl() -> impl IntoView {
                         &OrderModeVariant::Color,
                         &order_mode,
                         &icons_grid,
+                        Some(&layout_signal()),
                         true,
                     )
                 />
@@ -192,7 +223,13 @@ pub fn OrderControl() -> impl IntoView {
                             title=move_tr!("sort-by-search-match")
                             svg_path="M1.226 7.709q-.521 0-.874-.353T0 6.483q0-.521.353-.874.353-.354.873-.352h3.678q.521 0 .874.353.354.353.352.873 0 .52-.353.874-.353.353-.873.352zm0 6.13q-.521 0-.874-.353T0 12.613q0-.521.353-.874t.873-.352h3.678q.521 0 .874.353.354.353.352.873 0 .521-.353.874t-.873.352zm20.72 5.272-3.862-3.862q-.735.521-1.61.782-.874.262-1.761.26-2.545 0-4.338-1.794-1.794-1.793-1.793-4.336 0-2.544 1.794-4.338t4.337-1.792q2.544 0 4.337 1.793 1.794 1.794 1.793 4.337 0 .889-.261 1.763-.262.874-.781 1.609l3.862 3.862q.337.337.337.858 0 .521-.337.858-.338.338-.859.338-.52 0-.858-.338zm-7.233-5.272q1.532 0 2.605-1.073t1.073-2.605q0-1.533-1.073-2.605-1.073-1.073-2.605-1.073-1.533 0-2.606 1.073-1.073 1.072-1.073 2.605 0 1.532 1.073 2.605t2.606 1.073zM1.226 19.97q-.521 0-.874-.353T0 18.743q0-.52.353-.874.353-.353.873-.352h9.809q.52 0 .874.354.353.353.351.872 0 .522-.353.875t-.873.351z"
                             active=move || order_mode().current == OrderModeVariant::SearchMatch
-                            on:click=move |_| set_order_mode(&OrderModeVariant::SearchMatch, &order_mode, &icons_grid, true)
+                            on:click=move |_| set_order_mode(
+                                &OrderModeVariant::SearchMatch,
+                                &order_mode,
+                                &icons_grid,
+                                Some(&layout_signal()),
+                                true,
+                            )
                         />
                     },
                 )

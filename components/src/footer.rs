@@ -1,11 +1,9 @@
 //! App footer
 
-mod about;
-
-use about::*;
-use i18n::move_tr;
+use i18n::{move_tr, tr};
 use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
 use macros::simple_icon_svg_path;
+use std::collections::HashMap;
 
 static TWITTER_ICON_SVG_PATH: &str = simple_icon_svg_path!("twitter");
 
@@ -95,5 +93,62 @@ pub fn TwitterButton() -> impl IntoView {
             </svg>
             <span>{move_tr!("share-this")}</span>
         </a>
+    }
+}
+
+#[component]
+pub fn About() -> impl IntoView {
+    view! {
+        <div class="footer-about">
+            <p inner_html=move_tr!(
+                "maintained-by",
+                &{
+                    let mut map = HashMap::new();
+                    map.insert(
+                        "license".to_string(),
+                        format!(
+                            "<a href=\"https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md\">{}</a>",
+                            tr!("cco")
+                        ).into(),
+                    );
+                    map.insert(
+                        "maintainers".to_string(),
+                        format!(
+                            "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
+                            tr!("simple-icons-contributors")
+                        ).into(),
+                    );
+                    map
+                }
+            )></p>
+            <p inner_html=move_tr!(
+                "use-platform",
+                &{
+                    let mut map = HashMap::new();
+                    map.insert(
+                        "platform".to_string(),
+                        format!(
+                            "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
+                            tr!("github"),
+                        ).into(),
+                    );
+                    map
+                }
+            )></p>
+            <p inner_html=move_tr!(
+                "supported-by",
+                &{
+                    let mut map = HashMap::new();
+                    map.insert(
+                        "platform".to_string(),
+                        format!(
+                            "<a href=\"https://opencollective.com/simple-icons\">{}</a>",
+                            tr!("open-collective"),
+                        ).into(),
+                    );
+                    map
+                }
+            )></p>
+        </div>
     }
 }

@@ -11,6 +11,15 @@ use leptos::*;
 
 #[component]
 pub fn Index() -> impl IntoView {
+    view! {
+        <SVGDefsDefinition/>
+        <CopyInput/>
+        <IndexMain/>
+    }
+}
+
+#[component]
+fn IndexMain() -> impl IntoView {
     let initial_search_value = provide_search_context();
     let initial_order_mode = provide_order_mode_context(&initial_search_value);
     provide_download_type_context();
@@ -20,10 +29,7 @@ pub fn Index() -> impl IntoView {
         &initial_order_mode,
         &initial_layout,
     );
-
     view! {
-        <SVGDefsDefinition/>
-        <CopyInput/>
         <main>
             <Controls/>
             <Grid/>

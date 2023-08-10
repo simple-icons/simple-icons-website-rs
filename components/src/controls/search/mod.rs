@@ -222,6 +222,7 @@ async fn on_search(
                 &order_mode_signal().favorite,
                 &order_mode_signal,
                 &icons_grid_signal,
+                None,
                 true,
             );
             set_search_value_on_localstorage(&value);
@@ -236,6 +237,7 @@ async fn on_search(
             &OrderModeVariant::SearchMatch,
             &order_mode_signal,
             &icons_grid_signal,
+            None,
             false,
         );
         *state = search_value_copy;
