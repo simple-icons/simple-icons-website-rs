@@ -8,48 +8,47 @@ use std::str::FromStr;
 
 #[derive(Clone)]
 pub struct Language {
-    pub language: LanguageIdentifier,
+    pub id: LanguageIdentifier,
     pub name: &'static str,
 }
 
-pub static LANGUAGES: [Language; 5] = [
+pub static LANGUAGES: [Language; 9] = [
     Language {
-        language: langid!("en-US"),
+        id: langid!("en-US"),
         name: "English",
     },
     Language {
-        language: langid!("es-ES"),
+        id: langid!("es-ES"),
         name: "Español",
     },
     Language {
-        language: langid!("fr-FR"),
+        id: langid!("fr-FR"),
         name: "Français",
     },
     Language {
-        language: langid!("it-IT"),
+        id: langid!("it-IT"),
         name: "Italiano",
     },
     Language {
-        language: langid!("pt-PT"),
+        id: langid!("pt-PT"),
         name: "Português",
     },
-    /*
     Language {
-        code: "ja-JP",
+        id: langid!("ja-JP"),
         name: "日本語",
     },
     Language {
-        code: "zh-CN",
+        id: langid!("zh-CN"),
         name: "中文 (简体)",
     },
     Language {
-        code: "zh-HK",
+        id: langid!("zh-HK"),
         name: "中文 (香港)",
     },
     Language {
-        code: "zh-TW",
+        id: langid!("zh-TW"),
         name: "中文 (繁體)",
-    }, */
+    },
 ];
 
 static_loader! {
@@ -64,13 +63,13 @@ static_loader! {
 
 impl PartialEq for Language {
     fn eq(&self, other: &Self) -> bool {
-        self.language == other.language
+        self.id == other.id
     }
 }
 
 impl Language {
     pub fn translate(&self, key: &'static str) -> String {
-        LOCALES.lookup(&self.language, key).unwrap()
+        LOCALES.lookup(&self.id, key).unwrap()
     }
 
     pub fn translate_with_args(
@@ -78,7 +77,7 @@ impl Language {
         key: &'static str,
         args: &HashMap<String, FluentValue<'_>>,
     ) -> String {
-        LOCALES.lookup_with_args(&self.language, key, args).unwrap()
+        LOCALES.lookup_with_args(&self.id, key, args).unwrap()
     }
 }
 
@@ -92,10 +91,7 @@ impl FromStr for Language {
     type Err = ();
 
     fn from_str(code: &str) -> Result<Self, Self::Err> {
-        match LANGUAGES
-            .iter()
-            .find(|lang| lang.language.to_string() == *code)
-        {
+        match LANGUAGES.iter().find(|lang| lang.id.to_string() == *code) {
             Some(lang) => Ok(lang.clone()),
             None => Err(()),
         }

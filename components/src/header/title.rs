@@ -27,7 +27,7 @@ pub fn HeaderTitle() -> impl IntoView {
                         "svg".to_string(),
                         format!(
                             "<abbr title=\"{}\">{}</abbr>",
-                            tr!("scalable-vector-graphics"),
+                            tr!("scalable-vector-graphic"),
                             tr!("svg"),
                         ).into()
                     );

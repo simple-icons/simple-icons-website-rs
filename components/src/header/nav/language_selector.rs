@@ -60,7 +60,7 @@ fn initial_language_from_localstorage() -> Option<Language> {
 pub fn set_language_in_localstorage(lang: &Language) {
     let local_storage = window().local_storage().unwrap().unwrap();
     local_storage
-        .set_item("language", &lang.language.to_string())
+        .set_item("language", &lang.id.to_string())
         .unwrap();
 }
 
