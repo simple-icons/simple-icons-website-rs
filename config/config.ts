@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'path';
+import process from 'node:process';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -13,6 +14,10 @@ const parseRustConfig = async (env = 'prod') => {
 export default await parseRustConfig();
 
 export const getGithubToken = async () => {
+  if (process.env.GITHUB_TOKEN) {
+    return process.env.GITHUB_TOKEN;
+  }
+
   const envFilePath = path.resolve(__dirname, '..', '.env');
   const envFileExists = await fs
     .access(envFilePath)
