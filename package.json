@@ -14,15 +14,15 @@
   "license": "CC0-1.0",
   "type": "module",
   "engines": {
-    "node": "^14.15.0 || >=16.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "postinstall": "npm run setup:husky && npm run setup:blobstream",
     "setup:husky": "node -e 'process.exit(process.env.CI === undefined)' || husky install",
     "setup:blobstream": "node -e 'require(\"fs\").copyFileSync(\"node_modules/blob-stream/.js\", \"node_modules/blob-stream/blob-stream.js\")'",
-    "fetch-deprecated-icons": "(node -e 'process.exit(!require(\"fs\").existsSync(\"target/release/fetch-deprecated-icons\"))' || cargo build --release --bin fetch-deprecated-icons) && target/release/fetch-deprecated-icons",
-    "create-sitemap": "(node -e 'process.exit(!require(\"fs\").existsSync(\"target/release/create-sitemap\"))' || cargo build --release --bin create-sitemap) && target/release/create-sitemap",
-    "create-cname": "(node -e 'process.exit(!require(\"fs\").existsSync(\"target/release/create-cname\"))' || cargo build --release --bin create-cname) && target/release/create-cname"
+    "fetch-deprecated-icons": "node node_modules/.bin/ts-node --esm scripts/fetch-deprecated-icons.ts",
+    "create-sitemap": "ts-node --esm scripts/create-sitemap.ts",
+    "create-cname": "ts-node --esm scripts/create-cname.ts"
   },
   "devDependencies": {
     "@playwright/test": "1.36.2",
@@ -38,7 +38,8 @@
     "stylelint": "15.10.2",
     "stylelint-config-standard": "34.0.0",
     "stylelint-config-tailwindcss": "0.0.7",
-    "tailwindcss": "3.3.3"
+    "tailwindcss": "3.3.3",
+    "ts-node": "10.9.1"
   },
   "dependencies": {
     "blob-stream": "0.1.3",

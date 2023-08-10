@@ -1,9 +1,9 @@
 use crate::controls::button::ControlButtonSVGPath;
 use crate::storage::LocalStorage;
 use crate::Url;
-use config::CONFIG;
 use i18n::move_tr;
 use leptos::{window, *};
+use simple_icons_website_config::CONFIG;
 use std::fmt;
 
 #[derive(Default, Copy, Clone, PartialEq)]
@@ -24,8 +24,16 @@ impl Layout {
 
     pub fn icons_per_page(&self) -> u32 {
         match self {
-            Self::Comfortable => CONFIG.icons_per_page_comfortable,
-            Self::Compact => CONFIG.icons_per_page_compact,
+            Self::Comfortable => CONFIG
+                .read()
+                .unwrap()
+                .get("icons_per_page_comfortable")
+                .unwrap(),
+            Self::Compact => CONFIG
+                .read()
+                .unwrap()
+                .get("icons_per_page_compact")
+                .unwrap(),
         }
     }
 }

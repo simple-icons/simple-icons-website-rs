@@ -1,0 +1,7 @@
+{
+  "icons_per_page_comfortable": 30,
+  "icons_per_page_compact": 60,
+  "domain": "wasm.simpleicons.org",
+  "deprecated_icons_file_name": "simple-icons-deprecated.txt",
+  "max_icons": null
+}

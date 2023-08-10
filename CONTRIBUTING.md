@@ -60,3 +60,7 @@ Typically the development of tests involucrates two terminals:
 
 - Add the locale to the `LANGUAGES` array in `i18n/src/lib.rs`.
 - Copy the `en-US` locale directory at `i18n/locales` and replace the translations.
+
+### Compatibility
+
+- We are currently tied to Node.js >= 18 to ensure that the fetch API is included in the standard library.

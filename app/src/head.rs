@@ -1,9 +1,9 @@
 use crate::app::TITLE;
-use config::CONFIG;
 use i18n::{move_tr, tr};
 use leptos::*;
 use leptos_meta::*;
 use macros::get_number_of_icons;
+use simple_icons_website_config::CONFIG;
 use std::collections::HashMap;
 
 #[component]
@@ -16,6 +16,7 @@ pub fn Head() -> impl IntoView {
         map.insert("svg".to_string(), tr!("svg").into());
         map
     });
+    let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
 
     view! {
         <Title text=TITLE/>
@@ -30,7 +31,7 @@ pub fn Head() -> impl IntoView {
             href="./opensearch.xml"
         />
         <Link rel="license" href="./license.txt"/>
-        <Link rel="canonical" href=format!("https://{}/", CONFIG.domain)/>
+        <Link rel="canonical" href=format!("https://{}/", &domain)/>
         <Link rel="preconnect" href="https://fonts.gstatic.com"/>
         <Link
             rel="stylesheet"
@@ -53,11 +54,12 @@ fn MetaOpenGraph<F>(
 where
     F: Fn() -> String + 'static,
 {
+    let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
     view! {
         <Meta name="og:type" content="website"/>
         <Meta name="og:title" content=TITLE/>
         <Meta name="og:description" content=description/>
-        <Meta name="og:url" content=format!("https://{}/", CONFIG.domain)/>
+        <Meta name="og:url" content=format!("https://{}/", &domain)/>
         <Meta name="og:site_name" content=TITLE/>
         <Meta name="og:image" content="./og.png"/>
     }
@@ -72,11 +74,12 @@ fn MetaTwitter<F>(
 where
     F: Fn() -> String + 'static,
 {
+    let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
     view! {
         <Meta name="twitter:card" content="summary_large_image"/>
         <Meta name="twitter:title" content=TITLE/>
         <Meta name="twitter:description" content=description/>
-        <Meta name="twitter:url" content=format!("https://{}/", CONFIG.domain)/>
+        <Meta name="twitter:url" content=format!("https://{}/", &domain)/>
         <Meta name="twitter:image:src" content="./og.png"/>
     }
 }
@@ -85,21 +88,21 @@ where
 /// See https://developers.google.com/search/docs/data-types/logo
 #[component]
 fn LdJSONMetadata() -> impl IntoView {
+    let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
     let metadata = {
-        let logo_url =
-            format!("https://{}/icons/simpleicons.svg", CONFIG.domain);
+        let logo_url = format!("https://{}/icons/simpleicons.svg", &domain);
         serde_json::json!({
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": TITLE,
-            "url": format!("https://{}/", CONFIG.domain),
+            "url": format!("https://{}/", &domain),
             "logo": logo_url,
             "image": logo_url,
             "potentialAction": {
                 "@type": "SearchAction",
                 "target": format!(
                     "https://{}/?q={{search-term}}",
-                    CONFIG.domain
+                    &domain
                 ),
                 "query-input": "required name=search-term",
             },

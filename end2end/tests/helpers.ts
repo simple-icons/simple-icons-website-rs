@@ -3,6 +3,7 @@ import * as path from 'node:path';
 import * as fs from 'node:fs';
 import * as simpleicons from 'simple-icons';
 import { getDirnameFromImportMeta } from 'simple-icons/sdk';
+import CONFIG from '../../config/config.ts';
 
 const __dirname = getDirnameFromImportMeta(import.meta.url);
 
@@ -21,21 +22,7 @@ export const SIMPLE_ICONS_DIRPATH = path.resolve(
 // App configuration file path
 const RUST_CONFIG_FILEPATH = path.resolve(ROOT_DIR, 'config/src/lib.rs');
 
-/**
- * Get the number of icons per page from app configuration.
- *
- * @returns Number of icons per page from the Rust config file
- */
-export const getNumberOfIconsPerPageConfig = (): number => {
-  const config = fs.readFileSync(RUST_CONFIG_FILEPATH, 'utf8');
-  const match = config.match(/icons_per_page_comfortable: (\d+)/);
-  if (!match) {
-    throw new Error('Could not get number of icons per page from config');
-  }
-  return parseInt(match[1], 10);
-};
-
-export const N_ICONS_PER_PAGE = getNumberOfIconsPerPageConfig();
+export const N_ICONS_PER_PAGE = CONFIG.icons_per_page_comfortable;
 
 const getViewportSize = (page: Page): { width: number; height: number } => {
   const size = page.viewportSize();
