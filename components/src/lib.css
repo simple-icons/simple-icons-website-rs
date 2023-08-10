@@ -8,10 +8,10 @@
 @import './grid/mod.css';
 
 /* Footer */
-@import './footer/mod.css';
+@import './footer.css';
 
 /* Copy buttons */
-@import './copy/mod.css';
+@import './copy.css';
 
 /* Modal */
 @import './modal.css';
