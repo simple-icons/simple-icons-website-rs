@@ -18,12 +18,17 @@ fn main() {
                     "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"",
                     " xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">\n",
                     "  <url>\n",
-                    "    <loc>https://{}/</loc>\n",
+                    "    <loc>http{}://{}/</loc>\n",
                     "    <lastmod>{:?}</lastmod>\n",
                     "    <changefreq>weekly</changefreq>\n",
                     "  </url>\n",
                     "</urlset>",
                 ),
+                if CONFIG.domain.contains(':') {  // localhost
+                    ""
+                } else {
+                    "s"
+                },
                 CONFIG.domain,
                 chrono::offset::Utc::now(),
             )

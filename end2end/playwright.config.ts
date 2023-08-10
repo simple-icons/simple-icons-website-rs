@@ -1,7 +1,7 @@
 import { devices, type PlaywrightTestConfig } from '@playwright/test';
 import { OUTPUT_DIR } from './tests/helpers.ts';
 
-const TIMEOUT = process.env.CI ? 30 * 1000 : 15 * 1000;
+const TIMEOUT = process.env.CI ? 20 * 1000 : 15 * 1000;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -24,7 +24,7 @@ const config: PlaywrightTestConfig = {
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 3 : 1,
+  retries: process.env.CI ? 2 : 1,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
