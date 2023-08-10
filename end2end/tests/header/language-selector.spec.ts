@@ -67,7 +67,7 @@ test.describe('language selector', () => {
       await expect(languageSelector).toBeHidden();
       await expect(
         await page.evaluate(() => localStorage.getItem('language')),
-      ).toBe('es');
+      ).toBe('es-ES');
     });
 
     test('through URL', async ({ page }) => {

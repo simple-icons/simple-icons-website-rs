@@ -84,7 +84,7 @@ export const selectors = {
   header: {
     container: 'header',
     title: 'h1',
-    description: 'header > :first-child > p',
+    description: '#site-description',
     nav: {
       container: 'header > nav',
       toggler: 'header > nav > ul:last-child',

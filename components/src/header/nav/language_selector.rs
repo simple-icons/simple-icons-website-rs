@@ -29,11 +29,8 @@ fn initial_language() -> Language {
 fn initial_language_from_navigator_languages() -> Option<Language> {
     let languages = window().navigator().languages().to_vec();
     for raw_language in languages {
-        let mut language =
+        let language =
             raw_language.as_string().expect("Language not parseable");
-        if language.contains('-') {
-            language = language.split_once('-').unwrap().0.to_string();
-        }
         if let Ok(lang) = language.parse() {
             return Some(lang);
         }

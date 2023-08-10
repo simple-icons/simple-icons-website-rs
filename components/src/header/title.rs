@@ -15,7 +15,9 @@ pub fn HeaderTitle() -> impl IntoView {
     view! {
         <div class:hidden=move || header_state().menu_open>
             <h1>"Simple Icons"</h1>
-            <p inner_html=move_tr!(
+            <p
+                id="site-description"
+                inner_html=move_tr!(
                 "site-description",
                 &{
                     let mut map = HashMap::new();

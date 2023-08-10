@@ -58,6 +58,7 @@ static_loader! {
         locales: "../i18n/locales",
         // The language to falback on if something is not present.
         fallback_language: "en-US",
+        customise: |bundle| bundle.set_use_isolating(false),
     };
 }
 
