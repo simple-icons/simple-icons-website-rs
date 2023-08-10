@@ -7,9 +7,9 @@ import {
 } from '../helpers.ts';
 
 const DESCRIPTIONS = {
-  en: `${N_ICONS} free SVG icons for popular brands`,
-  es: `${N_ICONS} iconos SVG gratis para marcas populares`,
-  fr: `${N_ICONS} icônes gratuites SVG pour les marques populaires`,
+  'en-US': `${N_ICONS} free SVG icons for popular brands`,
+  'es-ES': `${N_ICONS} iconos SVG gratis para marcas populares`,
+  'fr-FR': `${N_ICONS} icônes gratuites SVG pour les marques populaires`,
 };
 
 test.describe('language selector', () => {
@@ -23,7 +23,7 @@ test.describe('language selector', () => {
     test('the language is auto-discovered', async ({ page }) => {
       await page.goto('/');
       await expect(page.locator(selectors.header.description)).toHaveText(
-        DESCRIPTIONS.es,
+        DESCRIPTIONS['es-ES'],
       );
     });
   });
@@ -47,7 +47,7 @@ test.describe('language selector', () => {
 
       // English by default
       await expect(page.locator(selectors.header.description)).toHaveText(
-        DESCRIPTIONS.en,
+        DESCRIPTIONS['en-US'],
       );
 
       if (!screenWidthIsAtLeast('lg', page)) {
@@ -61,7 +61,7 @@ test.describe('language selector', () => {
 
       await languageSelector.getByText('Español').click();
       await expect(page.locator(selectors.header.description)).toHaveText(
-        DESCRIPTIONS.es,
+        DESCRIPTIONS['es-ES'],
       );
 
       await expect(languageSelector).toBeHidden();
@@ -71,7 +71,7 @@ test.describe('language selector', () => {
     });
 
     test('through URL', async ({ page }) => {
-      for (const lang of ['es', 'fr']) {
+      for (const lang of ['es-ES', 'fr-FR']) {
         await page.goto(`/?lang=${lang}`);
 
         await expect(page.locator(selectors.header.description)).toHaveText(
