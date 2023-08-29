@@ -107,9 +107,7 @@ jobs:
         id: test
         continue-on-error: true
       - name: Upload Playwright report
-        if: |
-          matrix.command == 'tests' &&
-          steps.test.outcome != 'success'
+        if: matrix.command == 'tests'
         uses: actions/upload-artifact@v3
         with:
           name: playwright-report-${{ matrix.project }}
