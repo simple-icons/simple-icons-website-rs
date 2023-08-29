@@ -24,6 +24,11 @@ pub fn IconIsDeprecatedNotice(
         >
             <span></span>
             <p>{move_tr!("deprecated")}</p>
+            <p class="sub-dep">{move_tr!("removed-at-version", &{
+                let mut map = HashMap::new();
+                map.insert("version".to_string(), removal_at_version.into());
+                map
+            })}</p>
         </a>
     }
 }

@@ -10,6 +10,12 @@ main > ul > li .deprecated > p {
     [display:var(--deprecated-warning-text-display)];
 }
 
+main > ul > li .deprecated > p .sub-dep {
+  @apply block uppercase cursor-pointer relative
+    [font-size:11px]
+    hover:opacity-70 text-right font-bold;
+}
+
 main > ul > li .deprecated > span {
   @apply h-4 w-4 mr-1 bg-warning-icon bg-left;
 }
