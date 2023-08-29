@@ -22,7 +22,7 @@
 
 ## Testing
 
-Is useful to test only certain tests in a browser. For example: `cargo make tests --project=chrome-desktop --grep=header`
+Is useful to run only certain tests in a browser. For example: `cargo make tests --project=chrome-desktop --grep=header`
 
 ## Arquitecture
 
