@@ -113,7 +113,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: playwright-report-${{ matrix.project }}
-          path: playwright-report
+          path: playwright-report/
       - name: Check test outcome
         if: |
           matrix.command == 'tests' &&
