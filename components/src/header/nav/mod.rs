@@ -69,6 +69,11 @@ pub fn HeaderMenu() -> impl IntoView {
                     svg_path=UNPKG_ICON_SVG_PATH
                 />
                 <HeaderMenuLink
+                    title=move_tr!("discord")
+                    href="https://discord.gg/CV7QtdqYrk"
+                    svg_path=simple_icon_svg_path!("discord")
+                />
+                <HeaderMenuLink
                     title=move_tr!("open-collective")
                     href="https://opencollective.com/simple-icons"
                     svg_path=simple_icon_svg_path!("opencollective")
