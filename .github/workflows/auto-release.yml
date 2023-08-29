@@ -86,7 +86,7 @@ jobs:
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
         run: cargo make builds
         env:
-          GITHUB_TOKEN: ${{ secrets.SECRET_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run `cargo make tests`
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
         run: cargo make tests
