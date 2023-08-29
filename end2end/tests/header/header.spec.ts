@@ -15,7 +15,7 @@ test.describe('header', () => {
   });
 
   test.describe('nav', () => {
-    const N_MENU_BUTTONS = 9;
+    const N_MENU_BUTTONS = 10;
     const nav = selectors.header.nav.container;
 
     test('has menu buttons', async ({ page }) => {
