@@ -67,7 +67,6 @@ await fetch('https://api.github.com/graphql', {
       process.exit(1);
     }
 
-    console.log(JSON.stringify(response));
     await fs.writeFile(tmpFilePath, JSON.stringify(response));
   })
   .catch((err) => {
