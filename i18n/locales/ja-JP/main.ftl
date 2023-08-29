@@ -59,3 +59,4 @@ copy-icon-svg = { $icon } SVG をコピー
 error-generating-pdf = PDFKit ライブラリで PDF を生成中にエラーが発生しました:
 view-icon = { $icon } を見る
 copy-hex-color = 16 進数の色をコピー
+discord = Discord

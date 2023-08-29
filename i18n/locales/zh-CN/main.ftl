@@ -59,3 +59,4 @@ copy-icon-svg = 复制 { $icon } SVG
 error-generating-pdf = 使用 PDFKit 库生成 PDF 时出错：
 view-icon = 看法 { $icon }
 copy-hex-color = 复制十六进制颜色
+discord = Discord

@@ -59,3 +59,4 @@ copy-icon-svg = Copiar { $icon } SVG
 error-generating-pdf = Erro ao gerar PDF com a biblioteca PDFKit:
 view-icon = Visualizar { $icon }
 copy-hex-color = Copiar cor hexadecimal
+discord = Discord
