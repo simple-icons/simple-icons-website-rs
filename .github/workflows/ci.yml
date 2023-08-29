@@ -92,7 +92,7 @@ jobs:
       - name: Get test arguments
         id: args
         run: |
-          echo "arguments=${{ matrix.command == 'tests' && '--project=$PROJECT --reporter=list' || '' }}" \
+          echo "arguments=${{ matrix.command == 'tests' && '--project=$PROJECT --reporter=github' || '' }}" \
             >> $GITHUB_OUTPUT
         env:
           PROJECT: ${{ matrix.project }}
