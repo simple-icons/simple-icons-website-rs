@@ -27,11 +27,12 @@ fn title_to_slug_replace_chars(title: &str) -> String {
             // The next implementation differs from the one in Javascript
             // TODO: should this be reported to the unicode_normalization
             // crate? Investigate
-            'á' | 'à' | 'ä' => new_title.push('a'),
+            'á' | 'à' | 'ä' | 'ã' => new_title.push('a'),
             'é' | 'è' | 'ë' => new_title.push('e'),
             'í' | 'ì' | 'ï' => new_title.push('i'),
             'ó' | 'ò' | 'ö' => new_title.push('o'),
             'ú' | 'ù' | 'ü' => new_title.push('u'),
+            'š' => new_title.push('s'),
             _ => continue,
         }
     }
@@ -41,6 +42,6 @@ fn title_to_slug_replace_chars(title: &str) -> String {
 /// Convert a brand title to slug
 pub fn title_to_slug(title: &str) -> String {
     title_to_slug_replace_chars(&title.to_lowercase())
-        .nfc()
+        .nfd()
         .collect::<String>()
 }
