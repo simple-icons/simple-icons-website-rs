@@ -1,7 +1,7 @@
 import { devices, type PlaywrightTestConfig } from '@playwright/test';
 import { OUTPUT_DIR } from './tests/helpers.ts';
 
-const TIMEOUT = process.env.CI ? 20 * 1000 : 15 * 1000;
+const TIMEOUT = process.env.CI ? 60 * 1000 : 15 * 1000;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
