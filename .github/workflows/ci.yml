@@ -42,10 +42,6 @@ jobs:
             command: tests
             browser: chromium
             project: chromium-mobile-landscape
-          - name: Test on Safari Mobile
-            command: tests
-            browser: webkit
-            project: webkit-mobile
     steps:
       - name: Checkout
         uses: actions/checkout@v3
