@@ -12,7 +12,6 @@ fn title_to_slug_replace_chars(title: &str) -> String {
     let mut new_title = String::with_capacity(title.len());
     for c in title.chars() {
         match c {
-            'a'..='z' | '0'..='9' => new_title.push(c),
             '+' => new_title.push_str("plus"),
             '.' => new_title.push_str("dot"),
             '&' => new_title.push_str("and"),
@@ -24,16 +23,15 @@ fn title_to_slug_replace_chars(title: &str) -> String {
             'ł' => new_title.push('l'),
             'ß' => new_title.push_str("ss"),
             'ŧ' => new_title.push('t'),
-            // The next implementation differs from the one in Javascript
-            // TODO: should this be reported to the unicode_normalization
-            // crate? Investigate
-            'á' | 'à' | 'ä' | 'ã' => new_title.push('a'),
-            'é' | 'è' | 'ë' => new_title.push('e'),
-            'í' | 'ì' | 'ï' => new_title.push('i'),
-            'ó' | 'ò' | 'ö' => new_title.push('o'),
-            'ú' | 'ù' | 'ü' => new_title.push('u'),
-            'š' => new_title.push('s'),
-            _ => continue,
+            // For all other characters, decompose in multiple code
+            // points and only keep the alfanumeric ones
+            _ => {
+                for c in c.nfd() {
+                    if c.is_alphanumeric() {
+                        new_title.push(c);
+                    }
+                }
+            }
         }
     }
     new_title
