@@ -24,7 +24,8 @@ fn title_to_slug_replace_chars(title: &str) -> String {
             'ß' => new_title.push_str("ss"),
             'ŧ' => new_title.push('t'),
             // For all other characters, decompose in multiple code
-            // points and only keep the alfanumeric ones
+            // points and only keep the alfanumeric ones.
+            // See https://unicode.org/reports/tr15/#Canon_Compat_Equivalence
             _ => {
                 for c in c.nfd() {
                     if c.is_alphanumeric() {
