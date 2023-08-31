@@ -27,9 +27,9 @@ fn title_to_slug_replace_chars(title: &str) -> String {
             // points and only keep the alfanumeric ones.
             // See https://unicode.org/reports/tr15/#Canon_Compat_Equivalence
             _ => {
-                for c in c.nfd() {
-                    if c.is_alphanumeric() {
-                        new_title.push(c);
+                for codepoint in c.nfd() {
+                    if codepoint.is_alphanumeric() {
+                        new_title.push(codepoint);
                     }
                 }
             }
