@@ -22,7 +22,7 @@ test.describe('order mode', () => {
 
     // Check that the icons are sorted alphabetically
     expect(gridItemIconsTitles).toEqual(
-      getSimpleIconsData()
+      (await getSimpleIconsData())
         .slice(0, N_ICONS_PER_PAGE)
         .map((icon) => icon.title),
     );
