@@ -47,7 +47,7 @@
   // https://github.com/stylelint/vscode-stylelint/issues/366
 
   // VSBrowser configuration
-  "vs-browser.url": "http://localhost:8080",
+  "vs-browser.url": "http://127.0.0.1:8080",
 
   // Rust Analyzer configuration
   // Clipboard API of wasm_bindgen needs unstable API
