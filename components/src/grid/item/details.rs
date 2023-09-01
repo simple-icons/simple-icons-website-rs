@@ -283,10 +283,7 @@ fn IconDetailsModalInformation() -> impl IntoView {
     view! {
         <div>
             <h3 on:click=copy_inner_text_on_click></h3>
-            <button
-                on:click=copy_inner_text_on_click
-                title=move_tr!("copy-hex-color")
-            ></button>
+            <button on:click=copy_inner_text_on_click title=move_tr!("copy-hex-color")></button>
             <a target="_blank">{move_tr!("brand-guidelines")}</a>
             <a target="_blank" title=move_tr!("license")></a>
             <p></p>
@@ -319,9 +316,7 @@ fn IconDetailsModalFooter() -> impl IntoView {
             >
                 {download_svg_msg}
             </button>
-            <a aria-label=download_colored_svg_msg>
-                {download_colored_svg_msg}
-            </a>
+            <a aria-label=download_colored_svg_msg>{download_colored_svg_msg}</a>
             <button
                 on:click=move |_| download_pdf(&get_slug_from_modal_container())
                 aria-label=download_pdf_msg
@@ -348,6 +343,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                 modal_open.set_none();
             }
         >
+
             <div class="icon-details-modal" id=Ids::IconDetailsModal.as_str()>
                 <div>
                     <IconDetailsModalPreview/>

@@ -36,6 +36,12 @@ pub fn IconGridItemFooter(
     // Modal open context
     let modal_open = use_context::<ModalOpenSignal>().unwrap();
 
+    let view_icon_button_title = move_tr!("view-icon", &{
+        let mut map = HashMap::new();
+        map.insert("icon".to_string(), icon.title.into());
+        map
+    });
+
     view! {
         <div>
             <button
@@ -48,20 +54,18 @@ pub fn IconGridItemFooter(
                     spawn_local(copy_setting_copied_transition_in_element(value, target));
                 }
             >
+
                 {css_hex}
             </button>
             <button
-                title=move_tr!("view-icon", &{
-                    let mut map = HashMap::new();
-                    map.insert("icon".to_string(), icon.title.into());
-                    map
-                })
+                title=view_icon_button_title
                 on:click=move |_| {
                     fill_icon_details_modal_with_icon(icon, &locale_state());
                     current_icon_view.update(|state| *state = Some(icon));
                     modal_open.set_icon();
                 }
             >
+
                 <svg viewBox="0 0 24 24">
                     <use_ href=format!("#{}", SVGDefs::ViewPath.id())></use_>
                 </svg>
@@ -77,6 +81,7 @@ pub fn IconGridItemFooter(
                     }
                 }
             >
+
                 <svg viewBox="0 0 24 24">
                     <use_ href=format!("#{}", SVGDefs::DownloadPath.id())></use_>
                 </svg>

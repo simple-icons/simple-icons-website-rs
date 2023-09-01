@@ -80,6 +80,7 @@ pub fn App() -> impl IntoView {
                         view! { <Index/> }
                     }
                 />
+
             </Routes>
         </Router>
         <Footer container_ref=footer_ref/>

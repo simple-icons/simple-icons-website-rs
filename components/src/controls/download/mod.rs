@@ -97,6 +97,16 @@ fn set_download_type_on_localstorage(download_type: &DownloadType) {
 #[component]
 pub fn DownloadFileTypeControl() -> impl IntoView {
     let download_type = use_context::<DownloadTypeSignal>().unwrap().0;
+    let download_svg_title = move_tr!("download-filetype", &{
+        let mut map = HashMap::new();
+        map.insert("filetype".to_string(), tr!("svg").into());
+        map
+    });
+    let download_pdf_title = move_tr!("download-filetype", &{
+        let mut map = HashMap::new();
+        map.insert("filetype".to_string(), tr!("pdf").into());
+        map
+    });
 
     view! {
         <div class="control">
@@ -104,11 +114,7 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
             <div class="flex flex-row">
                 <ControlButtonText
                     text=move_tr!("svg")
-                    title=move_tr!("download-filetype", &{
-                        let mut map = HashMap::new();
-                        map.insert("filetype".to_string(), tr!("svg").into());
-                        map
-                    })
+                    title=download_svg_title
                     active=move || { download_type() == DownloadType::SVG }
                     on:click=move |_| {
                         download_type
@@ -118,13 +124,10 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                             });
                     }
                 />
+
                 <ControlButtonText
                     text=move_tr!("pdf")
-                    title=move_tr!("download-filetype", &{
-                        let mut map = HashMap::new();
-                        map.insert("filetype".to_string(), tr!("pdf").into());
-                        map
-                    })
+                    title=download_pdf_title
                     active=move || { download_type() == DownloadType::PDF }
                     on:click=move |_| {
                         download_type
@@ -134,6 +137,7 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                             });
                     }
                 />
+
             </div>
         </div>
     }

@@ -17,6 +17,7 @@ pub fn Head() -> impl IntoView {
         map
     });
     let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
+    let url = format!("https://{}/", &domain);
 
     view! {
         <Title text=TITLE/>
@@ -31,7 +32,7 @@ pub fn Head() -> impl IntoView {
             href="./opensearch.xml"
         />
         <Link rel="license" href="./license.txt"/>
-        <Link rel="canonical" href=format!("https://{}/", &domain)/>
+        <Link rel="canonical" href=url/>
         <Link rel="preconnect" href="https://fonts.gstatic.com"/>
         <Link
             rel="stylesheet"
@@ -55,11 +56,12 @@ where
     F: Fn() -> String + 'static,
 {
     let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
+    let url = format!("https://{}/", &domain);
     view! {
         <Meta name="og:type" content="website"/>
         <Meta name="og:title" content=TITLE/>
         <Meta name="og:description" content=description/>
-        <Meta name="og:url" content=format!("https://{}/", &domain)/>
+        <Meta name="og:url" content=url/>
         <Meta name="og:site_name" content=TITLE/>
         <Meta name="og:image" content="./og.png"/>
     }
@@ -75,11 +77,12 @@ where
     F: Fn() -> String + 'static,
 {
     let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
+    let url = format!("https://{}/", &domain);
     view! {
         <Meta name="twitter:card" content="summary_large_image"/>
         <Meta name="twitter:title" content=TITLE/>
         <Meta name="twitter:description" content=description/>
-        <Meta name="twitter:url" content=format!("https://{}/", &domain)/>
+        <Meta name="twitter:url" content=url/>
         <Meta name="twitter:image:src" content="./og.png"/>
     }
 }
@@ -110,5 +113,5 @@ fn LdJSONMetadata() -> impl IntoView {
         .to_string()
     };
 
-    view! {  <script type="application/ld+json">{metadata}</script> }
+    view! { <script type="application/ld+json">{metadata}</script> }
 }

@@ -35,6 +35,7 @@ where
                     }
                 }
             >
+
                 {title}
             </h2>
             <button type="button" title=move_tr!("close") on:click=on_close>
@@ -76,6 +77,7 @@ where
                 }
             }
         >
+
             {children()}
         </div>
     }

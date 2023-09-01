@@ -273,15 +273,18 @@ pub fn SearchControl() -> impl IntoView {
                     value=search
                     onfocus="var value = this.value; this.value = null; this.value = value;"
                     on:input=move |_| {
-                        spawn_local(on_search(
-                            search_input_ref,
-                            search,
-                            icons_grid,
-                            order_mode,
-                            layout().icons_per_page() as usize,
-                        ))
+                        spawn_local(
+                            on_search(
+                                search_input_ref,
+                                search,
+                                icons_grid,
+                                order_mode,
+                                layout().icons_per_page() as usize,
+                            ),
+                        )
                     }
                 />
+
                 <span
                     class:hidden=move || search().is_empty()
                     title=move_tr!("clear-search")
@@ -290,6 +293,7 @@ pub fn SearchControl() -> impl IntoView {
                         fire_on_search_event();
                     }
                 >
+
                     "×"
                 </span>
             </div>

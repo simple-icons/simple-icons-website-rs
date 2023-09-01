@@ -26,6 +26,7 @@ pub fn Footer(
                     " text-[var(--link-color)] hover:text-[var(--link-color-hover)]",
                     " focus:text-[var(--link-color-hover)]"
                 )
+
                 href="https://github.com/simple-icons/simple-icons-website"
             >
                 {move_tr!("made-on")}
@@ -47,6 +48,7 @@ fn ReportLink(
                 "text-[#00e] hover:text-[#3434ee] focus:text-[#3434ee] visited:text-[#551a8b]",
                 " dark:text-[#227fff] dark:hover:text-[#3c8eff] dark:focus:text-[#3c8eff] dark:visited:text-[#a990bd]",
             )
+
             href=href
         >
             {children()}
@@ -83,6 +85,7 @@ pub fn TwitterButton() -> impl IntoView {
                 " text-white rounded-md px-3 py-5 hover:bg-[#55b8f5] focus:bg-[#55b8f5]",
                 " whitespace-nowrap mx-auto md:mx-4 lg:mx-12 mt-4 md:mt-auto text-center"
             )
+
             rel="noopener"
             role="button"
             target="_blank"
@@ -98,57 +101,52 @@ pub fn TwitterButton() -> impl IntoView {
 
 #[component]
 pub fn About() -> impl IntoView {
-    view! {
-        <div class="footer-about">
-            <p inner_html=move_tr!(
-                "maintained-by",
-                &{
-                    let mut map = HashMap::new();
-                    map.insert(
+    let maintained_by_html = move_tr!("maintained-by", &{
+        let mut map = HashMap::new();
+        map.insert(
                         "license".to_string(),
                         format!(
                             "<a href=\"https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md\">{}</a>",
                             tr!("cco")
                         ).into(),
                     );
-                    map.insert(
+        map.insert(
                         "maintainers".to_string(),
                         format!(
                             "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
                             tr!("simple-icons-contributors")
                         ).into(),
                     );
-                    map
-                }
-            )></p>
-            <p inner_html=move_tr!(
-                "use-platform",
-                &{
-                    let mut map = HashMap::new();
-                    map.insert(
+        map
+    });
+    let use_platform_html = move_tr!("use-platform", &{
+        let mut map = HashMap::new();
+        map.insert(
                         "platform".to_string(),
                         format!(
                             "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
                             tr!("github"),
                         ).into(),
                     );
-                    map
-                }
-            )></p>
-            <p inner_html=move_tr!(
-                "supported-by",
-                &{
-                    let mut map = HashMap::new();
-                    map.insert(
-                        "platform".to_string(),
-                        format!(
-                            "<a href=\"https://opencollective.com/simple-icons\">{}</a>",
-                            tr!("open-collective"),
-                        ).into(),
-                    );
-                    map
-                }
-            )></p>
+        map
+    });
+    let supported_by_html = move_tr!("supported-by", &{
+        let mut map = HashMap::new();
+        map.insert(
+            "platform".to_string(),
+            format!(
+                "<a href=\"https://opencollective.com/simple-icons\">{}</a>",
+                tr!("open-collective"),
+            )
+            .into(),
+        );
+        map
+    });
+    view! {
+        <div class="footer-about">
+            <p inner_html=maintained_by_html></p>
+            <p inner_html=use_platform_html></p>
+            <p inner_html=supported_by_html></p>
         </div>
     }
 }

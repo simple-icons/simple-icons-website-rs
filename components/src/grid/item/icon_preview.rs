@@ -35,20 +35,19 @@ pub fn IconGridItemPreview(
     /// Brand title
     title: &'static str,
 ) -> impl IntoView {
+    let button_title = move_tr!("copy-icon-svg", &{
+        let mut map = HashMap::new();
+        map.insert("icon".to_string(), title.into());
+        map
+    });
+    let img_alt = move_tr!("subject-icon", &{
+        let mut map = HashMap::new();
+        map.insert("icon".to_string(), title.into());
+        map
+    });
     view! {
-        <button
-            title=move_tr!("copy-icon-svg", &{
-                let mut map = HashMap::new();
-                map.insert("icon".to_string(), title.into());
-                map
-            })
-            on:click=on_click_copy_image_children_src_content
-        >
-            <img src=format!("/icons/{}.svg", slug) alt=move_tr!("subject-icon", &{
-                let mut map = HashMap::new();
-                map.insert("icon".to_string(), title.into());
-                map
-            })/>
+        <button title=button_title on:click=on_click_copy_image_children_src_content>
+            <img src=format!("/icons/{}.svg", slug) alt=img_alt/>
         </button>
     }
 }

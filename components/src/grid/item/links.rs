@@ -12,6 +12,7 @@ pub fn IconGridItemLinks(
 ) -> impl IntoView {
     view! {
         <div class="links">
+
             {
                 let mut links = vec![];
                 if let Some(guidelines_url) = guidelines_url {
@@ -31,10 +32,12 @@ pub fn IconGridItemLinks(
                 }
                 if license_type.is_some() || license_url.is_some() {
                     let title = move || match license_type {
-                        Some(license_type) => match license_type {
-                            "custom" => tr!("custom-license"),
-                            _ => license_type.to_string(),
-                        },
+                        Some(license_type) => {
+                            match license_type {
+                                "custom" => tr!("custom-license"),
+                                _ => license_type.to_string(),
+                            }
+                        }
                         None => tr!("license"),
                     };
                     links
@@ -43,8 +46,13 @@ pub fn IconGridItemLinks(
                                 <a
                                     href=match license_url {
                                         Some(license_url) => license_url.to_string(),
-                                        None => format!("https://spdx.org/licenses/{}", license_type.unwrap()),
+                                        None => {
+                                            format!(
+                                                "https://spdx.org/licenses/{}", license_type.unwrap()
+                                            )
+                                        }
                                     }
+
                                     title=title
                                     class="license"
                                     target="_blank"
@@ -56,6 +64,7 @@ pub fn IconGridItemLinks(
                 }
                 links
             }
+
         </div>
     }
 }

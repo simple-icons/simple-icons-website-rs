@@ -11,17 +11,14 @@ pub fn IconIsDeprecatedNotice(
     /// Removal version
     removal_at_version: &'static str,
 ) -> impl IntoView {
+    let title = move_tr!("will-be-removed-at", &{
+        let mut map = HashMap::new();
+        map.insert("icon".to_string(), title.into());
+        map.insert("version".to_string(), removal_at_version.into());
+        map
+    });
     view! {
-        <a
-            href=pull_request_url
-            class="deprecated"
-            title=move_tr!("will-be-removed-at", &{
-                let mut map = HashMap::new();
-                map.insert("icon".to_string(), title.into());
-                map.insert("version".to_string(), removal_at_version.into());
-                map
-            })
-        >
+        <a href=pull_request_url class="deprecated" title=title>
             <span></span>
             <p>{move_tr!("deprecated")}</p>
         </a>

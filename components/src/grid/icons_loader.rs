@@ -65,9 +65,7 @@ pub fn IconsLoader() -> impl IntoView {
                         .update(|state| {
                             state.loading = true;
                         });
-                    icons_grid_signal.update(
-                        |grid| grid.load_next_icons(&layout())
-                    );
+                    icons_grid_signal.update(|grid| grid.load_next_icons(&layout()));
                     icons_loader
                         .update(|state| {
                             state.loading = false;
@@ -75,6 +73,7 @@ pub fn IconsLoader() -> impl IntoView {
                         });
                 }
             >
+
                 {move_tr!("load-more-icons")}
             </button>
             <TripleDotsSpinner hidden_frames=1 hidden=move || !icons_loader().loading/>

@@ -106,6 +106,7 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
             on:click=move |_| {
                 header_state.update(|state: &mut HeaderState| state.toggle_menu());
             }
+
             title=move_tr!("open-menu")
             additional_classes=move || {
                 if !header_state.get().menu_open {
@@ -114,6 +115,7 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
                     "hidden".to_string()
                 }
             }
+
             svg_path="M1.412 3.53A1.412 1.412 0 0 0 0 4.94a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 4.94a1.412 1.412 0 0 0-1.412-1.412Zm0 7.058A1.412 1.412 0 0 0 0 12a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 12a1.412 1.412 0 0 0-1.412-1.412Zm0 7.06A1.412 1.412 0 0 0 0 19.057a1.412 1.412 0 0 0 1.412 1.413h21.176A1.412 1.412 0 0 0 24 19.059a1.412 1.412 0 0 0-1.412-1.412Z"
         />
     }
@@ -130,9 +132,15 @@ pub fn HeaderMenuCloseButton() -> impl IntoView {
             on:click=move |_| {
                 header_state.update(|state: &mut HeaderState| state.toggle_menu());
             }
+
             additional_classes=move || {
-                if header_state.get().menu_open { "block".to_string() } else { "hidden".to_string() }
+                if header_state.get().menu_open {
+                    "block".to_string()
+                } else {
+                    "hidden".to_string()
+                }
             }
+
             svg_path=SVGDefs::CrossPath.d()
         />
     }

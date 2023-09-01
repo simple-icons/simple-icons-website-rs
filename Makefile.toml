@@ -138,9 +138,9 @@ workspace = false
 command = "cargo"
 args = ["clippy", "--", "-D", "warnings"]
 
-[tasks.lint-rust-code]
+[tasks.lint-rust]
 description = "Lint Rust code"
-run_task = { name = ["clippy", "rustfmt-check"], parallel = false }
+run_task = { name = ["clippy", "rustfmt-check", "leptosfmt-check"] }
 workspace = false
 
 [tasks.rustfmt-check]
@@ -149,6 +149,13 @@ install_crate = "rustfmt"
 workspace = false
 command = "cargo"
 args = ["fmt", "--all", "--check"]
+
+[tasks.leptosfmt-check]
+description = "Check Leptos code format with leptosfmt"
+install_crate = "leptosfmt"
+workspace = false
+command = "leptosfmt"
+args = ["--check", "*/src/**/*.rs"]
 
 [tasks.format-leptos-code]
 description = "Format leptos view! macros"
@@ -162,15 +169,6 @@ description = "Format Rust code and leptos view! macros"
 run_task = { name = [
     "format-rust-code",
     "format-leptos-code"
-], parallel = false }
-workspace = false
-
-[tasks.lint-rust]
-description = "Lint Rust code and leptos view! macros"
-run_task = { name = [
-    "lint-rust-code",
-    # TODO (pending): https://github.com/bram209/leptosfmt/issues/12
-
 ], parallel = false }
 workspace = false
 
