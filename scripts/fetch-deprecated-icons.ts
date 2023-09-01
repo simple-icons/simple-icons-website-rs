@@ -39,7 +39,7 @@ if (tmpFilePathExists) {
 }
 
 if (global.fetch === undefined) {
-  let nodeMajorVersion = process.version.replace('v', '').split('.')[0];
+  const nodeMajorVersion = process.version.replace('v', '').split('.')[0];
   if (parseInt(nodeMajorVersion) < 18) {
     process.stderr.write(
       `Detected unsupported major version of Node.js (v${nodeMajorVersion}).` +
@@ -60,7 +60,7 @@ await fetch('https://api.github.com/graphql', {
   }),
 })
   .then(async (res) => {
-    let response = await res.json();
+    const response = await res.json();
     if (response.message) {
       process.stderr.write(
         `Error retrieving data from GITHUB Graphql API: ${response.message}\n`,

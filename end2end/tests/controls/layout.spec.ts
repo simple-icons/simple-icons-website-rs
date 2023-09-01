@@ -18,15 +18,15 @@ test.describe('layout', () => {
     await expect(layoutButtons.nth(0)).toHaveClass('selected');
   });
 
-  const layoutButtons = ['comfortable', 'compact'];
-  for (const layoutButtonIndex in layoutButtons) {
-    const layout = layoutButtons[layoutButtonIndex];
+  const layouts = ['comfortable', 'compact'];
+  for (const layoutIndex in layouts) {
+    const layout = layouts[layoutIndex];
     test(`change to ${layout} through URL`, async ({ page }) => {
       await page.goto(`/?layout=${layout}`);
       await expect(
         await page
           .locator(`${LAYOUT_CONTROL_SELECTOR} button`)
-          .nth(parseInt(layoutButtonIndex)),
+          .nth(parseInt(layoutIndex)),
       ).toHaveClass('selected');
       await expect(
         await page.evaluate(() => localStorage.getItem('layout')),

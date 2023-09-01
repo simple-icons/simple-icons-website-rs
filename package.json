@@ -27,9 +27,13 @@
   "devDependencies": {
     "@playwright/test": "1.36.2",
     "@types/node": "20.4.5",
+    "@typescript-eslint/eslint-plugin": "6.5.0",
+    "@typescript-eslint/parser": "6.5.0",
     "anywhere": "1.6.0",
     "autoprefixer": "10.4.14",
     "esbuild": "0.18.17",
+    "eslint": "8.48.0",
+    "eslint-config-simple-icons": "0.1.2",
     "husky": "8.0.3",
     "postcss": "8.4.27",
     "postcss-import": "15.1.0",

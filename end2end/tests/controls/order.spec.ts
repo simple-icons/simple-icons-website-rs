@@ -1,11 +1,11 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import {
   screenWidthIsAtLeast,
   selectors,
-  getSimpleIconsData,
   N_ICONS_PER_PAGE,
   getGridItemsIconsTitles,
 } from '../helpers.ts';
+import { getIconsData as getSimpleIconsData } from 'simple-icons/sdk';
 
 const ORDER_MODE_CONTROL_SELECTOR = selectors.controls.buttons.getByNthChild(1);
 

@@ -30,7 +30,7 @@ test.describe('download type', () => {
     const downloadPromise = page.waitForEvent('download');
     await gridItemDownloadButton.click();
     const download = await downloadPromise;
-    let filename = download.suggestedFilename();
+    const filename = download.suggestedFilename();
     await expect(filename).toMatch(/[^.]+\.svg/);
     const outputPath = await saveDownload(
       download,
@@ -64,7 +64,7 @@ test.describe('download type', () => {
     const downloadPromise = page.waitForEvent('download');
     await gridItemDownloadButton.click();
     const download = await downloadPromise;
-    let filename = download.suggestedFilename();
+    const filename = download.suggestedFilename();
     await expect(filename).toMatch(/[^.]+\.pdf/);
     await saveDownload(download, `download-control-${filename}`);
   });

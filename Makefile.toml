@@ -57,6 +57,7 @@ workspace = false
 description = "Check format of files and run linters"
 run_task = { name = [
     "lint-prettier",
+    "lint-js",
     "lint-rust",
     "lint-css"
 ], parallel = false }
@@ -196,6 +197,12 @@ workspace = false
 description = "Check formatting of non Rust files in the project with prettier"
 command = "npx"
 args = ["prettier", "--check", ".", "--ignore-path", ".gitignore"]
+workspace = false
+
+[tasks.lint-js]
+description = "Lint JS and TS files in the project with ESLint"
+command = "npx"
+args = ["eslint", ".", "--ignore-path", ".gitignore"]
 workspace = false
 
 [tasks.fetch-deprecated-icons]

@@ -1,6 +1,5 @@
 import type { Page, Download, TestType } from '@playwright/test';
 import * as path from 'node:path';
-import * as fs from 'node:fs';
 import * as simpleicons from 'simple-icons';
 import { getDirnameFromImportMeta } from 'simple-icons/sdk';
 import CONFIG from '../../config/config.ts';
@@ -18,9 +17,6 @@ export const SIMPLE_ICONS_DIRPATH = path.resolve(
   ROOT_DIR,
   'node_modules/simple-icons',
 );
-
-// App configuration file path
-const RUST_CONFIG_FILEPATH = path.resolve(ROOT_DIR, 'config/src/lib.rs');
 
 export const N_ICONS_PER_PAGE = CONFIG.icons_per_page_comfortable;
 
@@ -102,7 +98,8 @@ export const selectors = {
       `${gridItemsSelector}:nth-child(${n})`;
 
     const buildGridItemSelectors = (
-      containerSelector: string | Function,
+      containerSelector: string,
+      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     ): Record<'container' | 'icon', any> => {
       return {
         container: containerSelector,
@@ -184,6 +181,7 @@ export const getGridItemsIconsTitles = async (
  * Helper to set local storage on `test.use` with Playwright.
  */
 export const useLocalStorage = (
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   test: TestType<any, any>,
   storage: Record<string, string>,
 ) => {
@@ -201,19 +199,4 @@ export const useLocalStorage = (
       ],
     },
   });
-};
-
-// TODO: Use the utils file from simple-icons package, which comes with Typescript support
-// (needs https://github.com/simple-icons/simple-icons/pull/8564 merged and released)
-/**
- * Get the data of the simple-icons package.
- *
- * @returns Simple Icons data
- */
-export const getSimpleIconsData = (): any[] => {
-  const dataFilepath = path.resolve(
-    SIMPLE_ICONS_DIRPATH,
-    '_data/simple-icons.json',
-  );
-  return JSON.parse(fs.readFileSync(dataFilepath, 'utf8')).icons;
 };

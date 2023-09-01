@@ -4,7 +4,6 @@ import {
   getGridItemsIconsTitles,
   screenWidthIsAtLeast,
   N_ICONS_PER_PAGE,
-  getSimpleIconsData,
 } from '../helpers.ts';
 
 const ORDER_MODE_CONTROL_SELECTOR = selectors.controls.buttons.getByNthChild(1);
