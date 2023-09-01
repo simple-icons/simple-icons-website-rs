@@ -8,19 +8,19 @@ use web_sys;
 #[component]
 pub fn IconGridItemTitle(
     /// Brand title
-    title: &'static str,
+    brand_name: &'static str,
     /// Slug
     slug: &'static str,
 ) -> impl IntoView {
-    let title = move_tr!("copy-icon-slug", &{
+    let container_title = move_tr!("copy-icon-slug", &{
         let mut map = HashMap::new();
-        map.insert("icon".to_string(), title.into());
+        map.insert("icon".to_string(), brand_name.into());
         map.insert("slug".to_string(), slug.into());
         map
     });
     view! {
         <h2
-            title=title
+            title=container_title
             tabindex=0
             on:click=move |ev: MouseEvent| {
                 let target = event_target::<web_sys::HtmlElement>(&ev);
@@ -28,7 +28,7 @@ pub fn IconGridItemTitle(
             }
         >
 
-            {title}
+            {brand_name}
         </h2>
     }
 }

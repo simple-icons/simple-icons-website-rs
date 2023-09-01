@@ -43,7 +43,7 @@ pub fn IconGridItem(
                     }
                 })}
 
-            <IconGridItemTitle title=icon.title slug=icon.slug/>
+            <IconGridItemTitle brand_name=icon.title slug=icon.slug/>
             <IconGridItemFooter icon=icon/>
         </li>
     }
