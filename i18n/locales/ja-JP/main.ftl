@@ -1,4 +1,4 @@
-site-description = { $n-icons } 人気ブランドの無料 { $svg } アイコン
+site-description = 人気ブランドの { $n-icons } 個の無料 { $svg } アイコン
 close = 近い
 theme = テーマ
 light-color-scheme = 淡い配色
