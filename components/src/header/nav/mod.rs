@@ -70,7 +70,7 @@ pub fn HeaderMenu() -> impl IntoView {
                 />
                 <HeaderMenuLink
                     title=move_tr!("discord")
-                    href="https://discord.gg/CV7QtdqYrk"
+                    href="https://discord.gg/vUXFa7t5xJ"
                     svg_path=simple_icon_svg_path!("discord")
                 />
                 <HeaderMenuLink
