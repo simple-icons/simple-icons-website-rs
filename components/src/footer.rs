@@ -24,7 +24,7 @@ pub fn Footer(
                 class=concat!(
                     "w-full text-center mt-6 hover:underline focus:underline",
                     " text-[var(--link-color)] hover:text-[var(--link-color-hover)]",
-                    " focus:text-[var(--link-color-hover)]"
+                    " focus:text-[var(--link-color-hover)]",
                 )
 
                 href="https://github.com/simple-icons/simple-icons-website"
@@ -83,7 +83,7 @@ pub fn TwitterButton() -> impl IntoView {
             class=concat!(
                 "flex flex-row items-center h-0 my-auto align-middle bg-[#1DA1F2]",
                 " text-white rounded-md px-3 py-5 hover:bg-[#55b8f5] focus:bg-[#55b8f5]",
-                " whitespace-nowrap mx-auto md:mx-4 lg:mx-12 mt-4 md:mt-auto text-center"
+                " whitespace-nowrap mx-auto md:mx-4 lg:mx-12 mt-4 md:mt-auto text-center",
             )
 
             rel="noopener"

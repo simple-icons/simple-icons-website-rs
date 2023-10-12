@@ -157,6 +157,13 @@ workspace = false
 command = "leptosfmt"
 args = ["--check", "*/src/**/*.rs"]
 
+[tasks.leptosfmt-fix]
+description = "Fix Leptos code format with leptosfmt"
+install_crate = "leptosfmt"
+workspace = false
+command = "leptosfmt"
+args = ["fix", "*/src/**/*.rs"]
+
 [tasks.format-leptos-code]
 description = "Format leptos view! macros"
 install_crate = "leptosfmt"

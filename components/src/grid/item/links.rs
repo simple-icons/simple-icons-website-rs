@@ -48,7 +48,8 @@ pub fn IconGridItemLinks(
                                         Some(license_url) => license_url.to_string(),
                                         None => {
                                             format!(
-                                                "https://spdx.org/licenses/{}", license_type.unwrap()
+                                                "https://spdx.org/licenses/{}",
+                                                license_type.unwrap(),
                                             )
                                         }
                                     }
