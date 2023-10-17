@@ -19,27 +19,27 @@ jobs:
           - name: Lint
             command: lint
           - name: Test on Chrome Desktop${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
-            command: tests
+            command: test
             browser: chrome
             project: chrome-desktop
           - name: Test on MsEdge Desktop
-            command: tests
+            command: test
             browser: msedge
             project: msedge-desktop
           - name: Test on Firefox Desktop
-            command: tests
+            command: test
             browser: firefox
             project: firefox-desktop
           - name: Test on Safari Desktop
-            command: tests
+            command: test
             browser: webkit
             project: webkit-desktop
           - name: Test on Chromium Mobile
-            command: tests
+            command: test
             browser: chromium
             project: chromium-mobile
           - name: Test on Chromium Mobile Landscape
-            command: tests
+            command: test
             browser: chromium
             project: chromium-mobile-landscape
     steps:
@@ -77,30 +77,30 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
       - name: Install Playwright browsers
-        if: matrix.command == 'tests'
+        if: matrix.command == 'test'
         run: npx playwright install ${{ matrix.browser }} --with-deps
       - name: Install tooling dependencies
         run: cargo install cargo-make
       - name: Build
-        run: cargo make builds
+        run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get test arguments
         id: args
         run: |
-          echo "arguments=${{ matrix.command == 'tests' && '--project=$PROJECT --reporter=github' || '' }}" \
+          echo "arguments=${{ matrix.command == 'test' && '--project=$PROJECT --reporter=github' || '' }}" \
             >> $GITHUB_OUTPUT
         env:
           PROJECT: ${{ matrix.project }}
       - name: List tests
-        if: matrix.command == 'tests'
+        if: matrix.command == 'test'
         working-directory: end2end
         run: npx playwright test --list ${{ steps.args.outputs.arguments }}
       - name: Run `cargo make ${{ matrix.command }}`
         run: cargo make ${{ matrix.command }} ${{ steps.args.outputs.arguments }}
       - name: Publish website
         if: |
-          matrix.command == 'tests' &&
+          matrix.command == 'test' &&
           matrix.project == 'chrome-desktop' &&
           github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4

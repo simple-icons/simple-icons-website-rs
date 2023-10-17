@@ -84,12 +84,12 @@ jobs:
         run: cargo install cargo-make
       - name: Build
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
-        run: cargo make builds
+        run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run `cargo make tests`
+      - name: Run `cargo make test`
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
-        run: cargo make tests
+        run: cargo make test
       - name: Push updates
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
         run: |
