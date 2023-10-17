@@ -10,13 +10,18 @@ time_summary = true
 
 [tasks.init]
 description = "Initialization task run before all others"
-run_task = { name = ["use_nvm_if_installed", "npm_ci", "setup_blobstream"] }
+run_task = { name = [
+    "use_nvm_if_installed",
+    "npm_install",
+    "setup_blobstream"
+] }
 
 [tasks.use_nvm_if_installed]
 description = "Run 'nvm use'"
-condition_script = ["nvm version"]
+condition.env_not_set = ["CI"]
 command = "nvm"
 args = ["use"]
+ignore_errors = true
 
 [tasks.setup_blobstream]
 script_runner = "node"
@@ -28,11 +33,15 @@ require('fs').copyFileSync(
 )
 '''
 
-[tasks.npm_ci]
-description = "Run 'npm ci'"
+[tasks.npm_install]
+description = "Run 'npm install'"
 condition_script = ["which npm"]
+condition.files_modified = { input = ["./package.json"], output = [
+    "./package-lock.json"
+] }
+condition.env_not_set = ["CI"]
 command = "npm"
-args = ["ci"]
+args = ["install"]
 
 [tasks.default]
 alias = "dev"
