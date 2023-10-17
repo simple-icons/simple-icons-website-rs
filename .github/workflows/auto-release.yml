@@ -31,6 +31,7 @@ jobs:
         with:
           rust-version: nightly
           targets: wasm32-unknown-unknown
+          profile: minimal
       - name: Cache Rust dependencies
         uses: actions/cache@v3
         with:
