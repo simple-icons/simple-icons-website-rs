@@ -95,7 +95,7 @@ jobs:
       - name: Install Node.js dependencies
         run: |
           npm ci
-          npm install -g --force npx
+          npm rebuild npx
       - name: Build
         run: cargo make build
         env:
