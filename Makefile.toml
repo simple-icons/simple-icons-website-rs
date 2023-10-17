@@ -6,6 +6,7 @@ RUSTFLAGS = "--cfg=web_sys_unstable_apis"
 [config]
 init_task = "init"
 default_to_workspace = false
+time_summary = true
 
 [tasks.init]
 description = "Initialization task run before all others"
@@ -13,7 +14,7 @@ run_task = { name = ["use_nvm_if_installed", "npm_ci", "setup_blobstream"] }
 
 [tasks.use_nvm_if_installed]
 description = "Run 'nvm use'"
-condition_script = ["which nvm"]
+condition_script = ["nvm version"]
 command = "nvm"
 args = ["use"]
 
