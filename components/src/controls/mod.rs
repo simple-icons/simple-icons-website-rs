@@ -28,17 +28,9 @@ pub struct ControlsState {
 struct ControlsStateSignal(RwSignal<ControlsState>);
 
 #[component]
-pub fn Controls(#[prop(optional)] minimal: bool) -> impl IntoView {
+pub fn Controls() -> impl IntoView {
     let controls_state = create_rw_signal(ControlsState::default());
     provide_context(ControlsStateSignal(controls_state));
-
-    if minimal {
-        return view! {
-            <menu class="-mt-4 bg-transparent">
-                <ColorSchemeControl/>
-            </menu>
-        };
-    }
 
     view! {
         <menu>

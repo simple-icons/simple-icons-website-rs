@@ -1,4 +1,5 @@
 //! Application pages
+use components::controls::color_scheme::ColorSchemeControl;
 use components::controls::download::provide_download_type_context;
 use components::controls::layout::provide_layout_context;
 use components::controls::order::provide_order_mode_context;
@@ -28,7 +29,9 @@ pub fn Index() -> impl IntoView {
 #[component]
 pub fn Preview() -> impl IntoView {
     view! {
-        <Controls minimal=true/>
+        <menu class="-mt-4 bg-transparent">
+            <ColorSchemeControl/>
+        </menu>
         <PreviewBox/>
     }
 }

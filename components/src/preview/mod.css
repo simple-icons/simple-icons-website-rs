@@ -29,6 +29,23 @@
   }
 
   .preview-body {
-    @apply rounded-xl mt-1;
+    @apply rounded-xl mt-1 font-sans;
+  }
+
+  .preview-body > canvas {
+    @apply absolute top-[127px] left-[33px];
+  }
+
+  .preview-badges {
+    @apply w-[700px] mx-auto py-[14px]
+      grid grid-rows-2 grid-cols-4 gap-x-1 gap-y-1.5;
+  }
+
+  .preview-badges > div {
+    @apply grid place-content-center;
+  }
+
+  .preview-buttons {
+    @apply border-t-[var(--divider-color)] border-t-2;
   }
 }
