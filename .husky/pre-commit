@@ -4,5 +4,5 @@
 set -ex
 
 cargo make fetch-deprecated-icons
-cargo make lint
+cargo make --skip-tasks=npm_ci lint
 git diff --cached --name-only --diff-filter=ACM -z

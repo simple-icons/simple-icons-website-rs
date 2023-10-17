@@ -213,8 +213,8 @@ args = ["eslint", ".", "--ignore-path", ".gitignore"]
 
 [tasks.fetch-deprecated-icons]
 description = "Fetch deprecated icons from simple-icons repository"
-command = "ts-node"
-args = ["--esm", "scripts/fetch-deprecated-icons.ts"]
+command = "npx"
+args = ["tsx", "scripts/fetch-deprecated-icons.ts"]
 
 [tasks.build-fast-fuzzy]
 description = "Build the fast-fuzzy JS library for the web"
@@ -229,13 +229,13 @@ args = [
 
 [tasks.create-sitemap]
 description = "Create sitemap.xml asset"
-command = "ts-node"
-args = ["--esm", "scripts/create-sitemap.ts"]
+command = "npx"
+args = ["tsx", "scripts/create-sitemap.ts"]
 
 [tasks.create-cname]
 description = "Create CNAME"
-command = "ts-node"
-args = ["--esm", "scripts/create-cname.ts"]
+command = "npx"
+args = ["tsx", "scripts/create-cname.ts"]
 
 [tasks.run-pre-build-scripts]
 description = "Run pre-build scripts"
