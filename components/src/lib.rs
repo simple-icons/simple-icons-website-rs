@@ -10,6 +10,7 @@ pub mod grid;
 pub mod header;
 mod ids;
 pub mod modal;
+pub mod preview;
 pub(crate) mod spinners;
 pub(crate) mod storage;
 pub mod svg_defs;

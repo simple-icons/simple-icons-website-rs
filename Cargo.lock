@@ -1899,6 +1899,7 @@ dependencies = [
 name = "simple-icons"
 version = "0.1.0"
 dependencies = [
+ "colorsys",
  "icu_collator",
  "nanoserde",
  "serde_json",
@@ -1933,6 +1934,7 @@ dependencies = [
  "leptos",
  "leptos_router",
  "log",
+ "simple-icons",
  "simple-icons-website-config",
  "simple-icons-website-i18n",
  "simple-icons-website-macros",
@@ -1963,7 +1965,6 @@ dependencies = [
 name = "simple-icons-website-macros"
 version = "0.1.0"
 dependencies = [
- "colorsys",
  "simple-icons",
  "simple-icons-website-config",
  "simple-icons-website-types",

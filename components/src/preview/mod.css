@@ -1,0 +1,34 @@
+@layer components {
+  .preview {
+    @apply relative z-30 -mt-11 w-[790px] ml-36 my-3 px-6 py-5
+      border border-opacity-10 border-[var(--divider-color)] rounded-md
+      text-[var(--text-default-color)]
+      bg-[var(--grid-item-background-color)];
+  }
+
+  .preview > div {
+    @apply whitespace-nowrap mb-3;
+  }
+
+  .preview-input-group {
+    @apply inline-block whitespace-nowrap;
+  }
+
+  .preview-input-group > label {
+    @apply w-[60px] inline-block text-sm;
+  }
+
+  .preview-input-group > input {
+    @apply rounded-md border border-[rgb(64,64,64)] px-2 py-[6px]
+      text-sm text-[var(--text-default-color)]
+      bg-[var(--grid-item-background-color)];
+  }
+
+  .preview-input-group > input.invalid {
+    @apply border-[rgb(180,0,0)];
+  }
+
+  .preview-body {
+    @apply rounded-xl mt-1;
+  }
+}

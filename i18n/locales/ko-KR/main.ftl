@@ -60,3 +60,4 @@ error-generating-pdf = PDFKit 라이브러리로 PDF를 생성하는 동안 오�
 view-icon = { $icon } 보기
 copy-hex-color = 16진수 색상 복사
 discord = Discord
+brand = 상표

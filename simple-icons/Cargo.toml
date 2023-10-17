@@ -13,3 +13,4 @@ nanoserde.workspace = true
 unicode-normalization.workspace = true
 icu_collator.workspace = true
 serde_json.workspace = true
+colorsys.workspace = true

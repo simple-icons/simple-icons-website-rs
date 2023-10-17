@@ -2,11 +2,9 @@
 //!
 //! These macros are used to generate code at compile time.
 
-mod color;
-
-use color::{get_relative_luminance, sort_hexes};
 use proc_macro::TokenStream;
 use simple_icons::{
+    color::{is_relatively_light_icon_hex, sort_hexes},
     get_simple_icon_svg_path, get_simple_icons,
     sdk::fetch_deprecated_simple_icons,
 };
@@ -173,7 +171,7 @@ pub fn icons_array(_: TokenStream) -> TokenStream {
             icon.slug,
             icon.title,
             icon.hex,
-            get_relative_luminance(&icon.hex) >= 0.4,
+            is_relatively_light_icon_hex(&icon.hex),
             icon.source,
             match icon.guidelines {
                 Some(ref url) => format!("Some(\"{}\")", url),

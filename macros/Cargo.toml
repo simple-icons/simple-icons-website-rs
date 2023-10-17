@@ -14,4 +14,3 @@ syn.workspace = true
 simple-icons.workspace = true
 simple-icons-website-types.workspace = true
 simple-icons-website-config.workspace = true
-colorsys.workspace = true

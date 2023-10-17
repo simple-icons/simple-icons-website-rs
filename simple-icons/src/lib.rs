@@ -1,3 +1,4 @@
+pub mod color;
 pub mod sdk;
 
 use crate::sdk::{

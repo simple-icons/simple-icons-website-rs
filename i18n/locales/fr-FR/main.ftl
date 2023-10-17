@@ -60,3 +60,4 @@ error-generating-pdf = Erreur de génération du PDF avec la bibliothèque PDFKi
 view-icon = Voir { $icon }
 copy-hex-color = Copier la couleur hexadécimale
 discord = Discord
+brand = Marque

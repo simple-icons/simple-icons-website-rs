@@ -125,5 +125,9 @@ pub mod relative_luminance {
     }
 }
 
+pub fn is_relatively_light_icon_hex(hex: &str) -> bool {
+    relative_luminance::get(hex) >= 0.4
+}
+
 pub use relative_luminance::get as get_relative_luminance;
 pub use sorting::sort_hexes;

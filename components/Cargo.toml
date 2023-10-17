@@ -9,6 +9,7 @@ crate-type = ["cdylib", "rlib"]
 name = "components"
 
 [dependencies]
+simple-icons.workspace = true
 simple-icons-website-macros.workspace = true
 simple-icons-website-i18n.workspace = true
 simple-icons-website-config.workspace = true

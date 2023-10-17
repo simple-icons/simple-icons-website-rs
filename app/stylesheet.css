@@ -135,6 +135,6 @@ body.light {
   }
 }
 
-main > menu {
+main {
   @apply page-padding-x;
 }

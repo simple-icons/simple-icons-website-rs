@@ -60,3 +60,4 @@ error-generating-pdf = Errore durante la generazione del PDF con la libreria PDF
 view-icon = Visualizza { $icon }
 copy-hex-color = Copia colore esadecimale
 discord = Discord
+brand = Marca
