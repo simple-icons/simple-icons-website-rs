@@ -74,15 +74,15 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v18
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Install Playwright browsers
-        if: matrix.command == 'test'
-        run: npx playwright install ${{ matrix.browser }} --with-deps
       - name: Install tooling dependencies
         run: cargo install cargo-make
       - name: Build
         run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Playwright browsers
+        if: matrix.command == 'test'
+        run: npx playwright install ${{ matrix.browser }} --with-deps
       - name: Get test arguments
         id: args
         run: |
