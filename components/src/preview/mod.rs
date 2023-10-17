@@ -2,6 +2,7 @@ use i18n::move_tr;
 use leptos::{html::Input, *};
 use macros::{get_number_of_icons, simple_icon_svg_path};
 use simple_icons::{color, sdk::title_to_slug};
+use wasm_bindgen::{closure::Closure, JsCast};
 
 fn initial_brand_value() -> String {
     "Simple Icons".to_string()
@@ -50,7 +51,184 @@ impl PreviewButtonSvgPath {
     }
 }
 
-fn update_canvas() {}
+fn get_preview_canvas_context() -> web_sys::CanvasRenderingContext2d {
+    let container = document()
+        .get_elements_by_class_name("preview-body")
+        .item(0)
+        .unwrap();
+    let figure = container.dyn_into::<web_sys::HtmlElement>().unwrap();
+    let canvas = figure
+        .get_elements_by_tag_name("canvas")
+        .item(0)
+        .unwrap()
+        .dyn_into::<web_sys::HtmlCanvasElement>()
+        .unwrap();
+    let ctx = canvas
+        .get_context("2d")
+        .unwrap()
+        .unwrap()
+        .dyn_into::<web_sys::CanvasRenderingContext2d>()
+        .unwrap();
+    ctx.set_font("1rem sans");
+    ctx
+}
+
+macro_rules! draw_badge_impl {
+    ($badge_index:literal, $x:literal, $y:literal) => {{
+        let badges_containers = document()
+            .get_elements_by_class_name("preview-badges")
+            .item(0)
+            .unwrap()
+            .children();
+        let badge_img = badges_containers
+            .item($badge_index)
+            .unwrap()
+            .dyn_into::<web_sys::HtmlElement>()
+            .unwrap()
+            .first_element_child()
+            .unwrap()
+            .dyn_into::<web_sys::HtmlImageElement>()
+            .unwrap();
+        let badge_url = badge_img.src();
+
+        let badge_img_for_canvas = document()
+            .create_element("img")
+            .unwrap()
+            .dyn_into::<web_sys::HtmlImageElement>()
+            .unwrap();
+        badge_img_for_canvas
+            .set_attribute("style", "display: none")
+            .unwrap();
+        badge_img_for_canvas
+            .set_attribute(
+                "id",
+                &format!("preview-badge-image-for-canvas-{}", $badge_index),
+            )
+            .unwrap();
+
+        document()
+            .body()
+            .unwrap()
+            .append_child(&badge_img_for_canvas)
+            .unwrap();
+
+        let closure: Closure<dyn FnMut()> = Closure::new(move || {
+            let img = document()
+                .get_element_by_id(&format!(
+                    "preview-badge-image-for-canvas-{}",
+                    $badge_index
+                ))
+                .unwrap()
+                .dyn_into::<web_sys::HtmlImageElement>()
+                .unwrap();
+
+            let ctx = get_preview_canvas_context();
+            ctx.draw_image_with_html_image_element(
+                &img,
+                $x as f64,
+                420.0 + $y as f64,
+            )
+            .unwrap();
+            document().body().unwrap().remove_child(&img).unwrap();
+        });
+        badge_img_for_canvas.set_onload(Some(closure.as_ref().unchecked_ref()));
+        closure.forget();
+
+        badge_img_for_canvas
+            .set_attribute("src", badge_url.as_str())
+            .unwrap();
+    }};
+}
+
+fn update_badges_in_canvas() {
+    // Draw the badges in the canvas
+    draw_badge_impl!(0, 15, 15);
+    draw_badge_impl!(1, 173, 17);
+    draw_badge_impl!(2, 335, 6);
+    draw_badge_impl!(3, 562, 15);
+
+    draw_badge_impl!(4, 15, 41);
+    draw_badge_impl!(5, 173, 42);
+    draw_badge_impl!(6, 335, 40);
+    draw_badge_impl!(7, 560, 41);
+}
+
+fn update_canvas() {
+    let container = document()
+        .get_elements_by_class_name("preview-body")
+        .item(0);
+    if container.is_none() {
+        return;
+    }
+
+    let figure = document()
+        .get_elements_by_class_name("preview-body")
+        .item(0)
+        .unwrap()
+        .dyn_into::<web_sys::HtmlElement>()
+        .unwrap();
+    let canvas = figure
+        .get_elements_by_tag_name("canvas")
+        .item(0)
+        .unwrap()
+        .dyn_into::<web_sys::HtmlCanvasElement>()
+        .unwrap();
+    let ctx = canvas
+        .get_context("2d")
+        .unwrap()
+        .unwrap()
+        .dyn_into::<web_sys::CanvasRenderingContext2d>()
+        .unwrap();
+    ctx.clear_rect(0.0, 0.0, canvas.width().into(), canvas.height().into());
+
+    // Draw the SVG of the preview card in the canvas
+    let preview_card_svg =
+        figure.get_elements_by_tag_name("svg").item(0).unwrap();
+    let preview_card_img = document()
+        .create_element("img")
+        .unwrap()
+        .dyn_into::<web_sys::HtmlImageElement>()
+        .unwrap();
+    preview_card_img
+        .set_attribute("style", "display: none")
+        .unwrap();
+    preview_card_img
+        .set_attribute("id", "preview-card-image-for-canvas")
+        .unwrap();
+    document()
+        .body()
+        .unwrap()
+        .append_child(&preview_card_img)
+        .unwrap();
+
+    // Set the onload attribute and draw the image
+    let closure: Closure<dyn FnMut()> = Closure::new(move || {
+        let preview_card_img = document()
+            .get_element_by_id("preview-card-image-for-canvas")
+            .unwrap()
+            .dyn_into::<web_sys::HtmlImageElement>()
+            .unwrap();
+        ctx.draw_image_with_html_image_element(&preview_card_img, 0.0, 0.0)
+            .unwrap();
+        document()
+            .body()
+            .unwrap()
+            .remove_child(&preview_card_img)
+            .unwrap();
+
+        update_badges_in_canvas();
+    });
+    preview_card_img.set_onload(Some(closure.as_ref().unchecked_ref()));
+    closure.forget();
+
+    let preview_card_url = format!(
+        "data:image/svg+xml;utf8,{}",
+        js_sys::encode_uri_component(&preview_card_svg.outer_html())
+    );
+    preview_card_img
+        .set_attribute("src", preview_card_url.as_str())
+        .unwrap();
+}
 
 #[component]
 fn PreviewButton(
@@ -123,8 +301,12 @@ pub fn PreviewBox() -> impl IntoView {
                         prop:value=color
                         on:input=move |_| {
                             let input = color_input_ref.get().unwrap();
+                            let selection_start = input.selection_start().unwrap();
+                            let selection_end = input.selection_end().unwrap();
                             let normalized_value = input.value().to_uppercase().replace('#', "");
                             input.set_value(&normalized_value);
+                            input.set_selection_start(selection_start).unwrap();
+                            input.set_selection_end(selection_end).unwrap();
                             set_color(normalized_value);
                             update_canvas();
                         }
@@ -153,10 +335,10 @@ pub fn PreviewBox() -> impl IntoView {
 
             <figure class="preview-body">
                 <svg
+                    width="740"
                     height="420"
                     viewBox="0 0 740 420"
                     xmlns="http://www.w3.org/2000/svg"
-                    width="740"
                     class="pt-3"
                 >
                     <rect
@@ -182,21 +364,21 @@ pub fn PreviewBox() -> impl IntoView {
                         <path d=move || path() fill=move || contrast_color_for(&color())></path>
                     </svg>
 
-                    <g transform="translate(21,235)">
+                    <g transform="translate(21,235)" style="font-family: Helvetica">
                         <text fill=move || contrast_color_for(&color()) font-size="25">
                             {move || format!("{} Preview", brand())}
                         </text>
                         <text fill=move || contrast_color_for(&color()) font-size="17" y="25">
                             {move || format!("{}.svg", title_to_slug(&brand()))}
                         </text>
-                        <text fill=move || contrast_color_for(&color()) font-size="16" y="60">
+                        <text fill=move || contrast_color_for(&color()) font-size="16" y="61">
                             {move || format!("Brand: {}", brand())}
                         </text>
-                        <text fill=move || contrast_color_for(&color()) font-size="16" y="80">
+                        <text fill=move || contrast_color_for(&color()) font-size="16" y="84">
                             {move || format!("Color: #{}", color())}
                         </text>
 
-                        <g transform="translate(3, 142)">
+                        <g transform="translate(3, 142)" style="font-family: Helvetica">
                             <svg viewBox="0 0 24 24" width="24" height="24">
                                 <path
                                     d=simple_icon_svg_path!("simpleicons")
@@ -222,7 +404,7 @@ pub fn PreviewBox() -> impl IntoView {
                         </g>
                     </g>
                 </svg>
-                <canvas height="490" width="721"></canvas>
+                <canvas height="490" width="721" style="opacity:0;"></canvas>
             </figure>
             <div class="preview-badges">
                 <div>
@@ -282,12 +464,16 @@ pub fn PreviewBox() -> impl IntoView {
                     )/>
                 </div>
                 <div>
-                    <img src=move || badge_url(
-                        &title_to_slug(&brand()),
-                        &color(),
-                        &build_svg(&path(), Some("000")),
-                        "social",
-                    )/>
+                    <img
+                        src=move || badge_url(
+                            &title_to_slug(&brand()),
+                            &color(),
+                            &build_svg(&path(), Some("000")),
+                            "social",
+                        )
+
+                        on:load=move |_| update_canvas()
+                    />
                 </div>
             </div>
             <div class="preview-buttons">
