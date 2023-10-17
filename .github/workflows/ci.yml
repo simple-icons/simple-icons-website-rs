@@ -74,8 +74,6 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v18
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Install Node.js dependencies
-        run: npm ci
       - name: Install Playwright browsers
         if: matrix.command == 'test'
         run: npx playwright install ${{ matrix.browser }} --with-deps
@@ -96,7 +94,7 @@ jobs:
         if: matrix.command == 'test'
         working-directory: end2end
         run: npx playwright test --list ${{ steps.args.outputs.arguments }}
-      - name: Run `cargo make ${{ matrix.command }}`
+      - name: Run `cargo make --skip-tasks=npm_ci ${{ matrix.command }}`
         run: cargo make ${{ matrix.command }} ${{ steps.args.outputs.arguments }}
       - name: Publish website
         if: |
