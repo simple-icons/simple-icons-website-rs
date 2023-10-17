@@ -11,37 +11,54 @@ permissions:
 jobs:
   run:
     name: ${{ matrix.name }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runs-on }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - name: Lint
             command: lint
+            runs-on: ubuntu-latest
           - name: Test on Chrome Desktop${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
             command: test
             browser: chrome
             project: chrome-desktop
+            runs-on: ubuntu-latest
           - name: Test on MsEdge Desktop
             command: test
             browser: msedge
             project: msedge-desktop
+            runs-on: ubuntu-latest
           - name: Test on Firefox Desktop
             command: test
             browser: firefox
             project: firefox-desktop
+            runs-on: ubuntu-latest
           - name: Test on Safari Desktop
             command: test
             browser: webkit
             project: webkit-desktop
+            runs-on: ubuntu-latest
           - name: Test on Chromium Mobile
             command: test
             browser: chromium
             project: chromium-mobile
+            runs-on: ubuntu-latest
           - name: Test on Chromium Mobile Landscape
             command: test
             browser: chromium
             project: chromium-mobile-landscape
+            runs-on: ubuntu-latest
+          - name: Test on MsEdge Desktop on Windows
+            command: test
+            browser: msedge
+            project: msedge-desktop
+            runs-on: windows-latest
+          - name: Test on Safari Desktop on MacOS
+            command: test
+            browser: webkit
+            project: webkit-desktop
+            runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -76,6 +93,8 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install tooling dependencies
         run: cargo install cargo-make
+      - name: Install Node.js dependencies
+        run: npm ci
       - name: Build
         run: cargo make build
         env:
@@ -94,7 +113,7 @@ jobs:
         if: matrix.command == 'test'
         working-directory: end2end
         run: npx playwright test --list ${{ steps.args.outputs.arguments }}
-      - name: Run `cargo make --skip-tasks=npm_ci ${{ matrix.command }}`
+      - name: Run `cargo make ${{ matrix.command }}`
         run: cargo make ${{ matrix.command }} ${{ steps.args.outputs.arguments }}
       - name: Publish website
         if: |

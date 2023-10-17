@@ -89,7 +89,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run `cargo make test`
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
-        run: cargo make --skip-tasks=npm_ci test
+        run: cargo make test
       - name: Push updates
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
         run: |
