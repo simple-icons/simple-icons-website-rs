@@ -49,6 +49,11 @@ jobs:
             browser: chromium
             project: chromium-mobile-landscape
             runs-on: ubuntu-latest
+          - name: MsEdge Desktop (Windows)
+            command: test
+            browser: msedge
+            project: msedge-desktop
+            runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -85,7 +90,7 @@ jobs:
       - name: Install Node.js dependencies
         run: |
           npm ci
-          npm rebuild npx
+          npm install -g tsx
       - name: Build
         run: cargo make build
         env:
