@@ -3,6 +3,9 @@
 
 set -ex
 
+cargo make format
+git add -u
 cargo make fetch-deprecated-icons
 cargo make lint
+
 git diff --cached --name-only --diff-filter=ACM -z

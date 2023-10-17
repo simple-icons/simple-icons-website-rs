@@ -6,7 +6,6 @@ RUSTFLAGS = "--cfg=web_sys_unstable_apis"
 [config]
 init_task = "init"
 default_to_workspace = false
-time_summary = true
 
 [tasks.init]
 description = "Initialization task run before all others"
@@ -176,19 +175,13 @@ args = ["fmt", "--all", "--check"]
 description = "Check Leptos code format with leptosfmt"
 install_crate = "leptosfmt"
 command = "leptosfmt"
-args = ["--check", "*/src/**/*.rs"]
-
-[tasks.leptosfmt-fix]
-description = "Fix Leptos code format with leptosfmt"
-install_crate = "leptosfmt"
-command = "leptosfmt"
-args = ["fix", "*/src/**/*.rs"]
+args = ["--check", "--quiet", "*/src/**/*.rs"]
 
 [tasks.format-leptos-code]
 description = "Format leptos view! macros"
 install_crate = "leptosfmt"
 command = "leptosfmt"
-args = ["*/src/**/*.rs"]
+args = ["--quiet", "*/src/**/*.rs"]
 
 [tasks.format-rust]
 description = "Format Rust code and leptos view! macros"
@@ -209,7 +202,15 @@ args = [
 [tasks.format-prettier]
 description = "Format non Rust files in the project with prettier"
 command = "npx"
-args = ["prettier", "--write", ".", "--ignore-path", ".gitignore"]
+args = [
+    "prettier",
+    "--write",
+    ".",
+    "--ignore-path",
+    ".gitignore",
+    "--log-level",
+    "warn"
+]
 
 [tasks.lint-prettier]
 description = "Check formatting of non Rust files in the project with prettier"
