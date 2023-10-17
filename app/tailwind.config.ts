@@ -34,7 +34,6 @@ export default {
           ...defaultTheme.fontFamily.mono,
         ],
         sans: [
-          'Roboto',
           '"Open Sans"',
           'Arial',
           'Helvetica',

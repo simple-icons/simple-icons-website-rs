@@ -66,7 +66,6 @@ web-sys = { version = "0.3.64", default-features = false, features = [
     "Request",
     "RequestInit",
     "RequestCache",
-    "SvgRectElement",
 ] }
 js-sys = "0.3.64"
 wasm-bindgen-futures = "0.4.37"
