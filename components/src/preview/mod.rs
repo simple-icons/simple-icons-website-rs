@@ -28,47 +28,14 @@ fn is_valid_hex_color(value: &str) -> bool {
     true
 }
 
-fn badge_url(
-    slug: &str,
-    color: &str,
-    svg: &str,
-    style: &str,
-    svg_color: &str,
-) -> String {
-    let mut colored_svg = String::from(svg);
-    if !color::is_relatively_light_icon_hex(color) {
-        let replacement = format!("<path fill=\"{}\" ", &svg_color);
-        colored_svg = svg.replace("<path ", &replacement);
-    }
+fn badge_url(slug: &str, color: &str, svg: &str, style: &str) -> String {
     format!(
         "https://img.shields.io/badge/{}-preview-{}.svg?style={}&logo=data:image/svg%2bxml;base64,{}",
         slug,
         color,
         style,
-        window().btoa(&colored_svg).unwrap(),
+        window().btoa(svg).unwrap(),
     )
-}
-
-#[component]
-fn PreviewBadge<S, C, G, V>(
-    slug: S,
-    color: C,
-    svg: G,
-    style: &'static str,
-    svg_color: V,
-) -> impl IntoView
-where
-    S: Fn() -> String + 'static,
-    C: Fn() -> String + 'static,
-    V: Fn() -> String + 'static,
-    G: Fn() -> String + 'static,
-{
-    let url = badge_url(&slug(), &color(), &svg(), style, &svg_color());
-    view! {
-        <div>
-            <img src=url/>
-        </div>
-    }
 }
 
 enum PreviewButtonSvgPath {
@@ -110,16 +77,17 @@ pub fn PreviewBox() -> impl IntoView {
     let path_input_ref = create_node_ref::<Input>();
 
     fn contrast_color_for(hex: &str) -> String {
-        let is_light_hex = color::is_relatively_light_icon_hex(hex);
+        let is_light_hex =
+            is_valid_hex_color(hex) && color::is_relatively_light_icon_hex(hex);
         if is_light_hex { "black" } else { "white" }.to_string()
     }
 
-    fn build_svg(path: &str, fill: Option<String>) -> String {
+    fn build_svg(path: &str, fill: Option<&str>) -> String {
         format!(
             "<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"{}\"{}/></svg>",
             path,
             match fill {
-                Some(fill) => format!(" fill=\"{}\"", fill),
+                Some(fill) => format!(" fill=\"#{}\"", fill),
                 None => "".to_string(),
             }
         )
@@ -257,62 +225,70 @@ pub fn PreviewBox() -> impl IntoView {
                 <canvas height="490" width="721"></canvas>
             </figure>
             <div class="preview-badges">
-                <PreviewBadge
-                    slug=move || title_to_slug(&brand())
-                    color=color
-                    svg=move || build_svg(&path(), None)
-                    style="flat"
-                    svg_color=move || "white".to_string()
-                />
-                <PreviewBadge
-                    slug=move || title_to_slug(&brand())
-                    color=color
-                    svg=move || build_svg(&path(), None)
-                    style="plastic"
-                    svg_color=move || "white".to_string()
-                />
-                <PreviewBadge
-                    slug=move || title_to_slug(&brand())
-                    color=color
-                    svg=move || build_svg(&path(), None)
-                    style="for-the-badge"
-                    svg_color=move || "white".to_string()
-                />
-                <PreviewBadge
-                    slug=move || title_to_slug(&brand())
-                    color=color
-                    svg=move || build_svg(&path(), None)
-                    style="flat-square"
-                    svg_color=move || "white".to_string()
-                />
-                <PreviewBadge
-                    slug=move || title_to_slug(&brand())
-                    color=color
-                    svg=move || build_svg(&path(), None)
-                    style="flat"
-                    svg_color=color
-                />
-                <PreviewBadge
-                    slug=move || title_to_slug(&brand())
-                    color=color
-                    svg=move || build_svg(&path(), None)
-                    style="plastic"
-                    svg_color=color
-                />
-                <PreviewBadge
-                    slug=move || title_to_slug(&brand())
-                    color=color
-                    svg=move || build_svg(&path(), None)
-                    style="for-the-badge"
-                    svg_color=color
-                />
-                <PreviewBadge
-                    slug=move || title_to_slug(&brand())
-                    color=color
-                    svg=move || build_svg(&path(), None)
-                    style="social"
-                    svg_color=move || "black".to_string()
-                />
+                <div>
+                    <img src=move || badge_url(
+                        &title_to_slug(&brand()),
+                        &color(),
+                        &build_svg(&path(), Some("FFF")),
+                        "flat",
+                    )/>
+                </div>
+                <div>
+                    <img src=move || badge_url(
+                        &title_to_slug(&brand()),
+                        &color(),
+                        &build_svg(&path(), Some("FFF")),
+                        "plastic",
+                    )/>
+                </div>
+                <div>
+                    <img src=move || badge_url(
+                        &title_to_slug(&brand()),
+                        &color(),
+                        &build_svg(&path(), Some("FFF")),
+                        "for-the-badge",
+                    )/>
+                </div>
+                <div>
+                    <img src=move || badge_url(
+                        &title_to_slug(&brand()),
+                        &color(),
+                        &build_svg(&path(), Some("FFF")),
+                        "flat-square",
+                    )/>
+                </div>
+                <div>
+                    <img src=move || badge_url(
+                        &title_to_slug(&brand()),
+                        &color(),
+                        &build_svg(&path(), Some(&color())),
+                        "flat",
+                    )/>
+                </div>
+                <div>
+                    <img src=move || badge_url(
+                        &title_to_slug(&brand()),
+                        &color(),
+                        &build_svg(&path(), Some(&color())),
+                        "plastic",
+                    )/>
+                </div>
+                <div>
+                    <img src=move || badge_url(
+                        &title_to_slug(&brand()),
+                        &color(),
+                        &build_svg(&path(), Some(&color())),
+                        "for-the-badge",
+                    )/>
+                </div>
+                <div>
+                    <img src=move || badge_url(
+                        &title_to_slug(&brand()),
+                        &color(),
+                        &build_svg(&path(), Some("000")),
+                        "social",
+                    )/>
+                </div>
             </div>
             <div class="preview-buttons">
                 <PreviewButton svg_path=PreviewButtonSvgPath::Upload title="Upload SVG"/>
