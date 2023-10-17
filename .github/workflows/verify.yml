@@ -59,9 +59,18 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Rust nightly
         uses: hecrj/setup-rust-action@v2
+        if: matrix.command == 'test'
         with:
           rust-version: nightly
           targets: wasm32-unknown-unknown
+          components: cargo,rust-std,rustc
+      - name: Setup Rust nightly
+        uses: hecrj/setup-rust-action@v2
+        if: matrix.command == 'lint'
+        with:
+          rust-version: nightly
+          targets: wasm32-unknown-unknown
+          components: cargo,clippy,rust-std,rustc
       - name: Cache Rust dependencies
         uses: actions/cache@v3
         with:
