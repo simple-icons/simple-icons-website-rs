@@ -63,11 +63,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Rust nightly
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf \
-            https://sh.rustup.rs | sh -s -- -y
-          rustup default nightly
-          rustup target add wasm32-unknown-unknown
+        uses: hecrj/setup-rust-action@v2
+        with:
+          rust-version: nightly
+          targets: wasm32-unknown-unknown
       - name: Cache Rust dependencies
         uses: actions/cache@v3
         with:
