@@ -19,42 +19,42 @@ jobs:
           - name: Lint
             command: lint
             runs-on: ubuntu-latest
-          - name: Test on Chrome Desktop${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
+          - name: Chrome Desktop${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
             command: test
             browser: chrome
             project: chrome-desktop
             runs-on: ubuntu-latest
-          - name: Test on MsEdge Desktop
+          - name: MsEdge Desktop
             command: test
             browser: msedge
             project: msedge-desktop
             runs-on: ubuntu-latest
-          - name: Test on Firefox Desktop
+          - name: Firefox Desktop
             command: test
             browser: firefox
             project: firefox-desktop
             runs-on: ubuntu-latest
-          - name: Test on Safari Desktop
+          - name: Safari Desktop
             command: test
             browser: webkit
             project: webkit-desktop
             runs-on: ubuntu-latest
-          - name: Test on Chromium Mobile
+          - name: Chromium Mobile
             command: test
             browser: chromium
             project: chromium-mobile
             runs-on: ubuntu-latest
-          - name: Test on Chromium Mobile Landscape
+          - name: Chromium Mobile Landscape
             command: test
             browser: chromium
             project: chromium-mobile-landscape
             runs-on: ubuntu-latest
-          - name: Test on MsEdge Desktop on Windows
+          - name: MsEdge Desktop (Windows)
             command: test
             browser: msedge
             project: msedge-desktop
             runs-on: windows-latest
-          - name: Test on Safari Desktop on MacOS
+          - name: Safari Desktop (MacOS)
             command: test
             browser: webkit
             project: webkit-desktop
