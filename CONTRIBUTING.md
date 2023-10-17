@@ -5,25 +5,25 @@
 - Install Rust with [rustup](https://rustup.rs/).
 - Add `wasm32-unknown-unknown` target with `rustup target add wasm32-unknown-unknown`.
 - Install [cargo-make](https://sagiegurari.github.io/cargo-make/) with `cargo install --force cargo-make`.
-- Ensure that you're using Node.js >= v18. With [nvm](https://github.com/nvm-sh/nvm) installed execute `nvm use`.
-- Install NodeJS with npm and dependencies with `npm install`.
+- Install NodeJS with npm and run `npm install`.
+- Install [nvm](https://github.com/nvm-sh/nvm).
 - Install Playwright browsers and dependencies with `npx playwright install --with-deps`.
 - Create an _.env_ file at the root including a Github personal token with the variable `GITHUB_TOKEN`.
 
 ## Commands
 
 - `cargo make`: Run `serve` and `watch-css` in parallel. Recommended for development.
-- `cargo make tests`: Build app for production and run tests with [Playwright](https://playwright.dev/).
-- `cargo make formats`: Format files. If you are using VSCode they should be formatted on save.
+- `cargo make test`: Build app for production and run tests with [Playwright](https://playwright.dev/).
+- `cargo make format`: Format files. If you are using VSCode they should be formatted on save.
 - `cargo make lint`: Check formatting of files.
-- `cargo make builds`: Build the website for production.
+- `cargo make build`: Build the website for production.
 - `cargo make serve`: Build the website for production and serve it with [anywhere](https://www.npmjs.com/package/anywhere).
-- `cargo make docs`: Build and open documentation.
+- `cargo make doc`: Build and open documentation.
 - `cargo make watch-css`: Watch the CSS files with [TailwindCSS](https://tailwindcss.com/).
 
 ## Testing
 
-Is useful to run only certain tests in a browser. For example: `cargo make tests --project=chrome-desktop --grep=header`
+Is useful to run only certain tests in a browser. For example: `cargo make test --project=chrome-desktop --grep=header`
 
 ## Arquitecture
 

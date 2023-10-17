@@ -3,18 +3,46 @@
 # https://docs.rs/web-sys/latest/web_sys/struct.Navigator.html#method.clipboard
 RUSTFLAGS = "--cfg=web_sys_unstable_apis"
 
+[config]
+init_task = "init"
+default_to_workspace = false
+
+[tasks.init]
+description = "Initialization task run before all others"
+run_task = { name = ["use_nvm_if_installed", "npm_ci", "setup_blobstream"] }
+
+[tasks.use_nvm_if_installed]
+description = "Run 'nvm use'"
+condition_script = ["which nvm"]
+command = "nvm"
+args = ["use"]
+
+[tasks.setup_blobstream]
+script_runner = "node"
+script_extension = "js"
+script = '''
+require('fs').copyFileSync(
+    'node_modules/blob-stream/.js',
+    'node_modules/blob-stream/blob-stream.js',
+)
+'''
+
+[tasks.npm_ci]
+description = "Run 'npm ci'"
+condition_script = ["which npm"]
+command = "npm"
+args = ["ci"]
+
 [tasks.default]
 alias = "dev"
 
 [tasks.dev]
 description = "Run the app and watch CSS on development"
 run_task = { name = ["run-pre-build-scripts", "serve-and-watch-css"] }
-workspace = false
 
 [tasks.serve-and-watch-css]
 description = "Run the app and watch CSS on development"
 run_task = { name = ["serve-for-dev", "watch-css"], parallel = true }
-workspace = false
 
 [tasks.serve-for-dev]
 description = "Serve the app on development"
@@ -39,35 +67,28 @@ args = [
     "--ignore",
     "../i18n/locales",
 ]
-workspace = false
 cwd = "./app"
 
-[tasks.docs]
+[tasks.doc]
+clear = true
 description = "Open components documentation"
 command = "cargo"
 args = ["doc", "--open", "--no-deps"]
-workspace = false
 
-[tasks.formats]
+[tasks.format]
+clear = true
 description = "Format files"
-run_task = { name = ["format-rust", "format-prettier"], parallel = false }
-workspace = false
+run_task = { name = ["format-rust", "format-prettier"] }
 
 [tasks.lint]
 description = "Check format of files and run linters"
-run_task = { name = [
-    "lint-prettier",
-    "lint-js",
-    "lint-rust",
-    "lint-css"
-], parallel = false }
-workspace = false
+run_task = { name = ["lint-prettier", "lint-js", "lint-rust", "lint-css"] }
 
-[tasks.tests]
+[tasks.test]
+clear = true
 description = "Run tests"
 command = "npx"
 args = ["playwright", "test", "--trace", "on", "${@}"]
-workspace = false
 cwd = "./end2end"
 
 [tasks.watch-css]
@@ -82,14 +103,13 @@ args = [
     "--watch",
     "--no-minify",
 ]
-workspace = false
 cwd = "."
 
-[tasks.builds]
+[tasks.build]
+clear = true
 description = "Build the app for production"
 install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
 run_task = { name = ["run-pre-build-scripts", "build-css", "build-wasm"] }
-workspace = false
 
 [tasks.build-wasm]
 description = "Build the WASM app for production"
@@ -97,7 +117,6 @@ install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
 command = "trunk"
 args = ["--config", "Trunk.prod.toml", "build", "--release"]
 cwd = "./app"
-workspace = false
 
 [tasks.build-css]
 description = "Build CSS with TailwindCSS for production"
@@ -110,74 +129,60 @@ args = [
     "./assets/dist/stylesheet.css",
 ]
 cwd = "./app"
-workspace = false
 
 [tasks.serve-for-prod]
 description = "Serve the app with anywhere"
 command = "npx"
 args = ["anywhere", "-d", "dist"]
 cwd = "./app"
-workspace = false
 
 [tasks.serve]
 description = "Build for production and serve"
 run_task = { name = ["builds", "serve-for-prod"] }
-workspace = false
 
 [tasks.format-rust-code]
 description = "Format Rust code with rustfmt"
 install_crate = "rustfmt"
-workspace = false
 command = "cargo"
 args = ["fmt", "--all"]
 
 [tasks.clippy]
 description = "Run clippy"
 install_crate = "clippy"
-workspace = false
 command = "cargo"
 args = ["clippy", "--", "-D", "warnings"]
 
 [tasks.lint-rust]
 description = "Lint Rust code"
 run_task = { name = ["clippy", "rustfmt-check", "leptosfmt-check"] }
-workspace = false
 
 [tasks.rustfmt-check]
 description = "Format Rust code with rustfmt"
 install_crate = "rustfmt"
-workspace = false
 command = "cargo"
 args = ["fmt", "--all", "--check"]
 
 [tasks.leptosfmt-check]
 description = "Check Leptos code format with leptosfmt"
 install_crate = "leptosfmt"
-workspace = false
 command = "leptosfmt"
 args = ["--check", "*/src/**/*.rs"]
 
 [tasks.leptosfmt-fix]
 description = "Fix Leptos code format with leptosfmt"
 install_crate = "leptosfmt"
-workspace = false
 command = "leptosfmt"
 args = ["fix", "*/src/**/*.rs"]
 
 [tasks.format-leptos-code]
 description = "Format leptos view! macros"
 install_crate = "leptosfmt"
-workspace = false
 command = "leptosfmt"
 args = ["*/src/**/*.rs"]
 
 [tasks.format-rust]
 description = "Format Rust code and leptos view! macros"
-run_task = { name = [
-    "format-rust-code",
-    "format-leptos-code"
-], parallel = false }
-workspace = false
+run_task = { name = ["format-rust-code", "format-leptos-code"] }
 
 [tasks.lint-css]
 description = "Lint CSS with stylelint"
@@ -190,31 +195,26 @@ args = [
     "--config",
     "app/.stylelintrc.json"
 ]
-workspace = false
 
 [tasks.format-prettier]
 description = "Format non Rust files in the project with prettier"
 command = "npx"
 args = ["prettier", "--write", ".", "--ignore-path", ".gitignore"]
-workspace = false
 
 [tasks.lint-prettier]
 description = "Check formatting of non Rust files in the project with prettier"
 command = "npx"
 args = ["prettier", "--check", ".", "--ignore-path", ".gitignore"]
-workspace = false
 
 [tasks.lint-js]
 description = "Lint JS and TS files in the project with ESLint"
 command = "npx"
 args = ["eslint", ".", "--ignore-path", ".gitignore"]
-workspace = false
 
 [tasks.fetch-deprecated-icons]
 description = "Fetch deprecated icons from simple-icons repository"
-command = "npm"
-args = ["run", "fetch-deprecated-icons"]
-workspace = false
+command = "ts-node"
+args = ["--esm", "scripts/fetch-deprecated-icons.ts"]
 
 [tasks.build-fast-fuzzy]
 description = "Build the fast-fuzzy JS library for the web"
@@ -226,19 +226,16 @@ args = [
     "--outfile=app/assets/dist/fast-fuzzy.js",
     "--minify",
 ]
-workspace = false
 
 [tasks.create-sitemap]
 description = "Create sitemap.xml asset"
-command = "npm"
-args = ["run", "create-sitemap"]
-workspace = false
+command = "ts-node"
+args = ["--esm", "scripts/create-sitemap.ts"]
 
 [tasks.create-cname]
 description = "Create CNAME"
-command = "npm"
-args = ["run", "create-cname"]
-workspace = false
+command = "ts-node"
+args = ["--esm", "scripts/create-cname.ts"]
 
 [tasks.run-pre-build-scripts]
 description = "Run pre-build scripts"
@@ -248,4 +245,3 @@ run_task = { name = [
     "create-sitemap",
     "create-cname",
 ], parallel = true }
-workspace = false
