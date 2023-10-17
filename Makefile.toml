@@ -139,7 +139,7 @@ cwd = "./app"
 
 [tasks.serve]
 description = "Build for production and serve"
-run_task = { name = ["builds", "serve-for-prod"] }
+run_task = { name = ["build", "serve-for-prod"] }
 
 [tasks.format-rust-code]
 description = "Format Rust code with rustfmt"
