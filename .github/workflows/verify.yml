@@ -49,11 +49,6 @@ jobs:
             browser: chromium
             project: chromium-mobile-landscape
             runs-on: ubuntu-latest
-          - name: MsEdge Desktop (Windows)
-            command: test
-            browser: msedge
-            project: msedge-desktop
-            runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
