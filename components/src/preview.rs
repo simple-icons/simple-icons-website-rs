@@ -1,23 +1,28 @@
 use crate::controls::download::download;
-use i18n::move_tr;
+use i18n::{move_tr, tr};
 use leptos::{html::Input, *};
-use macros::{get_number_of_icons, simple_icon_svg_path};
 use simple_icons::{color, sdk::title_to_slug};
+use simple_icons_macros::{get_number_of_icons, simple_icon_svg_path};
+use std::collections::HashMap;
 use wasm_bindgen::{closure::Closure, JsCast};
 use wasm_bindgen_futures;
 
+/// Initial brand when the preview is loaded
 fn initial_brand_value() -> String {
     "Simple Icons".to_string()
 }
 
+/// Initial color when the preview is loaded
 fn initial_color() -> String {
     "111111".to_string()
 }
 
+/// Initial SVG path when the preview is loaded
 fn initial_path() -> String {
     simple_icon_svg_path!("simpleicons").to_string()
 }
 
+/// Check if a string is a valid hex color
 fn is_valid_hex_color(value: &str) -> bool {
     if value.len() != 6 && value.len() != 3 {
         return false;
@@ -31,6 +36,7 @@ fn is_valid_hex_color(value: &str) -> bool {
     true
 }
 
+/// Get the URL of a badge
 fn badge_url(slug: &str, color: &str, svg: &str, style: &str) -> String {
     format!(
         "https://img.shields.io/badge/{}-preview-{}.svg?style={}&logo=data:image/svg%2bxml;base64,{}",
@@ -38,6 +44,25 @@ fn badge_url(slug: &str, color: &str, svg: &str, style: &str) -> String {
         color,
         style,
         window().btoa(svg).unwrap(),
+    )
+}
+
+/// Get the contrast color for a given hex color
+fn contrast_color_for(hex: &str) -> String {
+    let is_light_hex =
+        is_valid_hex_color(hex) && color::is_relatively_light_icon_hex(hex);
+    if is_light_hex { "black" } else { "white" }.to_string()
+}
+
+/// Build a SVG string with the 24px24 viewBox and an optional `fill` attribute
+fn build_svg(path: &str, fill: Option<&str>) -> String {
+    format!(
+        "<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"{}\"{}/></svg>",
+        path,
+        match fill {
+            Some(fill) => format!(" fill=\"#{}\"", fill),
+            None => "".to_string(),
+        }
     )
 }
 
@@ -54,6 +79,26 @@ impl PreviewButtonSvgPath {
             Self::Download => "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9",
             Self::Save => "M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z",
         }
+    }
+}
+
+/// Component to create buttons on the preview using SVG icons
+#[component]
+fn PreviewButton<T>(
+    svg_path: PreviewButtonSvgPath,
+    title: T,
+    #[prop(optional)] class: &'static str,
+) -> impl IntoView
+where
+    T: Fn() -> String + 'static + Copy,
+{
+    view! {
+        <button title=title class=class type="button">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+                <path d=svg_path.as_str()></path>
+            </svg>
+            {title}
+        </button>
     }
 }
 
@@ -147,8 +192,8 @@ macro_rules! draw_badge_impl {
     }};
 }
 
+/// Draw the current badges in the canvas
 fn update_badges_in_canvas() {
-    // Draw the badges in the canvas
     draw_badge_impl!(0, 15, 15);
     draw_badge_impl!(1, 173, 16);
     draw_badge_impl!(2, 335, 6);
@@ -160,6 +205,7 @@ fn update_badges_in_canvas() {
     draw_badge_impl!(7, 560, 41);
 }
 
+/// Function triggered to update the canvas with the current SVG
 fn update_canvas() {
     let container = document()
         .get_elements_by_class_name("preview-body")
@@ -238,22 +284,7 @@ fn update_canvas() {
         .unwrap();
 }
 
-#[component]
-fn PreviewButton(
-    svg_path: PreviewButtonSvgPath,
-    title: &'static str,
-    #[prop(optional)] class: &'static str,
-) -> impl IntoView {
-    view! {
-        <button title=title class=class type="button">
-            <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
-                <path d=svg_path.as_str()></path>
-            </svg>
-            {title}
-        </button>
-    }
-}
-
+/// Function triggered when the user uploads a SVG file
 async fn on_upload_svg_file(
     file: web_sys::File,
     set_color: WriteSignal<String>,
@@ -308,31 +339,15 @@ async fn on_upload_svg_file(
     }
 }
 
+/// Preview generator
 #[component]
-pub fn PreviewBox() -> impl IntoView {
+pub fn PreviewGenerator() -> impl IntoView {
     let (brand, set_brand) = create_signal(initial_brand_value());
     let brand_input_ref = create_node_ref::<Input>();
     let (color, set_color) = create_signal(initial_color());
     let color_input_ref = create_node_ref::<Input>();
     let (path, set_path) = create_signal(initial_path());
     let path_input_ref = create_node_ref::<Input>();
-
-    fn contrast_color_for(hex: &str) -> String {
-        let is_light_hex =
-            is_valid_hex_color(hex) && color::is_relatively_light_icon_hex(hex);
-        if is_light_hex { "black" } else { "white" }.to_string()
-    }
-
-    fn build_svg(path: &str, fill: Option<&str>) -> String {
-        format!(
-            "<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"{}\"{}/></svg>",
-            path,
-            match fill {
-                Some(fill) => format!(" fill=\"#{}\"", fill),
-                None => "".to_string(),
-            }
-        )
-    }
 
     view! {
         <div class="preview">
@@ -354,7 +369,7 @@ pub fn PreviewBox() -> impl IntoView {
 
                 </div>
                 <div class="preview-input-group">
-                    <label for="preview-color">Color</label>
+                    <label for="preview-color">{move_tr!("color")}</label>
                     <input
                         _ref=color_input_ref
                         type="text"
@@ -381,7 +396,7 @@ pub fn PreviewBox() -> impl IntoView {
                 </div>
             </div>
             <div class="preview-input-group">
-                <label for="preview-path">Path</label>
+                <label for="preview-path">{move_tr!("path")}</label>
                 <input
                     _ref=path_input_ref
                     type="text"
@@ -559,7 +574,7 @@ pub fn PreviewBox() -> impl IntoView {
 
                     <PreviewButton
                         svg_path=PreviewButtonSvgPath::Upload
-                        title="Upload SVG"
+                        title=move_tr!("upload-svg")
                         on:click=move |el| {
                             let input = document()
                                 .query_selector("input[name='upload-svg']")
@@ -576,7 +591,7 @@ pub fn PreviewBox() -> impl IntoView {
                 </form>
                 <PreviewButton
                     svg_path=PreviewButtonSvgPath::Save
-                    title="Save preview"
+                    title=move_tr!("save-preview")
                     class="float-right ml-4"
                     on:click=move |el| {
                         let figure = document()
@@ -601,7 +616,11 @@ pub fn PreviewBox() -> impl IntoView {
 
                 <PreviewButton
                     svg_path=PreviewButtonSvgPath::Download
-                    title="Download SVG"
+                    title=move_tr!(
+                        "download-filetype", & { let mut map = HashMap::new(); map.insert("filetype"
+                        .to_string(), tr!("svg") .into()); map }
+                    )
+
                     class="float-right"
                     on:click=move |el| {
                         let filename = format!("{}.svg", title_to_slug(&brand()));

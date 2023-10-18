@@ -1,7 +1,7 @@
 use crate::header::HeaderStateSignal;
 use i18n::{move_tr, tr};
 use leptos::*;
-use macros::get_number_of_icons;
+use simple_icons_macros::get_number_of_icons;
 use std::collections::HashMap;
 
 /// Header title

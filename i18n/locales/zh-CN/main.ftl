@@ -61,3 +61,7 @@ view-icon = 看法 { $icon }
 copy-hex-color = 复制十六进制颜色
 discord = Discord
 brand = 品牌
+color = 顏色
+path = 小路
+upload-svg = 上传 SVG
+save-preview = 保存预览

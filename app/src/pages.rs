@@ -6,7 +6,7 @@ use components::controls::order::provide_order_mode_context;
 use components::controls::search::provide_search_context;
 use components::controls::Controls;
 use components::grid::{provide_icons_grid_contexts, Grid};
-use components::preview::PreviewBox;
+use components::preview::PreviewGenerator;
 use leptos::*;
 
 #[component]
@@ -32,6 +32,6 @@ pub fn Preview() -> impl IntoView {
         <menu class="-mt-4 bg-transparent">
             <ColorSchemeControl/>
         </menu>
-        <PreviewBox/>
+        <PreviewGenerator/>
     }
 }

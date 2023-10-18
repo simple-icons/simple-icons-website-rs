@@ -61,3 +61,7 @@ view-icon = { $icon } を見る
 copy-hex-color = 16 進数の色をコピー
 discord = Discord
 brand = ブランド
+color = 色
+path = Path
+upload-svg = SVG をアップロード
+save-preview = プレビューを保存

@@ -6,7 +6,7 @@ edition.workspace = true
 
 [lib]
 proc-macro = true
-name = "macros"
+name = "simple_icons_macros"
 path = "src/lib.rs"
 
 [dependencies]

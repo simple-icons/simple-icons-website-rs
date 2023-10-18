@@ -3,7 +3,7 @@ use crate::modal::Modal;
 use crate::modal::{ModalOpen, ModalOpenSignal};
 use i18n::move_tr;
 use leptos::*;
-use macros::get_simple_icons_3rd_party_extensions;
+use simple_icons_macros::get_simple_icons_3rd_party_extensions;
 use types::ThirdPartyExtension;
 
 static THIRD_PARTY_EXTENSIONS: &[ThirdPartyExtension] =

@@ -2,7 +2,7 @@
 
 use i18n::{move_tr, tr};
 use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
-use macros::simple_icon_svg_path;
+use simple_icons_macros::simple_icon_svg_path;
 use std::collections::HashMap;
 
 static TWITTER_ICON_SVG_PATH: &str = simple_icon_svg_path!("twitter");

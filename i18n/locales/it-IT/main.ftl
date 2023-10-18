@@ -61,3 +61,7 @@ view-icon = Visualizza { $icon }
 copy-hex-color = Copia colore esadecimale
 discord = Discord
 brand = Marca
+color = Colore
+path = Path
+upload-svg = Carica SVG
+save-preview = Salva anteprima

@@ -14,8 +14,8 @@ use leptos::{
     html::{Footer, HtmlElement},
     NodeRef, *,
 };
-use macros::{get_number_of_icons, icons_array};
 use scroll::ScrollButtons;
+use simple_icons_macros::{get_number_of_icons, icons_array};
 use std::time::Duration;
 use types::SimpleIcon;
 use wasm_bindgen::{closure::Closure, JsCast};

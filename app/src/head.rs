@@ -2,7 +2,7 @@ use crate::app::TITLE;
 use i18n::{move_tr, tr};
 use leptos::*;
 use leptos_meta::*;
-use macros::get_number_of_icons;
+use simple_icons_macros::get_number_of_icons;
 use simple_icons_website_config::CONFIG;
 use std::collections::HashMap;
 

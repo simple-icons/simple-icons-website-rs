@@ -61,3 +61,7 @@ view-icon = { $icon } 보기
 copy-hex-color = 16진수 색상 복사
 discord = Discord
 brand = 상표
+color = 색상
+path = Path
+upload-svg = SVG 업로드
+save-preview = 미리보기 저장

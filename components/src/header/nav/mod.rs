@@ -13,7 +13,7 @@ use crate::header::{
 use crate::svg_defs::SVGDefs;
 use i18n::move_tr;
 use leptos::*;
-use macros::simple_icon_svg_path;
+use simple_icons_macros::simple_icon_svg_path;
 
 // UNPKG icon is not available in simple-icons
 // Requested at https://github.com/simple-icons/simple-icons/issues/8475
