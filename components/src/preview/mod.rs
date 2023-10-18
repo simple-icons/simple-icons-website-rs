@@ -1,3 +1,4 @@
+use crate::controls::download::download;
 use i18n::move_tr;
 use leptos::{html::Input, *};
 use macros::{get_number_of_icons, simple_icon_svg_path};
@@ -41,12 +42,16 @@ fn badge_url(slug: &str, color: &str, svg: &str, style: &str) -> String {
 
 enum PreviewButtonSvgPath {
     Upload,
+    Download,
+    Save,
 }
 
 impl PreviewButtonSvgPath {
     fn as_str(&self) -> &'static str {
         match self {
             Self::Upload => "M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5",
+            Self::Download => "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9",
+            Self::Save => "M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z",
         }
     }
 }
@@ -105,6 +110,7 @@ macro_rules! draw_badge_impl {
                 &format!("preview-badge-image-for-canvas-{}", $badge_index),
             )
             .unwrap();
+        badge_img_for_canvas.set_cross_origin(Some("anonymous"));
 
         document()
             .body()
@@ -143,13 +149,13 @@ macro_rules! draw_badge_impl {
 fn update_badges_in_canvas() {
     // Draw the badges in the canvas
     draw_badge_impl!(0, 15, 15);
-    draw_badge_impl!(1, 173, 17);
+    draw_badge_impl!(1, 173, 16);
     draw_badge_impl!(2, 335, 6);
     draw_badge_impl!(3, 562, 15);
 
     draw_badge_impl!(4, 15, 41);
-    draw_badge_impl!(5, 173, 42);
-    draw_badge_impl!(6, 335, 40);
+    draw_badge_impl!(5, 173, 41);
+    draw_badge_impl!(6, 335, 39);
     draw_badge_impl!(7, 560, 41);
 }
 
@@ -195,6 +201,7 @@ fn update_canvas() {
     preview_card_img
         .set_attribute("id", "preview-card-image-for-canvas")
         .unwrap();
+    preview_card_img.set_cross_origin(Some("anonymous"));
     document()
         .body()
         .unwrap()
@@ -234,10 +241,11 @@ fn update_canvas() {
 fn PreviewButton(
     svg_path: PreviewButtonSvgPath,
     title: &'static str,
+    #[prop(optional)] class: &'static str,
 ) -> impl IntoView {
     view! {
-        <button title=title>
-            <svg aria-hidden="true" viewBox="0 0 24 24">
+        <button title=title class=class>
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
                 <path d=svg_path.as_str()></path>
             </svg>
             {title}
@@ -404,7 +412,7 @@ pub fn PreviewBox() -> impl IntoView {
                         </g>
                     </g>
                 </svg>
-                <canvas height="490" width="721" style="opacity:0;"></canvas>
+                <canvas height="490" width="721"></canvas>
             </figure>
             <div class="preview-badges">
                 <div>
@@ -478,6 +486,47 @@ pub fn PreviewBox() -> impl IntoView {
             </div>
             <div class="preview-buttons">
                 <PreviewButton svg_path=PreviewButtonSvgPath::Upload title="Upload SVG"/>
+                <PreviewButton
+                    svg_path=PreviewButtonSvgPath::Save
+                    title="Save preview"
+                    class="float-right ml-4"
+                    on:click=move |el| {
+                        let figure = document()
+                            .get_elements_by_class_name("preview-body")
+                            .item(0)
+                            .unwrap()
+                            .dyn_into::<web_sys::HtmlElement>()
+                            .unwrap();
+                        let canvas = figure
+                            .get_elements_by_tag_name("canvas")
+                            .item(0)
+                            .unwrap()
+                            .dyn_into::<web_sys::HtmlCanvasElement>()
+                            .unwrap();
+                        let filename = format!("{}.png", title_to_slug(&brand()));
+                        let url = canvas.to_data_url().unwrap();
+                        download(&filename, &url);
+                        let target = el.target().unwrap();
+                        target.dyn_into::<web_sys::HtmlElement>().unwrap().blur().unwrap();
+                    }
+                />
+
+                <PreviewButton
+                    svg_path=PreviewButtonSvgPath::Download
+                    title="Download SVG"
+                    class="float-right"
+                    on:click=move |el| {
+                        let filename = format!("{}.svg", title_to_slug(&brand()));
+                        let url = format!(
+                            "data:image/svg+xml;utf8,{}",
+                            js_sys::encode_uri_component(&build_svg(&path(), None)),
+                        );
+                        download(&filename, &url);
+                        let target = el.target().unwrap();
+                        target.dyn_into::<web_sys::HtmlElement>().unwrap().blur().unwrap();
+                    }
+                />
+
             </div>
         </div>
     }

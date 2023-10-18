@@ -6,7 +6,11 @@
       bg-[var(--grid-item-background-color)];
   }
 
-  .preview > div {
+  .preview-badges > div {
+    @apply grid place-content-center;
+  }
+
+  .preview > div:not(:last-child) {
     @apply whitespace-nowrap mb-3;
   }
 
@@ -33,7 +37,7 @@
   }
 
   .preview-body > canvas {
-    @apply absolute top-[127px] left-[33px];
+    @apply absolute top-[127px] left-[33px] opacity-0;
   }
 
   .preview-badges {
@@ -41,11 +45,16 @@
       grid grid-rows-2 grid-cols-4 gap-x-1 gap-y-1.5;
   }
 
-  .preview-badges > div {
-    @apply grid place-content-center;
+  .preview-buttons {
+    @apply border-t-[var(--divider-color)] border-t
+      pt-5;
   }
 
-  .preview-buttons {
-    @apply border-t-[var(--divider-color)] border-t-2;
+  .preview-buttons button {
+    @apply button;
+  }
+
+  .preview-buttons button svg {
+    @apply mr-1.5;
   }
 }

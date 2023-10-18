@@ -74,6 +74,16 @@ pub fn IconsLoader() -> impl IntoView {
                 }
             >
 
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20px"
+                    height="20px"
+                    viewBox="0 0 24 24"
+                    class="-mt-0.5 mr-0.5"
+                >
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                </svg>
                 {move_tr!("load-more-icons")}
             </button>
             <TripleDotsSpinner hidden_frames=1 hidden=move || !icons_loader().loading/>

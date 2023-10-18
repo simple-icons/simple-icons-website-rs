@@ -9,14 +9,7 @@
 
   /* Button to load more icons manually */
   .icons-loader > button {
-    @apply py-2 px-4 rounded text-sm
-      text-custom-button-content-default-color
-      hover:text-custom-button-content-hover-color
-      focus:text-custom-button-content-hover-color
-      bg-custom-button-background-default-color
-      hover:bg-custom-button-background-hover-color
-      focus:bg-custom-button-background-hover-color
-      shadow-[0_0_3px_0_var(--shadows-color)];
+    @apply button;
   }
 
   /* Spinner to show when loading more icons */
