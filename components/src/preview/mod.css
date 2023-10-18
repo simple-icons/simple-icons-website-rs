@@ -42,7 +42,8 @@
 
   .preview-badges {
     @apply w-[700px] mx-auto py-[14px]
-      grid grid-rows-2 grid-cols-4 gap-x-1 gap-y-1.5;
+      grid gap-x-1 gap-y-1.5 grid-rows-2
+      grid-cols-[150px_150px_220px_fit-content(100%)];
   }
 
   .preview-buttons {

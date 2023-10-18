@@ -4,6 +4,7 @@ use leptos::{html::Input, *};
 use macros::{get_number_of_icons, simple_icon_svg_path};
 use simple_icons::{color, sdk::title_to_slug};
 use wasm_bindgen::{closure::Closure, JsCast};
+use wasm_bindgen_futures;
 
 fn initial_brand_value() -> String {
     "Simple Icons".to_string()
@@ -244,12 +245,66 @@ fn PreviewButton(
     #[prop(optional)] class: &'static str,
 ) -> impl IntoView {
     view! {
-        <button title=title class=class>
+        <button title=title class=class type="button">
             <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
                 <path d=svg_path.as_str()></path>
             </svg>
             {title}
         </button>
+    }
+}
+
+async fn on_upload_svg_file(
+    file: web_sys::File,
+    set_color: WriteSignal<String>,
+    set_brand: WriteSignal<String>,
+    set_path: WriteSignal<String>,
+) {
+    match wasm_bindgen_futures::JsFuture::from(file.text()).await {
+        Ok(text) => {
+            let value = text.as_string().unwrap();
+
+            // Set color
+            if value.contains("fill=\"") {
+                let hex = value
+                    .split("fill=\"")
+                    .nth(1)
+                    .unwrap()
+                    .split('"')
+                    .next()
+                    .unwrap()
+                    .replace('#', "")
+                    .to_uppercase();
+                if is_valid_hex_color(&hex) {
+                    set_color(hex.to_string());
+                }
+            }
+
+            // Set brand
+            if value.contains("<title>") && value.contains("</title>") {
+                let brand = value
+                    .split("<title>")
+                    .nth(1)
+                    .unwrap()
+                    .split("</title>")
+                    .next()
+                    .unwrap();
+                set_brand(brand.to_string());
+            }
+
+            // Set path
+            if value.contains(" d=\"") {
+                let path = value
+                    .split(" d=\"")
+                    .nth(1)
+                    .unwrap()
+                    .split('"')
+                    .next()
+                    .unwrap();
+                set_path(path.to_string());
+            }
+        }
+        Err(err) => ::log::error!("Error reading uploaded SVG file: {:?}", err),
     }
 }
 
@@ -485,7 +540,40 @@ pub fn PreviewBox() -> impl IntoView {
                 </div>
             </div>
             <div class="preview-buttons">
-                <PreviewButton svg_path=PreviewButtonSvgPath::Upload title="Upload SVG"/>
+                <form class="inline-block">
+                    <input
+                        type="file"
+                        name="upload-svg"
+                        accept=".svg"
+                        class="absolute w-0 h-0 -z-index-1"
+                        on:change=move |ev| {
+                            let input = ev
+                                .target()
+                                .unwrap()
+                                .dyn_into::<web_sys::HtmlInputElement>()
+                                .unwrap();
+                            let file = input.files().unwrap().get(0).unwrap();
+                            spawn_local(on_upload_svg_file(file, set_color, set_brand, set_path));
+                        }
+                    />
+
+                    <PreviewButton
+                        svg_path=PreviewButtonSvgPath::Upload
+                        title="Upload SVG"
+                        on:click=move |el| {
+                            let input = document()
+                                .query_selector("input[name='upload-svg']")
+                                .unwrap()
+                                .unwrap()
+                                .dyn_into::<web_sys::HtmlInputElement>()
+                                .unwrap();
+                            input.click();
+                            let target = el.target().unwrap();
+                            target.dyn_into::<web_sys::HtmlElement>().unwrap().blur().unwrap();
+                        }
+                    />
+
+                </form>
                 <PreviewButton
                     svg_path=PreviewButtonSvgPath::Save
                     title="Save preview"
