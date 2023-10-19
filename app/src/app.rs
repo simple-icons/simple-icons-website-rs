@@ -95,20 +95,8 @@ pub fn App() -> impl IntoView {
         <main>
             <Router>
                 <Routes>
-                    <Route
-                        path="/"
-                        view=move || {
-                            view! { <Index/> }
-                        }
-                    />
-
-                    <Route
-                        path="/preview"
-                        view=move || {
-                            view! { <Preview/> }
-                        }
-                    />
-
+                    <Route path="/preview" view=Preview/>
+                    <Route path="/*any" view=Index/>
                 </Routes>
             </Router>
         </main>
