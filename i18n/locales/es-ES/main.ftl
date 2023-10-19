@@ -63,5 +63,5 @@ discord = Discord
 brand = Marca
 color = Color
 path = Path
-upload-svg = Subir SVG
+upload-svg = Cargar SVG
 save-preview = Guardar vista previa

@@ -1,4 +1,4 @@
-mod fuzzy;
+pub mod fuzzy;
 
 use crate::controls::layout::LayoutSignal;
 use crate::controls::order::{

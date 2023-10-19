@@ -67,6 +67,7 @@ body.light {
   --button-content-default-color: rgb(51 51 51);
   --button-content-hover-color: rgb(252 252 252);
   --button-content-selected-color: rgb(252 252 252);
+  --button-background-default-color: rgb(255 255 255);
   --button-background-selected-color: rgb(51 51 51);
   --button-background-hover-color: rgb(51 51 51);
   --shadows-color: rgba(0 0 0 / 50%);
@@ -96,34 +97,6 @@ body.light {
     @apply px-[var(--margin-x)]
       sm:px-[var(--margin-x-sm)]
       md:px-[var(--margin-x-md)];
-  }
-
-  /**
-   * Default text button.
-   **/
-  .button {
-    @apply py-2 px-3 rounded text-sm
-      text-custom-button-content-default-color
-      hover:text-custom-button-content-hover-color
-      focus:text-custom-button-content-default-color
-      bg-custom-button-background-default-color
-      hover:bg-custom-button-background-hover-color
-      focus:bg-custom-button-background-default-color
-      shadow-[0_0_3px_0_var(--shadows-color)]
-      uppercase font-bold;
-  }
-
-  .button svg {
-    @apply inline-block
-      fill-custom-button-content-default-color;
-  }
-
-  .button:hover svg {
-    @apply fill-custom-button-content-hover-color;
-  }
-
-  .button:focus svg {
-    @apply fill-custom-button-content-default-color;
   }
 
   /**

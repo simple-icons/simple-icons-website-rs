@@ -2,6 +2,7 @@
 #![feature(stmt_expr_attributes)]
 #![feature(async_closure)]
 
+pub mod button;
 pub mod controls;
 pub mod copy;
 pub(crate) mod fetch;

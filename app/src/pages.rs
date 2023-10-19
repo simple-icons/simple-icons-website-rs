@@ -29,7 +29,7 @@ pub fn Index() -> impl IntoView {
 #[component]
 pub fn Preview() -> impl IntoView {
     view! {
-        <menu class="-mt-4 bg-transparent">
+        <menu class="-mt-4 lg:bg-transparent">
             <ColorSchemeControl/>
         </menu>
         <PreviewGenerator/>

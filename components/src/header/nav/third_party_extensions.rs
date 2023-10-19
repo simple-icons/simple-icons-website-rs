@@ -21,7 +21,7 @@ pub fn ThirdPartyExtensionsTable() -> impl IntoView {
                         view! {
                             <tr>
                                 <td>
-                                    <a href=extension.url>
+                                    <a href=extension.url target="_blank">
                                         <svg fill="currentColor" viewBox="0 0 24 24">
                                             <path d=extension.icon_slug></path>
                                         </svg>
@@ -29,7 +29,9 @@ pub fn ThirdPartyExtensionsTable() -> impl IntoView {
                                     </a>
                                 </td>
                                 <td>
-                                    <a href=extension.author_url>{extension.author_name}</a>
+                                    <a target="_blank" href=extension.author_url>
+                                        {extension.author_name}
+                                    </a>
                                 </td>
                             </tr>
                         }

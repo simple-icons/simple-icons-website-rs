@@ -10,6 +10,9 @@
 /* Footer */
 @import './footer.css';
 
+/* Buttons */
+@import './button.css';
+
 /* Copy buttons */
 @import './copy.css';
 

@@ -1,6 +1,6 @@
 @layer components {
   .preview {
-    @apply relative z-30 -mt-11 w-[790px] ml-36 my-3 px-6 py-5
+    @apply relative lg:z-30 lg:-mt-11 w-[790px] lg:ml-36 my-3 px-6 py-5
       border border-opacity-10 border-[var(--divider-color)] rounded-md
       text-[var(--text-default-color)]
       bg-[var(--grid-item-background-color)];
@@ -55,7 +55,42 @@
     @apply button;
   }
 
-  .preview-buttons button svg {
-    @apply mr-1.5;
+  .preview-brand-suggestions {
+    @apply absolute z-40 ml-[60px] mt-2 max-h-[319px]
+      border border-[var(--divider-color)]
+      rounded-br-md rounded-tr-md rounded-bl-md overflow-hidden;
+  }
+
+  .preview-brand-suggestions li {
+    @apply flex items-center p-3 cursor-pointer
+      bg-[var(--button-background-default-color)]
+      hover:bg-[var(--button-background-hover-color)]
+      text-[var(--button-content-default-color)]
+      hover:text-custom-button-content-hover-color;
+  }
+
+  .preview-brand-suggestions li img {
+    @apply w-[21px] h-[21px] mr-3 inline-block invert-0 dark:invert;
+  }
+
+  .preview-brand-suggestions li span {
+    @apply text-sm;
+  }
+
+  .preview-brand-suggestions li:hover img {
+    @apply invert dark:invert-0;
+  }
+
+  .preview-brand-suggestions .more-suggestions {
+    @apply p-[3px] border-t border-t-[var(--divider-color)];
+  }
+
+  .preview-brand-suggestions .more-suggestions span {
+    @apply w-full text-[var(--button-content-default-color)]
+      text-center text-lg pointer-events-none;
+  }
+
+  .preview-brand-suggestions .more-suggestions:hover span {
+    @apply text-[var(--button-content-hover-color)];
   }
 }

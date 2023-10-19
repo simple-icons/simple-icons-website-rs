@@ -1,9 +1,14 @@
+use crate::button::Button;
 use crate::controls::download::download;
+use crate::controls::search::fuzzy::search;
+use crate::fetch::fetch_text_forcing_cache;
+use crate::grid::ICONS;
 use i18n::{move_tr, tr};
 use leptos::{html::Input, *};
 use simple_icons::{color, sdk::title_to_slug};
 use simple_icons_macros::{get_number_of_icons, simple_icon_svg_path};
 use std::collections::HashMap;
+use types::SimpleIcon;
 use wasm_bindgen::{closure::Closure, JsCast};
 use wasm_bindgen_futures;
 
@@ -66,6 +71,16 @@ fn build_svg(path: &str, fill: Option<&str>) -> String {
     )
 }
 
+fn path_from_simple_icon_svg(svg: &str) -> String {
+    svg.split(" d=\"")
+        .nth(1)
+        .unwrap()
+        .split('"')
+        .next()
+        .unwrap()
+        .to_string()
+}
+
 enum PreviewButtonSvgPath {
     Upload,
     Download,
@@ -79,26 +94,6 @@ impl PreviewButtonSvgPath {
             Self::Download => "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9",
             Self::Save => "M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z",
         }
-    }
-}
-
-/// Component to create buttons on the preview using SVG icons
-#[component]
-fn PreviewButton<T>(
-    svg_path: PreviewButtonSvgPath,
-    title: T,
-    #[prop(optional)] class: &'static str,
-) -> impl IntoView
-where
-    T: Fn() -> String + 'static + Copy,
-{
-    view! {
-        <button title=title class=class type="button">
-            <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
-                <path d=svg_path.as_str()></path>
-            </svg>
-            {title}
-        </button>
     }
 }
 
@@ -339,15 +334,100 @@ async fn on_upload_svg_file(
     }
 }
 
+fn search_brand_suggestions(
+    value: &str,
+) -> (Vec<&'static SimpleIcon>, Vec<&'static SimpleIcon>) {
+    let mut icons: Vec<&'static SimpleIcon> = Vec::with_capacity(6);
+    let mut more_icons: Vec<&'static SimpleIcon> = Vec::new();
+    let search_result = js_sys::Array::from(&search(value));
+    let search_result_length = search_result.length();
+    for i in 0..search_result_length {
+        let result_icon_array = js_sys::Array::from(&search_result.get(i));
+        let icon_order_alpha = result_icon_array.get(1).as_f64().unwrap();
+        if i > 5 {
+            more_icons.push(&ICONS[icon_order_alpha as usize]);
+        } else {
+            icons.push(&ICONS[icon_order_alpha as usize]);
+        }
+    }
+    (icons, more_icons)
+}
+
+#[component]
+fn BrandSuggestion(icon: &'static SimpleIcon) -> impl IntoView {
+    view! {
+        <li>
+            <a>
+                <img src=format!("./icons/{}.svg", icon.slug) width="24px" height="24px"/>
+                <span>{icon.title}</span>
+            </a>
+        </li>
+    }
+}
+
+fn on_click_brand_suggestion(
+    icon: &'static SimpleIcon,
+    set_brand: WriteSignal<String>,
+    set_color: WriteSignal<String>,
+    set_path: WriteSignal<String>,
+) {
+    set_brand(icon.title.to_string());
+    set_color(icon.hex.to_string());
+    spawn_local(async move {
+        if let Some(svg) =
+            fetch_text_forcing_cache(&format!("/icons/{}.svg", icon.slug)).await
+        {
+            set_path(path_from_simple_icon_svg(&svg));
+        }
+
+        update_canvas();
+    });
+}
+
 /// Preview generator
 #[component]
 pub fn PreviewGenerator() -> impl IntoView {
     let (brand, set_brand) = create_signal(initial_brand_value());
+    let (brand_suggestions, set_brand_suggestions) =
+        create_signal(Vec::<&SimpleIcon>::with_capacity(6));
+    let (more_brand_suggestions, set_more_brand_suggestions) =
+        create_signal(Vec::<&SimpleIcon>::with_capacity(6));
+    let (show_brand_suggestions, set_show_brand_suggestions) =
+        create_signal(false);
+    let (show_more_brand_suggestions, set_show_more_brand_suggestions) =
+        create_signal(false);
     let brand_input_ref = create_node_ref::<Input>();
+
     let (color, set_color) = create_signal(initial_color());
     let color_input_ref = create_node_ref::<Input>();
+
     let (path, set_path) = create_signal(initial_path());
     let path_input_ref = create_node_ref::<Input>();
+
+    // Hide the brand suggestions when the user clicks outside the input
+    let body = document().body().unwrap();
+    let closure: Closure<dyn FnMut(web_sys::MouseEvent)> =
+        Closure::new(move |ev: web_sys::MouseEvent| {
+            let target = ev
+                .target()
+                .unwrap()
+                .dyn_into::<web_sys::HtmlElement>()
+                .unwrap();
+            if target.get_attribute("name").unwrap_or("".to_string())
+                == "preview-brand"
+            {
+                return;
+            }
+            if target.get_attribute("class").unwrap_or("".to_string())
+                == "more-suggestions"
+            {
+                return;
+            }
+            set_show_brand_suggestions(false);
+            set_show_more_brand_suggestions(false);
+        });
+    body.set_onclick(Some(closure.as_ref().unchecked_ref()));
+    closure.forget();
 
     view! {
         <div class="preview">
@@ -361,12 +441,113 @@ pub fn PreviewGenerator() -> impl IntoView {
                         style="width:524px"
                         name="preview-brand"
                         value=brand
+                        prop:value=brand
                         on:input=move |_| {
                             set_brand(brand_input_ref.get().unwrap().value());
                             update_canvas();
+                            let value = brand_input_ref.get().unwrap().value();
+                            let (bs, more_bs) = search_brand_suggestions(&value);
+                            let more_bs_length = more_bs.len();
+                            set_brand_suggestions(bs);
+                            set_more_brand_suggestions(more_bs);
+                            set_show_brand_suggestions(true);
+                            if value.len() < 4 || more_bs_length == 0 {
+                                set_show_more_brand_suggestions(false);
+                            }
+                        }
+
+                        on:focus=move |_| {
+                            let value = brand_input_ref.get().unwrap().value();
+                            let (bs, more_bs) = search_brand_suggestions(&value);
+                            set_brand_suggestions(bs);
+                            set_more_brand_suggestions(more_bs);
+                            set_show_brand_suggestions(true);
                         }
                     />
 
+                    <ul
+                        class=move || {
+                            let mut cls = "preview-brand-suggestions".to_string();
+                            if show_more_brand_suggestions() {
+                                cls.push_str(" overflow-y-scroll");
+                            }
+                            cls
+                        }
+
+                        class:hidden=move || {
+                            !show_brand_suggestions() || brand_suggestions().is_empty()
+                        }
+                    >
+
+                        {move || {
+                            if !show_brand_suggestions() {
+                                return vec![];
+                            }
+                            let mut suggestions_containers = vec![];
+                            let bs = brand_suggestions();
+                            for icon in bs {
+                                suggestions_containers
+                                    .push(
+                                        view! {
+                                            <BrandSuggestion
+                                                icon=icon
+                                                on:click=move |_| {
+                                                    on_click_brand_suggestion(
+                                                        icon,
+                                                        set_brand,
+                                                        set_color,
+                                                        set_path,
+                                                    );
+                                                }
+                                            />
+                                        },
+                                    );
+                            }
+                            if !show_more_brand_suggestions() {
+                                if !more_brand_suggestions().is_empty() {
+                                    suggestions_containers
+                                        .push(
+                                            view! {
+                                                <>
+                                                    <li
+                                                        class="more-suggestions"
+                                                        on:click=move |_| {
+                                                            set_show_more_brand_suggestions(true);
+                                                        }
+                                                    >
+
+                                                        <span>+</span>
+                                                    </li>
+                                                </>
+                                            }
+                                                .into(),
+                                        );
+                                }
+                            } else {
+                                let more_bs = more_brand_suggestions();
+                                for icon in more_bs {
+                                    suggestions_containers
+                                        .push(
+                                            view! {
+                                                <BrandSuggestion
+                                                    icon=icon
+                                                    on:click=move |_| {
+                                                        on_click_brand_suggestion(
+                                                            icon,
+                                                            set_brand,
+                                                            set_color,
+                                                            set_path,
+                                                        );
+                                                    }
+                                                />
+                                            },
+                                        );
+                                }
+                            }
+                            suggestions_containers
+                        }}
+
+                    </ul>
                 </div>
                 <div class="preview-input-group">
                     <label for="preview-color">{move_tr!("color")}</label>
@@ -402,7 +583,8 @@ pub fn PreviewGenerator() -> impl IntoView {
                     type="text"
                     style="width:682px"
                     name="preview-path"
-                    value=simple_icon_svg_path!("simpleicons")
+                    value=path
+                    prop:value=path
                     on:input=move |_| {
                         set_path(path_input_ref.get().unwrap().value());
                         update_canvas();
@@ -572,8 +754,8 @@ pub fn PreviewGenerator() -> impl IntoView {
                         }
                     />
 
-                    <PreviewButton
-                        svg_path=PreviewButtonSvgPath::Upload
+                    <Button
+                        svg_path=PreviewButtonSvgPath::Upload.as_str()
                         title=move_tr!("upload-svg")
                         on:click=move |el| {
                             let input = document()
@@ -583,14 +765,18 @@ pub fn PreviewGenerator() -> impl IntoView {
                                 .dyn_into::<web_sys::HtmlInputElement>()
                                 .unwrap();
                             input.click();
-                            let target = el.target().unwrap();
-                            target.dyn_into::<web_sys::HtmlElement>().unwrap().blur().unwrap();
+                            el.target()
+                                .unwrap()
+                                .dyn_into::<web_sys::HtmlElement>()
+                                .unwrap()
+                                .blur()
+                                .unwrap();
                         }
                     />
 
                 </form>
-                <PreviewButton
-                    svg_path=PreviewButtonSvgPath::Save
+                <Button
+                    svg_path=PreviewButtonSvgPath::Save.as_str()
                     title=move_tr!("save-preview")
                     class="float-right ml-4"
                     on:click=move |el| {
@@ -609,13 +795,17 @@ pub fn PreviewGenerator() -> impl IntoView {
                         let filename = format!("{}.png", title_to_slug(&brand()));
                         let url = canvas.to_data_url().unwrap();
                         download(&filename, &url);
-                        let target = el.target().unwrap();
-                        target.dyn_into::<web_sys::HtmlElement>().unwrap().blur().unwrap();
+                        el.target()
+                            .unwrap()
+                            .dyn_into::<web_sys::HtmlElement>()
+                            .unwrap()
+                            .blur()
+                            .unwrap();
                     }
                 />
 
-                <PreviewButton
-                    svg_path=PreviewButtonSvgPath::Download
+                <Button
+                    svg_path=PreviewButtonSvgPath::Download.as_str()
                     title=move_tr!(
                         "download-filetype", & { let mut map = HashMap::new(); map.insert("filetype"
                         .to_string(), tr!("svg") .into()); map }
@@ -629,8 +819,12 @@ pub fn PreviewGenerator() -> impl IntoView {
                             js_sys::encode_uri_component(&build_svg(&path(), None)),
                         );
                         download(&filename, &url);
-                        let target = el.target().unwrap();
-                        target.dyn_into::<web_sys::HtmlElement>().unwrap().blur().unwrap();
+                        el.target()
+                            .unwrap()
+                            .dyn_into::<web_sys::HtmlElement>()
+                            .unwrap()
+                            .blur()
+                            .unwrap();
                     }
                 />
 
