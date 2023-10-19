@@ -32,11 +32,11 @@
     @apply border-[rgb(180,0,0)];
   }
 
-  .preview-body {
+  .preview-figure {
     @apply rounded-xl mt-1 font-sans;
   }
 
-  .preview-body > canvas {
+  .preview-figure canvas {
     @apply absolute top-[127px] left-[33px] opacity-0;
   }
 

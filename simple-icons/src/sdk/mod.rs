@@ -38,11 +38,22 @@ fn title_to_slug_replace_chars(title: &str) -> String {
     new_title
 }
 
-/// Convert a brand title to slug
+/// Convert a brand title to slug.
 pub fn title_to_slug(title: &str) -> String {
     title_to_slug_replace_chars(&title.to_lowercase())
         .nfd()
         .collect::<String>()
+}
+
+/// Extract the path from an icon SVG content.
+pub fn svg_to_path(svg: &str) -> String {
+    svg.split(" d=\"")
+        .nth(1)
+        .unwrap()
+        .split('"')
+        .next()
+        .unwrap()
+        .to_string()
 }
 
 // Convert non-6-digit hex color to 6-digit with the character `#` stripped.
