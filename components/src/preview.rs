@@ -5,7 +5,7 @@ use crate::fetch::fetch_text_forcing_cache;
 use crate::grid::ICONS;
 use i18n::{move_tr, tr};
 use leptos::{html::Input, *};
-use simple_icons::{color, sdk::title_to_slug};
+use simple_icons::{color, sdk::normalize_color, sdk::title_to_slug};
 use simple_icons_macros::{get_number_of_icons, simple_icon_svg_path};
 use std::collections::HashMap;
 use types::SimpleIcon;
@@ -54,8 +54,11 @@ fn badge_url(slug: &str, color: &str, svg: &str, style: &str) -> String {
 
 /// Get the contrast color for a given hex color
 fn contrast_color_for(hex: &str) -> String {
+    if !is_valid_hex_color(hex) {
+        return "black".to_string();
+    }
     let is_light_hex =
-        is_valid_hex_color(hex) && color::is_relatively_light_icon_hex(hex);
+        color::is_relatively_light_icon_hex(&normalize_color(hex));
     if is_light_hex { "black" } else { "white" }.to_string()
 }
 
@@ -292,15 +295,15 @@ async fn on_upload_svg_file(
 
             // Set color
             if value.contains("fill=\"") {
-                let hex = value
-                    .split("fill=\"")
-                    .nth(1)
-                    .unwrap()
-                    .split('"')
-                    .next()
-                    .unwrap()
-                    .replace('#', "")
-                    .to_uppercase();
+                let hex = normalize_color(
+                    value
+                        .split("fill=\"")
+                        .nth(1)
+                        .unwrap()
+                        .split('"')
+                        .next()
+                        .unwrap(),
+                );
                 if is_valid_hex_color(&hex) {
                     set_color(hex.to_string());
                 }

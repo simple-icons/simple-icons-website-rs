@@ -44,3 +44,23 @@ pub fn title_to_slug(title: &str) -> String {
         .nfd()
         .collect::<String>()
 }
+
+// Convert non-6-digit hex color to 6-digit with the character `#` stripped.
+pub fn normalize_color(hex: &str) -> String {
+    let color = hex.replace('#', "").to_uppercase();
+
+    match color.len() {
+        0..=5 => {
+            let mut color_chars = color.chars();
+            let mut new_color = String::with_capacity(6);
+            for _ in 0..3 {
+                let c = color_chars.next().unwrap();
+                new_color.push(c);
+                new_color.push(c);
+            }
+            new_color
+        }
+        7.. => color[..6].to_string(),
+        _ => color,
+    }
+}
