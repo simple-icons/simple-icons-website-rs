@@ -46,7 +46,10 @@ fn is_valid_hex_color(value: &str) -> bool {
 /// Get the URL of a badge
 fn badge_url(color: &str, svg: &str, style: &str) -> String {
     format!(
-        "https://img.shields.io/badge/simple%20icons-preview-{}.svg?style={}&logo=data:image/svg%2bxml;base64,{}",
+        concat!(
+            "https://img.shields.io/badge/simple%20icons-preview-{}.svg",
+            "?style={}&logo=data:image/svg%2bxml;base64,{}",
+        ),
         color,
         style,
         window().btoa(svg).unwrap(),
@@ -300,7 +303,6 @@ fn search_brand_suggestions(
 #[component]
 pub fn PreviewGenerator() -> impl IntoView {
     let (brand, set_brand) = create_signal(initial_brand_value());
-    let slug = create_memo(move |_| sdk::title_to_slug(&brand()));
     let (color, set_color) = create_signal(initial_color());
     let (path, set_path) = create_signal(initial_path());
 
@@ -315,7 +317,7 @@ pub fn PreviewGenerator() -> impl IntoView {
             <PreviewFigure brand=brand color=color path=path/>
             <PreviewBadges color=color path=path/>
             <PreviewButtons
-                slug=slug
+                brand=brand
                 path=path
                 set_brand=set_brand
                 set_color=set_color
@@ -694,7 +696,7 @@ where {
             <PreviewBadge color=color svg=white_svg style="flat"/>
             <PreviewBadge color=color svg=white_svg style="plastic"/>
             <PreviewBadge color=color svg=white_svg style="for-the-badge"/>
-            <PreviewBadge color=color svg=color_svg style="social"/>
+            <PreviewBadge color=color svg=white_svg style="flat-square"/>
             <PreviewBadge color=color svg=color_svg style="flat"/>
             <PreviewBadge color=color svg=color_svg style="plastic"/>
             <PreviewBadge color=color svg=color_svg style="for-the-badge"/>
@@ -724,7 +726,7 @@ where {
 
 #[component]
 fn PreviewButtons(
-    slug: Memo<String>,
+    brand: ReadSignal<String>,
     path: ReadSignal<String>,
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
@@ -832,7 +834,7 @@ fn PreviewButtons(
                 class="float-right ml-4"
                 on:click=move |ev: web_sys::MouseEvent| {
                     let canvas = get_canvas_container();
-                    let filename = format!("{}.png", &slug());
+                    let filename = format!("{}.png", &sdk::title_to_slug(&brand()));
                     let url = canvas.to_data_url().unwrap();
                     download(&filename, &url);
                     ev.target()
@@ -853,7 +855,7 @@ fn PreviewButtons(
 
                 class="float-right"
                 on:click=move |ev: web_sys::MouseEvent| {
-                    let filename = format!("{}.svg", &slug());
+                    let filename = format!("{}.svg", &sdk::title_to_slug(&brand()));
                     let url = format!(
                         "data:image/svg+xml;utf8,{}",
                         js_sys::encode_uri_component(&build_svg(&path(), None)),
