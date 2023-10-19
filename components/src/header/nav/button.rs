@@ -1,5 +1,6 @@
 use crate::header::HeaderStateSignal;
 use leptos::*;
+use wasm_bindgen::JsCast;
 
 pub trait TitleFn = Fn() -> String + 'static + Copy;
 
@@ -21,13 +22,28 @@ where
     let header_state = use_context::<HeaderStateSignal>().unwrap().0;
 
     view! {
-        <li class=move || {
-            if header_state.get().menu_open {
-                "block".to_string()
-            } else {
-                "hidden lg:block".to_string()
+        <li
+            class=move || {
+                if header_state.get().menu_open {
+                    "block".to_string()
+                } else {
+                    "hidden lg:block".to_string()
+                }
             }
-        }>
+
+            on:click=move |ev| {
+                ev.target()
+                    .unwrap()
+                    .dyn_into::<web_sys::HtmlElement>()
+                    .unwrap()
+                    .first_element_child()
+                    .unwrap()
+                    .dyn_into::<web_sys::HtmlElement>()
+                    .unwrap()
+                    .click();
+            }
+        >
+
             <a title=title href=href>
                 <svg role="link" aria-label=title viewBox="0 0 24 24">
                     <path d=svg_path></path>

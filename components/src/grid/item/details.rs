@@ -1,6 +1,6 @@
 use crate::controls::download::{download_pdf, download_svg};
 use crate::copy::copy_inner_text_on_click;
-use crate::fetch::fetch_text_forcing_cache;
+use crate::fetch::fetch_text;
 use crate::grid::item::icon_preview::on_click_copy_image_children_src_content;
 use crate::grid::CurrentIconViewSignal;
 use crate::modal::{Modal, ModalOpenSignal};
@@ -250,7 +250,7 @@ pub fn fill_icon_details_modal_with_icon(
 
     spawn_local(async move {
         if let Some(svg) =
-            fetch_text_forcing_cache(&format!("/icons/{}.svg", icon.slug)).await
+            fetch_text(&format!("/icons/{}.svg", icon.slug)).await
         {
             let colored_icon_svg =
                 svg.replace("<svg", &format!("<svg fill=\"%23{}\"", icon.hex));

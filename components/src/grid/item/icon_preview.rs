@@ -1,5 +1,5 @@
 use crate::copy::copy_setting_copied_transition_in_element;
-use crate::fetch::fetch_text_forcing_cache;
+use crate::fetch::fetch_text;
 use i18n::move_tr;
 use leptos::{ev::MouseEvent, *};
 use std::collections::HashMap;
@@ -18,7 +18,7 @@ pub(crate) fn on_click_copy_image_children_src_content(ev: MouseEvent) {
         .get_attribute("src")
         .unwrap();
     spawn_local(async move {
-        if let Some(svg) = fetch_text_forcing_cache(&src).await {
+        if let Some(svg) = fetch_text(&src).await {
             copy_setting_copied_transition_in_element(svg, target).await
         }
     });

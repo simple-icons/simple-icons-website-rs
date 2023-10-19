@@ -7,7 +7,7 @@ use wasm_bindgen::JsCast;
 ///
 /// The SVG values of the icons are cached in the browser because are retrieved
 /// when are loaded through the `img` tag.
-pub(crate) async fn fetch_text_forcing_cache(url: &str) -> Option<String> {
+pub(crate) async fn fetch_text(url: &str) -> Option<String> {
     let mut req_opts = web_sys::RequestInit::new();
     req_opts.cache(web_sys::RequestCache::ForceCache);
     req_opts.method("GET");

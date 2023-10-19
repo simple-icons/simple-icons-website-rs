@@ -3,7 +3,7 @@
 use crate::button::Button;
 use crate::controls::download::download;
 use crate::controls::search::fuzzy::search;
-use crate::fetch::fetch_text_forcing_cache;
+use crate::fetch::fetch_text;
 use crate::grid::ICONS;
 use i18n::{move_tr, tr};
 use leptos::*;
@@ -47,9 +47,13 @@ fn is_valid_hex_color(value: &str) -> bool {
 fn badge_url(color: &str, svg: &str, style: &str) -> String {
     format!(
         concat!(
-            "https://img.shields.io/badge/simple%20icons-preview-{}.svg",
+            "https://img.shields.io/badge/{}-preview-{}.svg",
             "?style={}&logo=data:image/svg%2bxml;base64,{}",
         ),
+        match style {
+            "social" => "",
+            _ => "simple%20icons",
+        },
         color,
         style,
         window().btoa(svg).unwrap(),
@@ -120,6 +124,57 @@ fn get_preview_canvas_context() -> web_sys::CanvasRenderingContext2d {
     ctx
 }
 
+fn create_badge_image_for_canvas(
+    badge_index: usize,
+    badge_url: &str,
+    x: f64,
+    y: f64,
+) {
+    let badge_img_for_canvas = document()
+        .create_element("img")
+        .unwrap()
+        .dyn_into::<web_sys::HtmlImageElement>()
+        .unwrap();
+    badge_img_for_canvas
+        .set_attribute("style", "display: none")
+        .unwrap();
+    badge_img_for_canvas
+        .set_attribute(
+            "id",
+            &format!("preview-badge-image-for-canvas-{}", &badge_index),
+        )
+        .unwrap();
+    badge_img_for_canvas.set_cross_origin(Some("anonymous"));
+
+    document()
+        .body()
+        .unwrap()
+        .append_child(&badge_img_for_canvas)
+        .unwrap();
+
+    let closure: Closure<dyn FnMut()> = Closure::new(move || {
+        let img = document()
+            .get_element_by_id(&format!(
+                "preview-badge-image-for-canvas-{}",
+                &badge_index
+            ))
+            .unwrap()
+            .dyn_into::<web_sys::HtmlImageElement>()
+            .unwrap();
+
+        let ctx = get_preview_canvas_context();
+        ctx.draw_image_with_html_image_element(&img, x, 420.0 + y)
+            .unwrap();
+        document().body().unwrap().remove_child(&img).unwrap();
+    });
+    badge_img_for_canvas.set_onload(Some(closure.as_ref().unchecked_ref()));
+    closure.forget();
+
+    badge_img_for_canvas
+        .set_attribute("src", badge_url)
+        .unwrap();
+}
+
 macro_rules! draw_badge_impl {
     ($badge_index:literal, $x:literal, $y:literal) => {{
         let badges_containers = document()
@@ -136,73 +191,31 @@ macro_rules! draw_badge_impl {
             .unwrap()
             .dyn_into::<web_sys::HtmlImageElement>()
             .unwrap();
-        let badge_url = badge_img.src();
 
-        let badge_img_for_canvas = document()
-            .create_element("img")
-            .unwrap()
-            .dyn_into::<web_sys::HtmlImageElement>()
-            .unwrap();
-        badge_img_for_canvas
-            .set_attribute("style", "display: none")
-            .unwrap();
-        badge_img_for_canvas
-            .set_attribute(
-                "id",
-                &format!("preview-badge-image-for-canvas-{}", $badge_index),
-            )
-            .unwrap();
-        badge_img_for_canvas.set_cross_origin(Some("anonymous"));
-
-        document()
-            .body()
-            .unwrap()
-            .append_child(&badge_img_for_canvas)
-            .unwrap();
-
-        let closure: Closure<dyn FnMut()> = Closure::new(move || {
-            let img = document()
-                .get_element_by_id(&format!(
-                    "preview-badge-image-for-canvas-{}",
-                    $badge_index
-                ))
-                .unwrap()
-                .dyn_into::<web_sys::HtmlImageElement>()
-                .unwrap();
-
-            let ctx = get_preview_canvas_context();
-            ctx.draw_image_with_html_image_element(
-                &img,
-                $x as f64,
-                420.0 + $y as f64,
-            )
-            .unwrap();
-            document().body().unwrap().remove_child(&img).unwrap();
-        });
-        badge_img_for_canvas.set_onload(Some(closure.as_ref().unchecked_ref()));
-        closure.forget();
-
-        badge_img_for_canvas
-            .set_attribute("src", badge_url.as_str())
-            .unwrap();
+        create_badge_image_for_canvas(
+            $badge_index,
+            badge_img.src().as_str(),
+            $x as f64,
+            $y as f64,
+        )
     }};
 }
 
 /// Draw the current badges in the canvas
 fn update_badges_in_canvas() {
     draw_badge_impl!(0, 15, 15);
-    draw_badge_impl!(1, 173, 16);
-    draw_badge_impl!(2, 335, 6);
-    draw_badge_impl!(3, 562, 15);
+    draw_badge_impl!(1, 203, 16);
+    draw_badge_impl!(2, 385, 6);
+    draw_badge_impl!(3, 630, 14);
 
     draw_badge_impl!(4, 15, 41);
-    draw_badge_impl!(5, 173, 41);
-    draw_badge_impl!(6, 335, 39);
-    draw_badge_impl!(7, 560, 41);
+    draw_badge_impl!(5, 203, 41);
+    draw_badge_impl!(6, 385, 39);
+    draw_badge_impl!(7, 630, 40);
 }
 
 /// Function triggered to update the canvas with the current SVG
-fn update_canvas() {
+fn update_preview_canvas() {
     let container = document()
         .get_elements_by_class_name("preview-figure")
         .item(0);
@@ -349,7 +362,7 @@ where {
                         .dyn_into::<web_sys::HtmlInputElement>()
                         .unwrap();
                     set_path(target.value());
-                    update_canvas();
+                    update_preview_canvas();
                 }
             />
 
@@ -384,7 +397,7 @@ fn ColorInput(
                     input.set_selection_start(selection_start).unwrap();
                     input.set_selection_end(selection_end).unwrap();
                     set_color(normalized_value);
-                    update_canvas();
+                    update_preview_canvas();
                 }
 
                 class:invalid=move || !is_valid_hex_color(&color())
@@ -430,7 +443,7 @@ fn BrandInput(
                     let (bs, more_bs) = search_brand_suggestions(&value);
                     let more_bs_length = more_bs.len();
                     set_brand(value.clone());
-                    update_canvas();
+                    update_preview_canvas();
                     set_brand_suggestions(bs);
                     set_more_brand_suggestions(more_bs);
                     set_show_brand_suggestions(true);
@@ -594,12 +607,10 @@ fn BrandSuggestion(
             set_brand(icon.title.to_string());
             set_color(icon.hex.to_string());
             spawn_local(async move {
-                if let Some(svg) = fetch_text_forcing_cache(&format!("/icons/{}.svg", icon.slug))
-                    .await
-                {
+                if let Some(svg) = fetch_text(&format!("/icons/{}.svg", icon.slug)).await {
                     set_path(sdk::svg_to_path(&svg));
                 }
-                update_canvas();
+                update_preview_canvas();
             });
         }>
             <a>
@@ -696,16 +707,11 @@ where {
             <PreviewBadge color=color svg=white_svg style="flat"/>
             <PreviewBadge color=color svg=white_svg style="plastic"/>
             <PreviewBadge color=color svg=white_svg style="for-the-badge"/>
-            <PreviewBadge color=color svg=white_svg style="flat-square"/>
+            <PreviewBadge color=color svg=color_svg style="social"/>
             <PreviewBadge color=color svg=color_svg style="flat"/>
             <PreviewBadge color=color svg=color_svg style="plastic"/>
             <PreviewBadge color=color svg=color_svg style="for-the-badge"/>
-            <PreviewBadge
-                color=color
-                svg=color_svg
-                style="social"
-                on:load=move |_| update_canvas()
-            />
+            <PreviewBadge color=color svg=color_svg style="social" text_color="4183c4"/>
         </div>
     }
 }
@@ -715,11 +721,52 @@ fn PreviewBadge(
     color: ReadSignal<String>,
     svg: Memo<String>,
     style: &'static str,
-) -> impl IntoView
-where {
+    #[prop(optional)] text_color: Option<&'static str>,
+) -> impl IntoView {
+    let on_load = move |ev: web_sys::Event| {
+        let target = ev
+            .target()
+            .unwrap()
+            .dyn_into::<web_sys::HtmlElement>()
+            .unwrap();
+
+        if target.get_attribute("reloaded") == Some("true".to_string()) {
+            target.set_attribute("reloaded", "false").unwrap();
+            return;
+        }
+        if text_color.is_some() {
+            spawn_local(async move {
+                let url = badge_url(&color(), &svg(), style);
+                let badge_svg = fetch_text(&url).await.unwrap();
+                let styled_badge_svg = badge_svg.replace(
+                    "id=\"rlink\"",
+                    &format!("id=\"rlink\" fill=\"#{}\"", &text_color.unwrap()),
+                );
+                let encoded_svg =
+                    js_sys::encode_uri_component(&styled_badge_svg);
+                if encoded_svg == target.get_attribute("src").unwrap() {
+                    target.set_attribute("reloaded", "false").unwrap();
+                    return;
+                }
+
+                target.set_attribute("reloaded", "true").unwrap();
+                target
+                    .set_attribute(
+                        "src",
+                        &format!("data:image/svg+xml;utf8,{}", encoded_svg),
+                    )
+                    .unwrap();
+
+                update_preview_canvas();
+            });
+        } else {
+            update_preview_canvas();
+        }
+    };
+
     view! {
         <div>
-            <img src=move || badge_url(&color(), &svg(), style)/>
+            <img src=move || badge_url(&color(), &svg(), style) on:load=on_load/>
         </div>
     }
 }
