@@ -313,7 +313,7 @@ pub fn PreviewGenerator() -> impl IntoView {
             <PathInput path=path set_path=set_path/>
 
             <PreviewFigure brand=brand color=color path=path/>
-            <PreviewBadges slug=slug color=color path=path/>
+            <PreviewBadges color=color path=path/>
             <PreviewButtons
                 slug=slug
                 path=path
@@ -682,7 +682,6 @@ where {
 
 #[component]
 fn PreviewBadges(
-    slug: Memo<String>,
     color: ReadSignal<String>,
     path: ReadSignal<String>,
 ) -> impl IntoView
@@ -700,7 +699,6 @@ where {
             <PreviewBadge color=color svg=color_svg style="plastic"/>
             <PreviewBadge color=color svg=color_svg style="for-the-badge"/>
             <PreviewBadge
-                slug=slug
                 color=color
                 svg=color_svg
                 style="social"
@@ -712,7 +710,6 @@ where {
 
 #[component]
 fn PreviewBadge(
-    slug: Memo<String>,
     color: ReadSignal<String>,
     svg: Memo<String>,
     style: &'static str,
