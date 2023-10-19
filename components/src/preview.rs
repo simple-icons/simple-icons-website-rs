@@ -308,57 +308,30 @@ pub fn PreviewGenerator() -> impl IntoView {
     view! {
         <div class="preview">
             <div>
-                <BrandInput
-                    brand=move || brand()
-                    set_brand=move |v| set_brand(v)
-                    set_color=move |v| set_color(v)
-                    set_path=move |v| set_path(v)
-                />
-                <ColorInput color=move || color() set_color=move |v| set_color(v)/>
+                <BrandInput brand=brand set_brand=set_brand set_color=set_color set_path=set_path/>
+                <ColorInput color=color set_color=set_color/>
             </div>
-            <PathInput path=move || path() set_path=move |v| set_path(v)/>
+            <PathInput path=path set_path=set_path/>
 
-            <PreviewFigure brand=move || brand() color=move || color() path=move || path()/>
-            <PreviewBadges slug=move || slug() color=move || color() path=move || path()/>
+            <PreviewFigure brand=brand color=color path=path/>
+            <PreviewBadges slug=slug color=color path=path/>
             <PreviewButtons
-                slug=move || sdk::title_to_slug(&brand())
-                path=move || path()
-                set_brand=move |v| set_brand(v)
-                set_color=move |v| set_color(v)
-                set_path=move |v| set_path(v)
+                slug=slug
+                path=path
+                set_brand=set_brand
+                set_color=set_color
+                set_path=set_path
             />
         </div>
     }
 }
 
-trait OnUploadFileFn = Fn(web_sys::File) + 'static;
-
-trait BrandFn = Fn() -> String + 'static + Copy + Clone;
-trait SlugFn = Fn() -> String + 'static + Copy + Clone;
-trait ColorFn = Fn() -> String + 'static + Copy + Clone;
-trait PathFn = Fn() -> String + 'static + Copy + Clone;
-
-trait SetBrandFn = Fn(String) + 'static + Copy + Clone;
-trait SetSlugFn = Fn(String) + 'static + Copy + Clone;
-trait SetColorFn = Fn(String) + 'static + Copy + Clone;
-trait SetPathFn = Fn(String) + 'static + Copy + Clone;
-
-trait BrandSuggestionsFn =
-    Fn() -> Vec<&'static SimpleIcon> + 'static + Copy + Clone;
-trait MoreBrandSuggestionsFn =
-    Fn() -> Vec<&'static SimpleIcon> + 'static + Copy + Clone;
-trait ShowBrandSuggestionsFn = Fn() -> bool + 'static + Copy + Clone;
-trait ShowMoreBrandSuggestionsFn = Fn() -> bool + 'static + Copy + Clone;
-
-trait SetShowBrandSuggestionsFn = Fn(bool) + 'static + Copy + Clone;
-trait SetShowMoreBrandSuggestionsFn = Fn(bool) + 'static + Copy + Clone;
-
 #[component]
-fn PathInput<A, B>(path: A, set_path: B) -> impl IntoView
-where
-    A: PathFn,
-    B: SetPathFn,
-{
+fn PathInput(
+    path: ReadSignal<String>,
+    set_path: WriteSignal<String>,
+) -> impl IntoView
+where {
     view! {
         <div class="preview-input-group">
             <label for="preview-path">{move_tr!("path")}</label>
@@ -384,11 +357,10 @@ where
 }
 
 #[component]
-fn ColorInput<A, B>(color: A, set_color: B) -> impl IntoView
-where
-    A: ColorFn,
-    B: SetColorFn,
-{
+fn ColorInput(
+    color: ReadSignal<String>,
+    set_color: WriteSignal<String>,
+) -> impl IntoView {
     view! {
         <div class="preview-input-group">
             <label for="preview-color">{move_tr!("color")}</label>
@@ -422,18 +394,12 @@ where
 }
 
 #[component]
-fn BrandInput<A, B, C, D>(
-    brand: A,
-    set_brand: B,
-    set_color: C,
-    set_path: D,
-) -> impl IntoView
-where
-    A: BrandFn,
-    B: SetBrandFn,
-    C: SetColorFn,
-    D: SetPathFn,
-{
+fn BrandInput(
+    brand: ReadSignal<String>,
+    set_brand: WriteSignal<String>,
+    set_color: WriteSignal<String>,
+    set_path: WriteSignal<String>,
+) -> impl IntoView {
     let (brand_suggestions, set_brand_suggestions) =
         create_signal(Vec::<&SimpleIcon>::with_capacity(6));
     let (more_brand_suggestions, set_more_brand_suggestions) =
@@ -487,43 +453,32 @@ where
             />
 
             <BrandSuggestions
-                show_brand_suggestions=move || show_brand_suggestions()
-                show_more_brand_suggestions=move || show_more_brand_suggestions()
-                brand_suggestions=move || brand_suggestions()
-                more_brand_suggestions=move || more_brand_suggestions()
-                set_brand=move |brand| set_brand(brand)
-                set_color=move |color| set_color(color)
-                set_path=move |path| set_path(path)
-                set_show_brand_suggestions=move |v| set_show_brand_suggestions(v)
-                set_show_more_brand_suggestions=move |v| set_show_more_brand_suggestions(v)
+                show_brand_suggestions=show_brand_suggestions
+                show_more_brand_suggestions=show_more_brand_suggestions
+                brand_suggestions=brand_suggestions
+                more_brand_suggestions=more_brand_suggestions
+                set_brand=set_brand
+                set_color=set_color
+                set_path=set_path
+                set_show_brand_suggestions=set_show_brand_suggestions
+                set_show_more_brand_suggestions=set_show_more_brand_suggestions
             />
         </div>
     }
 }
 
 #[component]
-fn BrandSuggestions<A, B, C, D, E, F, G, H, I>(
-    show_brand_suggestions: A,
-    show_more_brand_suggestions: B,
-    brand_suggestions: C,
-    more_brand_suggestions: D,
-    set_brand: E,
-    set_color: F,
-    set_path: G,
-    set_show_brand_suggestions: H,
-    set_show_more_brand_suggestions: I,
-) -> impl IntoView
-where
-    A: ShowBrandSuggestionsFn,
-    B: ShowMoreBrandSuggestionsFn,
-    C: BrandSuggestionsFn,
-    D: MoreBrandSuggestionsFn,
-    E: SetBrandFn,
-    F: SetColorFn,
-    G: SetPathFn,
-    H: SetShowBrandSuggestionsFn,
-    I: SetShowMoreBrandSuggestionsFn,
-{
+fn BrandSuggestions(
+    show_brand_suggestions: ReadSignal<bool>,
+    show_more_brand_suggestions: ReadSignal<bool>,
+    brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
+    more_brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
+    set_brand: WriteSignal<String>,
+    set_color: WriteSignal<String>,
+    set_path: WriteSignal<String>,
+    set_show_brand_suggestions: WriteSignal<bool>,
+    set_show_more_brand_suggestions: WriteSignal<bool>,
+) -> impl IntoView {
     let body = document().body().unwrap();
     let closure: Closure<dyn FnMut(web_sys::MouseEvent)> =
         Closure::new(move |ev: web_sys::MouseEvent| {
@@ -574,9 +529,9 @@ where
                             view! {
                                 <BrandSuggestion
                                     icon=icon
-                                    set_brand=move |v| set_brand(v)
-                                    set_color=move |v| set_color(v)
-                                    set_path=move |v| set_path(v)
+                                    set_brand=set_brand
+                                    set_color=set_color
+                                    set_path=set_path
                                 />
                             },
                         );
@@ -611,9 +566,9 @@ where
                                 view! {
                                     <BrandSuggestion
                                         icon=icon
-                                        set_brand=move |v| set_brand(v)
-                                        set_color=move |v| set_color(v)
-                                        set_path=move |v| set_path(v)
+                                        set_brand=set_brand
+                                        set_color=set_color
+                                        set_path=set_path
                                     />
                                 },
                             );
@@ -627,17 +582,12 @@ where
 }
 
 #[component]
-fn BrandSuggestion<A, B, C>(
+fn BrandSuggestion(
     icon: &'static SimpleIcon,
-    set_brand: A,
-    set_color: B,
-    set_path: C,
-) -> impl IntoView
-where
-    A: SetBrandFn,
-    B: SetColorFn,
-    C: SetPathFn,
-{
+    set_brand: WriteSignal<String>,
+    set_color: WriteSignal<String>,
+    set_path: WriteSignal<String>,
+) -> impl IntoView {
     view! {
         <li on:click=move |_| {
             set_brand(icon.title.to_string());
@@ -660,13 +610,13 @@ where
 }
 
 #[component]
-fn PreviewFigure<A, B, C>(brand: A, color: B, path: C) -> impl IntoView
-where
-    A: BrandFn,
-    B: ColorFn,
-    C: PathFn,
-{
-    let fill_svg_path = create_memo(move |_| contrast_color_for(&color()));
+fn PreviewFigure(
+    brand: ReadSignal<String>,
+    color: ReadSignal<String>,
+    path: ReadSignal<String>,
+) -> impl IntoView
+where {
+    let fill_color = create_memo(move |_| contrast_color_for(&color()));
 
     view! {
         <figure class="preview-figure">
@@ -687,48 +637,40 @@ where
                     y="0"
                 ></rect>
                 <svg viewBox="0 0 24 24" width="24" height="24" x="18" y="20">
-                    <path d=move || path() fill=fill_svg_path></path>
+                    <path d=move || path() fill=fill_color></path>
                 </svg>
                 <svg viewBox="0 0 24 24" width="80" height="80" x="70" y="20">
-                    <path d=move || path() fill=fill_svg_path></path>
+                    <path d=move || path() fill=fill_color></path>
                 </svg>
                 <svg viewBox="0 0 24 24" width="138" height="138" x="174" y="20">
-                    <path d=move || path() fill=fill_svg_path></path>
+                    <path d=move || path() fill=fill_color></path>
                 </svg>
                 <svg viewBox="0 0 24 24" width="375" height="375" x="350" y="20">
-                    <path d=move || path() fill=fill_svg_path></path>
+                    <path d=move || path() fill=fill_color></path>
                 </svg>
 
                 <g transform="translate(21,235)" style="font-family: Helvetica">
-                    <text fill=move || contrast_color_for(&color()) font-size="25">
+                    <text fill=fill_color font-size="25">
                         {move || format!("{} Preview", brand())}
                     </text>
-                    <text fill=move || contrast_color_for(&color()) font-size="17" y="25">
+                    <text fill=fill_color font-size="17" y="25">
                         {move || format!("{}.svg", sdk::title_to_slug(&brand()))}
                     </text>
-                    <text fill=move || contrast_color_for(&color()) font-size="16" y="61">
+                    <text fill=fill_color font-size="16" y="61">
                         {move || format!("Brand: {}", brand())}
                     </text>
-                    <text fill=move || contrast_color_for(&color()) font-size="16" y="84">
+                    <text fill=fill_color font-size="16" y="84">
                         {move || format!("Color: #{}", color())}
                     </text>
 
                     <g transform="translate(3, 142)" style="font-family: Helvetica">
                         <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path
-                                d=simple_icon_svg_path!("simpleicons")
-                                fill=move || contrast_color_for(&color())
-                            ></path>
+                            <path d=simple_icon_svg_path!("simpleicons") fill=fill_color></path>
                         </svg>
-                        <text fill=move || contrast_color_for(&color()) x="30" y="7" font-size="12">
+                        <text fill=fill_color x="30" y="7" font-size="12">
                             {format!("{} Free SVG brand icons", get_number_of_icons!())}
                         </text>
-                        <text
-                            fill=move || contrast_color_for(&color())
-                            x="30"
-                            y="25"
-                            font-size="12"
-                        >
+                        <text fill=fill_color x="30" y="25" font-size="12">
                             available at simpleicons.org
                         </text>
                     </g>
@@ -740,12 +682,12 @@ where
 }
 
 #[component]
-fn PreviewBadges<A, B, C>(slug: A, color: B, path: C) -> impl IntoView
-where
-    A: SlugFn,
-    B: ColorFn,
-    C: PathFn,
-{
+fn PreviewBadges(
+    slug: Memo<String>,
+    color: ReadSignal<String>,
+    path: ReadSignal<String>,
+) -> impl IntoView
+where {
     let white_svg = create_memo(move |_| build_svg(&path(), Some("FFF")));
     let color_svg = create_memo(move |_| build_svg(&path(), Some(&color())));
 
@@ -791,30 +733,19 @@ where
 }
 
 #[component]
-fn PreviewButtons<A, B, C, D, E>(
-    slug: A,
-    path: B,
-    set_brand: C,
-    set_color: D,
-    set_path: E,
-) -> impl IntoView
-where
-    A: SlugFn,
-    B: PathFn,
-    C: SetBrandFn,
-    D: SetColorFn,
-    E: SetPathFn,
-{
-    async fn on_upload_svg_file<C, D, E>(
+fn PreviewButtons(
+    slug: Memo<String>,
+    path: ReadSignal<String>,
+    set_brand: WriteSignal<String>,
+    set_color: WriteSignal<String>,
+    set_path: WriteSignal<String>,
+) -> impl IntoView {
+    async fn on_upload_svg_file(
         file: web_sys::File,
-        set_brand: C,
-        set_color: D,
-        set_path: E,
-    ) where
-        C: SetBrandFn,
-        D: SetColorFn,
-        E: SetPathFn,
-    {
+        set_brand: WriteSignal<String>,
+        set_color: WriteSignal<String>,
+        set_path: WriteSignal<String>,
+    ) {
         match wasm_bindgen_futures::JsFuture::from(file.text()).await {
             Ok(text) => {
                 let value = text.as_string().unwrap();
