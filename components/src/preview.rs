@@ -514,6 +514,8 @@ pub fn PreviewGenerator() -> impl IntoView {
                                                 <>
                                                     <li
                                                         class="more-suggestions"
+                                                        role="button"
+                                                        title=move_tr!("load-more-icons")
                                                         on:click=move |_| {
                                                             set_show_more_brand_suggestions(true);
                                                         }
