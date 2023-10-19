@@ -609,10 +609,9 @@ pub fn PreviewGenerator() -> impl IntoView {
                         height="420"
                         rx="10"
                         ry="10"
-                        width="100%"
+                        width="740"
                         x="0"
                         y="0"
-                        class="pt-3"
                     ></rect>
                     <svg viewBox="0 0 24 24" width="24" height="24" x="18" y="20">
                         <path d=move || path() fill=move || contrast_color_for(&color())></path>
@@ -667,7 +666,7 @@ pub fn PreviewGenerator() -> impl IntoView {
                         </g>
                     </g>
                 </svg>
-                <canvas height="490" width="721"></canvas>
+                <canvas height="490" width="740"></canvas>
             </figure>
             <div class="preview-badges">
                 <div>
