@@ -693,41 +693,35 @@ where {
 
     view! {
         <div class="preview-badges">
-            <div>
-                <img src=move || badge_url(&slug(), &color(), &white_svg(), "flat")/>
-            </div>
-            <div>
-                <img src=move || badge_url(&slug(), &color(), &white_svg(), "plastic")/>
-            </div>
-            <div>
-                <img src=move || badge_url(&slug(), &color(), &white_svg(), "for-the-badge")/>
-            </div>
-            <div>
-                <img src=move || badge_url(&slug(), &color(), &white_svg(), "flat-square")/>
-            </div>
-            <div>
-                <img src=move || badge_url(&slug(), &color(), &color_svg(), "flat")/>
-            </div>
-            <div>
-                <img src=move || badge_url(&slug(), &color(), &color_svg(), "plastic")/>
-            </div>
-            <div>
-                <img src=move || badge_url(&slug(), &color(), &color_svg(), "for-the-badge")/>
-            </div>
-            <div>
-                <img
-                    src=move || badge_url(
-                        &slug(),
-                        &color(),
-                        &build_svg(&path(), Some("000")),
-                        "social",
-                    )
+            <PreviewBadge slug=slug color=color svg=white_svg style="flat"/>
+            <PreviewBadge slug=slug color=color svg=white_svg style="plastic"/>
+            <PreviewBadge slug=slug color=color svg=white_svg style="for-the-badge"/>
+            <PreviewBadge slug=slug color=color svg=white_svg style="flat-square"/>
+            <PreviewBadge slug=slug color=color svg=color_svg style="flat"/>
+            <PreviewBadge slug=slug color=color svg=color_svg style="plastic"/>
+            <PreviewBadge slug=slug color=color svg=color_svg style="for-the-badge"/>
+            <PreviewBadge
+                slug=slug
+                color=color
+                svg=color_svg
+                style="flat-square"
+                on:load=move |_| update_canvas()
+            />
+        </div>
+    }
+}
 
-                    // The canvas is updated
-                    // when this last image is loaded
-                    on:load=move |_| update_canvas()
-                />
-            </div>
+#[component]
+fn PreviewBadge(
+    slug: Memo<String>,
+    color: ReadSignal<String>,
+    svg: Memo<String>,
+    style: &'static str,
+) -> impl IntoView
+where {
+    view! {
+        <div>
+            <img src=move || badge_url(&slug(), &color(), &svg(), style)/>
         </div>
     }
 }
