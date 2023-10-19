@@ -4,7 +4,7 @@ use crate::controls::search::fuzzy::search;
 use crate::fetch::fetch_text_forcing_cache;
 use crate::grid::ICONS;
 use i18n::{move_tr, tr};
-use leptos::{html::Input, *};
+use leptos::*;
 use simple_icons::{color, sdk::normalize_color, sdk::title_to_slug};
 use simple_icons_macros::{get_number_of_icons, simple_icon_svg_path};
 use std::collections::HashMap;
@@ -394,18 +394,14 @@ pub fn PreviewGenerator() -> impl IntoView {
     let (brand_suggestions, set_brand_suggestions) =
         create_signal(Vec::<&SimpleIcon>::with_capacity(6));
     let (more_brand_suggestions, set_more_brand_suggestions) =
-        create_signal(Vec::<&SimpleIcon>::with_capacity(6));
+        create_signal(Vec::<&SimpleIcon>::new());
     let (show_brand_suggestions, set_show_brand_suggestions) =
         create_signal(false);
     let (show_more_brand_suggestions, set_show_more_brand_suggestions) =
         create_signal(false);
-    let brand_input_ref = create_node_ref::<Input>();
 
     let (color, set_color) = create_signal(initial_color());
-    let color_input_ref = create_node_ref::<Input>();
-
     let (path, set_path) = create_signal(initial_path());
-    let path_input_ref = create_node_ref::<Input>();
 
     // Hide the brand suggestions when the user clicks outside the input
     let body = document().body().unwrap();
@@ -438,19 +434,23 @@ pub fn PreviewGenerator() -> impl IntoView {
                 <div class="preview-input-group">
                     <label for="preview-brand">{move_tr!("brand")}</label>
                     <input
-                        _ref=brand_input_ref
                         type="text"
                         class="mr-7"
                         style="width:524px"
                         name="preview-brand"
                         value=brand
                         prop:value=brand
-                        on:input=move |_| {
-                            set_brand(brand_input_ref.get().unwrap().value());
-                            update_canvas();
-                            let value = brand_input_ref.get().unwrap().value();
+                        on:input=move |ev| {
+                            let input = ev
+                                .target()
+                                .unwrap()
+                                .dyn_into::<web_sys::HtmlInputElement>()
+                                .unwrap();
+                            let value = input.value();
                             let (bs, more_bs) = search_brand_suggestions(&value);
                             let more_bs_length = more_bs.len();
+                            set_brand(value.clone());
+                            update_canvas();
                             set_brand_suggestions(bs);
                             set_more_brand_suggestions(more_bs);
                             set_show_brand_suggestions(true);
@@ -459,8 +459,13 @@ pub fn PreviewGenerator() -> impl IntoView {
                             }
                         }
 
-                        on:focus=move |_| {
-                            let value = brand_input_ref.get().unwrap().value();
+                        on:focus=move |ev| {
+                            let input = ev
+                                .target()
+                                .unwrap()
+                                .dyn_into::<web_sys::HtmlInputElement>()
+                                .unwrap();
+                            let value = input.value();
                             let (bs, more_bs) = search_brand_suggestions(&value);
                             set_brand_suggestions(bs);
                             set_more_brand_suggestions(more_bs);
@@ -557,14 +562,17 @@ pub fn PreviewGenerator() -> impl IntoView {
                 <div class="preview-input-group">
                     <label for="preview-color">{move_tr!("color")}</label>
                     <input
-                        _ref=color_input_ref
                         type="text"
                         style="width:68px"
                         name="preview-color"
                         value=color
                         prop:value=color
-                        on:input=move |_| {
-                            let input = color_input_ref.get().unwrap();
+                        on:input=move |ev| {
+                            let input = ev
+                                .target()
+                                .unwrap()
+                                .dyn_into::<web_sys::HtmlInputElement>()
+                                .unwrap();
                             let selection_start = input.selection_start().unwrap();
                             let selection_end = input.selection_end().unwrap();
                             let normalized_value = input.value().to_uppercase().replace('#', "");
@@ -584,14 +592,18 @@ pub fn PreviewGenerator() -> impl IntoView {
             <div class="preview-input-group">
                 <label for="preview-path">{move_tr!("path")}</label>
                 <input
-                    _ref=path_input_ref
                     type="text"
                     style="width:682px"
                     name="preview-path"
                     value=path
                     prop:value=path
-                    on:input=move |_| {
-                        set_path(path_input_ref.get().unwrap().value());
+                    on:input=move |ev| {
+                        let target = ev
+                            .target()
+                            .unwrap()
+                            .dyn_into::<web_sys::HtmlInputElement>()
+                            .unwrap();
+                        set_path(target.value());
                         update_canvas();
                     }
                 />
