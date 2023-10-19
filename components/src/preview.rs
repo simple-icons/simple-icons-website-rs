@@ -44,10 +44,9 @@ fn is_valid_hex_color(value: &str) -> bool {
 }
 
 /// Get the URL of a badge
-fn badge_url(slug: &str, color: &str, svg: &str, style: &str) -> String {
+fn badge_url(color: &str, svg: &str, style: &str) -> String {
     format!(
-        "https://img.shields.io/badge/{}-preview-{}.svg?style={}&logo=data:image/svg%2bxml;base64,{}",
-        slug,
+        "https://img.shields.io/badge/simple%20icons-preview-{}.svg?style={}&logo=data:image/svg%2bxml;base64,{}",
         color,
         style,
         window().btoa(svg).unwrap(),
@@ -696,7 +695,7 @@ where {
             <PreviewBadge slug=slug color=color svg=white_svg style="flat"/>
             <PreviewBadge slug=slug color=color svg=white_svg style="plastic"/>
             <PreviewBadge slug=slug color=color svg=white_svg style="for-the-badge"/>
-            <PreviewBadge slug=slug color=color svg=white_svg style="flat-square"/>
+            <PreviewBadge slug=slug color=color svg=white_svg style="social"/>
             <PreviewBadge slug=slug color=color svg=color_svg style="flat"/>
             <PreviewBadge slug=slug color=color svg=color_svg style="plastic"/>
             <PreviewBadge slug=slug color=color svg=color_svg style="for-the-badge"/>
@@ -704,7 +703,7 @@ where {
                 slug=slug
                 color=color
                 svg=color_svg
-                style="flat-square"
+                style="social"
                 on:load=move |_| update_canvas()
             />
         </div>
@@ -721,7 +720,7 @@ fn PreviewBadge(
 where {
     view! {
         <div>
-            <img src=move || badge_url(&slug(), &color(), &svg(), style)/>
+            <img src=move || badge_url(&color(), &svg(), style)/>
         </div>
     }
 }
