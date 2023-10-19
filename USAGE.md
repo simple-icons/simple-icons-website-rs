@@ -1,6 +1,10 @@
 # Simple Icons website client usage
 
-## URL parameters
+## `/` Index
+
+Grid with all brand icons.
+
+### URL parameters
 
 You can pass the following parameters to the website to change the behaviour on load:
 
@@ -14,3 +18,7 @@ You can pass the following parameters to the website to change the behaviour on 
 | `modal`         | Show modal to open when load. Possible values are `languages` (opens the language selector), `extensions` (open the third party extensions modal) and `icon` (open the details of the first icon, combine with `q` to specify it). | By default no modals are opened.                                                                                                                                                                                | `?modal=icon&q=3m`    |
 
 [Unicode language identifier]: https://unicode.org/reports/tr35/tr35.html#Unicode_language_identifier
+
+## `/preview` Preview Generator
+
+Used to include an image of the icon showing a preview of it in pull requests.
