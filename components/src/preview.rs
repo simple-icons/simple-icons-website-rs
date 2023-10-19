@@ -692,13 +692,13 @@ where {
 
     view! {
         <div class="preview-badges">
-            <PreviewBadge slug=slug color=color svg=white_svg style="flat"/>
-            <PreviewBadge slug=slug color=color svg=white_svg style="plastic"/>
-            <PreviewBadge slug=slug color=color svg=white_svg style="for-the-badge"/>
-            <PreviewBadge slug=slug color=color svg=white_svg style="social"/>
-            <PreviewBadge slug=slug color=color svg=color_svg style="flat"/>
-            <PreviewBadge slug=slug color=color svg=color_svg style="plastic"/>
-            <PreviewBadge slug=slug color=color svg=color_svg style="for-the-badge"/>
+            <PreviewBadge color=color svg=white_svg style="flat"/>
+            <PreviewBadge color=color svg=white_svg style="plastic"/>
+            <PreviewBadge color=color svg=white_svg style="for-the-badge"/>
+            <PreviewBadge color=color svg=color_svg style="social"/>
+            <PreviewBadge color=color svg=color_svg style="flat"/>
+            <PreviewBadge color=color svg=color_svg style="plastic"/>
+            <PreviewBadge color=color svg=color_svg style="for-the-badge"/>
             <PreviewBadge
                 slug=slug
                 color=color
