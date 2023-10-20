@@ -66,7 +66,7 @@ export const selectors = {
   body: 'body',
   header: {
     container: 'header',
-    title: 'h1',
+    title: 'header > div > a',
     description: '#site-description',
     nav: {
       container: 'header > nav',

@@ -1,6 +1,5 @@
 use crate::controls::layout::LayoutSignal;
 use crate::grid::IconsGridSignal;
-use crate::spinners::TripleDotsSpinner;
 use i18n::move_tr;
 use leptos::*;
 
@@ -52,9 +51,8 @@ pub fn IconsLoader() -> impl IntoView {
         loader_state.load
     };
 
-    // TODO: Currently, we need to set a timeout to display the spinner
-    // I suspect that this is happening because the rendering of icon
-    // grid items is blocking the main thread
+    // TODO: Currently, a spinner can't be displayed  because the rendering
+    // of icon grid items is blocking the main thread
     // See https://stackoverflow.com/q/10180391/9167585
     view! {
         <div class="icons-loader">
@@ -86,7 +84,6 @@ pub fn IconsLoader() -> impl IntoView {
                 </svg>
                 {move_tr!("load-more-icons")}
             </button>
-            <TripleDotsSpinner hidden_frames=1 hidden=move || !icons_loader().loading/>
         </div>
     }
 }

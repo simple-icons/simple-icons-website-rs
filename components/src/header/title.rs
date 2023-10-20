@@ -31,7 +31,7 @@ pub fn HeaderTitle() -> impl IntoView {
 
     view! {
         <div class:hidden=move || header_state().menu_open>
-            <h1>"Simple Icons"</h1>
+            <a href="/">"Simple Icons"</a>
             <p id="site-description" inner_html=description_html></p>
         </div>
     }

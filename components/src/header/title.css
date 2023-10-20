@@ -2,7 +2,7 @@ header > div {
   @apply flex flex-col columns-2 space-y-1.5 lg:space-y-2;
 }
 
-header > div > h1 {
+header > div > a {
   @apply text-[1.7rem] font-semibold whitespace-nowrap;
 }
 
