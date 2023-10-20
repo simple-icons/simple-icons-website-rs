@@ -11,4 +11,12 @@ footer {
   .footer-about a {
     @apply text-link;
   }
+
+  .twitter-button {
+    @apply flex flex-row items-center h-0 my-auto align-middle
+      text-white rounded-md px-3 py-5
+      bg-[#1DA1F2] hover:bg-[#55b8f5] focus:bg-[#55b8f5]
+      whitespace-nowrap mx-auto md:mx-4 lg:mx-12 mt-4 md:mt-auto
+      text-center;
+  }
 }

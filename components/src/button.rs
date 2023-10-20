@@ -12,7 +12,7 @@ where
     T: Fn() -> String + 'static + Copy,
 {
     view! {
-        <button title=title class=format!("button {}", class) type="button">
+        <button title=title class=format!("button {}", class) type="button" tabindex=0>
             <SVGDefIcon aria_hidden=true svg_def=svg_path/>
             {title}
         </button>

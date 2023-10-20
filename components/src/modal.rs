@@ -40,7 +40,7 @@ where
                 {title}
             </h2>
             <button type="button" title=move_tr!("close") on:click=on_close>
-                <SVGDefIcon aria_hidden=true svg_def=&SVGDef::Cross/>
+                <SVGDefIcon svg_def=&SVGDef::Cross/>
             </button>
         </div>
     }

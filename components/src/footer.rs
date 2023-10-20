@@ -46,8 +46,10 @@ fn ReportLink(
     view! {
         <a
             class=concat!(
-                "text-[#00e] hover:text-[#3434ee] focus:text-[#3434ee] visited:text-[#551a8b]",
-                " dark:text-[#227fff] dark:hover:text-[#3c8eff] dark:focus:text-[#3c8eff] dark:visited:text-[#a990bd]",
+                "text-[#00e] hover:text-[#3434ee]",
+                " focus:text-[#3434ee] visited:text-[#551a8b]",
+                " dark:text-[#227fff] dark:hover:text-[#3c8eff]",
+                " dark:focus:text-[#3c8eff] dark:visited:text-[#a990bd]",
             )
 
             href=href
@@ -81,12 +83,7 @@ pub fn ReportProblems() -> impl IntoView {
 pub fn TwitterButton() -> impl IntoView {
     view! {
         <a
-            class=concat!(
-                "flex flex-row items-center h-0 my-auto align-middle bg-[#1DA1F2]",
-                " text-white rounded-md px-3 py-5 hover:bg-[#55b8f5] focus:bg-[#55b8f5]",
-                " whitespace-nowrap mx-auto md:mx-4 lg:mx-12 mt-4 md:mt-auto text-center",
-            )
-
+            class="twitter-button"
             rel="noopener"
             role="button"
             target="_blank"
@@ -103,30 +100,30 @@ pub fn About() -> impl IntoView {
     let maintained_by_html = move_tr!("maintained-by", &{
         let mut map = HashMap::new();
         map.insert(
-                        "license".to_string(),
-                        format!(
-                            "<a href=\"https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md\">{}</a>",
-                            tr!("cco")
-                        ).into(),
-                    );
+            "license".to_string(),
+            format!(
+                "<a href=\"https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md\">{}</a>",
+                tr!("cco")
+            ).into(),
+        );
         map.insert(
-                        "maintainers".to_string(),
-                        format!(
-                            "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
-                            tr!("simple-icons-contributors")
-                        ).into(),
-                    );
+            "maintainers".to_string(),
+            format!(
+                "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
+                tr!("simple-icons-contributors")
+            ).into(),
+        );
         map
     });
     let use_platform_html = move_tr!("use-platform", &{
         let mut map = HashMap::new();
         map.insert(
-                        "platform".to_string(),
-                        format!(
-                            "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
-                            tr!("github"),
-                        ).into(),
-                    );
+            "platform".to_string(),
+            format!(
+                "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
+                tr!("github"),
+            ).into(),
+        );
         map
     });
     let supported_by_html = move_tr!("supported-by", &{

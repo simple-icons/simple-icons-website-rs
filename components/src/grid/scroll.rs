@@ -30,7 +30,7 @@ where
             title=title
             on:click=on_click
         >
-            <SVGIcon aria_hidden=true path=svg_path/>
+            <SVGIcon path=svg_path/>
         </button>
     }
 }

@@ -40,7 +40,7 @@ where
 {
     view! {
         <ControlButton title=title active=active>
-            <svg role="img" aria-label=title viewBox="0 0 24 24">
+            <svg role="img" aria-hidden=true aria-label=title viewBox="0 0 24 24">
                 <path d=svg_path></path>
             </svg>
         </ControlButton>

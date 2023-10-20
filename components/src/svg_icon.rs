@@ -9,7 +9,7 @@ pub fn SVGIcon(
     #[prop(optional, default = "24")] width: &'static str,
     #[prop(optional, default = "24")] height: &'static str,
     #[prop(optional, default = "img")] role: &'static str,
-    #[prop(optional, default = false)] aria_hidden: bool,
+    #[prop(optional, default = true)] aria_hidden: bool,
     #[prop(optional, default = "")] aria_label: &'static str,
 ) -> impl IntoView {
     view! {
@@ -35,7 +35,7 @@ pub fn SVGDefIcon(
     #[prop(optional, default = "24")] width: &'static str,
     #[prop(optional, default = "24")] height: &'static str,
     #[prop(optional, default = "img")] role: &'static str,
-    #[prop(optional, default = false)] aria_hidden: bool,
+    #[prop(optional, default = true)] aria_hidden: bool,
     #[prop(optional, default = "")] aria_label: &'static str,
 ) -> impl IntoView {
     view! {
