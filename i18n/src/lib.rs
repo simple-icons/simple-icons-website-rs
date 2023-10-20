@@ -12,15 +12,6 @@ pub struct Language {
     pub name: &'static str,
 }
 
-macro_rules! language {
-    ($id:expr, $name:expr) => {
-        Language {
-            id: langid!($id),
-            name: $name,
-        }
-    };
-}
-
 // Exposes LANGUAGES as a public static variable
 include!(concat!(env!("OUT_DIR"), "/languages.rs"));
 

@@ -15,7 +15,7 @@ fn main() {
         format!("pub static LANGUAGES: [Language; {}] = [", languages.len());
     for language in languages.iter() {
         languages_rs_result.push_str(&format!(
-            "language!(\"{}\", \"{}\"),",
+            "Language {{id: langid!(\"{}\"), name: \"{}\"}},",
             language[0], language[1]
         ));
     }
