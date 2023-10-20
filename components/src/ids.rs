@@ -8,8 +8,12 @@ pub enum Ids {
     IconDetailsModal,
     ViewSVGPath,
     DownloadSVGPath,
+    DownloadThinSVGPath,
     ControlsSVGPath,
     CrossSVGPath,
+    UploadSVGPath,
+    SaveSVGPath,
+    GridSVGPath,
 }
 
 impl Ids {
@@ -21,18 +25,26 @@ impl Ids {
             Ids::CopyInput => "copy-input",
             Ids::ViewSVGPath => "view-path",
             Ids::DownloadSVGPath => "download-path",
+            Ids::DownloadThinSVGPath => "download-thin-path",
             Ids::ControlsSVGPath => "controls-path",
             Ids::CrossSVGPath => "cross-path",
+            Ids::UploadSVGPath => "upload-path",
+            Ids::SaveSVGPath => "save-path",
+            Ids::GridSVGPath => "grid-path",
         }
         #[cfg(not(debug_assertions))]
         match self {
             Ids::IconDetailsModal => "i",
-            Ids::SearchInput => "s",
+            Ids::SearchInput => "f",
             Ids::CopyInput => "t",
             Ids::ViewSVGPath => "v",
             Ids::DownloadSVGPath => "d",
+            Ids::DownloadThinSVGPath => "dt",
             Ids::ControlsSVGPath => "c",
             Ids::CrossSVGPath => "x",
+            Ids::UploadSVGPath => "u",
+            Ids::SaveSVGPath => "s",
+            Ids::GridSVGPath => "g",
         }
     }
 }

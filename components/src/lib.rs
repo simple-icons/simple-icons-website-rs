@@ -14,7 +14,8 @@ pub mod modal;
 pub mod preview_generator;
 pub(crate) mod spinners;
 pub(crate) mod storage;
-pub mod svg_defs;
+pub mod svg_def;
+pub mod svg_icon;
 pub(crate) mod url;
 
 pub(crate) use ids::Ids;

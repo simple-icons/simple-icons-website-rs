@@ -1,5 +1,6 @@
 //! App footer
 
+use crate::svg_icon::SVGIcon;
 use i18n::{move_tr, tr};
 use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
 use simple_icons_macros::simple_icon_svg_path;
@@ -91,9 +92,7 @@ pub fn TwitterButton() -> impl IntoView {
             target="_blank"
             href="https://twitter.com/intent/tweet?url=https://simpleicons.org&amp;text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
         >
-            <svg fill="white" class="h-4 mr-3" role="img" viewBox="0 0 24 24">
-                <path d=TWITTER_ICON_SVG_PATH></path>
-            </svg>
+            <SVGIcon fill="white" class="h-4 mr-3" path=TWITTER_ICON_SVG_PATH/>
             <span>{move_tr!("share-this")}</span>
         </a>
     }

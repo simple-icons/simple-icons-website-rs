@@ -1,4 +1,5 @@
 use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
+use crate::svg_icon::SVGIcon;
 use i18n::move_tr;
 use leptos::{ev::MouseEvent, *};
 
@@ -29,9 +30,7 @@ where
             title=title
             on:click=on_click
         >
-            <svg viewBox="0 0 24 24">
-                <path d=svg_path></path>
-            </svg>
+            <SVGIcon aria_hidden=true path=svg_path/>
         </button>
     }
 }

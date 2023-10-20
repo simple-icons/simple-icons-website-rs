@@ -5,6 +5,7 @@ use crate::controls::download::download;
 use crate::controls::search::fuzzy::search;
 use crate::fetch::fetch_text;
 use crate::grid::ICONS;
+use crate::svg_def::SVGDef;
 use i18n::{move_tr, tr};
 use leptos::*;
 use simple_icons::{color, sdk};
@@ -80,22 +81,6 @@ fn build_svg(path: &str, fill: Option<&str>) -> String {
             None => "".to_string(),
         }
     )
-}
-
-enum PreviewButtonSvgPath {
-    Upload,
-    Download,
-    Save,
-}
-
-impl PreviewButtonSvgPath {
-    fn as_str(&self) -> &'static str {
-        match self {
-            Self::Upload => "M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5",
-            Self::Download => "M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9",
-            Self::Save => "M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z",
-        }
-    }
 }
 
 fn get_canvas_container() -> web_sys::HtmlCanvasElement {
@@ -855,7 +840,7 @@ fn PreviewButtons(
                 />
 
                 <Button
-                    svg_path=PreviewButtonSvgPath::Upload.as_str()
+                    svg_path=&SVGDef::Upload
                     title=move_tr!("upload-svg")
                     on:click=move |ev| {
                         let input = document()
@@ -876,7 +861,7 @@ fn PreviewButtons(
 
             </form>
             <Button
-                svg_path=PreviewButtonSvgPath::Save.as_str()
+                svg_path=&SVGDef::Save
                 title=move_tr!("save-preview")
                 class="float-right ml-4"
                 on:click=move |ev: web_sys::MouseEvent| {
@@ -894,7 +879,7 @@ fn PreviewButtons(
             />
 
             <Button
-                svg_path=PreviewButtonSvgPath::Download.as_str()
+                svg_path=&SVGDef::Download
                 title=move_tr!(
                     "download-filetype", & { let mut map = HashMap::new(); map.insert("filetype"
                     .to_string(), tr!("svg") .into()); map }

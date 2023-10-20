@@ -1,8 +1,10 @@
+use crate::svg_def::SVGDef;
+use crate::svg_icon::SVGDefIcon;
 use leptos::*;
 
 #[component]
 pub fn Button<T>(
-    svg_path: &'static str,
+    svg_path: &'static SVGDef,
     title: T,
     #[prop(optional)] class: &'static str,
 ) -> impl IntoView
@@ -11,9 +13,7 @@ where
 {
     view! {
         <button title=title class=format!("button {}", class) type="button">
-            <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
-                <path d=svg_path></path>
-            </svg>
+            <SVGDefIcon aria_hidden=true svg_def=svg_path/>
             {title}
         </button>
     }

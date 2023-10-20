@@ -8,6 +8,7 @@ use components::controls::search::provide_search_context;
 use components::controls::Controls;
 use components::grid::{provide_icons_grid_contexts, Grid};
 use components::preview_generator::PreviewGenerator;
+use components::svg_def::SVGDef;
 use i18n::move_tr;
 use leptos::*;
 use leptos_router::{use_navigate, use_query_map};
@@ -48,11 +49,7 @@ pub fn Preview() -> impl IntoView {
                     class="mx-auto mt-[29px] lg:mt-5 max-h-[40px]"
                     title=move_tr!("icons")
                     on:click=move |_| use_navigate()("/", Default::default())
-                    svg_path=concat!(
-                        "M14.67,5v6.5H9.33V5H14.67z M15.67,11.5H21V5h-5.33V11.5z",
-                        " M14.67,19v-6.5H9.33V19H14.67z M15.67,12.5V19H21v-6.5H15.67z",
-                        " M8.33,12.5H3V19h5.33V12.5z M8.33,11.5V5H3v6.5H8.33z",
-                    )
+                    svg_path=&SVGDef::Grid
                 />
 
             </div>

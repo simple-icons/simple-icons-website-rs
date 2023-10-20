@@ -7,7 +7,7 @@ pub mod layout;
 pub mod order;
 pub mod search;
 
-use crate::svg_defs::SVGDefs;
+use crate::svg_def::SVGDef;
 use color_scheme::ColorSchemeControl;
 use download::DownloadFileTypeControl;
 use i18n::tr;
@@ -78,8 +78,8 @@ pub fn Controls() -> impl IntoView {
 pub fn ControlsToggler() -> impl IntoView {
     let controls_state = use_context::<ControlsStateSignal>().unwrap().0;
     let toggler_svg_use_id = match controls_state().buttons_group_open {
-        true => SVGDefs::ViewPath.id(),
-        false => SVGDefs::ControlsPath.id(),
+        true => SVGDef::View.id(),
+        false => SVGDef::Controls.id(),
     };
 
     view! {

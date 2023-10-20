@@ -10,7 +10,7 @@ use crate::header::{
     },
     HeaderState, HeaderStateSignal,
 };
-use crate::svg_defs::SVGDefs;
+use crate::svg_def::SVGDef;
 use i18n::move_tr;
 use leptos::*;
 use simple_icons_macros::simple_icon_svg_path;
@@ -141,7 +141,7 @@ pub fn HeaderMenuCloseButton() -> impl IntoView {
                 }
             }
 
-            svg_path=SVGDefs::CrossPath.d()
+            svg_path=SVGDef::Cross.d()
         />
     }
 }

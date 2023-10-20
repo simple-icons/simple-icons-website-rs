@@ -1,5 +1,6 @@
 use crate::copy::copy_inner_text_on_click;
-use crate::svg_defs::SVGDefs;
+use crate::svg_def::SVGDef;
+use crate::svg_icon::SVGDefIcon;
 use crate::Url;
 use core::fmt;
 use i18n::move_tr;
@@ -39,9 +40,7 @@ where
                 {title}
             </h2>
             <button type="button" title=move_tr!("close") on:click=on_close>
-                <svg role="img" viewBox="0 0 24 24">
-                    <use_ href=format!("#{}", SVGDefs::CrossPath.id())></use_>
-                </svg>
+                <SVGDefIcon aria_hidden=true svg_def=&SVGDef::Cross/>
             </button>
         </div>
     }
