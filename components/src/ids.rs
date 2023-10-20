@@ -14,6 +14,7 @@ pub enum Ids {
     UploadSVGPath,
     SaveSVGPath,
     GridSVGPath,
+    EyeBoxSVGPath,
 }
 
 impl Ids {
@@ -31,6 +32,7 @@ impl Ids {
             Ids::UploadSVGPath => "upload-path",
             Ids::SaveSVGPath => "save-path",
             Ids::GridSVGPath => "grid-path",
+            Ids::EyeBoxSVGPath => "eye-box-path",
         }
         #[cfg(not(debug_assertions))]
         match self {
@@ -45,6 +47,7 @@ impl Ids {
             Ids::UploadSVGPath => "u",
             Ids::SaveSVGPath => "s",
             Ids::GridSVGPath => "g",
+            Ids::EyeBoxSVGPath => "e",
         }
     }
 }

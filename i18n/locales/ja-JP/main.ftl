@@ -66,3 +66,4 @@ path = Path
 upload-svg = SVG をアップロード
 save-preview = プレビューを保存
 icons = アイコン
+preview-generator = プレビュー ジェネレーター

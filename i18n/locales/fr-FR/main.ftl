@@ -66,3 +66,6 @@ path = Path
 upload-svg = Télécharger SVG
 save-preview = Enregistrer l'aperçu
 icons = Icônes
+preview-generator = Générateur d'aperçu
+page-not-found = Page non trouvée
+maybe-youre-looking-for = Peut-être cherchez-vous...

@@ -13,12 +13,22 @@ use i18n::move_tr;
 use leptos::*;
 use leptos_router::{use_navigate, use_query_map};
 
-#[component]
-pub fn Index() -> impl IntoView {
-    // Trick to redirect to other pages for servers that don't support SPAs
-    if use_query_map()().get("p").is_some() {
+fn index_redirections() {
+    let query_map = use_query_map()();
+
+    if query_map.get("p").is_some() {
         use_navigate()("/preview", Default::default());
     }
+
+    // Trick to redirect to other pages for servers that don't support SPAs
+    if let Some(redirection) = query_map.get("r") {
+        use_navigate()(redirection, Default::default());
+    }
+}
+
+#[component]
+pub fn Index() -> impl IntoView {
+    index_redirections();
 
     let initial_search_value = provide_search_context();
     let initial_order_mode = provide_order_mode_context(&initial_search_value);
@@ -55,5 +65,35 @@ pub fn Preview() -> impl IntoView {
             </div>
         </menu>
         <PreviewGenerator/>
+    }
+}
+
+#[component]
+pub fn Error404() -> impl IntoView {
+    view! {
+        <div class="flex flex-col items-center justify-center h-full">
+            <h1 class="text-8xl font-bold">{"404"}</h1>
+            <p class="text-2xl font-bold">{move_tr!("page-not-found")}</p>
+            <hr class="w-1/2 my-4 border-t-[var(--divider-color)]"/>
+            <p class="text-lg font-bold font-sans">{move_tr!("maybe-youre-looking-for")}</p>
+            <ul class="flex flex-col py-5 content-between">
+                <li class="flex py-1">
+                    <Button
+                        class="mx-auto"
+                        title=move_tr!("icons")
+                        on:click=move |_| use_navigate()("/", Default::default())
+                        svg_path=&SVGDef::Grid
+                    />
+                </li>
+                <li class="flex py-1">
+                    <Button
+                        class="mx-auto"
+                        title=move_tr!("preview-generator")
+                        on:click=move |_| use_navigate()("/preview", Default::default())
+                        svg_path=&SVGDef::EyeBox
+                    />
+                </li>
+            </ul>
+        </div>
     }
 }

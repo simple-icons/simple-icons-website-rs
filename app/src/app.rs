@@ -1,5 +1,5 @@
 use crate::head::Head;
-use crate::pages::{Index, Preview};
+use crate::pages::{Error404, Index, Preview};
 use components::controls::color_scheme::{
     provide_color_scheme_context, ColorScheme,
 };
@@ -96,7 +96,8 @@ pub fn App() -> impl IntoView {
             <Router>
                 <Routes>
                     <Route path="/preview" view=Preview/>
-                    <Route path="/*any" view=Index/>
+                    <Route path="/" view=Index/>
+                    <Route path="/*any" view=Error404/>
                 </Routes>
             </Router>
         </main>

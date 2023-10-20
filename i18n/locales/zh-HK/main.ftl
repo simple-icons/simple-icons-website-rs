@@ -66,3 +66,6 @@ path = 小路
 upload-svg = 上傳 SVG
 save-preview = 保存預覽
 icons = 圖標
+preview-generator = 預覽生成器
+page-not-found = 找不到頁面
+maybe-youre-looking-for = 也許你在找⋯

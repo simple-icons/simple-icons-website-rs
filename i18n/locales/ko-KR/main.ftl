@@ -66,3 +66,6 @@ path = Path
 upload-svg = SVG 업로드
 save-preview = 미리보기 저장
 icons = 아이콘
+preview-generator = 미리보기 생성기
+page-not-found = 페이지를 찾을 수 없음
+maybe-youre-looking-for = 아마도 다음을 찾고 있을지도 모릅니다

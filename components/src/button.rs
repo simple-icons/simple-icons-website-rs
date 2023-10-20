@@ -4,7 +4,7 @@ use leptos::*;
 
 #[component]
 pub fn Button<T>(
-    svg_path: &'static SVGDef,
+    #[prop(optional)] svg_path: &'static SVGDef,
     title: T,
     #[prop(optional)] class: &'static str,
 ) -> impl IntoView
@@ -13,7 +13,11 @@ where
 {
     view! {
         <button title=title class=format!("button {}", class) type="button" tabindex=0>
-            <SVGDefIcon aria_hidden=true svg_def=svg_path/>
+            {move || match svg_path {
+                SVGDef::Null => view! { "" }.into_view(),
+                _ => view! { <SVGDefIcon aria_hidden=true svg_def=svg_path/> },
+            }}
+
             {title}
         </button>
     }
