@@ -65,3 +65,4 @@ color = 色
 path = Path
 upload-svg = SVG をアップロード
 save-preview = プレビューを保存
+icons = アイコン

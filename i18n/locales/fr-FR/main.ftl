@@ -65,3 +65,4 @@ color = Couleur
 path = Path
 upload-svg = Télécharger SVG
 save-preview = Enregistrer l'aperçu
+icons = Icônes

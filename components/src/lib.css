@@ -19,5 +19,5 @@
 /* Modal */
 @import './modal.css';
 
-/* Preview */
-@import './preview.css';
+/* Preview generator */
+@import './preview_generator.css';

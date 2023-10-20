@@ -65,3 +65,4 @@ color = 顏色
 path = 小路
 upload-svg = 上传 SVG
 save-preview = 保存预览
+icons = 图标

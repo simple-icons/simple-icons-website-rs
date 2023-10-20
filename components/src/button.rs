@@ -10,7 +10,7 @@ where
     T: Fn() -> String + 'static + Copy,
 {
     view! {
-        <button title=title class=class type="button">
+        <button title=title class=format!("button {}", class) type="button">
             <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
                 <path d=svg_path></path>
             </svg>

@@ -65,3 +65,4 @@ color = 색상
 path = Path
 upload-svg = SVG 업로드
 save-preview = 미리보기 저장
+icons = 아이콘

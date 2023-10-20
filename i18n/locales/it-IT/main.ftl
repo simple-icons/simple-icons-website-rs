@@ -65,3 +65,4 @@ color = Colore
 path = Path
 upload-svg = Carica SVG
 save-preview = Salva anteprima
+icons = Icone
