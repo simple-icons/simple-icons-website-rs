@@ -1,7 +1,7 @@
 import CONFIG from '../config/config.ts';
 import fs from 'node:fs/promises';
 
-const cnameAssetPath = 'app/assets/CNAME';
+const cnameAssetPath = 'app/public/assets/CNAME';
 const cnameAssetExists = await fs
   .access(cnameAssetPath)
   .then(() => true)

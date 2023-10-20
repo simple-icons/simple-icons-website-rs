@@ -10,7 +10,7 @@ test-results/
 end2end/playwright-report/
 playwright/.cache/
 .env
-app/assets/sitemap.xml
-app/assets/CNAME
-app/assets/dist/**
-!app/assets/dist/.keep
+app/public/assets/sitemap.xml
+app/public/assets/CNAME
+app/public/assets/dist/**
+!app/public/assets/dist/.keep

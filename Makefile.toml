@@ -72,7 +72,7 @@ args = [
     "--watch",
     "../config",
     "--ignore",
-    "assets/dist",
+    "./public/assets/dist",
     "--ignore",
     "../i18n/locales",
 ]
@@ -106,9 +106,9 @@ command = "npx"
 args = [
     "tailwindcss",
     "--input",
-    "stylesheet.css",
+    "./stylesheet.css",
     "--output",
-    "assets/dist/stylesheet.css",
+    "./public/assets/dist/stylesheet.css",
     "--watch",
     "--no-minify",
 ]
@@ -135,7 +135,7 @@ args = [
     "--input",
     "./stylesheet.css",
     "--output",
-    "./assets/dist/stylesheet.css",
+    "./public/assets/dist/stylesheet.css",
 ]
 cwd = "./app"
 
@@ -196,7 +196,7 @@ args = [
     "--ignore-path",
     ".gitignore",
     "--config",
-    "app/.stylelintrc.json"
+    "./app/.stylelintrc.json"
 ]
 
 [tasks.format-prettier]
@@ -232,9 +232,9 @@ description = "Build the fast-fuzzy JS library for the web"
 command = "npx"
 args = [
     "esbuild",
-    "components/src/controls/search/fast-fuzzy.js",
+    "./components/src/controls/search/fast-fuzzy.js",
     "--bundle",
-    "--outfile=app/assets/dist/fast-fuzzy.js",
+    "--outfile=./app/public/assets/dist/fast-fuzzy.js",
     "--minify",
 ]
 

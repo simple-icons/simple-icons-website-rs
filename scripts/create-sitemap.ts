@@ -1,7 +1,7 @@
 import CONFIG from '../config/config.ts';
 import fs from 'node:fs/promises';
 
-const sitemapAssetPath = 'app/assets/sitemap.xml';
+const sitemapAssetPath = 'app/public/assets/sitemap.xml';
 const sitemapAssetExists = await fs
   .access(sitemapAssetPath)
   .then(() => true)
