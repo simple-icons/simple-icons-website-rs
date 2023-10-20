@@ -71,6 +71,9 @@ pub fn Preview() -> impl IntoView {
 #[component]
 pub fn Error404() -> impl IntoView {
     view! {
+        <menu class="-mt-4">
+            <ColorSchemeControl/>
+        </menu>
         <div class="flex flex-col items-center justify-center h-full">
             <h1 class="text-8xl font-bold">{"404"}</h1>
             <p class="text-2xl font-bold">{move_tr!("page-not-found")}</p>
