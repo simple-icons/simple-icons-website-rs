@@ -69,3 +69,4 @@ icons = Icônes
 preview-generator = Générateur d'aperçu
 page-not-found = Page non trouvée
 maybe-youre-looking-for = Peut-être cherchez-vous...
+copy-preview = Copier l'aperçu

@@ -1,6 +1,6 @@
 @layer components {
   .button {
-    @apply py-2 px-3 rounded text-sm
+    @apply py-2 px-3 rounded text-sm whitespace-nowrap
       text-custom-button-content-default-color
       hover:text-custom-button-content-hover-color
       focus:text-custom-button-content-default-color

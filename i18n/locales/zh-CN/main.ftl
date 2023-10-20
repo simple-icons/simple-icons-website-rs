@@ -69,3 +69,4 @@ icons = 图标
 preview-generator = 预览生成器
 page-not-found = 页面未找到
 maybe-youre-looking-for = 也许你在找⋯
+copy-preview = 复制预览

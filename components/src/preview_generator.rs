@@ -3,6 +3,7 @@
 use crate::button::Button;
 use crate::controls::download::download;
 use crate::controls::search::fuzzy::search;
+use crate::copy::copy_canvas_container_as_image;
 use crate::fetch::fetch_text;
 use crate::grid::ICONS;
 use crate::svg_def::SVGDef;
@@ -11,6 +12,7 @@ use leptos::*;
 use simple_icons::{color, sdk};
 use simple_icons_macros::{get_number_of_icons, simple_icon_svg_path};
 use std::collections::HashMap;
+use std::time::Duration;
 use types::SimpleIcon;
 use wasm_bindgen::{closure::Closure, JsCast};
 use wasm_bindgen_futures;
@@ -764,6 +766,26 @@ fn PreviewButtons(
     set_color: WriteSignal<String>,
     set_path: WriteSignal<String>,
 ) -> impl IntoView {
+    view! {
+        <div class="preview-buttons">
+            <div>
+                <PreviewUploadSVGButton set_brand=set_brand set_color=set_color set_path=set_path/>
+            </div>
+            <div class="float-right">
+                <PreviewCopyButton/>
+                <PreviewSaveButton brand=brand/>
+                <PreviewDownloadSVGButton brand=brand path=path/>
+            </div>
+        </div>
+    }
+}
+
+#[component]
+fn PreviewUploadSVGButton(
+    set_brand: WriteSignal<String>,
+    set_color: WriteSignal<String>,
+    set_path: WriteSignal<String>,
+) -> impl IntoView {
     async fn on_upload_svg_file(
         file: web_sys::File,
         set_brand: WriteSignal<String>,
@@ -821,87 +843,128 @@ fn PreviewButtons(
     }
 
     view! {
-        <div class="preview-buttons">
-            <form class="inline-block">
-                <input
-                    type="file"
-                    name="upload-svg"
-                    accept=".svg"
-                    class="absolute w-0 h-0 -z-index-1"
-                    on:change=move |ev| {
-                        let input = ev
-                            .target()
-                            .unwrap()
-                            .dyn_into::<web_sys::HtmlInputElement>()
-                            .unwrap();
-                        let file = input.files().unwrap().get(0).unwrap();
-                        spawn_local(on_upload_svg_file(file, set_brand, set_color, set_path));
-                    }
-                />
-
-                <Button
-                    svg_path=&SVGDef::Upload
-                    title=move_tr!("upload-svg")
-                    on:click=move |ev| {
-                        let input = document()
-                            .query_selector("input[name='upload-svg']")
-                            .unwrap()
-                            .unwrap()
-                            .dyn_into::<web_sys::HtmlElement>()
-                            .unwrap();
-                        input.click();
-                        ev.target()
-                            .unwrap()
-                            .dyn_into::<web_sys::HtmlElement>()
-                            .unwrap()
-                            .blur()
-                            .unwrap();
-                    }
-                />
-
-            </form>
-            <Button
-                svg_path=&SVGDef::Save
-                title=move_tr!("save-preview")
-                class="float-right ml-4"
-                on:click=move |ev: web_sys::MouseEvent| {
-                    let canvas = get_canvas_container();
-                    let filename = format!("{}.png", &sdk::title_to_slug(&brand()));
-                    let url = canvas.to_data_url().unwrap();
-                    download(&filename, &url);
-                    ev.target()
+        <form class="inline-block">
+            <input
+                type="file"
+                name="upload-svg"
+                accept=".svg"
+                class="absolute w-0 h-0 -z-index-1"
+                on:change=move |ev| {
+                    let input = ev
+                        .target()
                         .unwrap()
-                        .dyn_into::<web_sys::HtmlElement>()
-                        .unwrap()
-                        .blur()
+                        .dyn_into::<web_sys::HtmlInputElement>()
                         .unwrap();
+                    let file = input.files().unwrap().get(0).unwrap();
+                    spawn_local(on_upload_svg_file(file, set_brand, set_color, set_path));
                 }
             />
 
             <Button
-                svg_path=&SVGDef::Download
-                title=move_tr!(
-                    "download-filetype", & { let mut map = HashMap::new(); map.insert("filetype"
-                    .to_string(), tr!("svg") .into()); map }
-                )
-
-                class="float-right"
-                on:click=move |ev: web_sys::MouseEvent| {
-                    let filename = format!("{}.svg", &sdk::title_to_slug(&brand()));
-                    let url = format!(
-                        "data:image/svg+xml;utf8,{}",
-                        js_sys::encode_uri_component(&build_svg(&path(), None)),
-                    );
-                    download(&filename, &url);
-                    ev.target()
+                svg_path=&SVGDef::Upload
+                title=move_tr!("upload-svg")
+                on:click=move |_| {
+                    let input = document()
+                        .query_selector("input[name='upload-svg']")
+                        .unwrap()
                         .unwrap()
                         .dyn_into::<web_sys::HtmlElement>()
-                        .unwrap()
-                        .blur()
                         .unwrap();
+                    input.click();
                 }
             />
 
-        </div>
+        </form>
+    }
+}
+
+#[component]
+fn PreviewCopyButton() -> impl IntoView {
+    let (copied, set_copied) = create_signal(false);
+    let class = format!(
+        "button {}",
+        if window().navigator().clipboard().is_none() {
+            "hidden"
+        } else {
+            ""
+        }
+    );
+
+    view! {
+        <button
+            class=class
+            on:click=move |_| {
+                let canvas = get_canvas_container();
+                spawn_local(copy_canvas_container_as_image(canvas));
+                set_copied(true);
+                _ = set_timeout_with_handle(
+                    move || {
+                        set_copied(false);
+                    },
+                    Duration::from_millis(1000),
+                );
+            }
+        >
+
+            <svg viewBox="0 0 24 24" width="24" height="24">
+                {move || match copied() {
+                    true => {
+                        view! {
+                            <>
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+                            </>
+                        }
+                            .into_view()
+                    }
+                    false => view! { <path d=SVGDef::Copy.d()></path> }.into_view(),
+                }}
+
+            </svg>
+            {move_tr!("copy-preview")}
+        </button>
+    }
+}
+
+#[component]
+fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
+    view! {
+        <Button
+            svg_path=&SVGDef::Save
+            title=move_tr!("save-preview")
+            on:click=move |_| {
+                let canvas = get_canvas_container();
+                let filename = format!("{}.png", &sdk::title_to_slug(&brand()));
+                let url = canvas.to_data_url().unwrap();
+                download(&filename, &url);
+            }
+        />
+    }
+}
+
+#[component]
+fn PreviewDownloadSVGButton(
+    brand: ReadSignal<String>,
+    path: ReadSignal<String>,
+) -> impl IntoView {
+    let title = move_tr!("download-filetype", &{
+        let mut map = HashMap::new();
+        map.insert("filetype".to_string(), tr!("svg").into());
+        map
+    });
+
+    view! {
+        <Button
+            svg_path=&SVGDef::Download
+            title=title
+            on:click=move |_| {
+                let filename = format!("{}.svg", &sdk::title_to_slug(&brand()));
+                let url = format!(
+                    "data:image/svg+xml;utf8,{}",
+                    js_sys::encode_uri_component(&build_svg(&path(), None)),
+                );
+                download(&filename, &url);
+            }
+        />
     }
 }

@@ -47,8 +47,19 @@
   }
 
   .preview-buttons {
-    @apply border-t-[var(--divider-color)] border-t
-      pt-5;
+    @apply border-t-[var(--divider-color)] border-t pt-5 flex flex-row content-between w-full;
+  }
+
+  .preview-buttons div:nth-child(1) {
+    @apply flex-1;
+  }
+
+  .preview-buttons div:nth-child(2) {
+    @apply flex-1 flex flex-row-reverse;
+  }
+
+  .preview-buttons button {
+    @apply mr-1;
   }
 
   .preview-brand-suggestions {

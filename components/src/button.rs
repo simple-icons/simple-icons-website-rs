@@ -3,10 +3,10 @@ use crate::svg_icon::SVGDefIcon;
 use leptos::*;
 
 #[component]
-pub fn Button<T>(
+pub fn Button<'a, T>(
     #[prop(optional)] svg_path: &'static SVGDef,
     title: T,
-    #[prop(optional)] class: &'static str,
+    #[prop(optional)] class: &'a str,
 ) -> impl IntoView
 where
     T: Fn() -> String + 'static + Copy,
