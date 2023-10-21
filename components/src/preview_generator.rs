@@ -937,7 +937,6 @@ fn PreviewCopyButton() -> impl IntoView {
 #[component]
 fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
     let button_id = Ids::PreviewSaveButton.as_str();
-
     load_preview_generator_button_keyboard_shortcut(button_id, "s");
 
     view! {

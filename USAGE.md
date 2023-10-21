@@ -22,3 +22,10 @@ You can pass the following parameters to the website to change the behaviour on 
 ## `/preview` Preview Generator
 
 Used to include an image of the icon showing a preview of it in pull requests.
+
+### Keyboard shortcuts
+
+- <kbd>Ctrl</kbd> + <kbd>S</kbd>: Save preview
+- <kbd>Ctrl</kbd> + <kbd>C</kbd>: Copy preview
+- <kbd>Ctrl</kbd> + <kbd>↑</kbd>: Upload SVG
+- <kbd>Ctrl</kbd> + <kbd>↓</kbd>: Download SVG
