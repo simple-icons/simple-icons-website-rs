@@ -39,7 +39,7 @@ pub fn Head() -> impl IntoView {
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Roboto+Mono:wght@400;600"
         />
         <MetaOpenGraph description=description/>
-        <MetaTwitter description=description/>
+        <MetaX description=description/>
         <Meta name="msvalidate.01" content="14319924BC1F00DC15EF0EAA29E72404"/>
         <Meta name="yandex-verification" content="8b467a0b98aa2725"/>
         <LdJSONMetadata/>
@@ -67,9 +67,9 @@ where
     }
 }
 
-/// Twitter meta tags
+/// X (social network) meta tags
 #[component]
-fn MetaTwitter<F>(
+fn MetaX<F>(
     /// Site description
     description: F,
 ) -> impl IntoView

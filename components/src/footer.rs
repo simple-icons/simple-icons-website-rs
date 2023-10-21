@@ -6,7 +6,7 @@ use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
 use simple_icons_macros::simple_icon_svg_path;
 use std::collections::HashMap;
 
-static TWITTER_ICON_SVG_PATH: &str = simple_icon_svg_path!("twitter");
+static X_ICON_SVG_PATH: &str = simple_icon_svg_path!("x");
 
 /// Footer of the website
 #[component]
@@ -19,7 +19,7 @@ pub fn Footer(
             <ReportProblems/>
             <div class="flex flex-col md:flex-row justify-between">
                 <About/>
-                <TwitterButton/>
+                <XButton/>
             </div>
             <a
                 class=concat!(
@@ -80,16 +80,16 @@ pub fn ReportProblems() -> impl IntoView {
 }
 
 #[component]
-pub fn TwitterButton() -> impl IntoView {
+pub fn XButton() -> impl IntoView {
     view! {
         <a
-            class="twitter-button"
+            class="x-button"
             rel="noopener"
             role="button"
             target="_blank"
-            href="https://twitter.com/intent/tweet?url=https://simpleicons.org&amp;text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
+            href="https://x.com/intent/tweet?url=https://simpleicons.org&amp;text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
         >
-            <SVGIcon fill="white" class="h-4 mr-3" path=TWITTER_ICON_SVG_PATH/>
+            <SVGIcon fill="white" class="h-4 mr-3" path=X_ICON_SVG_PATH/>
             <span>{move_tr!("share-this")}</span>
         </a>
     }

@@ -12,10 +12,11 @@ footer {
     @apply text-link;
   }
 
-  .twitter-button {
+  .x-button {
     @apply flex flex-row items-center h-0 my-auto align-middle
       text-white rounded-md px-3 py-5
-      bg-[#1DA1F2] hover:bg-[#55b8f5] focus:bg-[#55b8f5]
+      bg-[#000] hover:bg-[rgba(12,12,12,.8)] focus:bg-[#000]
+      focus:hover:bg-[rgba(12,12,12,.8)]
       whitespace-nowrap mx-auto md:mx-4 lg:mx-12 mt-4 md:mt-auto
       text-center;
   }
