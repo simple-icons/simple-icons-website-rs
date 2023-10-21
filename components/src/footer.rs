@@ -87,7 +87,7 @@ pub fn XButton() -> impl IntoView {
             rel="noopener"
             role="button"
             target="_blank"
-            href="https://x.com/intent/tweet?url=https://simpleicons.org&amp;text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
+            href="https://x.com/intent/tweet?url=https://simpleicons.org&text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
         >
             <SVGIcon fill="white" class="h-4 mr-3" path=X_ICON_SVG_PATH/>
             <span>{move_tr!("share-this")}</span>
