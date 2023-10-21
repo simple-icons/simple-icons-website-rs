@@ -135,7 +135,3 @@ body.light {
       text-custom-text-default-color;
   }
 }
-
-main {
-  @apply page-padding-x;
-}
