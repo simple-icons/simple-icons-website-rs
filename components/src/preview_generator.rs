@@ -7,6 +7,7 @@ use crate::copy::copy_canvas_container_as_image;
 use crate::fetch::fetch_text;
 use crate::grid::ICONS;
 use crate::svg_def::SVGDef;
+use crate::Ids;
 use i18n::{move_tr, tr};
 use leptos::*;
 use simple_icons::{color, sdk};
@@ -786,6 +787,9 @@ fn PreviewUploadSVGButton(
     set_color: WriteSignal<String>,
     set_path: WriteSignal<String>,
 ) -> impl IntoView {
+    let input_id = Ids::PreviewUploadSVGButton.as_str();
+    load_preview_generator_button_keyboard_shortcut(input_id, "ArrowUp");
+
     async fn on_upload_svg_file(
         file: web_sys::File,
         set_brand: WriteSignal<String>,
@@ -849,6 +853,7 @@ fn PreviewUploadSVGButton(
                 name="upload-svg"
                 accept=".svg"
                 class="absolute w-0 h-0 -z-index-1"
+                id=input_id
                 on:change=move |ev| {
                     let input = ev
                         .target()
@@ -865,8 +870,7 @@ fn PreviewUploadSVGButton(
                 title=move_tr!("upload-svg")
                 on:click=move |_| {
                     let input = document()
-                        .query_selector("input[name='upload-svg']")
-                        .unwrap()
+                        .get_element_by_id(input_id)
                         .unwrap()
                         .dyn_into::<web_sys::HtmlElement>()
                         .unwrap();
@@ -890,9 +894,13 @@ fn PreviewCopyButton() -> impl IntoView {
         }
     );
 
+    let button_id = Ids::PreviewCopyButton.as_str();
+    load_preview_generator_button_keyboard_shortcut(button_id, "c");
+
     view! {
         <button
             class=class
+            id=button_id
             on:click=move |_| {
                 let canvas = get_canvas_container();
                 spawn_local(copy_canvas_container_as_image(canvas));
@@ -928,10 +936,15 @@ fn PreviewCopyButton() -> impl IntoView {
 
 #[component]
 fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
+    let button_id = Ids::PreviewSaveButton.as_str();
+
+    load_preview_generator_button_keyboard_shortcut(button_id, "s");
+
     view! {
         <Button
             svg_path=&SVGDef::Save
             title=move_tr!("save-preview")
+            id=button_id
             on:click=move |_| {
                 let canvas = get_canvas_container();
                 let filename = format!("{}.png", &sdk::title_to_slug(&brand()));
@@ -953,10 +966,14 @@ fn PreviewDownloadSVGButton(
         map
     });
 
+    let button_id = Ids::PreviewDownloadSVGButton.as_str();
+    load_preview_generator_button_keyboard_shortcut(button_id, "ArrowDown");
+
     view! {
         <Button
             svg_path=&SVGDef::Download
             title=title
+            id=button_id
             on:click=move |_| {
                 let filename = format!("{}.svg", &sdk::title_to_slug(&brand()));
                 let url = format!(
@@ -967,4 +984,35 @@ fn PreviewDownloadSVGButton(
             }
         />
     }
+}
+
+fn load_preview_generator_button_keyboard_shortcut(
+    button_id: &'static str,
+    key: &'static str,
+) {
+    let closure: Closure<dyn FnMut(web_sys::KeyboardEvent)> =
+        Closure::new(move |ev: web_sys::KeyboardEvent| {
+            let button = document()
+                .get_element_by_id(button_id)
+                .unwrap()
+                .dyn_into::<web_sys::HtmlElement>()
+                .unwrap();
+            if ev.ctrl_key() && ev.key() == key {
+                button.click();
+                ev.prevent_default();
+            }
+        });
+
+    _ = set_timeout_with_handle(
+        move || {
+            let body = document().body().unwrap();
+            body.add_event_listener_with_callback(
+                "keydown",
+                closure.as_ref().unchecked_ref(),
+            )
+            .unwrap();
+            closure.forget();
+        },
+        Duration::from_millis(1000),
+    );
 }

@@ -4,13 +4,13 @@ use leptos::*;
 #[component]
 pub fn SVGIcon(
     path: &'static str,
-    #[prop(optional, default = "")] class: &'static str,
-    #[prop(optional, default = "")] fill: &'static str,
+    #[prop(optional)] class: &'static str,
+    #[prop(optional)] fill: &'static str,
     #[prop(optional, default = "24")] width: &'static str,
     #[prop(optional, default = "24")] height: &'static str,
     #[prop(optional, default = "img")] role: &'static str,
     #[prop(optional, default = true)] aria_hidden: bool,
-    #[prop(optional, default = "")] aria_label: &'static str,
+    #[prop(optional)] aria_label: &'static str,
 ) -> impl IntoView {
     view! {
         <svg
@@ -30,13 +30,13 @@ pub fn SVGIcon(
 #[component]
 pub fn SVGDefIcon(
     svg_def: &'static SVGDef,
-    #[prop(optional, default = "")] class: &'static str,
-    #[prop(optional, default = "")] fill: &'static str,
+    #[prop(optional)] class: &'static str,
+    #[prop(optional)] fill: &'static str,
     #[prop(optional, default = "24")] width: &'static str,
     #[prop(optional, default = "24")] height: &'static str,
     #[prop(optional, default = "img")] role: &'static str,
     #[prop(optional, default = true)] aria_hidden: bool,
-    #[prop(optional, default = "")] aria_label: &'static str,
+    #[prop(optional)] aria_label: &'static str,
 ) -> impl IntoView {
     view! {
         <svg
