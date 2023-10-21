@@ -59,7 +59,7 @@
   }
 
   .preview-buttons button {
-    @apply mr-1;
+    @apply mx-1;
   }
 
   .preview-brand-suggestions {
