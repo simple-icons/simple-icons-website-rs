@@ -12,7 +12,6 @@ use inputs::{BrandInput, ColorInput, PathInput};
 use leptos::*;
 use simple_icons::sdk;
 use simple_icons_macros::{get_number_of_icons, simple_icon_svg_path};
-use wasm_bindgen::JsCast;
 
 static INITIAL_BRAND: &str = "Simple Icons";
 static INITIAL_COLOR: &str = "111111";
@@ -168,11 +167,7 @@ fn PreviewBadge(
     }
 
     let on_load = move |ev: web_sys::Event| {
-        let target = ev
-            .target()
-            .unwrap()
-            .dyn_into::<web_sys::HtmlElement>()
-            .unwrap();
+        let target = event_target::<web_sys::HtmlInputElement>(&ev);
 
         if target.get_attribute("reloaded") == Some("true".to_string()) {
             target.set_attribute("reloaded", "false").unwrap();

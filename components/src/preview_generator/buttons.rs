@@ -110,11 +110,7 @@ fn PreviewUploadSVGButton(
                 class="absolute w-0 h-0 -z-index-1"
                 id=input_id
                 on:change=move |ev| {
-                    let input = ev
-                        .target()
-                        .unwrap()
-                        .dyn_into::<web_sys::HtmlInputElement>()
-                        .unwrap();
+                    let input = event_target::<web_sys::HtmlInputElement>(&ev);
                     let file = input.files().unwrap().get(0).unwrap();
                     spawn_local(on_upload_svg_file(file, set_brand, set_color, set_path));
                 }
@@ -123,13 +119,13 @@ fn PreviewUploadSVGButton(
             <Button
                 svg_path=&SVGDef::Upload
                 title=move_tr!("upload-svg")
-                on:click=move |_| {
-                    let input = document()
-                        .get_element_by_id(input_id)
+                on:click=move |ev| {
+                    event_target::<web_sys::HtmlButtonElement>(&ev)
+                        .previous_element_sibling()
                         .unwrap()
-                        .dyn_into::<web_sys::HtmlElement>()
-                        .unwrap();
-                    input.click();
+                        .dyn_ref::<web_sys::HtmlInputElement>()
+                        .unwrap()
+                        .click();
                 }
             />
 

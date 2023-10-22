@@ -14,6 +14,39 @@ use types::SimpleIcon;
 use wasm_bindgen::{closure::Closure, JsCast};
 
 #[component]
+pub fn ColorInput(
+    color: ReadSignal<String>,
+    set_color: WriteSignal<String>,
+) -> impl IntoView {
+    view! {
+        <div class="preview-input-group">
+            <label for="preview-color">{move_tr!("color")}</label>
+            <input
+                type="text"
+                style="width:68px"
+                name="preview-color"
+                value=color
+                prop:value=color
+                on:input=move |ev| {
+                    let input = event_target::<web_sys::HtmlInputElement>(&ev);
+                    let selection_start = input.selection_start().unwrap();
+                    let selection_end = input.selection_end().unwrap();
+                    let normalized_value = input.value().to_uppercase().replace('#', "");
+                    input.set_value(&normalized_value);
+                    input.set_selection_start(selection_start).unwrap();
+                    input.set_selection_end(selection_end).unwrap();
+                    set_color(normalized_value);
+                    update_preview_canvas();
+                }
+
+                class:invalid=move || !is_valid_hex_color(&color())
+                maxlength=6
+            />
+        </div>
+    }
+}
+
+#[component]
 pub fn PathInput(
     path: ReadSignal<String>,
     set_path: WriteSignal<String>,
@@ -227,43 +260,6 @@ fn LintError(
 }
 
 #[component]
-pub fn ColorInput(
-    color: ReadSignal<String>,
-    set_color: WriteSignal<String>,
-) -> impl IntoView {
-    view! {
-        <div class="preview-input-group">
-            <label for="preview-color">{move_tr!("color")}</label>
-            <input
-                type="text"
-                style="width:68px"
-                name="preview-color"
-                value=color
-                prop:value=color
-                on:input=move |ev| {
-                    let input = ev
-                        .target()
-                        .unwrap()
-                        .dyn_into::<web_sys::HtmlInputElement>()
-                        .unwrap();
-                    let selection_start = input.selection_start().unwrap();
-                    let selection_end = input.selection_end().unwrap();
-                    let normalized_value = input.value().to_uppercase().replace('#', "");
-                    input.set_value(&normalized_value);
-                    input.set_selection_start(selection_start).unwrap();
-                    input.set_selection_end(selection_end).unwrap();
-                    set_color(normalized_value);
-                    update_preview_canvas();
-                }
-
-                class:invalid=move || !is_valid_hex_color(&color())
-                maxlength=6
-            />
-        </div>
-    }
-}
-
-#[component]
 pub fn BrandInput(
     brand: ReadSignal<String>,
     set_brand: WriteSignal<String>,
@@ -289,12 +285,7 @@ pub fn BrandInput(
                 value=brand
                 prop:value=brand
                 on:input=move |ev| {
-                    let input = ev
-                        .target()
-                        .unwrap()
-                        .dyn_into::<web_sys::HtmlInputElement>()
-                        .unwrap();
-                    let value = input.value();
+                    let value = event_target_value::<web_sys::Event>(&ev);
                     let (bs, more_bs) = search_brand_suggestions(&value);
                     let more_bs_length = more_bs.len();
                     set_brand(value.clone());
@@ -308,12 +299,7 @@ pub fn BrandInput(
                 }
 
                 on:focus=move |ev| {
-                    let input = ev
-                        .target()
-                        .unwrap()
-                        .dyn_into::<web_sys::HtmlInputElement>()
-                        .unwrap();
-                    let value = input.value();
+                    let value = event_target_value::<web_sys::Event>(&ev);
                     let (bs, more_bs) = search_brand_suggestions(&value);
                     set_brand_suggestions(bs);
                     set_more_brand_suggestions(more_bs);
