@@ -1,5 +1,6 @@
 mod data;
 mod deprecated;
+pub mod lint;
 
 pub use data::{
     get_simple_icons_data, SimpleIconData, SimpleIconDataAliases,

@@ -1,12 +1,15 @@
+use crate::button::Button;
 use crate::controls::search::fuzzy::search;
 use crate::fetch::fetch_text;
 use crate::grid::ICONS;
+use crate::js_libs::svg_path_bbox::svg_path_bbox;
 use crate::preview_generator::{
     canvas::update_preview_canvas, helpers::is_valid_hex_color,
 };
 use i18n::move_tr;
-use leptos::*;
+use leptos::{html::Input, *};
 use simple_icons::sdk;
+use std::time::Duration;
 use types::SimpleIcon;
 use wasm_bindgen::{closure::Closure, JsCast};
 
@@ -16,15 +19,21 @@ pub fn PathInput(
     set_path: WriteSignal<String>,
 ) -> impl IntoView
 where {
+    let (path_lint_errors, set_path_lint_errors) =
+        create_signal::<Vec<sdk::lint::LintError>>(Vec::new());
+    let input_ref = create_node_ref::<Input>();
+
     view! {
         <div class="preview-input-group">
             <label for="preview-path">{move_tr!("path")}</label>
             <input
+                _ref=input_ref
                 type="text"
                 style="width:682px"
                 name="preview-path"
                 value=path
                 prop:value=path
+                class:warn=move || !path_lint_errors().is_empty()
                 on:input=move |ev| {
                     let target = ev
                         .target()
@@ -33,10 +42,132 @@ where {
                         .unwrap();
                     set_path(target.value());
                     update_preview_canvas();
+                    let p = path();
+                    let (path_bbox, path_bbox_error) = svg_path_bbox(&p);
+                    let mut new_lint_errors = path_lint_errors().clone();
+                    if let Some(err) = path_bbox_error {
+                        new_lint_errors.push((err, None, None));
+                        set_path_lint_errors(new_lint_errors);
+                        return;
+                    }
+                    let lint_errors = sdk::lint::lint_path(&p, path_bbox);
+                    set_path_lint_errors(lint_errors);
                 }
             />
 
+            <ul class="preview-path-lint-errors" class:hidden=move || path_lint_errors().is_empty()>
+                {move || {
+                    path_lint_errors()
+                        .into_iter()
+                        .map(|error| {
+                            view! {
+                                <LintError
+                                    message=error.0
+                                    range=error.1
+                                    fixer=error.2
+                                    input_ref=input_ref
+                                />
+                            }
+                        })
+                        .collect_view()
+                }}
+
+            </ul>
         </div>
+    }
+}
+
+#[component]
+fn ShowLintErrorButton(
+    start: u32,
+    end: u32,
+    input_ref: NodeRef<Input>,
+) -> impl IntoView {
+    view! {
+        <Button
+            title=move || "Show".to_string()
+            on:click=move |_| {
+                let input = input_ref.get().unwrap();
+                input.focus().unwrap();
+                input.set_selection_start(Some(start)).unwrap();
+                input.set_selection_end(Some(end)).unwrap();
+            }
+        />
+    }
+}
+
+#[component]
+fn FixLintErrorButton(
+    start: u32,
+    end: u32,
+    fixer: sdk::lint::LintErrorFixer,
+    input_ref: NodeRef<Input>,
+) -> impl IntoView {
+    view! {
+        <Button
+            title=move || "Fix".to_string()
+            on:click=move |_| {
+                let input = input_ref.get().unwrap();
+                let (new_value, (start, end)) = fixer(&input.value(), (start, end));
+                input.set_value(&new_value);
+                let event = web_sys::Event::new_with_event_init_dict(
+                        "input",
+                        web_sys::EventInit::new().bubbles(true),
+                    )
+                    .unwrap();
+                input.dispatch_event(&event).unwrap();
+                _ = set_timeout_with_handle(
+                    move || {
+                        input.focus().unwrap();
+                        input.select();
+                        input.set_selection_start(Some(start)).unwrap();
+                        input.set_selection_end(Some(end)).unwrap();
+                    },
+                    Duration::from_millis(3),
+                );
+            }
+        />
+    }
+}
+
+#[component]
+fn LintError(
+    message: String,
+    range: Option<(u32, u32)>,
+    fixer: Option<sdk::lint::LintErrorFixer>,
+    input_ref: NodeRef<Input>,
+) -> impl IntoView {
+    view! {
+        <li>
+            <span>{message}</span>
+            <div>
+                {move || {
+                    let mut buttons = vec![];
+                    if let Some(range) = range {
+                        buttons
+                            .push(
+                                view! { <ShowLintErrorButton start=range.0 end=range.1 input_ref/> },
+                            );
+                        if let Some(fixer) = fixer {
+                            buttons
+                                .push(
+                                    view! {
+                                        <FixLintErrorButton
+                                            start=range.0
+                                            end=range.1
+                                            fixer=fixer
+                                            input_ref=input_ref
+                                        />
+                                    },
+                                );
+                        }
+                    }
+                    buttons
+                }}
+
+            </div>
+
+        </li>
     }
 }
 
@@ -294,7 +425,7 @@ fn BrandSuggestion(
 fn search_brand_suggestions(
     value: &str,
 ) -> (Vec<&'static SimpleIcon>, Vec<&'static SimpleIcon>) {
-    let mut icons: Vec<&'static SimpleIcon> = Vec::with_capacity(6);
+    let mut initial_icons: Vec<&'static SimpleIcon> = Vec::with_capacity(6);
     let mut more_icons: Vec<&'static SimpleIcon> = Vec::new();
     let search_result = js_sys::Array::from(&search(value));
     let search_result_length = search_result.length();
@@ -304,8 +435,8 @@ fn search_brand_suggestions(
         if i > 5 {
             more_icons.push(&ICONS[icon_order_alpha as usize]);
         } else {
-            icons.push(&ICONS[icon_order_alpha as usize]);
+            initial_icons.push(&ICONS[icon_order_alpha as usize]);
         }
     }
-    (icons, more_icons)
+    (initial_icons, more_icons)
 }

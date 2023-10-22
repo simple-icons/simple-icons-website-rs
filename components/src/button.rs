@@ -1,5 +1,4 @@
-use crate::svg_def::SVGDef;
-use crate::svg_icon::SVGDefIcon;
+use crate::svg::{SVGDef, SVGDefIcon};
 use leptos::*;
 
 #[component]

@@ -1,6 +1,6 @@
 //! App footer
 
-use crate::svg_icon::SVGIcon;
+use crate::svg::SVGIcon;
 use i18n::{move_tr, tr};
 use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
 use simple_icons_macros::simple_icon_svg_path;

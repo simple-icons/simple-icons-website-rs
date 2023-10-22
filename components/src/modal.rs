@@ -1,6 +1,6 @@
 use crate::copy::copy_inner_text_on_click;
-use crate::svg_def::SVGDef;
-use crate::svg_icon::SVGDefIcon;
+use crate::svg::SVGDef;
+use crate::svg::SVGDefIcon;
 use crate::Url;
 use core::fmt;
 use i18n::move_tr;

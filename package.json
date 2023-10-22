@@ -44,6 +44,7 @@
   "dependencies": {
     "blob-stream": "0.1.3",
     "fast-fuzzy": "1.12.0",
-    "pdfkit": "0.13.0"
+    "pdfkit": "0.13.0",
+    "svg-path-bbox": "1.2.4"
   }
 }

@@ -1,7 +1,7 @@
 use crate::header::{nav::button::HeaderMenuButton, HeaderStateSignal};
 use crate::modal::Modal;
 use crate::modal::{ModalOpen, ModalOpenSignal};
-use crate::svg_icon::SVGIcon;
+use crate::svg::SVGIcon;
 use i18n::move_tr;
 use leptos::*;
 use simple_icons_macros::get_simple_icons_3rd_party_extensions;

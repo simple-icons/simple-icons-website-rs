@@ -7,7 +7,7 @@ pub mod layout;
 pub mod order;
 pub mod search;
 
-use crate::svg_def::SVGDef;
+use crate::svg::SVGDef;
 use color_scheme::ColorSchemeControl;
 use download::DownloadFileTypeControl;
 use i18n::tr;

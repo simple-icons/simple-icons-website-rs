@@ -10,7 +10,7 @@ use crate::header::{
     },
     HeaderState, HeaderStateSignal,
 };
-use crate::svg_def::SVGDef;
+use crate::svg::SVGDef;
 use i18n::move_tr;
 use leptos::*;
 use simple_icons_macros::simple_icon_svg_path;

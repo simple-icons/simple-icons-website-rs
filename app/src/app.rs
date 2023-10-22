@@ -14,7 +14,7 @@ use components::header::{
     nav::language_selector::provide_language_context, Header,
 };
 use components::modal::provide_modal_open_context;
-use components::svg_def::SVGDefsDefinition;
+use components::svg::SVGDefsDefinition;
 use leptos::{
     document, html::Footer as FooterHtmlElement, provide_context, window, *,
 };

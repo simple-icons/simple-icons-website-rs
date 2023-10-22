@@ -5,8 +5,7 @@ use crate::keyboard::load_keyboard_shortcut_ctrl_and_key_on_click_id;
 use crate::preview_generator::{
     canvas::get_canvas_container, helpers::is_valid_hex_color,
 };
-use crate::svg_def::SVGDef;
-use crate::svg_icon::svg_with_path_opt_fill;
+use crate::svg::{svg_with_path_opt_fill, SVGDef};
 use crate::Ids;
 use i18n::{move_tr, tr};
 use leptos::*;

@@ -10,13 +10,13 @@ pub mod footer;
 pub mod grid;
 pub mod header;
 mod ids;
+pub mod js_libs;
 pub mod keyboard;
 pub mod modal;
 pub mod preview_generator;
 pub(crate) mod spinners;
 pub(crate) mod storage;
-pub mod svg_def;
-pub mod svg_icon;
+pub mod svg;
 pub(crate) mod url;
 
 pub(crate) use ids::Ids;

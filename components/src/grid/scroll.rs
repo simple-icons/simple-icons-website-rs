@@ -1,5 +1,5 @@
 use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
-use crate::svg_icon::SVGIcon;
+use crate::svg::SVGIcon;
 use i18n::move_tr;
 use leptos::{ev::MouseEvent, *};
 

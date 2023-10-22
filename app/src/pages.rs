@@ -8,7 +8,7 @@ use components::controls::search::provide_search_context;
 use components::controls::Controls;
 use components::grid::{provide_icons_grid_contexts, Grid};
 use components::preview_generator::PreviewGenerator;
-use components::svg_def::SVGDef;
+use components::svg::SVGDef;
 use i18n::move_tr;
 use leptos::*;
 use leptos_router::{use_navigate, use_query_map};

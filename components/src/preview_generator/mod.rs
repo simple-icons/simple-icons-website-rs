@@ -6,7 +6,7 @@ pub(crate) mod helpers;
 mod inputs;
 
 use crate::fetch::fetch_text;
-use crate::svg_icon::svg_with_path_opt_fill;
+use crate::svg::svg_with_path_opt_fill;
 use buttons::PreviewButtons;
 use canvas::update_preview_canvas;
 use helpers::contrast_color_for;

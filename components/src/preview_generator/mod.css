@@ -32,6 +32,10 @@
     @apply border-[rgb(180,0,0)];
   }
 
+  .preview-input-group > input.warn {
+    @apply border-[rgba(180,150,0,.7)];
+  }
+
   .preview-figure {
     @apply rounded-xl mt-1 font-sans;
   }
@@ -99,5 +103,40 @@
 
   .preview-brand-suggestions .more-suggestions:hover span {
     @apply text-[var(--button-content-hover-color)];
+  }
+
+  .preview-path-lint-errors {
+    @apply absolute z-40 ml-[60px] mt-2 max-h-[319px] flex flex-col
+      border border-[var(--divider-color)] box-border
+      rounded-br-md rounded-tr-md rounded-bl-md overflow-y-auto
+      bg-[#cbc407] text-[#333] text-xs max-w-[682px];
+  }
+
+  .preview-path-lint-errors li {
+    @apply flex flex-row py-2 px-3;
+  }
+
+  .preview-path-lint-errors li:not(:first-child) {
+    @apply flex flex-row py-2 px-3 border-t border-[rgba(0,0,0,.1)];
+  }
+
+  .preview-path-lint-errors li > :first-child {
+    @apply flex align-middle mr-[14px] leading-5;
+  }
+
+  .preview-path-lint-errors li > :last-child {
+    @apply flex flex-row max-w-[70px] mr-1 relative float-right;
+  }
+
+  .preview-path-lint-errors li > :last-child button {
+    @apply py-0.5 px-1.5 rounded-sm text-xs w-fit
+      bg-[#333] text-[#eee]
+      hover:bg-[#eee] hover:text-[#333]
+      focus:bg-[#333] focus:text-[#eee]
+      focus:hover:bg-[#eee] focus:hover:text-[#333];
+  }
+
+  .preview-path-lint-errors li > :last-child button:not(:first-child) {
+    @apply relative left-1;
   }
 }

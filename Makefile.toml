@@ -12,7 +12,7 @@ description = "Initialization task run before all others"
 run_task = { name = [
     "use_nvm_if_installed",
     "npm_install",
-    "setup_blobstream"
+    "setup_js_libraries_filenames"
 ] }
 
 [tasks.use_nvm_if_installed]
@@ -22,11 +22,13 @@ command = "nvm"
 args = ["use"]
 ignore_errors = true
 
-[tasks.setup_blobstream]
+[tasks.setup_js_libraries_filenames]
+description = "Setup JS libraries filenames to be able to import cleanly with Trunk"
 script_runner = "node"
 script_extension = "js"
 script = '''
-require('fs').copyFileSync(
+const fs = require('fs');
+fs.copyFileSync(
     'node_modules/blob-stream/.js',
     'node_modules/blob-stream/blob-stream.js',
 )
@@ -238,6 +240,17 @@ args = [
     "--minify",
 ]
 
+[tasks.build-svg-path-bbox]
+description = "Build the svg-path-bbox JS library for the web"
+command = "npx"
+args = [
+    "esbuild",
+    "./components/src/js_libs/svg-path-bbox.js",
+    "--bundle",
+    "--outfile=./app/public/assets/dist/svg-path-bbox.js",
+    "--minify",
+]
+
 [tasks.create-sitemap]
 description = "Create sitemap.xml asset"
 command = "npx"
@@ -252,6 +265,7 @@ args = ["tsx", "scripts/create-cname.ts"]
 description = "Run pre-build scripts"
 run_task = { name = [
     "build-fast-fuzzy",
+    "build-svg-path-bbox",
     "fetch-deprecated-icons",
     "create-sitemap",
     "create-cname",
