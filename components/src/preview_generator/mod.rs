@@ -28,7 +28,7 @@ pub fn PreviewGenerator() -> impl IntoView {
     view! {
         <div class="preview">
             <div>
-                <BrandInput brand=brand set_brand=set_brand set_color=set_color set_path=set_path/>
+                <BrandInput brand=brand set_brand=set_brand set_color=set_color/>
                 <ColorInput color=color set_color=set_color/>
             </div>
             <PathInput path=path set_path=set_path/>

@@ -21,7 +21,68 @@ pub fn PathInput(
 where {
     let (path_lint_errors, set_path_lint_errors) =
         create_signal::<Vec<sdk::lint::LintError>>(Vec::new());
+    let (show_path_lint_errors, set_show_path_lint_errors) =
+        create_signal(false);
     let input_ref = create_node_ref::<Input>();
+
+    fn process_lint_errors(
+        path: &str,
+        path_lint_errors: ReadSignal<Vec<sdk::lint::LintError>>,
+        set_path_lint_errors: WriteSignal<Vec<sdk::lint::LintError>>,
+    ) {
+        let mut new_lint_errors = path_lint_errors().clone();
+        let (path_segments, path_segments_error) = svg_path_segments(path);
+        if let Some(err) = path_segments_error {
+            new_lint_errors.push((err, None, None));
+            set_path_lint_errors(new_lint_errors);
+            return;
+        }
+        let (path_bbox, path_bbox_error) = svg_path_bbox(path);
+        if let Some(err) = path_bbox_error {
+            new_lint_errors.push((err, None, None));
+            set_path_lint_errors(new_lint_errors);
+            return;
+        }
+        let lint_errors =
+            sdk::lint::lint_path(path, &path_bbox, &path_segments);
+        set_path_lint_errors(lint_errors);
+    }
+
+    let body = document().body().unwrap();
+    let closure: Closure<dyn FnMut(web_sys::MouseEvent)> =
+        Closure::new(move |ev: web_sys::MouseEvent| {
+            ::log::info!("click");
+            let target = ev
+                .target()
+                .unwrap()
+                .dyn_into::<web_sys::HtmlElement>()
+                .unwrap();
+            // Hide the brand suggestions when the user clicks outside the input
+            if target.get_attribute("name") == Some("preview-path".to_string())
+            {
+                return;
+            }
+
+            let input_group = input_ref
+                .get()
+                .unwrap()
+                .parent_element()
+                .unwrap()
+                .dyn_into::<web_sys::HtmlElement>()
+                .unwrap();
+            let composed_path = ev.composed_path().iter().collect::<Vec<_>>();
+            ::log::info!("composed_path: {:?}", composed_path);
+            if composed_path.contains(&input_group) {
+                return;
+            }
+            set_show_path_lint_errors(false);
+        });
+    body.add_event_listener_with_callback(
+        "click",
+        closure.as_ref().unchecked_ref(),
+    )
+    .unwrap();
+    closure.forget();
 
     view! {
         <div class="preview-input-group">
@@ -34,34 +95,22 @@ where {
                 value=path
                 prop:value=path
                 class:warn=move || !path_lint_errors().is_empty()
-                on:input=move |ev| {
-                    let target = ev
-                        .target()
-                        .unwrap()
-                        .dyn_into::<web_sys::HtmlInputElement>()
-                        .unwrap();
-                    set_path(target.value());
+                on:input=move |_| {
+                    let p = input_ref.get().unwrap().value();
+                    process_lint_errors(&p, path_lint_errors, set_path_lint_errors);
+                    set_show_path_lint_errors(true);
+                    set_path(p);
                     update_preview_canvas();
-                    let p = path();
-                    let mut new_lint_errors = path_lint_errors().clone();
-                    let (path_segments, path_segments_error) = svg_path_segments(&p);
-                    if let Some(err) = path_segments_error {
-                        new_lint_errors.push((err, None, None));
-                        set_path_lint_errors(new_lint_errors);
-                        return;
-                    }
-                    let (path_bbox, path_bbox_error) = svg_path_bbox(&p);
-                    if let Some(err) = path_bbox_error {
-                        new_lint_errors.push((err, None, None));
-                        set_path_lint_errors(new_lint_errors);
-                        return;
-                    }
-                    let lint_errors = sdk::lint::lint_path(&p, &path_bbox, &path_segments);
-                    set_path_lint_errors(lint_errors);
+                }
+
+                on:focus=move |_| {
+                    let p = input_ref.get().unwrap().value();
+                    process_lint_errors(&p, path_lint_errors, set_path_lint_errors);
+                    set_show_path_lint_errors(true);
                 }
             />
 
-            <ul class="preview-path-lint-errors" class:hidden=move || path_lint_errors().is_empty()>
+            <ul class="preview-path-lint-errors" class:hidden=move || !show_path_lint_errors()>
                 {move || {
                     path_lint_errors()
                         .into_iter()
@@ -219,7 +268,6 @@ pub fn BrandInput(
     brand: ReadSignal<String>,
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
-    set_path: WriteSignal<String>,
 ) -> impl IntoView {
     let (brand_suggestions, set_brand_suggestions) =
         create_signal(Vec::<&SimpleIcon>::with_capacity(6));
@@ -280,7 +328,6 @@ pub fn BrandInput(
                 more_brand_suggestions=more_brand_suggestions
                 set_brand=set_brand
                 set_color=set_color
-                set_path=set_path
                 set_show_brand_suggestions=set_show_brand_suggestions
                 set_show_more_brand_suggestions=set_show_more_brand_suggestions
             />
@@ -296,7 +343,6 @@ fn BrandSuggestions(
     more_brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
-    set_path: WriteSignal<String>,
     set_show_brand_suggestions: WriteSignal<bool>,
     set_show_more_brand_suggestions: WriteSignal<bool>,
 ) -> impl IntoView {
@@ -322,7 +368,11 @@ fn BrandSuggestions(
             set_show_brand_suggestions(false);
             set_show_more_brand_suggestions(false);
         });
-    body.set_onclick(Some(closure.as_ref().unchecked_ref()));
+    body.add_event_listener_with_callback(
+        "click",
+        closure.as_ref().unchecked_ref(),
+    )
+    .unwrap();
     closure.forget();
 
     view! {
@@ -348,12 +398,7 @@ fn BrandSuggestions(
                     suggestions_containers
                         .push(
                             view! {
-                                <BrandSuggestion
-                                    icon=icon
-                                    set_brand=set_brand
-                                    set_color=set_color
-                                    set_path=set_path
-                                />
+                                <BrandSuggestion icon=icon set_brand=set_brand set_color=set_color/>
                             },
                         );
                 }
@@ -389,7 +434,6 @@ fn BrandSuggestions(
                                         icon=icon
                                         set_brand=set_brand
                                         set_color=set_color
-                                        set_path=set_path
                                     />
                                 },
                             );
@@ -407,7 +451,6 @@ fn BrandSuggestion(
     icon: &'static SimpleIcon,
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
-    set_path: WriteSignal<String>,
 ) -> impl IntoView {
     view! {
         <li on:click=move |_| {
@@ -415,7 +458,19 @@ fn BrandSuggestion(
             set_color(icon.hex.to_string());
             spawn_local(async move {
                 if let Some(svg) = fetch_text(&format!("/icons/{}.svg", icon.slug)).await {
-                    set_path(sdk::svg_to_path(&svg));
+                    let path_input = document()
+                        .get_elements_by_name("preview-path")
+                        .item(0)
+                        .unwrap()
+                        .dyn_into::<web_sys::HtmlInputElement>()
+                        .unwrap();
+                    path_input.set_value(&sdk::svg_to_path(&svg));
+                    let event = web_sys::Event::new_with_event_init_dict(
+                            "input",
+                            web_sys::EventInit::new().bubbles(true),
+                        )
+                        .unwrap();
+                    path_input.dispatch_event(&event).unwrap();
                 }
                 update_preview_canvas();
             });

@@ -146,9 +146,8 @@ pub fn negative_zeros(path: &str) -> Vec<LintError> {
 
 /// Check if the icon size is 24 x 24 pixels.
 pub fn icon_size(bbox: &PathViewBox) -> Vec<LintError> {
-    // TODO: round to 3 decimal places
-    let width = bbox.2 - bbox.0;
-    let height = bbox.3 - bbox.1;
+    let width = round_decimal(bbox.2 - bbox.0, 3);
+    let height = round_decimal(bbox.3 - bbox.1, 3);
     let mut errors: Vec<LintError> = vec![];
 
     if width == 0.0 && height == 0.0 {
