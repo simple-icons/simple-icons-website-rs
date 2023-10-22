@@ -105,13 +105,13 @@ macro_rules! draw_badge_impl {
 
 /// Draw the current badges in the canvas
 fn update_badges_in_canvas() {
-    draw_badge_impl!(0, 15, 15);
-    draw_badge_impl!(1, 203, 16);
+    draw_badge_impl!(0, 28, 15);
+    draw_badge_impl!(1, 207, 16);
     draw_badge_impl!(2, 385, 6);
     draw_badge_impl!(3, 630, 14);
 
-    draw_badge_impl!(4, 15, 41);
-    draw_badge_impl!(5, 203, 41);
+    draw_badge_impl!(4, 28, 41);
+    draw_badge_impl!(5, 207, 41);
     draw_badge_impl!(6, 385, 39);
     draw_badge_impl!(7, 630, 40);
 }
