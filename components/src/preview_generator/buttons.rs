@@ -53,12 +53,12 @@ fn PreviewUploadSVGButton(
     ) {
         match wasm_bindgen_futures::JsFuture::from(file.text()).await {
             Ok(text) => {
-                let value = text.as_string().unwrap();
+                let file_content = text.as_string().unwrap();
 
                 // Set color
-                if value.contains("fill=\"") {
+                if file_content.contains("fill=\"") {
                     let hex = sdk::normalize_color(
-                        value
+                        file_content
                             .split("fill=\"")
                             .nth(1)
                             .unwrap()
@@ -72,8 +72,10 @@ fn PreviewUploadSVGButton(
                 }
 
                 // Set brand
-                if value.contains("<title>") && value.contains("</title>") {
-                    let brand = value
+                if file_content.contains("<title>")
+                    && file_content.contains("</title>")
+                {
+                    let brand = file_content
                         .split("<title>")
                         .nth(1)
                         .unwrap()
@@ -84,8 +86,8 @@ fn PreviewUploadSVGButton(
                 }
 
                 // Set path
-                if value.contains(" d=\"") {
-                    let path = value
+                if file_content.contains(" d=\"") {
+                    let path = file_content
                         .split(" d=\"")
                         .nth(1)
                         .unwrap()

@@ -32,10 +32,7 @@ where
             }
 
             on:click=move |ev| {
-                ev.target()
-                    .unwrap()
-                    .dyn_into::<web_sys::HtmlElement>()
-                    .unwrap()
+                event_target::<web_sys::HtmlElement>(&ev)
                     .first_element_child()
                     .unwrap()
                     .dyn_into::<web_sys::HtmlElement>()

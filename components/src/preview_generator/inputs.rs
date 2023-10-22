@@ -84,12 +84,7 @@ where {
     let body = document().body().unwrap();
     let closure: Closure<dyn FnMut(web_sys::MouseEvent)> =
         Closure::new(move |ev: web_sys::MouseEvent| {
-            ::log::info!("click");
-            let target = ev
-                .target()
-                .unwrap()
-                .dyn_into::<web_sys::HtmlElement>()
-                .unwrap();
+            let target = event_target::<web_sys::HtmlElement>(&ev);
             // Hide the brand suggestions when the user clicks outside the input
             if target.get_attribute("name") == Some("preview-path".to_string())
             {
@@ -104,7 +99,6 @@ where {
                 .dyn_into::<web_sys::HtmlElement>()
                 .unwrap();
             let composed_path = ev.composed_path().iter().collect::<Vec<_>>();
-            ::log::info!("composed_path: {:?}", composed_path);
             if composed_path.contains(&input_group) {
                 return;
             }
@@ -335,11 +329,7 @@ fn BrandSuggestions(
     let body = document().body().unwrap();
     let closure: Closure<dyn FnMut(web_sys::MouseEvent)> =
         Closure::new(move |ev: web_sys::MouseEvent| {
-            let target = ev
-                .target()
-                .unwrap()
-                .dyn_into::<web_sys::HtmlElement>()
-                .unwrap();
+            let target = event_target::<web_sys::HtmlElement>(&ev);
             // Hide the brand suggestions when the user clicks outside the input
             if target.get_attribute("name").unwrap_or("".to_string())
                 == "preview-brand"

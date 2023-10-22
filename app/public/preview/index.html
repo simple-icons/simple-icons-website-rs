@@ -1,6 +1,14 @@
 <!doctype html>
 <html>
-  <head>
-    <meta http-equiv="refresh" content="0; URL=/?p" />
-  </head>
+  <script>
+    const PATH = '/preview';
+    const parms = new URL(window.location).searchParams.toString();
+    const opts = parms ? `&${parms}` : '';
+    window.location = `/?r=${PATH}${opts}`;
+  </script>
+  <noscript>
+    <head>
+      <meta http-equiv="refresh" content="0; URL=/?p" />
+    </head>
+  </noscript>
 </html>
