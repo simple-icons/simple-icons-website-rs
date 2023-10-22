@@ -12,7 +12,25 @@ pub type LintError = (Path, Option<Range>, Option<LintErrorFixer>);
 pub type PathViewBox = (f64, f64, f64, f64);
 pub type PathSegments = Vec<(String, Vec<f64>)>;
 
-fn remove_characters_in_range_fixer(path: &str, range: Range) -> LintErrorFix {
+fn get_max_decimals_in_numbers(numbers: &[f64]) -> u32 {
+    let mut max_decimals = 0;
+    for number in numbers.iter() {
+        // Get number of decimals in f64:
+        let decimals = number.to_string().split('.').last().unwrap().len();
+        if decimals > max_decimals {
+            max_decimals = decimals;
+        }
+    }
+    max_decimals as u32
+}
+
+fn round_decimal(number: f64, decimals: u32) -> f64 {
+    let factor = 10.0_f64.powi(decimals as i32);
+    (number * factor).round() / factor
+}
+
+/// Lint error fixer function that removes all characters in the range.
+fn fix_removing_characters_in_range(path: &str, range: Range) -> LintErrorFix {
     let mut new_path = String::with_capacity(path.len());
     for (i, character) in path.chars().enumerate() {
         if (i as u32) >= range.0 && (i as u32) < range.1 {
@@ -23,6 +41,8 @@ fn remove_characters_in_range_fixer(path: &str, range: Range) -> LintErrorFix {
     (new_path, range)
 }
 
+/// Lint error fixer function that fixes a path that does not start
+/// with a moveto command.
 fn fix_path_not_starts_with_moveto_command(
     path: &str,
     _range: Range,
@@ -76,7 +96,7 @@ pub fn path_format(path: &str) -> Vec<LintError> {
                     character, i,
                 ),
                 Some((i as u32, i as u32 + 1)),
-                Some(&remove_characters_in_range_fixer),
+                Some(&fix_removing_characters_in_range),
             ));
         }
     }
@@ -84,6 +104,7 @@ pub fn path_format(path: &str) -> Vec<LintError> {
     errors
 }
 
+/// Lint error fixer function that fixes a negative zero in the range.
 fn fix_negative_zero(path: &str, range: Range) -> LintErrorFix {
     let mut new_path = String::with_capacity(path.len());
     // iterate over characters in range:
@@ -104,6 +125,7 @@ fn fix_negative_zero(path: &str, range: Range) -> LintErrorFix {
     (new_path, range)
 }
 
+/// Check if the path contains negative zeros.
 pub fn negative_zeros(path: &str) -> Vec<LintError> {
     let mut errors: Vec<LintError> = vec![];
     for (i, character) in path.chars().enumerate() {
@@ -122,6 +144,7 @@ pub fn negative_zeros(path: &str) -> Vec<LintError> {
     errors
 }
 
+/// Check if the icon size is 24 x 24 pixels.
 pub fn icon_size(bbox: &PathViewBox) -> Vec<LintError> {
     // TODO: round to 3 decimal places
     let width = bbox.2 - bbox.0;
@@ -151,18 +174,7 @@ pub fn icon_size(bbox: &PathViewBox) -> Vec<LintError> {
     errors
 }
 
-fn get_max_decimals_in_numbers(numbers: &[f64]) -> u32 {
-    let mut max_decimals = 0;
-    for number in numbers.iter() {
-        // Get number of decimals in f64:
-        let decimals = number.to_string().split('.').last().unwrap().len();
-        if decimals > max_decimals {
-            max_decimals = decimals;
-        }
-    }
-    max_decimals as u32
-}
-
+/// Check if the icon precision is less than 6 decimal places.
 pub fn icon_precision(segments: &PathSegments) -> Vec<LintError> {
     let mut errors: Vec<LintError> = vec![];
 
@@ -189,6 +201,33 @@ pub fn icon_precision(segments: &PathSegments) -> Vec<LintError> {
     errors
 }
 
+/// Check if the icon is centered at 0, 0.
+pub fn icon_centered(bbox: &PathViewBox) -> Vec<LintError> {
+    let mut errors: Vec<LintError> = vec![];
+
+    let center_x = round_decimal((bbox.2 + bbox.0) / 2.0, 3);
+    let deviance_x = (center_x - 12.0).abs();
+    let center_y = round_decimal((bbox.3 + bbox.1) / 2.0, 3);
+    let deviance_y = (center_y - 12.0).abs();
+
+    let icon_tolerance = 0.001;
+    if deviance_x > icon_tolerance || deviance_y > icon_tolerance {
+        errors.push((
+            format!(
+                concat!(
+                    "Icon must be centered at (12, 12), currently at",
+                    " {}, {}"
+                ),
+                center_x, center_y
+            ),
+            None,
+            None,
+        ));
+    }
+
+    errors
+}
+
 pub fn lint_path(
     path: &str,
     bbox: &PathViewBox,
@@ -198,5 +237,6 @@ pub fn lint_path(
     errors.extend(negative_zeros(path));
     errors.extend(icon_size(bbox));
     errors.extend(icon_precision(segments));
+    errors.extend(icon_centered(bbox));
     errors
 }

@@ -45,8 +45,6 @@ where {
                     let p = path();
                     let mut new_lint_errors = path_lint_errors().clone();
                     let (path_segments, path_segments_error) = svg_path_segments(&p);
-                    ::log::info!("path_segments: {:?}", path_segments);
-                    ::log::info!("path_segments_error: {:?}", path_segments_error);
                     if let Some(err) = path_segments_error {
                         new_lint_errors.push((err, None, None));
                         set_path_lint_errors(new_lint_errors);

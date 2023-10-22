@@ -1,5 +1,3 @@
-#![allow(clippy::redundant_closure)]
-
 mod buttons;
 mod canvas;
 pub(crate) mod helpers;
