@@ -53,3 +53,15 @@ pub fn SVGDefIcon(
         </svg>
     }
 }
+
+/// Build a SVG string with the 24px24 viewBox and an optional `fill` attribute
+pub fn svg_with_path_opt_fill(path: &str, fill: Option<&str>) -> String {
+    format!(
+        "<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"{}\"{}/></svg>",
+        path,
+        match fill {
+            Some(fill) => format!(" fill=\"#{}\"", fill),
+            None => "".to_string(),
+        }
+    )
+}

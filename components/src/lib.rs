@@ -10,6 +10,7 @@ pub mod footer;
 pub mod grid;
 pub mod header;
 mod ids;
+pub mod keyboard;
 pub mod modal;
 pub mod preview_generator;
 pub(crate) mod spinners;
