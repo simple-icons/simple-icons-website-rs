@@ -1,1 +1,1 @@
-pub mod svg_path_bbox;
+pub mod svg;

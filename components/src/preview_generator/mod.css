@@ -121,7 +121,7 @@
   }
 
   .preview-path-lint-errors li > :first-child {
-    @apply flex align-middle mr-[14px] leading-5;
+    @apply flex mr-[14px] leading-5;
   }
 
   .preview-path-lint-errors li > :last-child {

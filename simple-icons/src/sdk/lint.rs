@@ -9,7 +9,8 @@ pub type LintErrorFix = (Path, Range);
 pub type LintErrorFixer = &'static dyn Fn(&str, Range) -> LintErrorFix;
 pub type LintError = (Path, Option<Range>, Option<LintErrorFixer>);
 
-pub type ViewBox = (f64, f64, f64, f64);
+pub type PathViewBox = (f64, f64, f64, f64);
+pub type PathSegments = Vec<(String, Vec<f64>)>;
 
 fn remove_characters_in_range_fixer(path: &str, range: Range) -> LintErrorFix {
     let mut new_path = String::with_capacity(path.len());
@@ -121,7 +122,8 @@ pub fn negative_zeros(path: &str) -> Vec<LintError> {
     errors
 }
 
-pub fn icon_size(_path: &str, bbox: ViewBox) -> Vec<LintError> {
+pub fn icon_size(bbox: &PathViewBox) -> Vec<LintError> {
+    // TODO: round to 3 decimal places
     let width = bbox.2 - bbox.0;
     let height = bbox.3 - bbox.1;
     let mut errors: Vec<LintError> = vec![];
@@ -149,10 +151,52 @@ pub fn icon_size(_path: &str, bbox: ViewBox) -> Vec<LintError> {
     errors
 }
 
-pub fn lint_path(path: &str, bbox: ViewBox) -> Vec<LintError> {
+fn get_max_decimals_in_numbers(numbers: &[f64]) -> u32 {
+    let mut max_decimals = 0;
+    for number in numbers.iter() {
+        // Get number of decimals in f64:
+        let decimals = number.to_string().split('.').last().unwrap().len();
+        if decimals > max_decimals {
+            max_decimals = decimals;
+        }
+    }
+    max_decimals as u32
+}
+
+pub fn icon_precision(segments: &PathSegments) -> Vec<LintError> {
     let mut errors: Vec<LintError> = vec![];
-    errors.extend(path_format(path));
+
+    for (_command, args) in segments.iter() {
+        let max_precision = get_max_decimals_in_numbers(args);
+        if max_precision > 5 {
+            // TODO: CST SVG path parser with input validation to fix this rule
+            // and show the exact segments in linting errors.
+            errors.push((
+                format!(
+                    concat!(
+                        "Maximum precision should not be greater than 5,",
+                        " currently {}"
+                    ),
+                    max_precision
+                ),
+                None,
+                None,
+            ));
+            break;
+        }
+    }
+
+    errors
+}
+
+pub fn lint_path(
+    path: &str,
+    bbox: &PathViewBox,
+    segments: &PathSegments,
+) -> Vec<LintError> {
+    let mut errors: Vec<LintError> = path_format(path);
     errors.extend(negative_zeros(path));
-    errors.extend(icon_size(path, bbox));
+    errors.extend(icon_size(bbox));
+    errors.extend(icon_precision(segments));
     errors
 }

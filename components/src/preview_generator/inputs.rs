@@ -2,7 +2,7 @@ use crate::button::Button;
 use crate::controls::search::fuzzy::search;
 use crate::fetch::fetch_text;
 use crate::grid::ICONS;
-use crate::js_libs::svg_path_bbox::svg_path_bbox;
+use crate::js_libs::svg::{svg_path_bbox, svg_path_segments};
 use crate::preview_generator::{
     canvas::update_preview_canvas, helpers::is_valid_hex_color,
 };
@@ -43,14 +43,22 @@ where {
                     set_path(target.value());
                     update_preview_canvas();
                     let p = path();
-                    let (path_bbox, path_bbox_error) = svg_path_bbox(&p);
                     let mut new_lint_errors = path_lint_errors().clone();
+                    let (path_segments, path_segments_error) = svg_path_segments(&p);
+                    ::log::info!("path_segments: {:?}", path_segments);
+                    ::log::info!("path_segments_error: {:?}", path_segments_error);
+                    if let Some(err) = path_segments_error {
+                        new_lint_errors.push((err, None, None));
+                        set_path_lint_errors(new_lint_errors);
+                        return;
+                    }
+                    let (path_bbox, path_bbox_error) = svg_path_bbox(&p);
                     if let Some(err) = path_bbox_error {
                         new_lint_errors.push((err, None, None));
                         set_path_lint_errors(new_lint_errors);
                         return;
                     }
-                    let lint_errors = sdk::lint::lint_path(&p, path_bbox);
+                    let lint_errors = sdk::lint::lint_path(&p, &path_bbox, &path_segments);
                     set_path_lint_errors(lint_errors);
                 }
             />
