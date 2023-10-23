@@ -2,6 +2,7 @@
 
 static PATH_VALID_CHARACTERS: &str = "mMzZlLhHvVcCsSqQtTaAeE0123456789,.- ";
 static NUMBERS: &str = "0123456789";
+static STRAIGHT_LINE_PATH_COMMANDS: &str = "HhVvLlMm";
 
 type Path = String;
 type Range = (u32, u32);
@@ -10,18 +11,22 @@ pub type LintErrorFixer = &'static dyn Fn(&str, Range) -> LintErrorFix;
 pub type LintError = (Path, Option<Range>, Option<LintErrorFixer>);
 
 pub type PathViewBox = (f64, f64, f64, f64);
-pub type PathSegments = Vec<(String, Vec<f64>)>;
+pub type PathSegment = (String, Vec<f64>);
+
+fn get_number_of_decimals(number: f64) -> u32 {
+    number.to_string().split('.').last().unwrap().len() as u32
+}
 
 fn get_max_decimals_in_numbers(numbers: &[f64]) -> u32 {
     let mut max_decimals = 0;
     for number in numbers.iter() {
         // Get number of decimals in f64:
-        let decimals = number.to_string().split('.').last().unwrap().len();
+        let decimals = get_number_of_decimals(number.to_owned());
         if decimals > max_decimals {
             max_decimals = decimals;
         }
     }
-    max_decimals as u32
+    max_decimals
 }
 
 fn round_decimal(number: f64, decimals: u32) -> f64 {
@@ -152,7 +157,7 @@ pub fn icon_size(bbox: &PathViewBox) -> Vec<LintError> {
 
     if width == 0.0 && height == 0.0 {
         errors.push((
-            "Size was reported as 0 x 0; check if the path is valid"
+            "Size was reported as 0 x 0 so check if the path is valid"
                 .to_string(),
             None,
             None,
@@ -174,7 +179,7 @@ pub fn icon_size(bbox: &PathViewBox) -> Vec<LintError> {
 }
 
 /// Check if the icon precision is less than 6 decimal places.
-pub fn icon_precision(segments: &PathSegments) -> Vec<LintError> {
+pub fn icon_precision(segments: &[PathSegment]) -> Vec<LintError> {
     let mut errors: Vec<LintError> = vec![];
 
     for (_command, args) in segments.iter() {
@@ -215,7 +220,7 @@ pub fn icon_centered(bbox: &PathViewBox) -> Vec<LintError> {
             format!(
                 concat!(
                     "Icon must be centered at (12, 12), currently at",
-                    " {}, {}"
+                    " ({}, {})"
                 ),
                 center_x, center_y
             ),
@@ -227,15 +232,195 @@ pub fn icon_centered(bbox: &PathViewBox) -> Vec<LintError> {
     errors
 }
 
+/// Given three points, returns if the middle one (x2, y2) is collinear
+/// to the line formed by the two limit points.
+fn collinear_points(
+    x1: f64,
+    y1: f64,
+    x2: f64,
+    y2: f64,
+    x3: f64,
+    y3: f64,
+) -> bool {
+    x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2) == 0.0
+}
+
+/// Check if the icon has collinear segments.
+pub fn collinear_segments(
+    path: &str,
+    segments: &[PathSegment],
+) -> Vec<LintError> {
+    let mut errors: Vec<LintError> = vec![];
+
+    let mut current_line: Vec<(f64, f64)> = vec![];
+    let mut current_abs_coordinate: (Option<f64>, Option<f64>) = (None, None);
+    let mut start_point: Option<(f64, f64)> = None;
+    let mut in_straight_line = false;
+    let mut reset_start_point = false;
+
+    for (s, (command, args)) in segments.iter().enumerate() {
+        let next_segment: Option<(String, Vec<f64>)> =
+            segments.get(s + 1).cloned();
+
+        if command == "M" {
+            current_abs_coordinate = (Some(args[0]), Some(args[1]));
+            start_point = None;
+        } else if command == "m" {
+            current_abs_coordinate = (
+                Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
+                Some(args[1] + current_abs_coordinate.1.unwrap_or(0.0)),
+            );
+            start_point = None;
+        } else if command == "H" {
+            current_abs_coordinate = (Some(args[0]), current_abs_coordinate.1);
+        } else if command == "h" {
+            current_abs_coordinate = (
+                Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
+                current_abs_coordinate.1,
+            );
+        } else if command == "V" {
+            current_abs_coordinate = (current_abs_coordinate.0, Some(args[0]));
+        } else if command == "v" {
+            current_abs_coordinate = (
+                current_abs_coordinate.0,
+                Some(args[0] + current_abs_coordinate.1.unwrap_or(0.0)),
+            );
+        } else if command == "L" {
+            current_abs_coordinate = (Some(args[0]), Some(args[1]));
+        } else if command == "l" {
+            current_abs_coordinate = (
+                Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
+                Some(args[1] + current_abs_coordinate.1.unwrap_or(0.0)),
+            );
+        } else if command == "Z" || command == "z" {
+            let (x, y) = start_point.unwrap_or((0.0, 0.0));
+            current_abs_coordinate = (Some(x), Some(y));
+            reset_start_point = true;
+        } else if command == "C" {
+            current_abs_coordinate = (Some(args[4]), Some(args[5]));
+        } else if command == "c" {
+            current_abs_coordinate = (
+                Some(args[4] + current_abs_coordinate.0.unwrap_or(0.0)),
+                Some(args[5] + current_abs_coordinate.1.unwrap_or(0.0)),
+            );
+        } else if command == "A" {
+            current_abs_coordinate = (Some(args[5]), Some(args[6]));
+        } else if command == "a" {
+            current_abs_coordinate = (
+                Some(args[5] + current_abs_coordinate.0.unwrap_or(0.0)),
+                Some(args[6] + current_abs_coordinate.1.unwrap_or(0.0)),
+            );
+        } else if command == "S" {
+            current_abs_coordinate = (Some(args[0]), Some(args[1]));
+        } else if command == "s" {
+            current_abs_coordinate = (
+                Some(args[2] + current_abs_coordinate.0.unwrap_or(0.0)),
+                Some(args[3] + current_abs_coordinate.1.unwrap_or(0.0)),
+            );
+        } else if command == "Q" {
+            current_abs_coordinate = (Some(args[2]), Some(args[3]));
+        } else if command == "q" {
+            current_abs_coordinate = (
+                Some(args[2] + current_abs_coordinate.0.unwrap_or(0.0)),
+                Some(args[3] + current_abs_coordinate.1.unwrap_or(0.0)),
+            );
+        } else if command == "T" {
+            current_abs_coordinate = (Some(args[0]), Some(args[1]));
+        } else if command == "t" {
+            current_abs_coordinate = (
+                Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
+                Some(args[1] + current_abs_coordinate.1.unwrap_or(0.0)),
+            );
+        } else {
+            // unknown command
+            let command_index_range: Option<(u32, u32)> =
+                path.find(command).map(|index| {
+                    (index as u32, index as u32 + command.len() as u32)
+                });
+            errors.push((
+                format!(
+                    "Unknown command \"{}\"{}",
+                    command,
+                    &match command_index_range {
+                        Some(range) => format!(" at index {}", range.0),
+                        None => "".to_string(),
+                    }
+                ),
+                command_index_range,
+                None,
+            ));
+            break;
+        }
+
+        if start_point.is_none() {
+            start_point = Some((
+                current_abs_coordinate.0.unwrap(),
+                current_abs_coordinate.1.unwrap(),
+            ));
+        } else if reset_start_point {
+            start_point = None;
+            reset_start_point = false;
+        }
+
+        let exiting_straight_line = in_straight_line
+            && !(next_segment.is_some()
+                && STRAIGHT_LINE_PATH_COMMANDS
+                    .contains(&next_segment.unwrap().0));
+        in_straight_line = STRAIGHT_LINE_PATH_COMMANDS.contains(command);
+
+        if in_straight_line {
+            current_line.push((
+                current_abs_coordinate.0.unwrap(),
+                current_abs_coordinate.1.unwrap(),
+            ));
+        } else {
+            if exiting_straight_line {
+                if STRAIGHT_LINE_PATH_COMMANDS.contains(command) {
+                    current_line.push((
+                        current_abs_coordinate.0.unwrap(),
+                        current_abs_coordinate.1.unwrap(),
+                    ));
+                }
+
+                for p in 1..current_line.len() - 1 {
+                    let (x1, y1) = current_line[p - 1];
+                    let (x2, y2) = current_line[p];
+                    let (x3, y3) = current_line[p + 1];
+
+                    if collinear_points(x1, y1, x2, y2, x3, y3) {
+                        let (collinear_segment_command, _) = segments
+                            .get(s - current_line.len() + p + 1)
+                            .unwrap();
+                        errors.push((
+                            format!(
+                                concat!(
+                                    "Collinear segment found at command \"{}\""
+                                ),
+                                collinear_segment_command
+                            ),
+                            None,
+                            None,
+                        ));
+                    }
+                }
+            }
+            current_line.clear();
+        }
+    }
+
+    errors
+}
+
 pub fn lint_path(
     path: &str,
     bbox: &PathViewBox,
-    segments: &PathSegments,
+    segments: &[PathSegment],
 ) -> Vec<LintError> {
     let mut errors: Vec<LintError> = path_format(path);
     errors.extend(negative_zeros(path));
     errors.extend(icon_size(bbox));
     errors.extend(icon_precision(segments));
     errors.extend(icon_centered(bbox));
+    errors.extend(collinear_segments(path, segments));
     errors
 }
