@@ -16,7 +16,6 @@ use leptos::{
 };
 use scroll::ScrollButtons;
 use simple_icons_macros::{get_number_of_icons, icons_array};
-use std::time::Duration;
 use types::SimpleIcon;
 use wasm_bindgen::{closure::Closure, JsCast};
 use web_sys;
@@ -122,7 +121,7 @@ fn wait_for_first_grid_item_and_open_details(attempt: u32) {
     } else if attempt < 40 {
         _ = set_timeout_with_handle(
             move || wait_for_first_grid_item_and_open_details(attempt + 1),
-            Duration::from_millis(50),
+            std::time::Duration::from_millis(50),
         );
     }
 }

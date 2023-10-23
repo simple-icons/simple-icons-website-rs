@@ -1,7 +1,6 @@
 use crate::Ids;
 use leptos::{document, ev::MouseEvent, set_timeout_with_handle, window, *};
 use log;
-use std::time::Duration;
 use wasm_bindgen::{closure::Closure, prelude::*, JsCast, JsValue};
 use wasm_bindgen_futures;
 use web_sys;
@@ -15,7 +14,7 @@ fn on_copied(button: web_sys::HtmlElement) {
             // Unset focus
             button.blur().unwrap();
         },
-        Duration::from_millis(1000),
+        std::time::Duration::from_millis(1000),
     );
 }
 

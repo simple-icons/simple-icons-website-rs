@@ -1,5 +1,4 @@
 use leptos::{document, set_timeout_with_handle};
-use std::time::Duration;
 use wasm_bindgen::{closure::Closure, JsCast};
 use web_sys::{HtmlElement, KeyboardEvent};
 
@@ -30,6 +29,6 @@ pub fn load_keyboard_shortcut_ctrl_and_key_on_click_id(
             .unwrap();
             closure.forget();
         },
-        Duration::from_millis(1000),
+        std::time::Duration::from_millis(1000),
     );
 }

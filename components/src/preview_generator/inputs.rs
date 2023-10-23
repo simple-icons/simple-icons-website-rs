@@ -10,7 +10,6 @@ use crate::preview_generator::{
 use i18n::move_tr;
 use leptos::{html::Input, *};
 use simple_icons::sdk;
-use std::time::Duration;
 use types::SimpleIcon;
 use wasm_bindgen::{closure::Closure, JsCast};
 
@@ -201,7 +200,7 @@ fn FixLintErrorButton(
                         input.set_selection_start(Some(start)).unwrap();
                         input.set_selection_end(Some(end)).unwrap();
                     },
-                    Duration::from_millis(3),
+                    std::time::Duration::from_millis(3),
                 );
             }
         />

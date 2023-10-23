@@ -12,7 +12,6 @@ use i18n::{move_tr, tr};
 use leptos::*;
 use simple_icons::sdk;
 use std::collections::HashMap;
-use std::time::Duration;
 use wasm_bindgen::JsCast;
 
 #[component]
@@ -173,7 +172,7 @@ fn PreviewCopyButton() -> impl IntoView {
                     move || {
                         set_copied(false);
                     },
-                    Duration::from_millis(1000),
+                    std::time::Duration::from_millis(1000),
                 );
             }
         >
