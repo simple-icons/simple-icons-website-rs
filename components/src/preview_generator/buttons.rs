@@ -1,11 +1,12 @@
 use crate::button::Button;
 use crate::controls::download::download;
 use crate::copy::copy_canvas_container_as_image;
+use crate::grid::ICONS;
 use crate::keyboard::load_keyboard_shortcut_ctrl_and_key_on_click_id;
 use crate::preview_generator::{
     canvas::get_canvas_container, helpers::is_valid_hex_color,
 };
-use crate::svg::{svg_with_path_opt_fill, SVGDef};
+use crate::svg::{svg_with_title_path_opt_fill, SVGDef};
 use crate::Ids;
 use i18n::{move_tr, tr};
 use leptos::*;
@@ -83,6 +84,15 @@ fn PreviewUploadSVGButton(
                         .next()
                         .unwrap();
                     set_brand(brand.to_string());
+
+                    if !file_content.contains("fill=\"") {
+                        for icon in ICONS.iter() {
+                            if icon.title == brand {
+                                set_color(icon.hex.to_string());
+                                break;
+                            }
+                        }
+                    }
                 }
 
                 // Set path
@@ -115,6 +125,7 @@ fn PreviewUploadSVGButton(
                     let input = event_target::<web_sys::HtmlInputElement>(&ev);
                     let file = input.files().unwrap().get(0).unwrap();
                     spawn_local(on_upload_svg_file(file, set_brand, set_color, set_path));
+                    input.set_value("");
                 }
             />
 
@@ -230,7 +241,9 @@ fn PreviewDownloadSVGButton(
                 let filename = format!("{}.svg", &sdk::title_to_slug(&brand()));
                 let url = format!(
                     "data:image/svg+xml;utf8,{}",
-                    js_sys::encode_uri_component(&svg_with_path_opt_fill(&path(), None)),
+                    js_sys::encode_uri_component(
+                        &svg_with_title_path_opt_fill(&brand(), &path(), None),
+                    ),
                 );
                 download(&filename, &url);
             }

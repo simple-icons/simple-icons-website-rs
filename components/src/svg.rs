@@ -148,14 +148,40 @@ pub fn SVGDefIcon(
     }
 }
 
-/// Build a SVG string with the 24px24 viewBox and an optional `fill` attribute
+/// Build a SVG string with the 24px24 viewBox from a path and
+/// an optional `fill` attribute
 pub fn svg_with_path_opt_fill(path: &str, fill: Option<&str>) -> String {
     format!(
-        "<svg role=\"img\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"{}\"{}/></svg>",
-        path,
+        concat!(
+            "<svg role=\"img\" viewBox=\"0 0 24 24\"",
+            " xmlns=\"http://www.w3.org/2000/svg\"><path{} d=\"{}\"/></svg>",
+        ),
         match fill {
             Some(fill) => format!(" fill=\"#{}\"", fill),
             None => "".to_string(),
-        }
+        },
+        path,
+    )
+}
+
+/// Build a SVG string with the 24px24 viewBox from a path, a title and
+/// an optional `fill` attribute
+pub fn svg_with_title_path_opt_fill(
+    title: &str,
+    path: &str,
+    fill: Option<&str>,
+) -> String {
+    format!(
+        concat!(
+            "<svg role=\"img\" viewBox=\"0 0 24 24\"",
+            " xmlns=\"http://www.w3.org/2000/svg\">",
+            "<title>{}</title><path{} d=\"{}\"/></svg>",
+        ),
+        title,
+        match fill {
+            Some(fill) => format!(" fill=\"#{}\"", fill),
+            None => "".to_string(),
+        },
+        path,
     )
 }
