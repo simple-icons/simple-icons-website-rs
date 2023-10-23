@@ -177,7 +177,13 @@ pub fn svg_with_title_path_opt_fill(
             " xmlns=\"http://www.w3.org/2000/svg\">",
             "<title>{}</title><path{} d=\"{}\"/></svg>",
         ),
-        title,
+        // TODO: Escape unicode characters like simple-icons does
+        title
+            .replace('&', "&amp;")
+            .replace('\'', "&apos;")
+            .replace('\"', "&quot;")
+            .replace('<', "&lt;")
+            .replace('>', "&gt;"),
         match fill {
             Some(fill) => format!(" fill=\"#{}\"", fill),
             None => "".to_string(),
