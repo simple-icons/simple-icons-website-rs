@@ -398,6 +398,9 @@ pub fn collinear_segments(
                                 ),
                                 collinear_segment_command
                             ),
+                            // TODO: CST SVG path parser with input validation
+                            // to fix most variants of this rule and show the
+                            // exact segments in errors
                             None,
                             None,
                         ));
