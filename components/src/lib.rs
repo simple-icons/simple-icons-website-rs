@@ -5,6 +5,7 @@
 pub mod button;
 pub mod controls;
 pub mod copy;
+pub mod event;
 pub(crate) mod fetch;
 pub mod footer;
 pub mod grid;

@@ -118,17 +118,10 @@ fn wait_for_first_grid_item_and_open_details(attempt: u32) {
         )
         .unwrap()
     {
-        let event = web_sys::Event::new_with_event_init_dict(
-            "click",
-            web_sys::EventInit::new().bubbles(true),
-        )
-        .unwrap();
-        el.dispatch_event(&event).unwrap();
+        el.dyn_into::<web_sys::HtmlElement>().unwrap().click();
     } else if attempt < 40 {
         _ = set_timeout_with_handle(
-            move || {
-                wait_for_first_grid_item_and_open_details(attempt + 1);
-            },
+            move || wait_for_first_grid_item_and_open_details(attempt + 1),
             Duration::from_millis(50),
         );
     }

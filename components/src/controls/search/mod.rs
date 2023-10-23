@@ -4,6 +4,7 @@ use crate::controls::layout::LayoutSignal;
 use crate::controls::order::{
     set_order_mode, OrderMode, OrderModeSignal, OrderModeVariant,
 };
+use crate::event::dispatch_input_event_on_input;
 use crate::grid::{IconsGrid, IconsGridSignal, ICONS};
 use crate::storage::LocalStorage;
 use crate::Ids;
@@ -13,6 +14,7 @@ use i18n::move_tr;
 use js_sys::JsString;
 use leptos::{document, html::Input, window, *};
 use types::SimpleIcon;
+use wasm_bindgen::JsCast;
 use web_sys;
 
 #[derive(Copy, Clone)]
@@ -72,13 +74,10 @@ pub fn set_search_value_on_localstorage(search_value: &str) {
 pub fn fire_on_search_event() {
     let input = document()
         .get_element_by_id(Ids::SearchInput.as_str())
+        .unwrap()
+        .dyn_into::<web_sys::HtmlInputElement>()
         .unwrap();
-    let event = web_sys::Event::new_with_event_init_dict(
-        "input",
-        web_sys::EventInit::new().bubbles(true),
-    )
-    .unwrap();
-    input.dispatch_event(&event).unwrap();
+    dispatch_input_event_on_input(&input);
 }
 
 fn init_searcher() {

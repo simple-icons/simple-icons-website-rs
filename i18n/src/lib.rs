@@ -76,8 +76,6 @@ pub struct LocaleSignal(pub RwSignal<Language>);
 ///
 /// You need to wrap in a `move` closure because is the way that Leptos
 /// has to know that the string is reactive.
-///
-/// ```
 #[macro_export]
 macro_rules! tr {
     ($key:expr) => {

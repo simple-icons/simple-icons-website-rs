@@ -3,13 +3,8 @@ use crate::pages::{Error404, Index, Preview};
 use components::controls::color_scheme::{
     provide_color_scheme_context, ColorScheme,
 };
-use components::controls::download::provide_download_type_context;
-use components::controls::layout::provide_layout_context;
-use components::controls::order::provide_order_mode_context;
-use components::controls::search::provide_search_context;
 use components::copy::CopyInput;
 use components::footer::Footer;
-use components::grid::provide_icons_grid_contexts;
 use components::header::{
     nav::language_selector::provide_language_context, Header,
 };
@@ -75,17 +70,6 @@ pub fn App() -> impl IntoView {
 
     // Create a context to store the current opened modal
     provide_modal_open_context();
-
-    // Context to initialize `Controls` components in children components
-    let initial_search_value = provide_search_context();
-    let initial_order_mode = provide_order_mode_context(&initial_search_value);
-    provide_download_type_context();
-    let initial_layout = provide_layout_context();
-    provide_icons_grid_contexts(
-        &initial_search_value,
-        &initial_order_mode,
-        &initial_layout,
-    );
 
     view! {
         <Head/>

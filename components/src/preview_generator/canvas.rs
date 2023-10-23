@@ -38,9 +38,7 @@ fn create_badge_image_for_canvas(
         .unwrap()
         .dyn_into::<web_sys::HtmlImageElement>()
         .unwrap();
-    badge_img_for_canvas
-        .set_attribute("style", "display: none")
-        .unwrap();
+    badge_img_for_canvas.class_list().add_1("hidden").unwrap();
     badge_img_for_canvas
         .set_attribute(
             "id",
@@ -153,9 +151,7 @@ pub fn update_preview_canvas() {
         .unwrap()
         .dyn_into::<web_sys::HtmlImageElement>()
         .unwrap();
-    preview_card_img
-        .set_attribute("style", "display: none")
-        .unwrap();
+    preview_card_img.class_list().add_1("hidden").unwrap();
     preview_card_img
         .set_attribute("id", "preview-card-image-for-canvas")
         .unwrap();
