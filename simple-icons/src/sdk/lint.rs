@@ -234,7 +234,7 @@ pub fn icon_centered(bbox: &PathViewBox) -> Vec<LintError> {
 
 /// Given three points, returns if the middle one (x2, y2) is collinear
 /// to the line formed by the two limit points.
-fn collinear_points(
+fn points_are_collinear(
     x1: f64,
     y1: f64,
     x2: f64,
@@ -387,7 +387,7 @@ pub fn collinear_segments(
                     let (x2, y2) = current_line[p];
                     let (x3, y3) = current_line[p + 1];
 
-                    if collinear_points(x1, y1, x2, y2, x3, y3) {
+                    if points_are_collinear(x1, y1, x2, y2, x3, y3) {
                         let (collinear_segment_command, _) = segments
                             .get(s - current_line.len() + p + 1)
                             .unwrap();
