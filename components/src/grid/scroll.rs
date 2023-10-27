@@ -2,6 +2,7 @@ use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
 use crate::svg::SVGIcon;
 use i18n::move_tr;
 use leptos::{ev::MouseEvent, *};
+use wasm_bindgen::{closure::Closure, JsCast};
 
 #[component]
 pub fn ScrollButton<H, T, C>(
@@ -37,12 +38,28 @@ where
 
 #[component]
 pub fn ScrollToHeaderButton() -> impl IntoView {
-    let icons_loader = use_context::<IconsLoaderSignal>().unwrap().0;
+    let (window_scroll_y, set_window_scroll_y) = create_signal(0.0);
+    let hide_button = create_memo(move |_| window_scroll_y() < 200.0);
+
+    create_effect(move |_| {
+        let closure: Closure<dyn FnMut(MouseEvent)> = Closure::new(move |_| {
+            set_window_scroll_y(window().scroll_y().unwrap());
+        });
+
+        document()
+            .add_event_listener_with_callback(
+                "scroll",
+                closure.as_ref().unchecked_ref(),
+            )
+            .unwrap();
+
+        closure.forget();
+    });
 
     view! {
         <ScrollButton
             class="scroll-to-header-button"
-            hidden=move || icons_loader().load
+            hidden=hide_button
             title=move_tr!("go-to-header")
             on_click=move |_| {
                 let footer = document().query_selector("header").unwrap().unwrap();
