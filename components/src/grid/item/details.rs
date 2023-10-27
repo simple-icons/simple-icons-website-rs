@@ -62,10 +62,7 @@ pub fn fill_icon_details_modal_with_icon(
             "title",
             &tr!("copy-icon-slug", &{
                 let mut map = HashMap::new();
-                map.insert(
-                    "icon".to_string(),
-                    icon_localized_title.clone().into(),
-                );
+                map.insert("icon".to_string(), icon_localized_title.into());
                 map.insert("slug".to_string(), icon.slug.into());
                 map
             }),
@@ -113,10 +110,7 @@ pub fn fill_icon_details_modal_with_icon(
             "title",
             &tr!("copy-icon-svg", &{
                 let mut map = HashMap::new();
-                map.insert(
-                    "icon".to_string(),
-                    icon_localized_title.clone().into(),
-                );
+                map.insert("icon".to_string(), icon_localized_title.into());
                 map
             }),
         )
@@ -195,10 +189,7 @@ pub fn fill_icon_details_modal_with_icon(
             "will-be-removed-at-extended",
             &{
                 let mut map = HashMap::new();
-                map.insert(
-                    "icon".to_string(),
-                    icon_localized_title.clone().into(),
-                );
+                map.insert("icon".to_string(), icon_localized_title.into());
                 map.insert(
                     "version".to_string(),
                     format!(

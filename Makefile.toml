@@ -9,14 +9,10 @@ default_to_workspace = false
 
 [tasks.init]
 description = "Initialization task run before all others"
-run_task = { name = [
-    "use_nvm_if_installed",
-    "npm_install",
-    "setup_js_libraries_filenames"
-] }
+run_task = { name = ["nvm_use", "npm_install", "setup_js_libraries_filenames"] }
 
-[tasks.use_nvm_if_installed]
-description = "Run 'nvm use'"
+[tasks.nvm_use]
+description = "Run 'nvm use' if installed"
 condition.env_not_set = ["CI"]
 command = "nvm"
 args = ["use"]
