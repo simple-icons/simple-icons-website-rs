@@ -39,7 +39,6 @@ where
 #[component]
 pub fn ScrollToHeaderButton() -> impl IntoView {
     let (window_scroll_y, set_window_scroll_y) = create_signal(0.0);
-    let hide_button = create_memo(move |_| window_scroll_y() < 200.0);
 
     create_effect(move |_| {
         let closure: Closure<dyn FnMut(MouseEvent)> = Closure::new(move |_| {
@@ -59,7 +58,7 @@ pub fn ScrollToHeaderButton() -> impl IntoView {
     view! {
         <ScrollButton
             class="scroll-to-header-button"
-            hidden=hide_button
+            hidden=move || window_scroll_y() < 200.0
             title=move_tr!("go-to-header")
             on_click=move |_| {
                 let footer = document().query_selector("header").unwrap().unwrap();
