@@ -51,10 +51,14 @@ fn ThirdPartyExtensionsTable() -> impl IntoView {
     view! {
         <table class="third-party-extensions">
             <tbody>
-                {THIRD_PARTY_EXTENSIONS
-                    .iter()
-                    .map(|extension| view! { <ThirdPartyExtensionsTableRow extension=extension/> })
-                    .collect::<Vec<_>>()}
+                <For
+                    each=move || THIRD_PARTY_EXTENSIONS.iter()
+                    key=move |extension| extension.name
+                    children=move |extension| {
+                        view! { <ThirdPartyExtensionsTableRow extension=extension/> }
+                    }
+                />
+
             </tbody>
         </table>
     }

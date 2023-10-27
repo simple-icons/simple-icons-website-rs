@@ -34,36 +34,37 @@ where
     let hidden_frames_values = "0;".repeat(hidden_frames.unwrap_or(3) as usize);
 
     view! {
-        <svg
-            width=format!("{}px", width)
-            height=format!("{}px", height)
-            viewBox=format!("0 0 {} {}", width, height)
-            class:hidden=hidden
-        >
-            <circle cx=r cy=cy r=r>
-                <animate
-                    attributeName="r"
-                    values=format!("0;{};0;0;{}", r, hidden_frames_values)
-                    dur=&dur
-                    repeatCount="indefinite"
-                ></animate>
-            </circle>
-            <circle cx=r * 3 + space_x cy=cy r=r>
-                <animate
-                    attributeName="r"
-                    values=format!("0;0;{};0;{}", r, hidden_frames_values)
-                    dur=&dur
-                    repeatCount="indefinite"
-                ></animate>
-            </circle>
-            <circle cx=r * 5 + space_x * 2 cy=cy r=r>
-                <animate
-                    attributeName="r"
-                    values=format!("0;0;0;{};{}", r, hidden_frames_values)
-                    dur=&dur
-                    repeatCount="indefinite"
-                ></animate>
-            </circle>
-        </svg>
+        <Show when=move || !hidden()>
+            <svg
+                width=format!("{}px", width)
+                height=format!("{}px", height)
+                viewBox=format!("0 0 {} {}", width, height)
+            >
+                <circle cx=r cy=cy r=r>
+                    <animate
+                        attributeName="r"
+                        values=format!("0;{};0;0;{}", r, hidden_frames_values)
+                        dur=&dur
+                        repeatCount="indefinite"
+                    ></animate>
+                </circle>
+                <circle cx=r * 3 + space_x cy=cy r=r>
+                    <animate
+                        attributeName="r"
+                        values=format!("0;0;{};0;{}", r, hidden_frames_values)
+                        dur=&dur
+                        repeatCount="indefinite"
+                    ></animate>
+                </circle>
+                <circle cx=r * 5 + space_x * 2 cy=cy r=r>
+                    <animate
+                        attributeName="r"
+                        values=format!("0;0;0;{};{}", r, hidden_frames_values)
+                        dur=&dur
+                        repeatCount="indefinite"
+                    ></animate>
+                </circle>
+            </svg>
+        </Show>
     }
 }

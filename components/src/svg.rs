@@ -6,6 +6,7 @@ use std::fmt;
 ///
 /// The definitions of the SVG paths used in the icons.
 /// They are defined here to optimize the size of the site.
+#[derive(PartialEq)]
 pub enum SVGDef {
     Null,
     /// Used in view detail buttons

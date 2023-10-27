@@ -137,11 +137,22 @@ where {
                 }
             />
 
-            <ul class="preview-path-lint-errors" class:hidden=move || !show_path_lint_errors()>
-                {move || {
-                    path_lint_errors()
-                        .into_iter()
-                        .map(|error| {
+            <Show when=show_path_lint_errors>
+                <ul class="preview-path-lint-errors">
+                    <For
+                        each=path_lint_errors
+                        key=move |error| {
+                            format!(
+                                "{}{}",
+                                error.0,
+                                match error.1 {
+                                    Some(range) => format!("-{}-{}", range.0, range.1),
+                                    None => "".to_string(),
+                                },
+                            )
+                        }
+
+                        children=move |error| {
                             view! {
                                 <LintError
                                     message=error.0
@@ -150,11 +161,11 @@ where {
                                     input_ref=input_ref
                                 />
                             }
-                        })
-                        .collect_view()
-                }}
+                        }
+                    />
 
-            </ul>
+                </ul>
+            </Show>
         </div>
     }
 }
@@ -218,32 +229,18 @@ fn LintError(
         <li>
             <span>{message}</span>
             <div>
-                {move || {
-                    let mut buttons = vec![];
-                    if let Some(range) = range {
-                        buttons
-                            .push(
-                                view! { <ShowLintErrorButton start=range.0 end=range.1 input_ref/> },
-                            );
-                        if let Some(fixer) = fixer {
-                            buttons
-                                .push(
-                                    view! {
-                                        <FixLintErrorButton
-                                            start=range.0
-                                            end=range.1
-                                            fixer=fixer
-                                            input_ref=input_ref
-                                        />
-                                    },
-                                );
-                        }
-                    }
-                    buttons
-                }}
-
+                <Show when=move || range.is_some()>
+                    <ShowLintErrorButton start=range.unwrap().0 end=range.unwrap().1 input_ref/>
+                </Show>
+                <Show when=move || fixer.is_some()>
+                    <FixLintErrorButton
+                        start=range.unwrap().0
+                        end=range.unwrap().1
+                        fixer=fixer.unwrap()
+                        input_ref=input_ref
+                    />
+                </Show>
             </div>
-
         </li>
     }
 }
@@ -296,23 +293,23 @@ pub fn BrandInput(
                 }
             />
 
-            <BrandSuggestions
-                show_brand_suggestions=show_brand_suggestions
-                show_more_brand_suggestions=show_more_brand_suggestions
-                brand_suggestions=brand_suggestions
-                more_brand_suggestions=more_brand_suggestions
-                set_brand=set_brand
-                set_color=set_color
-                set_show_brand_suggestions=set_show_brand_suggestions
-                set_show_more_brand_suggestions=set_show_more_brand_suggestions
-            />
+            <Show when=move || show_brand_suggestions() && !brand_suggestions().is_empty()>
+                <BrandSuggestions
+                    show_more_brand_suggestions=show_more_brand_suggestions
+                    brand_suggestions=brand_suggestions
+                    more_brand_suggestions=more_brand_suggestions
+                    set_brand=set_brand
+                    set_color=set_color
+                    set_show_brand_suggestions=set_show_brand_suggestions
+                    set_show_more_brand_suggestions=set_show_more_brand_suggestions
+                />
+            </Show>
         </div>
     }
 }
 
 #[component]
 fn BrandSuggestions(
-    show_brand_suggestions: ReadSignal<bool>,
     show_more_brand_suggestions: ReadSignal<bool>,
     brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
     more_brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
@@ -347,77 +344,55 @@ fn BrandSuggestions(
     closure.forget();
 
     view! {
-        <ul
-            class=move || {
-                let mut cls = "preview-brand-suggestions".to_string();
-                if show_more_brand_suggestions() {
-                    cls.push_str(" overflow-y-scroll");
-                }
-                cls
-            }
+        <ul class=move || {
+            format!(
+                "preview-brand-suggestions{}",
+                if show_more_brand_suggestions() { " overflow-y-scroll" } else { "" },
+            )
+        }>
 
-            class:hidden=move || { !show_brand_suggestions() || brand_suggestions().is_empty() }
-        >
-
-            {move || {
-                if !show_brand_suggestions() {
-                    return vec![];
+            <For
+                each=brand_suggestions
+                key=move |icon| icon.slug
+                children=move |icon: &'static SimpleIcon| {
+                    view! { <BrandSuggestion icon=icon set_brand=set_brand set_color=set_color/> }
                 }
-                let mut suggestions_containers = vec![];
-                let bs = brand_suggestions();
-                for icon in bs {
-                    suggestions_containers
-                        .push(
-                            view! {
-                                <BrandSuggestion icon=icon set_brand=set_brand set_color=set_color/>
-                            },
-                        );
-                }
-                if !show_more_brand_suggestions() {
-                    if !more_brand_suggestions().is_empty() {
-                        suggestions_containers
-                            .push(
-                                view! {
-                                    <li
-                                        class="more-suggestions"
-                                        role="button"
-                                        title=move_tr!("load-more-icons")
-                                        on:click=move |_| {
-                                            set_show_more_brand_suggestions(true);
-                                            let input = document()
-                                                .get_elements_by_name("preview-brand")
-                                                .item(0)
-                                                .unwrap()
-                                                .dyn_into::<web_sys::HtmlInputElement>()
-                                                .unwrap();
-                                            input.focus().unwrap();
-                                        }
-                                    >
+            />
 
-                                        <span>+</span>
-                                    </li>
-                                }
-                                    .into_view(),
-                            );
+            <Show when=move || {
+                !show_more_brand_suggestions() && !more_brand_suggestions().is_empty()
+            }>
+                <li
+                    class="more-suggestions"
+                    role="button"
+                    title=move_tr!("load-more-icons")
+                    on:click=move |_| {
+                        set_show_more_brand_suggestions(true);
+                        let input = document()
+                            .get_elements_by_name("preview-brand")
+                            .item(0)
+                            .unwrap()
+                            .dyn_into::<web_sys::HtmlInputElement>()
+                            .unwrap();
+                        input.focus().unwrap();
                     }
-                } else {
-                    let more_bs = more_brand_suggestions();
-                    for icon in more_bs {
-                        suggestions_containers
-                            .push(
-                                view! {
-                                    <BrandSuggestion
-                                        icon=icon
-                                        set_brand=set_brand
-                                        set_color=set_color
-                                    />
-                                },
-                            );
-                    }
-                }
-                suggestions_containers
-            }}
+                >
 
+                    <span>+</span>
+                </li>
+            </Show>
+            <Show when=show_more_brand_suggestions>
+                <For
+                    each=more_brand_suggestions
+                    key=move |icon| icon.slug
+                    children=move |icon| {
+                        view! {
+                            <BrandSuggestion icon=icon set_brand=set_brand set_color=set_color/>
+                        }
+                    }
+                />
+
+            </Show>
         </ul>
     }
 }

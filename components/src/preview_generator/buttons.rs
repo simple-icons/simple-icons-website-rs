@@ -178,19 +178,10 @@ fn PreviewCopyButton() -> impl IntoView {
         >
 
             <svg viewBox="0 0 24 24" width="24" height="24">
-                {move || match copied() {
-                    true => {
-                        view! {
-                            <>
-                                <path d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
-                            </>
-                        }
-                            .into_view()
-                    }
-                    false => view! { <path d=SVGDef::Copy.d()></path> }.into_view(),
-                }}
-
+                <Show when=copied fallback=move || view! { <path d=SVGDef::Copy.d()></path> }>
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+                </Show>
             </svg>
             {move_tr!("copy-preview")}
         </button>

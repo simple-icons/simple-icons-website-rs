@@ -77,10 +77,6 @@ pub fn Controls() -> impl IntoView {
 #[component]
 pub fn ControlsToggler() -> impl IntoView {
     let controls_state = use_context::<ControlsStateSignal>().unwrap().0;
-    let toggler_svg_use_id = match controls_state().buttons_group_open {
-        true => SVGDef::View.id(),
-        false => SVGDef::Controls.id(),
-    };
 
     view! {
         <div class="control">
@@ -104,10 +100,15 @@ pub fn ControlsToggler() -> impl IntoView {
             >
 
                 <svg role="button" viewBox="0 0 24 24">
-                    {move || {
-                        view! { <use_ href=format!("#{}", toggler_svg_use_id)></use_> }
-                    }}
-
+                    <use_ href=move || {
+                        format!(
+                            "#{}",
+                            match controls_state().buttons_group_open {
+                                true => SVGDef::View.id(),
+                                false => SVGDef::Controls.id(),
+                            },
+                        )
+                    }></use_>
                 </svg>
             </button>
         </div>

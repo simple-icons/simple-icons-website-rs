@@ -77,27 +77,24 @@ pub fn LanguagesList() -> impl IntoView {
 
     view! {
         <ul class="language-selector">
-            {move || {
-                let current_language = locale_state();
-                LANGUAGES
-                    .iter()
-                    .map(|lang: &Language| {
-                        view! {
-                            <li
-                                class:hidden=*lang == current_language
-                                on:click=move |_| {
-                                    modal_open.set_none();
-                                    locale_state.update(|state| *state = lang.clone());
-                                    set_language_in_localstorage(lang);
-                                }
-                            >
+            <For
+                each=move || LANGUAGES.iter()
+                key=move |lang| lang.id.to_string()
+                children=move |lang: &Language| {
+                    view! {
+                        <Show when=move || *lang != locale_state()>
+                            <li on:click=move |_| {
+                                modal_open.set_none();
+                                locale_state.update(|state| *state = lang.clone());
+                                set_language_in_localstorage(lang);
+                            }>
 
                                 {lang.name}
                             </li>
-                        }
-                    })
-                    .collect::<Vec<_>>()
-            }}
+                        </Show>
+                    }
+                }
+            />
 
         </ul>
     }

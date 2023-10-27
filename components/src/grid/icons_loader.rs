@@ -37,28 +37,27 @@ pub fn IconsLoader() -> impl IntoView {
     let icons_loader = use_context::<IconsLoaderSignal>().unwrap().0;
     let layout = use_context::<LayoutSignal>().unwrap().0;
 
-    let hide_load_more_icons_button = move || {
+    let show_load_more_icons_button = move || {
         let loader_state = icons_loader();
         if loader_state.loading {
-            return true;
+            return false;
         }
 
         let icons_grid = icons_grid_signal();
         if icons_grid.loaded_icons.len() == icons_grid.icons.len() {
-            return true;
+            return false;
         }
         // if more icons should be loaded currently, then the loader is hidden
-        loader_state.load
+        !loader_state.load
     };
 
     // TODO: Currently, a spinner can't be displayed  because the rendering
     // of icon grid items is blocking the main thread
     // See https://stackoverflow.com/q/10180391/9167585
     view! {
-        <div class="icons-loader">
-            <button
-                class:hidden=hide_load_more_icons_button
-                on:click=move |_| {
+        <Show when=show_load_more_icons_button>
+            <div class="icons-loader">
+                <button on:click=move |_| {
                     icons_loader
                         .update(|state| {
                             state.loading = true;
@@ -69,21 +68,21 @@ pub fn IconsLoader() -> impl IntoView {
                             state.loading = false;
                             state.load = true;
                         });
-                }
-            >
+                }>
 
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    class="-mt-0.5 mr-0.5"
-                >
-                    <path d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                </svg>
-                {move_tr!("load-more-icons")}
-            </button>
-        </div>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        class="-mt-0.5 mr-0.5"
+                    >
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                    </svg>
+                    {move_tr!("load-more-icons")}
+                </button>
+            </div>
+        </Show>
     }
 }

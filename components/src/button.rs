@@ -13,11 +13,9 @@ where
 {
     view! {
         <button title=title class=format!("button {}", class) id=id type="button" tabindex=0>
-            {move || match svg_path {
-                SVGDef::Null => view! { "" }.into_view(),
-                _ => view! { <SVGDefIcon aria_hidden=true svg_def=svg_path/> },
-            }}
-
+            <Show when=move || svg_path != &SVGDef::Null>
+                <SVGDefIcon aria_hidden=true svg_def=svg_path/>
+            </Show>
             {title}
         </button>
     }

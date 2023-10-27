@@ -61,9 +61,10 @@ pub fn Preview() -> impl IntoView {
             <div class=concat!(
                 "flex items-center relative left-3 lg:-left-0.5",
                 " max-w-auto lg:max-w-[114px]",
+                " mt-0 md:mt-[29px] lg:mt-5",
             )>
                 <Button
-                    class="mx-auto mt-[29px] lg:mt-5 max-h-[40px]"
+                    class="mx-auto max-h-[40px]"
                     title=move_tr!("icons")
                     on:click=move |_| use_navigate()("/", Default::default())
                     svg_path=&SVGDef::Grid

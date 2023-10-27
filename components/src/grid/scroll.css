@@ -1,6 +1,7 @@
 @layer components {
   .scroll-button {
-    @apply w-9 h-9 fixed right-[6px] opacity-80 hover:opacity-60
+    @apply w-9 h-9 fixed right-0 md:right-[1px] lg:right-0.5
+      opacity-80 hover:opacity-60
       fill-custom-button-content-default-color z-50;
   }
 

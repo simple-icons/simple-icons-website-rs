@@ -1,4 +1,3 @@
-use crate::header::HeaderStateSignal;
 use i18n::{move_tr, tr};
 use leptos::*;
 use simple_icons_macros::get_number_of_icons;
@@ -10,7 +9,6 @@ use std::collections::HashMap;
 /// about what is Simple Icons shown below the title.
 #[component]
 pub fn HeaderTitle() -> impl IntoView {
-    let header_state = use_context::<HeaderStateSignal>().unwrap().0;
     let description_html = move_tr!("site-description", &{
         let mut map = HashMap::new();
         map.insert(
@@ -30,7 +28,7 @@ pub fn HeaderTitle() -> impl IntoView {
     });
 
     view! {
-        <div class:hidden=move || header_state().menu_open>
+        <div>
             <a href="/">"Simple Icons"</a>
             <p id="site-description" inner_html=description_html></p>
         </div>
