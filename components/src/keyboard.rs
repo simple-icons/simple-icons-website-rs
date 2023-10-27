@@ -11,13 +11,13 @@ pub fn load_keyboard_shortcut_ctrl_and_key_on_click_id(
         move || {
             let body = document().body().unwrap();
             _ = use_event_listener(body, keydown, move |ev: KeyboardEvent| {
-                let button = document()
-                    .get_element_by_id(button_id)
-                    .unwrap()
-                    .dyn_into::<HtmlButtonElement>()
-                    .unwrap();
                 if ev.ctrl_key() && ev.key() == key {
-                    button.click();
+                    document()
+                        .get_element_by_id(button_id)
+                        .unwrap()
+                        .dyn_into::<HtmlButtonElement>()
+                        .unwrap()
+                        .click();
                     ev.prevent_default();
                 }
             });

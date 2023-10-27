@@ -78,7 +78,7 @@ fn create_badge_image_for_canvas(
 
 macro_rules! draw_badge_impl {
     ($badge_index:literal, $x:literal, $y:literal) => {{
-        let badge_img = document()
+        let badge_img_src = document()
             .get_elements_by_class_name("preview-badges")
             .item(0)
             .unwrap()
@@ -90,11 +90,12 @@ macro_rules! draw_badge_impl {
             .first_element_child()
             .unwrap()
             .dyn_into::<web_sys::HtmlImageElement>()
-            .unwrap();
+            .unwrap()
+            .src();
 
         create_badge_image_for_canvas(
             $badge_index,
-            badge_img.src().as_str(),
+            &badge_img_src,
             $x as f64,
             $y as f64,
         )
