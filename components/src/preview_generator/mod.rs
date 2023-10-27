@@ -3,8 +3,11 @@ mod canvas;
 pub(crate) mod helpers;
 mod inputs;
 
+use crate::controls::search::fuzzy::search;
 use crate::fetch::fetch_text;
+use crate::grid::ICONS;
 use crate::svg::svg_with_path_opt_fill;
+use crate::Url;
 use buttons::PreviewButtons;
 use canvas::update_preview_canvas;
 use helpers::contrast_color_for;
@@ -12,17 +15,68 @@ use inputs::{BrandInput, ColorInput, PathInput};
 use leptos::*;
 use simple_icons::sdk;
 use simple_icons_macros::{get_number_of_icons, simple_icon_svg_path};
+use types::SimpleIcon;
 
-static INITIAL_BRAND: &str = "Simple Icons";
-static INITIAL_COLOR: &str = "111111";
-static INITIAL_PATH: &str = simple_icon_svg_path!("simpleicons");
+static DEFAULT_INITIAL_BRAND: &str = "Simple Icons";
+static DEFAULT_INITIAL_COLOR: &str = "111111";
+static DEFAULT_INITIAL_PATH: &str = simple_icon_svg_path!("simpleicons");
+
+fn search_brand(value: &str) -> Option<&'static SimpleIcon> {
+    let search_result = js_sys::Array::from(&search(value));
+    let search_result_length = search_result.length();
+    if search_result_length > 0 {
+        let result_icon_array = js_sys::Array::from(&search_result.get(0));
+        let icon_order_alpha = result_icon_array.get(1).as_f64().unwrap();
+        return Some(&ICONS[icon_order_alpha as usize]);
+    }
+    None
+}
+
+fn default_icon() -> (String, String, String, Option<&'static SimpleIcon>) {
+    (
+        DEFAULT_INITIAL_BRAND.to_string(),
+        DEFAULT_INITIAL_COLOR.to_string(),
+        DEFAULT_INITIAL_PATH.to_string(),
+        None,
+    )
+}
+
+fn initial_icon() -> (String, String, String, Option<&'static SimpleIcon>) {
+    match Url::params::get(&Url::params::Names::Query) {
+        Some(value) => {
+            if value.is_empty() {
+                return default_icon();
+            }
+            match search_brand(&value) {
+                Some(icon) => (
+                    icon.title.to_string(),
+                    icon.hex.to_string(),
+                    "".to_string(),
+                    Some(icon),
+                ),
+                None => default_icon(),
+            }
+        }
+        None => default_icon(),
+    }
+}
 
 /// Preview generator
 #[component]
 pub fn PreviewGenerator() -> impl IntoView {
-    let (brand, set_brand) = create_signal(INITIAL_BRAND.to_string());
-    let (color, set_color) = create_signal(INITIAL_COLOR.to_string());
-    let (path, set_path) = create_signal(INITIAL_PATH.to_string());
+    let (initial_brand, initial_color, initial_path, icon) = initial_icon();
+    let (brand, set_brand) = create_signal(initial_brand);
+    let (color, set_color) = create_signal(initial_color);
+    let (path, set_path) = create_signal(initial_path);
+    if path().is_empty() {
+        spawn_local(async move {
+            if let Some(svg) =
+                fetch_text(&format!("/icons/{}.svg", icon.unwrap().slug)).await
+            {
+                set_path(sdk::svg_to_path(&svg));
+            }
+        });
+    }
 
     view! {
         <div class="preview">

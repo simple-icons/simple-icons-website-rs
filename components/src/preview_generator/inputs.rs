@@ -255,7 +255,7 @@ pub fn BrandInput(
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
     let (brand_suggestions, set_brand_suggestions) =
-        create_signal(Vec::<&SimpleIcon>::with_capacity(6));
+        create_signal(Vec::<&SimpleIcon>::with_capacity(7));
     let (more_brand_suggestions, set_more_brand_suggestions) =
         create_signal(Vec::<&SimpleIcon>::new());
     let (show_brand_suggestions, set_show_brand_suggestions) =
@@ -457,7 +457,7 @@ fn BrandSuggestion(
 fn search_brand_suggestions(
     value: &str,
 ) -> (Vec<&'static SimpleIcon>, Vec<&'static SimpleIcon>) {
-    let mut initial_icons: Vec<&'static SimpleIcon> = Vec::with_capacity(6);
+    let mut initial_icons: Vec<&'static SimpleIcon> = Vec::with_capacity(7);
     let mut more_icons: Vec<&'static SimpleIcon> = Vec::new();
     let search_result = js_sys::Array::from(&search(value));
     let search_result_length = search_result.length();

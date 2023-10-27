@@ -11,18 +11,25 @@ use components::preview_generator::PreviewGenerator;
 use components::svg::SVGDef;
 use i18n::move_tr;
 use leptos::*;
-use leptos_router::{use_navigate, use_query_map};
+use leptos_router::{use_navigate, use_query_map, NavigateOptions};
 
 fn index_redirections() {
     let query_map = use_query_map()();
 
-    if query_map.get("p").is_some() {
-        use_navigate()("/preview", Default::default());
-    }
-
     // Trick to redirect to other pages for servers that don't support SPAs
     if let Some(redirection) = query_map.get("r") {
-        use_navigate()(redirection, Default::default());
+        let navigate_opts = NavigateOptions {
+            replace: true,
+            ..Default::default()
+        };
+
+        let mut new_parms = query_map.clone();
+        new_parms.remove("r");
+
+        let url = format!("{}{}", redirection, new_parms.to_query_string());
+        #[cfg(debug_assertions)]
+        ::log::debug!("Redirecting to {}", url);
+        use_navigate()(&url, navigate_opts);
     }
 }
 

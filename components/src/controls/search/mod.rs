@@ -30,17 +30,14 @@ pub fn provide_search_context() -> String {
 }
 
 fn initial_search_value() -> String {
-    let search_value = match Url::params::get(&Url::params::Names::Search) {
+    let search_value = match Url::params::get(&Url::params::Names::Query) {
         Some(value) => {
             set_search_value_on_localstorage(value.as_str());
             value
         }
         None => match initial_search_value_from_localstorage() {
             Some(value) => {
-                Url::params::update(
-                    &Url::params::Names::Search,
-                    value.as_str(),
-                );
+                Url::params::update(&Url::params::Names::Query, value.as_str());
                 set_search_value_on_localstorage(value.as_str());
                 value
             }
@@ -207,7 +204,7 @@ async fn on_search(
 ) {
     let value = search_input_ref.get().unwrap().value();
     search_signal.update(move |state| {
-        Url::params::update(&Url::params::Names::Search, &value);
+        Url::params::update(&Url::params::Names::Query, &value);
 
         if value.is_empty() {
             // Reset grid

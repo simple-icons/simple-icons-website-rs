@@ -81,6 +81,7 @@ pub fn App() -> impl IntoView {
                 <Routes>
                     <Route path="/preview" view=Preview/>
                     <Route path="/" view=Index/>
+
                     <Route path="/*any" view=Error404/>
                 </Routes>
             </Router>
