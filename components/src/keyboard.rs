@@ -1,34 +1,27 @@
-use leptos::{document, set_timeout_with_handle};
-use wasm_bindgen::{closure::Closure, JsCast};
-use web_sys::{HtmlElement, KeyboardEvent};
+use leptos::{document, ev::keydown, set_timeout};
+use leptos_use::use_event_listener;
+use wasm_bindgen::JsCast;
+use web_sys::{HtmlButtonElement, KeyboardEvent};
 
 pub fn load_keyboard_shortcut_ctrl_and_key_on_click_id(
     button_id: &'static str,
     key: &'static str,
 ) {
-    let closure: Closure<dyn FnMut(KeyboardEvent)> =
-        Closure::new(move |ev: KeyboardEvent| {
-            let button = document()
-                .get_element_by_id(button_id)
-                .unwrap()
-                .dyn_into::<HtmlElement>()
-                .unwrap();
-            if ev.ctrl_key() && ev.key() == key {
-                button.click();
-                ev.prevent_default();
-            }
-        });
-
-    _ = set_timeout_with_handle(
+    set_timeout(
         move || {
             let body = document().body().unwrap();
-            body.add_event_listener_with_callback(
-                "keydown",
-                closure.as_ref().unchecked_ref(),
-            )
-            .unwrap();
-            closure.forget();
+            _ = use_event_listener(body, keydown, move |ev: KeyboardEvent| {
+                let button = document()
+                    .get_element_by_id(button_id)
+                    .unwrap()
+                    .dyn_into::<HtmlButtonElement>()
+                    .unwrap();
+                if ev.ctrl_key() && ev.key() == key {
+                    button.click();
+                    ev.prevent_default();
+                }
+            });
         },
-        std::time::Duration::from_millis(1000),
+        std::time::Duration::from_millis(200),
     );
 }

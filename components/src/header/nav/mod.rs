@@ -31,7 +31,7 @@ static LEGAL_DISCLAIMER_SVG_PATH: &str = "m23.9 9.7-3.54-7.89-.005-.01a.542.542 
 /// - Button to open third party extensions table built by [`HeaderMenuButton`].
 #[component]
 pub fn HeaderMenu() -> impl IntoView {
-    let header_state = use_context::<HeaderStateSignal>().unwrap().0;
+    let header_state = expect_context::<HeaderStateSignal>().0;
 
     view! {
         <nav class="self-center flex flex-row justify-between w-full lg:w-auto">
@@ -99,7 +99,7 @@ pub fn HeaderMenu() -> impl IntoView {
 /// Button to open the menu on mobile devices
 #[component]
 pub fn HeaderMenuBurgerButton() -> impl IntoView {
-    let header_state = use_context::<HeaderStateSignal>().unwrap().0;
+    let header_state = expect_context::<HeaderStateSignal>().0;
 
     view! {
         <HeaderMenuButton
@@ -124,7 +124,7 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
 /// Button to close the menu on mobile devices
 #[component]
 pub fn HeaderMenuCloseButton() -> impl IntoView {
-    let header_state = use_context::<HeaderStateSignal>().unwrap().0;
+    let header_state = expect_context::<HeaderStateSignal>().0;
 
     view! {
         <HeaderMenuButton

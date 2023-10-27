@@ -179,10 +179,10 @@ pub fn set_order_mode(
 
 #[component]
 pub fn OrderControl() -> impl IntoView {
-    let order_mode = use_context::<OrderModeSignal>().unwrap().0;
-    let icons_grid = use_context::<IconsGridSignal>().unwrap().0;
-    let search_signal = use_context::<SearchValueSignal>().unwrap().0;
-    let layout_signal = use_context::<LayoutSignal>().unwrap().0;
+    let order_mode = expect_context::<OrderModeSignal>().0;
+    let icons_grid = expect_context::<IconsGridSignal>().0;
+    let search_signal = expect_context::<SearchValueSignal>().0;
+    let layout_signal = expect_context::<LayoutSignal>().0;
 
     let render_buttons = move || {
         let mut buttons = vec![

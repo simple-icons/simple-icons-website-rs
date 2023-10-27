@@ -76,7 +76,7 @@ pub fn Controls() -> impl IntoView {
 /// depending on the state of the controls panel.
 #[component]
 pub fn ControlsToggler() -> impl IntoView {
-    let controls_state = use_context::<ControlsStateSignal>().unwrap().0;
+    let controls_state = expect_context::<ControlsStateSignal>().0;
 
     view! {
         <div class="control">

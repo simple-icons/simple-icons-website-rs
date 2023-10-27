@@ -40,6 +40,7 @@ leptos_router = { version = "0.5.2", default-features = false, features = [
     "csr",
     "nightly"
 ] }
+leptos-use = "0.8.0"
 console_log = "1.0.0"
 log = "0.4.17"
 console_error_panic_hook = "0.1.7"
@@ -59,9 +60,6 @@ web-sys = { version = "0.3.64", default-features = false, features = [
     "EventTarget",
     "Storage",
     "Clipboard",
-    "IntersectionObserver",
-    "IntersectionObserverInit",
-    "IntersectionObserverEntry",
     "Event",
     "EventInit",
     "History",

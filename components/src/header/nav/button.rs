@@ -19,7 +19,7 @@ pub fn HeaderMenuLink<T>(
 where
     T: TitleFn,
 {
-    let header_state = use_context::<HeaderStateSignal>().unwrap().0;
+    let header_state = expect_context::<HeaderStateSignal>().0;
 
     view! {
         <li

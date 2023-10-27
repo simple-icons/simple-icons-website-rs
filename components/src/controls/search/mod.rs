@@ -242,10 +242,10 @@ async fn on_search(
 
 #[component]
 pub fn SearchControl() -> impl IntoView {
-    let icons_grid = use_context::<IconsGridSignal>().unwrap().0;
-    let search = use_context::<SearchValueSignal>().unwrap().0;
-    let order_mode = use_context::<OrderModeSignal>().unwrap().0;
-    let layout = use_context::<LayoutSignal>().unwrap().0;
+    let icons_grid = expect_context::<IconsGridSignal>().0;
+    let search = expect_context::<SearchValueSignal>().0;
+    let order_mode = expect_context::<OrderModeSignal>().0;
+    let layout = expect_context::<LayoutSignal>().0;
 
     let search_input_ref = create_node_ref::<Input>();
     // Focus on load. Fallback for Safari, see:

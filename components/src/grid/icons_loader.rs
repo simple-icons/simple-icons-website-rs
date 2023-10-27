@@ -33,9 +33,9 @@ pub struct IconsLoaderSignal(pub RwSignal<IconsLoader>);
 /// - A loading indicator. This is displayed when more icons are being loaded.
 #[component]
 pub fn IconsLoader() -> impl IntoView {
-    let icons_grid_signal = use_context::<IconsGridSignal>().unwrap().0;
-    let icons_loader = use_context::<IconsLoaderSignal>().unwrap().0;
-    let layout = use_context::<LayoutSignal>().unwrap().0;
+    let icons_grid_signal = expect_context::<IconsGridSignal>().0;
+    let icons_loader = expect_context::<IconsLoaderSignal>().0;
+    let layout = expect_context::<LayoutSignal>().0;
 
     let show_load_more_icons_button = move || {
         let loader_state = icons_loader();

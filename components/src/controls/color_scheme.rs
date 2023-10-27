@@ -101,7 +101,7 @@ fn set_color_scheme(
 
 #[component]
 pub fn ColorSchemeControl() -> impl IntoView {
-    let color_scheme = use_context::<ColorSchemeSignal>().unwrap().0;
+    let color_scheme = expect_context::<ColorSchemeSignal>().0;
 
     view! {
         <div class="control">

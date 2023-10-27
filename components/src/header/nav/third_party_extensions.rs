@@ -67,8 +67,8 @@ fn ThirdPartyExtensionsTable() -> impl IntoView {
 /// Third party extensions button
 #[component]
 fn ThirdPartyExtensionsButton() -> impl IntoView {
-    let header_state = use_context::<HeaderStateSignal>().unwrap().0;
-    let modal_open = use_context::<ModalOpenSignal>().unwrap();
+    let header_state = expect_context::<HeaderStateSignal>().0;
+    let modal_open = expect_context::<ModalOpenSignal>();
 
     view! {
         <HeaderMenuButton
@@ -90,7 +90,7 @@ fn ThirdPartyExtensionsButton() -> impl IntoView {
 /// Third party extensions
 #[component]
 pub fn ThirdPartyExtensions() -> impl IntoView {
-    let modal_open = use_context::<ModalOpenSignal>().unwrap();
+    let modal_open = expect_context::<ModalOpenSignal>();
 
     view! {
         <ThirdPartyExtensionsButton/>

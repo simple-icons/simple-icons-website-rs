@@ -96,7 +96,7 @@ fn set_download_type_on_localstorage(download_type: &DownloadType) {
 
 #[component]
 pub fn DownloadFileTypeControl() -> impl IntoView {
-    let download_type = use_context::<DownloadTypeSignal>().unwrap().0;
+    let download_type = expect_context::<DownloadTypeSignal>().0;
     let download_svg_title = move_tr!("download-filetype", &{
         let mut map = HashMap::new();
         map.insert("filetype".to_string(), tr!("svg").into());

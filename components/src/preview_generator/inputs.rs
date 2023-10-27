@@ -8,10 +8,14 @@ use crate::preview_generator::{
     canvas::update_preview_canvas, helpers::is_valid_hex_color,
 };
 use i18n::move_tr;
-use leptos::{html::Input, *};
+use leptos::{
+    html::{Div, Input},
+    *,
+};
+use leptos_use::on_click_outside;
 use simple_icons::sdk;
 use types::SimpleIcon;
-use wasm_bindgen::{closure::Closure, JsCast};
+use wasm_bindgen::JsCast;
 
 #[component]
 pub fn ColorInput(
@@ -57,6 +61,7 @@ where {
     let (show_path_lint_errors, set_show_path_lint_errors) =
         create_signal(false);
     let input_ref = create_node_ref::<Input>();
+    let input_group_ref = create_node_ref::<Div>();
 
     fn process_lint_errors(
         path: &str,
@@ -81,38 +86,12 @@ where {
         set_path_lint_errors(lint_errors);
     }
 
-    let body = document().body().unwrap();
-    let closure: Closure<dyn FnMut(web_sys::MouseEvent)> =
-        Closure::new(move |ev: web_sys::MouseEvent| {
-            let target = event_target::<web_sys::HtmlElement>(&ev);
-            // Hide the brand suggestions when the user clicks outside the input
-            if target.get_attribute("name") == Some("preview-path".to_string())
-            {
-                return;
-            }
-
-            let input_group = input_ref
-                .get()
-                .unwrap()
-                .parent_element()
-                .unwrap()
-                .dyn_into::<web_sys::HtmlElement>()
-                .unwrap();
-            let composed_path = ev.composed_path().iter().collect::<Vec<_>>();
-            if composed_path.contains(&input_group) {
-                return;
-            }
-            set_show_path_lint_errors(false);
-        });
-    body.add_event_listener_with_callback(
-        "click",
-        closure.as_ref().unchecked_ref(),
-    )
-    .unwrap();
-    closure.forget();
+    _ = on_click_outside(input_group_ref, move |_| {
+        set_show_path_lint_errors(false)
+    });
 
     view! {
-        <div class="preview-input-group">
+        <div node_ref=input_group_ref class="preview-input-group">
             <label for="preview-path">{move_tr!("path")}</label>
             <input
                 node_ref=input_ref
@@ -204,7 +183,7 @@ fn FixLintErrorButton(
                 let (new_value, (start, end)) = fixer(&input.value(), (start, end));
                 input.set_value(&new_value);
                 dispatch_input_event_on_input(&input);
-                _ = set_timeout_with_handle(
+                set_timeout(
                     move || {
                         input.focus().unwrap();
                         input.select();
@@ -260,10 +239,17 @@ pub fn BrandInput(
     let (show_more_brand_suggestions, set_show_more_brand_suggestions) =
         create_signal(false);
 
+    let input_ref = create_node_ref::<Input>();
+    _ = on_click_outside(input_ref, move |_| {
+        set_show_brand_suggestions(false);
+        set_show_more_brand_suggestions(false);
+    });
+
     view! {
         <div class="preview-input-group">
             <label for="preview-brand">{move_tr!("brand")}</label>
             <input
+                node_ref=input_ref
                 type="text"
                 class="mr-7"
                 style="width:524px"
@@ -300,7 +286,6 @@ pub fn BrandInput(
                     more_brand_suggestions=more_brand_suggestions
                     set_brand=set_brand
                     set_color=set_color
-                    set_show_brand_suggestions=set_show_brand_suggestions
                     set_show_more_brand_suggestions=set_show_more_brand_suggestions
                 />
             </Show>
@@ -315,34 +300,8 @@ fn BrandSuggestions(
     more_brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
-    set_show_brand_suggestions: WriteSignal<bool>,
     set_show_more_brand_suggestions: WriteSignal<bool>,
 ) -> impl IntoView {
-    let body = document().body().unwrap();
-    let closure: Closure<dyn FnMut(web_sys::MouseEvent)> =
-        Closure::new(move |ev: web_sys::MouseEvent| {
-            let target = event_target::<web_sys::HtmlElement>(&ev);
-            // Hide the brand suggestions when the user clicks outside the input
-            if target.get_attribute("name").unwrap_or("".to_string())
-                == "preview-brand"
-            {
-                return;
-            }
-            if target.get_attribute("class").unwrap_or("".to_string())
-                == "more-suggestions"
-            {
-                return;
-            }
-            set_show_brand_suggestions(false);
-            set_show_more_brand_suggestions(false);
-        });
-    body.add_event_listener_with_callback(
-        "click",
-        closure.as_ref().unchecked_ref(),
-    )
-    .unwrap();
-    closure.forget();
-
     view! {
         <ul class=move || {
             format!(

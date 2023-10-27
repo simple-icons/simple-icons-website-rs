@@ -168,7 +168,7 @@ fn PreviewCopyButton() -> impl IntoView {
                 let canvas = get_canvas_container();
                 spawn_local(copy_canvas_container_as_image(canvas));
                 set_copied(true);
-                _ = set_timeout_with_handle(
+                set_timeout(
                     move || {
                         set_copied(false);
                     },

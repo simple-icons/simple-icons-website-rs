@@ -24,7 +24,7 @@ pub fn IconGridItem(
     /// Icon
     icon: &'static SimpleIcon,
 ) -> impl IntoView {
-    let locale_signal = use_context::<LocaleSignal>().unwrap().0;
+    let locale_signal = expect_context::<LocaleSignal>().0;
     let icon_localized_title =
         create_memo(move |_| get_icon_localized_title(icon, &locale_signal()));
 

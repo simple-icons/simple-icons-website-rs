@@ -1,5 +1,5 @@
 use crate::Ids;
-use leptos::{document, ev::MouseEvent, set_timeout_with_handle, window, *};
+use leptos::{ev::MouseEvent, *};
 use log;
 use wasm_bindgen::{closure::Closure, prelude::*, JsCast, JsValue};
 use wasm_bindgen_futures;
@@ -7,7 +7,7 @@ use web_sys;
 
 fn on_copied(button: web_sys::HtmlElement) {
     button.class_list().add_1("copied").unwrap();
-    _ = set_timeout_with_handle(
+    set_timeout(
         move || {
             button.class_list().remove_1("copied").unwrap();
 

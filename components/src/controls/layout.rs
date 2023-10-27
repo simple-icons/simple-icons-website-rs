@@ -104,7 +104,7 @@ fn set_layout(layout: Layout, layout_signal: &RwSignal<Layout>) {
 
 #[component]
 pub fn LayoutControl() -> impl IntoView {
-    let layout = use_context::<LayoutSignal>().unwrap().0;
+    let layout = expect_context::<LayoutSignal>().0;
 
     view! {
         <div class="control">

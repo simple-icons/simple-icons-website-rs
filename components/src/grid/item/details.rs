@@ -333,8 +333,8 @@ fn IconDetailsModalFooter() -> impl IntoView {
 /// Detail modal view for icons
 #[component]
 pub fn IconDetailsModal() -> impl IntoView {
-    let current_icon_view = use_context::<CurrentIconViewSignal>().unwrap().0;
-    let modal_open = use_context::<ModalOpenSignal>().unwrap();
+    let current_icon_view = expect_context::<CurrentIconViewSignal>().0;
+    let modal_open = expect_context::<ModalOpenSignal>();
 
     view! {
         <Modal

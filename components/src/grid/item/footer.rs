@@ -27,16 +27,16 @@ pub fn IconGridItemFooter(
     let css_hex = &format!("#{}", icon.hex);
 
     // Controls context
-    let download_type = use_context::<DownloadTypeSignal>().unwrap().0;
+    let download_type = expect_context::<DownloadTypeSignal>().0;
 
     // Context to handle the opening state of detail modals
-    let current_icon_view = use_context::<CurrentIconViewSignal>().unwrap().0;
+    let current_icon_view = expect_context::<CurrentIconViewSignal>().0;
 
     // Locale context
-    let locale_state = use_context::<LocaleSignal>().unwrap().0;
+    let locale_state = expect_context::<LocaleSignal>().0;
 
     // Modal open context
-    let modal_open = use_context::<ModalOpenSignal>().unwrap();
+    let modal_open = expect_context::<ModalOpenSignal>();
 
     let view_icon_button_title = move_tr!("view-icon", &{
         let mut map = HashMap::new();

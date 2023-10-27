@@ -72,8 +72,8 @@ pub fn set_language_in_localstorage(lang: &Language) {
 /// Languages list
 #[component]
 pub fn LanguagesList() -> impl IntoView {
-    let locale_state = use_context::<LocaleSignal>().unwrap().0;
-    let modal_open = use_context::<ModalOpenSignal>().unwrap();
+    let locale_state = expect_context::<LocaleSignal>().0;
+    let modal_open = expect_context::<ModalOpenSignal>();
 
     view! {
         <ul class="language-selector">
@@ -103,8 +103,8 @@ pub fn LanguagesList() -> impl IntoView {
 /// Language selector button
 #[component]
 pub fn LanguageSelectorButton() -> impl IntoView {
-    let header_state = use_context::<HeaderStateSignal>().unwrap().0;
-    let modal_open = use_context::<ModalOpenSignal>().unwrap();
+    let header_state = expect_context::<HeaderStateSignal>().0;
+    let modal_open = expect_context::<ModalOpenSignal>();
 
     view! {
         <HeaderMenuButton
@@ -126,7 +126,7 @@ pub fn LanguageSelectorButton() -> impl IntoView {
 /// Language selector
 #[component]
 pub fn LanguageSelector() -> impl IntoView {
-    let modal_open = use_context::<ModalOpenSignal>().unwrap();
+    let modal_open = expect_context::<ModalOpenSignal>();
 
     view! {
         <LanguageSelectorButton/>

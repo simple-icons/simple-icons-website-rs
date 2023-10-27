@@ -2,7 +2,7 @@ use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
 use crate::svg::{SVGDef, SVGDefIcon};
 use i18n::move_tr;
 use leptos::{ev::MouseEvent, *};
-use wasm_bindgen::{closure::Closure, JsCast};
+use leptos_use::use_window_scroll;
 
 #[component]
 pub fn ScrollButton<T, C>(
@@ -28,22 +28,7 @@ where
 
 #[component]
 pub fn ScrollToHeaderButton() -> impl IntoView {
-    let (window_scroll_y, set_window_scroll_y) = create_signal(0.0);
-
-    create_effect(move |_| {
-        let closure: Closure<dyn FnMut(MouseEvent)> = Closure::new(move |_| {
-            set_window_scroll_y(window().scroll_y().unwrap());
-        });
-
-        document()
-            .add_event_listener_with_callback(
-                "scroll",
-                closure.as_ref().unchecked_ref(),
-            )
-            .unwrap();
-
-        closure.forget();
-    });
+    let (_, window_scroll_y) = use_window_scroll();
 
     view! {
         <Show when=move || { window_scroll_y() >= 200.0 }>
@@ -62,8 +47,8 @@ pub fn ScrollToHeaderButton() -> impl IntoView {
 
 #[component]
 pub fn ScrollToFooterButton() -> impl IntoView {
-    let icons_loader = use_context::<IconsLoaderSignal>().unwrap().0;
-    let icons_grid = use_context::<IconsGridSignal>().unwrap().0;
+    let icons_loader = expect_context::<IconsLoaderSignal>().0;
+    let icons_grid = expect_context::<IconsGridSignal>().0;
 
     view! {
         <Show when=move || {

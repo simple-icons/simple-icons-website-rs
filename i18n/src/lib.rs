@@ -94,11 +94,11 @@ pub struct LocaleSignal(pub RwSignal<Language>);
 #[macro_export]
 macro_rules! tr {
     ($key:expr) => {
-        ((&use_context::<::i18n::LocaleSignal>().unwrap().0)().translate($key))
+        ((&expect_context::<::i18n::LocaleSignal>().0)().translate($key))
             .to_string()
     };
     ($key:expr, $args:expr) => {
-        ((&use_context::<::i18n::LocaleSignal>().unwrap().0)()
+        ((&expect_context::<::i18n::LocaleSignal>().0)()
             .translate_with_args($key, $args))
         .to_string()
     };

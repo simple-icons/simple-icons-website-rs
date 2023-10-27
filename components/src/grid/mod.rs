@@ -10,18 +10,12 @@ use crate::modal::ModalOpen;
 use crate::Url;
 use icons_loader::{IconsLoader, IconsLoaderSignal};
 use item::{details::IconDetailsModal, IconGridItem};
-use leptos::{
-    html::{Footer, HtmlElement},
-    NodeRef, *,
-};
+use leptos::{html::Footer, NodeRef, *};
+use leptos_use::use_intersection_observer;
 use scroll::ScrollButtons;
 use simple_icons_macros::{get_number_of_icons, icons_array};
 use types::SimpleIcon;
-use wasm_bindgen::{closure::Closure, JsCast};
-use web_sys;
-use web_sys::{
-    IntersectionObserver, IntersectionObserverEntry, IntersectionObserverInit,
-};
+use wasm_bindgen::JsCast;
 
 pub const ICONS: [SimpleIcon; get_number_of_icons!()] = icons_array!();
 
@@ -119,9 +113,9 @@ fn wait_for_first_grid_item_and_open_details(attempt: u32) {
     {
         el.dyn_into::<web_sys::HtmlElement>().unwrap().click();
     } else if attempt < 40 {
-        _ = set_timeout_with_handle(
+        set_timeout(
             move || wait_for_first_grid_item_and_open_details(attempt + 1),
-            std::time::Duration::from_millis(50),
+            std::time::Duration::from_millis(5),
         );
     }
 }
@@ -130,11 +124,10 @@ fn wait_for_first_grid_item_and_open_details(attempt: u32) {
 ///
 /// The icons grid items are lazy loaded with pagination. The first page is
 /// loaded on the first render. The next pages are loaded when the user
-/// scrolls to the footer. See the `IntersectionObserver` used inside the
-/// `Footer` component.
+/// scrolls to the footer.
 #[component]
 pub fn Icons() -> impl IntoView {
-    let icons_grid = use_context::<IconsGridSignal>().unwrap().0;
+    let icons_grid = expect_context::<IconsGridSignal>().0;
 
     view! {
         <For
@@ -151,56 +144,32 @@ pub fn Icons() -> impl IntoView {
 ///
 /// Includes the Carbon Ads ad and the icons
 ///
-/// When the user scrolls nearly to the footer, the next page of icons are loaded.
-/// This is accomplished by using an `IntersectionObserver`.
+/// When the user scrolls nearly to the footer, the next page of icons
+/// are loaded. This is accomplished by using an `IntersectionObserver`,
+/// see [`use_intersection_observer`](https://leptos-use.rs/elements/use_intersection_observer.html).
 #[component]
 pub fn Grid() -> impl IntoView {
     // Get layout view signal
-    let layout = use_context::<LayoutSignal>().unwrap().0;
+    let layout = expect_context::<LayoutSignal>().0;
 
     // Provide the context for the current icon details view
     provide_context(CurrentIconViewSignal(create_rw_signal(None)));
 
-    // Get the context of the page footer node reference and, when the footer element
-    // has been created, load the intersection callback for loading more icons when
-    // the viewport of the screen intersects into the footer
-    let footer_ref = use_context::<NodeRef<Footer>>().unwrap();
-    footer_ref.on_load(move |footer: HtmlElement<Footer>| {
-        let icons_grid = use_context::<IconsGridSignal>().unwrap().0;
-        let icons_loader: RwSignal<IconsLoader> =
-            use_context::<IconsLoaderSignal>().unwrap().0;
+    let icons_grid = expect_context::<IconsGridSignal>().0;
+    let icons_loader: RwSignal<IconsLoader> =
+        expect_context::<IconsLoaderSignal>().0;
 
-        let intersection_callback: Closure<
-            dyn Fn(Vec<IntersectionObserverEntry>, IntersectionObserver),
-        > = Closure::wrap(Box::new(
-            move |entries: Vec<IntersectionObserverEntry>,
-                  _observer: IntersectionObserver| {
-                let footer_entry = &entries[0];
+    let footer_ref = expect_context::<NodeRef<Footer>>();
+    use_intersection_observer(footer_ref, move |entries, _| {
+        let footer_entry = &entries[0];
 
-                if footer_entry.is_intersecting() {
-                    if icons_loader().load {
-                        icons_grid
-                            .update(|grid| grid.load_next_icons(&layout()));
-                    }
-                } else if !icons_loader().load {
-                    icons_loader.update(|state| state.load = true);
-                }
-            },
-        ));
-
-        let intersection_observer = IntersectionObserver::new_with_options(
-            intersection_callback.as_ref().unchecked_ref(),
-            // 450px before the footer is reached, load the next page
-            IntersectionObserverInit::new().root_margin("450px 0px 0px 0px"),
-        )
-        .unwrap();
-        intersection_observer.observe(&footer);
-
-        // TODO: this is a memory leak
-        // https://rustwasm.github.io/docs/wasm-bindgen/examples/closures.html
-        // See https://stackoverflow.com/a/68944438/9167585 for the possible solution
-        // Seems so much complicated for such a small thing, not a priority
-        intersection_callback.forget();
+        if footer_entry.is_intersecting() {
+            if icons_loader().load {
+                icons_grid.update(|grid| grid.load_next_icons(&layout()));
+            }
+        } else if !icons_loader().load {
+            icons_loader.update(|state| state.load = true);
+        }
     });
 
     let icons_list_ref = create_node_ref();
