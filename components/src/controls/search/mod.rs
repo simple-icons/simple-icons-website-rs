@@ -260,7 +260,7 @@ pub fn SearchControl() -> impl IntoView {
             <label for=Ids::SearchInput.as_str()>{move_tr!("search")}</label>
             <div class="search">
                 <input
-                    _ref=search_input_ref
+                    node_ref=search_input_ref
                     id=Ids::SearchInput.as_str()
                     type="search"
                     autocomplete="off"

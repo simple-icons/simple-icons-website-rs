@@ -15,7 +15,7 @@ pub fn Footer(
     container_ref: NodeRef<FooterHtmlElement>,
 ) -> impl IntoView {
     view! {
-        <footer _ref=container_ref>
+        <footer node_ref=container_ref>
             <ReportProblems/>
             <div class="flex flex-col md:flex-row justify-between">
                 <About/>

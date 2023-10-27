@@ -21,6 +21,8 @@ pub enum Ids {
     GridSVGPath,
     EyeBoxSVGPath,
     CopySVGPath,
+    CircleArrowUpSVGPath,
+    CircleArrowDownSVGPath,
 }
 
 impl Ids {
@@ -45,6 +47,8 @@ impl Ids {
             Ids::GridSVGPath => "grid-path",
             Ids::EyeBoxSVGPath => "eye-box-path",
             Ids::CopySVGPath => "copy-path",
+            Ids::CircleArrowUpSVGPath => "circle-arrow-up-path",
+            Ids::CircleArrowDownSVGPath => "circle-arrow-down-path",
         }
         #[cfg(not(debug_assertions))]
         match self {
@@ -66,6 +70,8 @@ impl Ids {
             Ids::GridSVGPath => "g",
             Ids::EyeBoxSVGPath => "e",
             Ids::CopySVGPath => "p",
+            Ids::CircleArrowUpSVGPath => "a",
+            Ids::CircleArrowDownSVGPath => "z",
         }
     }
 }

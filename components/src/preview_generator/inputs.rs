@@ -115,7 +115,7 @@ where {
         <div class="preview-input-group">
             <label for="preview-path">{move_tr!("path")}</label>
             <input
-                _ref=input_ref
+                node_ref=input_ref
                 type="text"
                 style="width:682px"
                 name="preview-path"

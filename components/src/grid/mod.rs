@@ -213,7 +213,7 @@ pub fn Grid() -> impl IntoView {
 
     view! {
         <IconDetailsModal/>
-        <ul _ref=icons_list_ref class:layout-compact=move || layout() == Layout::Compact>
+        <ul node_ref=icons_list_ref class:layout-compact=move || layout() == Layout::Compact>
             <Icons/>
         </ul>
         <IconsLoader/>
