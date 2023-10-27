@@ -16,8 +16,7 @@ pub fn get_icon_localized_title(
             let current_lang = language.id.language.to_string();
 
             for (lang, loc_title) in loc {
-                let loc_language = lang.to_string();
-                if loc_language == current_lang_region {
+                if *lang == current_lang_region {
                     return loc_title;
                 }
             }
