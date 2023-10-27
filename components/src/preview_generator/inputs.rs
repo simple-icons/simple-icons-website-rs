@@ -378,21 +378,26 @@ fn BrandSuggestions(
                         suggestions_containers
                             .push(
                                 view! {
-                                    <>
-                                        <li
-                                            class="more-suggestions"
-                                            role="button"
-                                            title=move_tr!("load-more-icons")
-                                            on:click=move |_| {
-                                                set_show_more_brand_suggestions(true);
-                                            }
-                                        >
+                                    <li
+                                        class="more-suggestions"
+                                        role="button"
+                                        title=move_tr!("load-more-icons")
+                                        on:click=move |_| {
+                                            set_show_more_brand_suggestions(true);
+                                            let input = document()
+                                                .get_elements_by_name("preview-brand")
+                                                .item(0)
+                                                .unwrap()
+                                                .dyn_into::<web_sys::HtmlInputElement>()
+                                                .unwrap();
+                                            input.focus().unwrap();
+                                        }
+                                    >
 
-                                            <span>+</span>
-                                        </li>
-                                    </>
+                                        <span>+</span>
+                                    </li>
                                 }
-                                    .into(),
+                                    .into_view(),
                             );
                     }
                 } else {

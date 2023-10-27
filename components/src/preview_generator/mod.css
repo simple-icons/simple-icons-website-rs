@@ -67,7 +67,7 @@
   }
 
   .preview-brand-suggestions {
-    @apply absolute z-40 ml-[60px] mt-2 max-h-[319px]
+    @apply absolute z-40 ml-[60px] mt-2 max-h-[333px]
       border border-[var(--divider-color)]
       rounded-br-md rounded-tr-[5px] rounded-bl-md overflow-hidden;
   }
