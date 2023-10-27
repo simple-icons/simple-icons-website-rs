@@ -62,13 +62,18 @@ impl FromStr for Language {
                 .find(|lang| lang.id.matches(&target_lang, false, false))
             {
                 Some(lang) => Ok(lang.clone()),
-                None => match LANGUAGES
-                    .iter()
-                    .find(|lang| lang.id.matches(&target_lang, true, true))
-                {
-                    Some(lang) => Ok(lang.clone()),
-                    None => Err(()),
-                },
+                None => {
+                    let mut lazy_target_lang = target_lang.clone();
+                    if lazy_target_lang.region.is_some() {
+                        lazy_target_lang.region = None;
+                    }
+                    match LANGUAGES.iter().find(|lang| {
+                        lang.id.matches(&lazy_target_lang, true, true)
+                    }) {
+                        Some(lang) => Ok(lang.clone()),
+                        None => Err(()),
+                    }
+                }
             },
             Err(_) => Err(()),
         }
