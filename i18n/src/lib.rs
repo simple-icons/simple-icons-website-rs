@@ -56,7 +56,10 @@ impl FromStr for Language {
     type Err = ();
 
     fn from_str(code: &str) -> Result<Self, Self::Err> {
-        match LANGUAGES.iter().find(|lang| lang.id.to_string() == *code) {
+        match LANGUAGES.iter().find(|lang| {
+            lang.id.to_string() == *code
+                || lang.id.language.to_string() == *code
+        }) {
             Some(lang) => Ok(lang.clone()),
             None => Err(()),
         }

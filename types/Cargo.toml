@@ -7,5 +7,3 @@ edition.workspace = true
 [lib]
 path = "src/lib.rs"
 name = "types"
-
-[dependencies]

@@ -168,7 +168,7 @@ pub fn icons_array(_: TokenStream) -> TokenStream {
                 "guidelines: {},",
                 "license_url: {},",
                 "license_type: {},",
-                "plain_aliases: {},",
+                "aliases: {},",
                 // `get_simple_icons` function returns icons in alphabetical order
                 // because they are extracted from the `simple-icons.json` file
                 "order_alpha: {},",
@@ -197,37 +197,63 @@ pub fn icons_array(_: TokenStream) -> TokenStream {
                 None => "None".to_string(),
             },
             match &icon.aliases {
-                None => "&[]".to_string(),
-                Some(aliases) => format!("&[{}]", {
-                    let mut ret = vec![];
-                    if let Some(aka) = aliases.aka.clone() {
-                        ret.extend(aka);
-                    };
-                    if aliases.dup.is_some() {
-                        ret.extend(
-                            aliases
-                                .dup
-                                .clone()
-                                .unwrap()
-                                .iter()
-                                .map(|dup| dup.title.clone()),
-                        );
+                None => "None".to_string(),
+                Some(aliases) => format!(
+                    "Some(&::types::SimpleIconAliases {{{}, {}, {}}})",
+                    {
+                        &format!(
+                            "aka: {}",
+                            match &aliases.aka {
+                                Some(aka) => format!(
+                                    "Some(&[{}])",
+                                    aka.iter()
+                                        .map(|aka| format!("\"{}\"", aka))
+                                        .collect::<Vec<_>>()
+                                        .join(", ")
+                                ),
+                                None => "None".to_string(),
+                            }
+                        )
+                    },
+                    {
+                        &format!(
+                            "dup: {}",
+                            match &aliases.dup {
+                                Some(dup) => format!(
+                                    "Some(&[{}])",
+                                    dup.iter()
+                                        .map(|dup| format!(
+                                            "\"{}\"",
+                                            dup.title.clone()
+                                        ))
+                                        .collect::<Vec<_>>()
+                                        .join(", ")
+                                ),
+                                None => "None".to_string(),
+                            }
+                        )
+                    },
+                    {
+                        &format!(
+                            "loc: {}",
+                            match &aliases.loc {
+                                Some(loc) => format!(
+                                    "Some(&[{}])",
+                                    loc.iter()
+                                        .map(|(lang, title)| {
+                                            format!(
+                                                "(\"{}\", \"{}\")",
+                                                lang, title
+                                            )
+                                        })
+                                        .collect::<Vec<_>>()
+                                        .join(", ")
+                                ),
+                                None => "None".to_string(),
+                            }
+                        )
                     }
-                    if aliases.loc.is_some() {
-                        ret.extend(
-                            aliases
-                                .loc
-                                .clone()
-                                .unwrap()
-                                .values()
-                                .map(|v| v.to_string()),
-                        );
-                    }
-                    ret.iter()
-                        .map(|alias| format!("\"{}\"", alias))
-                        .collect::<Vec<_>>()
-                        .join(", ")
-                }),
+                ),
             },
             i,
             order_color,

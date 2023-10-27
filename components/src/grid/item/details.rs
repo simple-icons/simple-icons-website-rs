@@ -2,6 +2,7 @@ use crate::controls::download::{download_pdf, download_svg};
 use crate::copy::copy_inner_text_on_click;
 use crate::fetch::fetch_text;
 use crate::grid::item::icon_preview::on_click_copy_image_children_src_content;
+use crate::grid::item::title::get_icon_localized_title;
 use crate::grid::CurrentIconViewSignal;
 use crate::modal::{Modal, ModalOpenSignal};
 use crate::Ids;
@@ -28,6 +29,8 @@ pub fn fill_icon_details_modal_with_icon(
     icon: &'static SimpleIcon,
     locale: &Language,
 ) {
+    let icon_localized_title = get_icon_localized_title(icon, locale);
+
     let modal_body = document()
         .get_element_by_id(Ids::IconDetailsModal.as_str())
         .unwrap()
@@ -44,7 +47,7 @@ pub fn fill_icon_details_modal_with_icon(
         .unwrap()
         .dyn_into::<web_sys::HtmlElement>()
         .unwrap();
-    modal_header.set_inner_text(icon.title);
+    modal_header.set_inner_text(&icon_localized_title);
 
     // Set the slug
     let modal_slug = modal_body
@@ -59,7 +62,10 @@ pub fn fill_icon_details_modal_with_icon(
             "title",
             &tr!("copy-icon-slug", &{
                 let mut map = HashMap::new();
-                map.insert("icon".to_string(), icon.title.into());
+                map.insert(
+                    "icon".to_string(),
+                    icon_localized_title.clone().into(),
+                );
                 map.insert("slug".to_string(), icon.slug.into());
                 map
             }),
@@ -107,7 +113,10 @@ pub fn fill_icon_details_modal_with_icon(
             "title",
             &tr!("copy-icon-svg", &{
                 let mut map = HashMap::new();
-                map.insert("icon".to_string(), icon.title.into());
+                map.insert(
+                    "icon".to_string(),
+                    icon_localized_title.clone().into(),
+                );
                 map
             }),
         )
@@ -186,7 +195,10 @@ pub fn fill_icon_details_modal_with_icon(
             "will-be-removed-at-extended",
             &{
                 let mut map = HashMap::new();
-                map.insert("icon".to_string(), icon.title.into());
+                map.insert(
+                    "icon".to_string(),
+                    icon_localized_title.clone().into(),
+                );
                 map.insert(
                     "version".to_string(),
                     format!(

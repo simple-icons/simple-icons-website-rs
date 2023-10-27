@@ -33,16 +33,16 @@ pub fn IconGridItemPreview(
     /// Icon slug
     slug: &'static str,
     /// Brand title
-    title: &'static str,
+    title: Memo<String>,
 ) -> impl IntoView {
     let button_title = move_tr!("copy-icon-svg", &{
         let mut map = HashMap::new();
-        map.insert("icon".to_string(), title.into());
+        map.insert("icon".to_string(), title().into());
         map
     });
     let img_alt = move_tr!("subject-icon", &{
         let mut map = HashMap::new();
-        map.insert("icon".to_string(), title.into());
+        map.insert("icon".to_string(), title().into());
         map
     });
     view! {

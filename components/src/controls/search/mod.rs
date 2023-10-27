@@ -85,7 +85,7 @@ fn init_searcher() {
         .iter()
         .map(|icon| {
             let mut candidates: Vec<&str> = vec![icon.title, icon.slug];
-            candidates.extend(icon.plain_aliases);
+            candidates.extend(icon.plain_aliases());
             (candidates, icon.order_alpha)
         })
         .collect::<Vec<(Vec<&str>, usize)>>();
