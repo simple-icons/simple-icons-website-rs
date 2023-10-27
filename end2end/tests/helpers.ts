@@ -70,7 +70,7 @@ export const selectors = {
     description: '#site-description',
     nav: {
       container: 'header > nav',
-      toggler: 'header > nav > ul > :first-child',
+      toggler: 'header > nav > ul:last-child > :first-child',
       buttons: {
         container: 'header > nav > ul:first-child',
         languageSelector: 'header > nav > ul:first-child > li:last-of-type',
