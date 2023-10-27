@@ -9,7 +9,7 @@ use web_sys;
 pub fn get_icon_localized_title(
     icon: &'static SimpleIcon,
     language: &Language,
-) -> String {
+) -> &'static str {
     let current_code = language.id.to_string();
     let current_lang = language.id.language.to_string();
     if let Some(aliases) = icon.aliases {
@@ -18,19 +18,19 @@ pub fn get_icon_localized_title(
                 let loc_language = lang.to_string();
                 if loc_language == current_code || loc_language == current_lang
                 {
-                    return loc_title.to_string();
+                    return loc_title;
                 }
             }
         }
     }
-    icon.title.to_string()
+    icon.title
 }
 
 /// Icon grid item title
 #[component]
 pub fn IconGridItemTitle(
     /// Brand title
-    brand_name: Memo<String>,
+    brand_name: Memo<&'static str>,
     /// Slug
     slug: &'static str,
 ) -> impl IntoView {

@@ -5,7 +5,7 @@ use std::collections::HashMap;
 #[component]
 pub fn IconIsDeprecatedNotice(
     /// Icon brand title
-    title: Memo<String>,
+    title: Memo<&'static str>,
     /// Link to the pull request that is removing the icon
     pull_request_url: String,
     /// Removal version

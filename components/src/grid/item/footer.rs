@@ -21,7 +21,7 @@ pub fn IconGridItemFooter(
     /// The icon
     icon: &'static SimpleIcon,
     /// Localized brand name
-    localized_icon_title: Memo<String>,
+    localized_icon_title: Memo<&'static str>,
 ) -> impl IntoView {
     // Hex color formatted for CSS
     let css_hex = &format!("#{}", icon.hex);

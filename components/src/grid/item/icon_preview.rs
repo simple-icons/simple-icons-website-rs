@@ -33,7 +33,7 @@ pub fn IconGridItemPreview(
     /// Icon slug
     slug: &'static str,
     /// Brand title
-    title: Memo<String>,
+    title: Memo<&'static str>,
 ) -> impl IntoView {
     let button_title = move_tr!("copy-icon-svg", &{
         let mut map = HashMap::new();

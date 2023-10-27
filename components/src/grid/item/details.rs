@@ -47,7 +47,7 @@ pub fn fill_icon_details_modal_with_icon(
         .unwrap()
         .dyn_into::<web_sys::HtmlElement>()
         .unwrap();
-    modal_header.set_inner_text(&icon_localized_title);
+    modal_header.set_inner_text(icon_localized_title);
 
     // Set the slug
     let modal_slug = modal_body
