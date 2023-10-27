@@ -64,9 +64,7 @@ impl FromStr for Language {
                 Some(lang) => Ok(lang.clone()),
                 None => {
                     let mut lazy_target_lang = target_lang.clone();
-                    if lazy_target_lang.region.is_some() {
-                        lazy_target_lang.region = None;
-                    }
+                    lazy_target_lang.region = None;
                     match LANGUAGES.iter().find(|lang| {
                         lang.id.matches(&lazy_target_lang, true, true)
                     }) {
