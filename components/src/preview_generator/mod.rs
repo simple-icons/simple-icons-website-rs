@@ -86,9 +86,49 @@ where {
                 </svg>
 
                 <g transform="translate(21,235)" style="font-family: Helvetica">
-                    <text fill=fill_color font-size="25">
-                        {move || format!("{} Preview", brand())}
-                    </text>
+                    {move || {
+                        let preview_title = format!("{} Preview", brand());
+                        if preview_title.len() > 24 {
+                            let mut title_1 = String::with_capacity(24);
+                            let mut title_2 = String::with_capacity(24);
+                            for part in preview_title.split(' ') {
+                                if title_1.len() + part.len() < 24 {
+                                    title_1.push_str(part);
+                                    title_1.push(' ');
+                                } else if title_2.len() + part.len() < 24 {
+                                    title_2.push_str(part);
+                                    title_2.push(' ');
+                                } else {
+                                    for ch in part.chars() {
+                                        if title_2.len() + 1 < 24 {
+                                            title_2.push(ch);
+                                        } else {
+                                            title_2.push('…');
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            view! {
+                                <text fill=fill_color font-size="25" y="-31">
+                                    {title_1}
+                                </text>
+                                <text fill=fill_color font-size="25">
+                                    {title_2}
+                                </text>
+                            }
+                                .into_view()
+                        } else {
+                            view! {
+                                <text fill=fill_color font-size="25">
+                                    {preview_title}
+                                </text>
+                            }
+                                .into_view()
+                        }
+                    }}
+
                     <text fill=fill_color font-size="17" y="25">
                         {move || format!("{}.svg", sdk::title_to_slug(&brand()))}
                     </text>
