@@ -112,12 +112,13 @@ fn wait_for_first_grid_item_and_open_details(attempt: u32) {
         .unwrap()
     {
         el.dyn_into::<web_sys::HtmlElement>().unwrap().click();
-    } else if attempt < 40 {
+    } else if attempt < 400 {
         set_timeout(
             move || wait_for_first_grid_item_and_open_details(attempt + 1),
             std::time::Duration::from_millis(5),
         );
     }
+    // TODO: This should be unreachable
 }
 
 /// Icons grid
