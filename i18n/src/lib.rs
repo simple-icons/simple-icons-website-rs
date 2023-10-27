@@ -56,19 +56,21 @@ impl FromStr for Language {
     type Err = ();
 
     fn from_str(code: &str) -> Result<Self, Self::Err> {
-        let target_lang = LanguageIdentifier::from_str(code).unwrap();
-        match LANGUAGES
-            .iter()
-            .find(|lang| lang.id.matches(&target_lang, false, false))
-        {
-            Some(lang) => Ok(lang.clone()),
-            None => match LANGUAGES
+        match LanguageIdentifier::from_str(code) {
+            Ok(target_lang) => match LANGUAGES
                 .iter()
-                .find(|lang| lang.id.matches(&target_lang, true, true))
+                .find(|lang| lang.id.matches(&target_lang, false, false))
             {
                 Some(lang) => Ok(lang.clone()),
-                None => Err(()),
+                None => match LANGUAGES
+                    .iter()
+                    .find(|lang| lang.id.matches(&target_lang, true, true))
+                {
+                    Some(lang) => Ok(lang.clone()),
+                    None => Err(()),
+                },
             },
+            Err(_) => Err(()),
         }
     }
 }
