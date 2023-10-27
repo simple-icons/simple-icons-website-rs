@@ -10,10 +10,9 @@ use components::header::{
 };
 use components::modal::provide_modal_open_context;
 use components::svg::SVGDefsDefinition;
-use leptos::{
-    document, html::Footer as FooterHtmlElement, provide_context, window, *,
-};
+use leptos::{html::Footer as FooterHtmlElement, *};
 use leptos_router::{Route, Router, Routes};
+use leptos_use::use_preferred_dark;
 use wasm_bindgen::JsCast;
 
 /// Title of the page
@@ -23,32 +22,19 @@ pub static TITLE: &str = "Simple Icons";
 #[component]
 pub fn App() -> impl IntoView {
     let color_scheme = provide_color_scheme_context().0;
+    let dark_preferred = use_preferred_dark();
 
     create_effect(move |_| {
-        let body = document()
-            .get_elements_by_tag_name("body")
-            .get_with_index(0)
-            .unwrap()
-            .dyn_into::<web_sys::Element>()
-            .unwrap();
-        let body_class_list = body.class_list();
+        let body_class_list = document().body().unwrap().class_list();
         body_class_list.remove_2("dark", "light").unwrap();
         body_class_list
             .add_1(match color_scheme() {
                 ColorScheme::Dark => "dark",
                 ColorScheme::Light => "light",
-                ColorScheme::System => {
-                    if window()
-                        .match_media("(prefers-color-scheme: dark)")
-                        .unwrap()
-                        .unwrap()
-                        .matches()
-                    {
-                        "dark"
-                    } else {
-                        "light"
-                    }
-                }
+                ColorScheme::System => match dark_preferred() {
+                    true => "dark",
+                    false => "light",
+                },
             })
             .unwrap();
     });

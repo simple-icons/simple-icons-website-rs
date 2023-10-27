@@ -2170,6 +2170,7 @@ dependencies = [
  "console_error_panic_hook",
  "console_log",
  "leptos",
+ "leptos-use",
  "leptos_meta",
  "leptos_router",
  "log",
