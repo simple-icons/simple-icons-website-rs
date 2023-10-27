@@ -60,11 +60,15 @@ test.describe('language selector', () => {
       await expect(languageSelector).toBeInViewport();
 
       await languageSelector.getByText('Español').click();
+      await expect(languageSelector).toBeHidden();
+
+      if (!screenWidthIsAtLeast('lg', page)) {
+        page.locator(selectors.header.nav.toggler).click();
+      }
+
       await expect(page.locator(selectors.header.description)).toHaveText(
         DESCRIPTIONS['es-ES'],
       );
-
-      await expect(languageSelector).toBeHidden();
       await expect(
         await page.evaluate(() => localStorage.getItem('language')),
       ).toBe('es-ES');
