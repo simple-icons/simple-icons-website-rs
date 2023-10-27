@@ -254,7 +254,7 @@ pub fn SearchControl() -> impl IntoView {
         _ = input.focus();
     });
 
-    /* The onfocus attribute puts the cursor at the end of the input */
+    // The onfocus attribute puts the cursor at the end of the input
     view! {
         <div class="control">
             <label for=Ids::SearchInput.as_str()>{move_tr!("search")}</label>
