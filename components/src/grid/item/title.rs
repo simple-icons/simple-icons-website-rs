@@ -17,14 +17,18 @@ pub fn get_icon_localized_title(
 
             for (lang, loc_title) in loc {
                 let loc_language = lang.to_string();
-                if loc_language == current_lang {
+                if loc_language == current_lang_region {
                     return loc_title;
                 }
             }
 
             for (lang, loc_title) in loc {
-                let loc_language = lang.to_string();
-                if loc_language == current_lang_region {
+                let mut loc_language = lang.to_string();
+                if loc_language.contains('-') {
+                    loc_language =
+                        loc_language.split('-').next().unwrap().to_string();
+                }
+                if loc_language == current_lang {
                     return loc_title;
                 }
             }
