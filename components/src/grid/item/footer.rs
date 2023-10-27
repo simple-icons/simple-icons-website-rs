@@ -21,7 +21,7 @@ pub fn IconGridItemFooter(
     /// The icon
     icon: &'static SimpleIcon,
     /// Localized brand name
-    localized_icon_title: Memo<&'static str>,
+    icon_localized_title: Memo<&'static str>,
 ) -> impl IntoView {
     // Hex color formatted for CSS
     let css_hex = &format!("#{}", icon.hex);
@@ -40,7 +40,7 @@ pub fn IconGridItemFooter(
 
     let view_icon_button_title = move_tr!("view-icon", &{
         let mut map = HashMap::new();
-        map.insert("icon".to_string(), localized_icon_title().into());
+        map.insert("icon".to_string(), icon_localized_title().into());
         map
     });
 
