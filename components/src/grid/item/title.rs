@@ -10,14 +10,21 @@ pub fn get_icon_localized_title(
     icon: &'static SimpleIcon,
     language: &Language,
 ) -> &'static str {
-    let current_code = language.id.to_string();
-    let current_lang = language.id.language.to_string();
     if let Some(aliases) = icon.aliases {
         if let Some(loc) = aliases.loc {
+            let current_lang_region = language.id.to_string();
+            let current_lang = language.id.language.to_string();
+
             for (lang, loc_title) in loc {
                 let loc_language = lang.to_string();
-                if loc_language == current_code || loc_language == current_lang
-                {
+                if loc_language == current_lang {
+                    return loc_title;
+                }
+            }
+
+            for (lang, loc_title) in loc {
+                let loc_language = lang.to_string();
+                if loc_language == current_lang_region {
                     return loc_title;
                 }
             }
