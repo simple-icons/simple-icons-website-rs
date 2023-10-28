@@ -320,14 +320,12 @@ fn IconDetailsModalFooter() -> impl IntoView {
             />
             <Button
                 title=download_colored_svg_msg
-                on:click=move |ev: MouseEvent| {
-                    let slug = get_slug_from_modal_container();
-                    ::log::info!("Downloading colored SVG for {}", slug);
-                    let href = event_target::<web_sys::HtmlButtonElement>(&ev)
+                on:click=move |ev: MouseEvent| download(
+                    &format!("{}-color.svg", get_slug_from_modal_container()),
+                    &event_target::<web_sys::HtmlButtonElement>(&ev)
                         .get_attribute("data-url")
-                        .unwrap();
-                    download(&format!("{}-color.svg", slug), &href)
-                }
+                        .unwrap(),
+                )
             />
 
             <Button
