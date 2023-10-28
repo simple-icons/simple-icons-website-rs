@@ -257,11 +257,14 @@ pub fn fill_icon_details_modal_with_icon(
             fetch_text(&format!("/icons/{}.svg", icon.slug)).await
         {
             let colored_icon_svg =
-                svg.replace("<svg", &format!("<svg fill=\"%23{}\"", icon.hex));
+                svg.replace("<svg", &format!("<svg fill=\"#{}\"", icon.hex));
             download_colored_icon_container
                 .set_attribute(
                     "data-url",
-                    &format!("data:image/svg+xml,{}", &colored_icon_svg),
+                    &format!(
+                        "data:image/svg+xml;utf8,{}",
+                        js_sys::encode_uri_component(&colored_icon_svg)
+                    ),
                 )
                 .unwrap();
         }
