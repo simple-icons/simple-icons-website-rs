@@ -49,26 +49,26 @@ pub fn provide_download_type_context() {
 pub struct DownloadTypeSignal(pub RwSignal<DownloadType>);
 
 fn initial_download_type() -> DownloadType {
-    match download_type_from_url() {
+    match get_download_type_from_url() {
         Some(download_type) => {
             set_download_type_on_localstorage(&download_type);
             download_type
         }
-        None => match download_type_from_localstorage() {
+        None => match get_download_type_from_localstorage() {
             Some(download_type) => download_type,
             None => DownloadType::default(),
         },
     }
 }
 
-fn download_type_from_url() -> Option<DownloadType> {
+fn get_download_type_from_url() -> Option<DownloadType> {
     match Url::params::get(&Url::params::Names::DownloadType) {
         Some(download_type) => DownloadType::from_str(download_type.as_str()),
         None => None,
     }
 }
 
-fn download_type_from_localstorage() -> Option<DownloadType> {
+fn get_download_type_from_localstorage() -> Option<DownloadType> {
     match window()
         .local_storage()
         .unwrap()
