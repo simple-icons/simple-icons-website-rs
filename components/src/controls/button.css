@@ -1,7 +1,8 @@
 @layer components {
   /* Buttons */
   .control-button {
-    @apply w-7 h-7 xs:h-9 xs:w-9 box-border px-[2px] pt-[5px] pb-[4px]
+    @apply w-7 h-7 xs:h-9 xs:w-9
+      box-border px-[5.5px] py-[4px]
       font-bold text-sm xs:text-base
       border-[1px] border-solid
       border-custom-button-background-selected-color
@@ -21,6 +22,10 @@
     @apply fill-custom-button-content-default-color
       bg-custom-button-background-default-color
       text-custom-button-content-default-color;
+  }
+
+  .control-button span {
+    @apply flex items-center justify-center;
   }
 }
 

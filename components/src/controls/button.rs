@@ -53,8 +53,6 @@ where
                 aria_hidden=true
                 aria_label=title_fn
                 view_box="0 0 24 24"
-                width=""
-                height=""
                 path=svg_path
             />
 
@@ -79,7 +77,7 @@ where
 {
     view! {
         <ControlButton title=title active=active>
-            {text}
+            <span>{text}</span>
         </ControlButton>
     }
 }

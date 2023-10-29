@@ -106,8 +106,6 @@ pub fn ControlsToggler() -> impl IntoView {
                                 role="img"
                                 aria_hidden=true
                                 view_box="-1 -1 27 27"
-                                width=""
-                                height=""
                                 path=&SVGDef::View
                             />
                         }
@@ -118,8 +116,6 @@ pub fn ControlsToggler() -> impl IntoView {
                                 role="img"
                                 aria_hidden=true
                                 view_box="-1 -1 27 27"
-                                width=""
-                                height=""
                                 path=&SVGDef::Controls
                             />
                         }

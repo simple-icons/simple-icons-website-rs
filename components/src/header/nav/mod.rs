@@ -31,17 +31,9 @@ static LEGAL_DISCLAIMER_SVG_PATH: &str = "m23.9 9.7-3.54-7.89-.005-.01a.542.542 
 /// - Button to open third party extensions table built by [`HeaderMenuButton`].
 #[component]
 pub fn HeaderMenu() -> impl IntoView {
-    let header_state = expect_context::<HeaderStateSignal>().0;
-
     view! {
         <nav>
-            <ul class=move || {
-                let mut class = "self-center md:flex md:flex-row".to_string();
-                if header_state().menu_open {
-                    class.push_str(" m-auto grid grid-cols-5 gap-1");
-                }
-                class
-            }>
+            <ul>
                 <HeaderMenuLink
                     title=move_tr!("main-repository")
                     href="https://github.com/simple-icons/simple-icons"
@@ -85,7 +77,7 @@ pub fn HeaderMenu() -> impl IntoView {
                 <ThirdPartyExtensions/>
                 <LanguageSelector/>
             </ul>
-            <ul class="self-center">
+            <ul>
                 <HeaderMenuBurgerButton/>
                 <HeaderMenuCloseButton/>
             </ul>
