@@ -5,17 +5,12 @@ use i18n::move_tr;
 use leptos::{window, *};
 use std::fmt;
 
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Default)]
 pub enum ColorScheme {
     Light,
     Dark,
+    #[default]
     System,
-}
-
-impl Default for ColorScheme {
-    fn default() -> Self {
-        Self::System
-    }
 }
 
 impl ColorScheme {
