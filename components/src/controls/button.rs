@@ -3,7 +3,6 @@ use leptos::*;
 
 pub trait ActiveFn = Fn() -> bool + 'static;
 pub trait TextFn = Fn() -> String + 'static + Copy;
-pub trait PathFn = Fn() -> &'static str + 'static + Copy;
 
 /// Abstract control button
 #[component]
@@ -31,11 +30,11 @@ where
 
 /// Control button made from SVG path
 #[component]
-pub fn ControlButtonSVGPath<A, P, T>(
+pub fn ControlButtonSVGPath<A, T>(
     /// Button title
     title: T,
     /// Button icon SVG path
-    svg_path: P,
+    svg_path: &'static str,
     /// The control is active
     active: A,
     /// Optional classes
@@ -44,7 +43,6 @@ pub fn ControlButtonSVGPath<A, P, T>(
 ) -> impl IntoView
 where
     A: ActiveFn,
-    P: PathFn,
     T: TextFn,
 {
     let title_fn = create_memo(move |_| title());
@@ -57,7 +55,7 @@ where
                 view_box="0 0 24 24"
                 width=""
                 height=""
-                path=svg_path()
+                path=svg_path
             />
 
         </ControlButton>
