@@ -1,17 +1,13 @@
 @layer components {
   /* Buttons */
   .control-button {
-    @apply w-7 h-7 xs:h-9 xs:w-9
+    @apply w-7 h-7 xs:h-9 xs:w-9 box-border px-[2px] pt-[5px] pb-[4px]
       font-bold text-sm xs:text-base
       border-[1px] border-solid
       border-custom-button-background-selected-color
       shadow-custom-shadows-color
       hover:shadow-[0_0_3px_0_var(--shadows-color)]
       focus:shadow-[0_0_3px_0_var(--shadows-color)];
-  }
-
-  .control-button > svg {
-    @apply p-[5px] xs:p-1.5 w-[inherit];
   }
 
   /* Selected buttons */
@@ -31,14 +27,14 @@
 /**
  * Control buttons in controls
  **/
-menu .control button {
+.control button {
   @apply control-button;
 }
 
-menu .controls-group .control button:first-child {
+.controls-group .control button:first-child {
   @apply border-r-0 rounded-l-[3px];
 }
 
-menu .controls-group .control button:last-child {
+.controls-group .control button:last-child {
   @apply border-l-0 rounded-r-[3px];
 }

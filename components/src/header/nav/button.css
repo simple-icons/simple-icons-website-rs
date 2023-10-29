@@ -13,7 +13,3 @@ header > nav > ul > li {
     hover:bg-custom-button-background-hover-color
     hover:fill-custom-button-content-hover-color;
 }
-
-header > nav > ul > li a {
-  @apply fill-inherit;
-}

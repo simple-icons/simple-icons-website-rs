@@ -1,5 +1,5 @@
 use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
-use crate::svg::{SVGDef, SVGDefIcon};
+use crate::svg::{SVGDef, SVGIcon};
 use i18n::move_tr;
 use leptos::{ev::MouseEvent, *};
 use leptos_use::use_window_scroll;
@@ -21,7 +21,7 @@ where
 {
     view! {
         <button class=format!("scroll-button {}", class) title=title on:click=on_click>
-            <SVGDefIcon svg_def=svg_path/>
+            <SVGIcon path=svg_path/>
         </button>
     }
 }

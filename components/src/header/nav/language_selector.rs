@@ -109,16 +109,12 @@ pub fn LanguageSelectorButton() -> impl IntoView {
     view! {
         <HeaderMenuButton
             title=move_tr!("change-language")
-            additional_classes=move || {
-                if header_state().menu_open {
-                    "block".to_string()
-                } else {
-                    "hidden lg:block".to_string()
-                }
-            }
-
             on:click=move |_| modal_open.set_languages()
             svg_path=LANGUAGE_SELECTOR_ICON_SVG_PATH
+            class=move || match header_state().menu_open {
+                true => "block",
+                false => "hidden lg:block",
+            }
         />
     }
 }

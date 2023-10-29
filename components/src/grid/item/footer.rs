@@ -5,7 +5,7 @@ use crate::copy::copy_setting_copied_transition_in_element;
 use crate::grid::item::details::fill_icon_details_modal_with_icon;
 use crate::grid::CurrentIconViewSignal;
 use crate::modal::ModalOpenSignal;
-use crate::svg::{SVGDef, SVGDefIcon};
+use crate::svg::{SVGDef, SVGIcon};
 use i18n::{move_tr, LocaleSignal};
 use leptos::ev::MouseEvent;
 use leptos::*;
@@ -68,7 +68,7 @@ pub fn IconGridItemFooter(
                 }
             >
 
-                <SVGDefIcon svg_def=&SVGDef::View/>
+                <SVGIcon path=&SVGDef::View/>
             </button>
             <button
                 title=move_tr!("download")
@@ -82,7 +82,7 @@ pub fn IconGridItemFooter(
                 }
             >
 
-                <SVGDefIcon svg_def=&SVGDef::DownloadThin/>
+                <SVGIcon path=&SVGDef::DownloadThin/>
             </button>
         </div>
     }

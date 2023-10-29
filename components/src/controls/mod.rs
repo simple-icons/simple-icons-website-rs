@@ -7,7 +7,7 @@ pub mod layout;
 pub mod order;
 pub mod search;
 
-use crate::svg::SVGDef;
+use crate::svg::{SVGDef, SVGIcon};
 use color_scheme::ColorSchemeControl;
 use download::DownloadFileTypeControl;
 use i18n::tr;
@@ -99,17 +99,33 @@ pub fn ControlsToggler() -> impl IntoView {
                 }
             >
 
-                <svg role="button" viewBox="0 0 24 24">
-                    <use_ href=move || {
-                        format!(
-                            "#{}",
-                            match controls_state().buttons_group_open {
-                                true => SVGDef::View.id(),
-                                false => SVGDef::Controls.id(),
-                            },
-                        )
-                    }></use_>
-                </svg>
+                {move || match controls_state().buttons_group_open {
+                    true => {
+                        view! {
+                            <SVGIcon
+                                role="img"
+                                aria_hidden=true
+                                view_box="0 0 24 24"
+                                width=""
+                                height=""
+                                path=&SVGDef::View
+                            />
+                        }
+                    }
+                    false => {
+                        view! {
+                            <SVGIcon
+                                role="img"
+                                aria_hidden=true
+                                view_box="0 0 24 24"
+                                width=""
+                                height=""
+                                path=&SVGDef::Controls
+                            />
+                        }
+                    }
+                }}
+
             </button>
         </div>
     }

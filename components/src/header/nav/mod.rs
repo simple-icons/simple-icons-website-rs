@@ -8,7 +8,7 @@ use crate::header::{
         language_selector::LanguageSelector,
         third_party_extensions::ThirdPartyExtensions,
     },
-    HeaderState, HeaderStateSignal,
+    HeaderStateSignal,
 };
 use crate::svg::SVGDef;
 use i18n::move_tr;
@@ -34,12 +34,11 @@ pub fn HeaderMenu() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
 
     view! {
-        <nav class="self-center flex flex-row justify-between w-full lg:w-auto">
+        <nav>
             <ul class=move || {
                 let mut class = "self-center md:flex md:flex-row".to_string();
                 if header_state().menu_open {
-                    class.push(' ');
-                    class.push_str("m-auto grid grid-cols-5 gap-1");
+                    class.push_str(" m-auto grid grid-cols-5 gap-1");
                 }
                 class
             }>
@@ -103,20 +102,10 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
 
     view! {
         <HeaderMenuButton
-            on:click=move |_| {
-                header_state.update(|state: &mut HeaderState| state.toggle_menu());
-            }
-
+            on:click=move |_| header_state.update(|state| state.toggle_menu())
             title=move_tr!("open-menu")
-            additional_classes=move || {
-                if !header_state.get().menu_open {
-                    "block lg:hidden".to_string()
-                } else {
-                    "hidden".to_string()
-                }
-            }
-
             svg_path="M1.412 3.53A1.412 1.412 0 0 0 0 4.94a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 4.94a1.412 1.412 0 0 0-1.412-1.412Zm0 7.058A1.412 1.412 0 0 0 0 12a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 12a1.412 1.412 0 0 0-1.412-1.412Zm0 7.06A1.412 1.412 0 0 0 0 19.057a1.412 1.412 0 0 0 1.412 1.413h21.176A1.412 1.412 0 0 0 24 19.059a1.412 1.412 0 0 0-1.412-1.412Z"
+            class=move || if header_state().menu_open { "hidden" } else { "block lg:hidden" }
         />
     }
 }
@@ -129,19 +118,9 @@ pub fn HeaderMenuCloseButton() -> impl IntoView {
     view! {
         <HeaderMenuButton
             title=move_tr!("close-menu")
-            on:click=move |_| {
-                header_state.update(|state: &mut HeaderState| state.toggle_menu());
-            }
-
-            additional_classes=move || {
-                if header_state.get().menu_open {
-                    "block".to_string()
-                } else {
-                    "hidden".to_string()
-                }
-            }
-
+            class=move || if header_state().menu_open { "block" } else { "hidden" }
             svg_path=SVGDef::Cross.d()
+            on:click=move |_| header_state.update(|state| state.toggle_menu())
         />
     }
 }

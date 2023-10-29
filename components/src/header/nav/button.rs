@@ -1,6 +1,6 @@
 use crate::header::HeaderStateSignal;
+use crate::svg::SVGIcon;
 use leptos::*;
-use wasm_bindgen::JsCast;
 
 pub trait TitleFn = Fn() -> String + 'static + Copy;
 
@@ -20,32 +20,25 @@ where
     T: TitleFn,
 {
     let header_state = expect_context::<HeaderStateSignal>().0;
+    let title_fn = create_memo(move |_| title());
 
     view! {
         <li
-            class=move || {
-                if header_state.get().menu_open {
-                    "block".to_string()
-                } else {
-                    "hidden lg:block".to_string()
-                }
-            }
-
-            on:click=move |ev| {
-                event_target::<web_sys::HtmlElement>(&ev)
-                    .first_element_child()
-                    .unwrap()
-                    .dyn_into::<web_sys::HtmlElement>()
-                    .unwrap()
-                    .click();
+            on:click=move |_| window().location().set_href(href).unwrap()
+            class=move || match header_state.get().menu_open {
+                true => "block",
+                false => "hidden lg:block",
             }
         >
 
-            <a title=title href=href>
-                <svg role="link" aria-label=title viewBox="0 0 24 24">
-                    <path d=svg_path></path>
-                </svg>
-            </a>
+            <SVGIcon
+                path=svg_path
+                role="link"
+                aria_label=title_fn
+                view_box="0 0 24 24"
+                width=""
+                height=""
+            />
         </li>
     }
 }
@@ -56,21 +49,19 @@ where
 #[component]
 pub fn HeaderMenuButton<C, T>(
     /// Additional classes to add to the button
-    additional_classes: C,
+    class: C,
     /// Title of the button
     title: T,
     /// SVG path of the icon
     svg_path: &'static str,
 ) -> impl IntoView
 where
-    C: Fn() -> String + 'static + Copy,
+    C: Fn() -> &'static str + 'static,
     T: TitleFn,
 {
     view! {
-        <li title=title class=additional_classes tabindex=0>
-            <svg role="button" aria-label=title viewBox="0 0 24 24">
-                <path d=svg_path></path>
-            </svg>
+        <li title=title class=class tabindex=0>
+            <SVGIcon role="button" path=svg_path width="36" height="36" view_box="0 0 24 24"/>
         </li>
     }
 }

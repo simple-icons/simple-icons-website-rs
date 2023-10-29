@@ -1,4 +1,4 @@
-use crate::svg::{SVGDef, SVGDefIcon};
+use crate::svg::{SVGDef, SVGIcon};
 use leptos::*;
 
 #[component]
@@ -14,7 +14,7 @@ where
     view! {
         <button title=title class=format!("button {}", class) id=id type="button" tabindex=0>
             <Show when=move || svg_path != &SVGDef::Null>
-                <SVGDefIcon aria_hidden=true svg_def=svg_path/>
+                <SVGIcon aria_hidden=true path=svg_path/>
             </Show>
             {title}
         </button>

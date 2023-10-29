@@ -256,8 +256,11 @@ pub fn fill_icon_details_modal_with_icon(
         if let Some(svg) =
             fetch_text(&format!("/icons/{}.svg", icon.slug)).await
         {
-            let colored_icon_svg =
-                svg.replace("<svg", &format!("<svg fill=\"#{}\"", icon.hex));
+            let colored_icon_svg = svg.replacen(
+                "<svg",
+                &format!("<svg fill=\"#{}\"", icon.hex),
+                1,
+            );
             download_colored_icon_container
                 .set_attribute(
                     "data-url",

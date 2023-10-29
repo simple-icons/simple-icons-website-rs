@@ -1,3 +1,7 @@
 @import './button.css';
 @import './language_selector.css';
 @import './third_party_extensions.css';
+
+header > nav {
+  @apply self-center flex flex-row justify-between w-full lg:w-auto;
+}

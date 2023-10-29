@@ -83,6 +83,12 @@ impl Default for &SVGDef {
     }
 }
 
+impl From<&SVGDef> for &'static str {
+    fn from(svg_def: &SVGDef) -> Self {
+        svg_def.d()
+    }
+}
+
 #[component]
 pub fn SVGDefsDefinition() -> impl IntoView {
     view! {
@@ -106,54 +112,39 @@ pub fn SVGDefsDefinition() -> impl IntoView {
 }
 
 #[component]
-pub fn SVGIcon(
-    path: &'static str,
+pub fn SVGIcon<P>(
+    path: P,
+    #[prop(optional)] aria_label: Option<Memo<String>>,
     #[prop(optional)] class: &'static str,
     #[prop(optional)] fill: &'static str,
     #[prop(optional, default = "24")] width: &'static str,
     #[prop(optional, default = "24")] height: &'static str,
+    #[prop(optional)] view_box: &'static str,
     #[prop(optional, default = "img")] role: &'static str,
     #[prop(optional, default = true)] aria_hidden: bool,
-    #[prop(optional)] aria_label: &'static str,
-) -> impl IntoView {
+) -> impl IntoView
+where
+    P: Into<&'static str>,
+{
     view! {
         <svg
             class=class
             role=role
-            viewBox=format!("0 0 {} {}", width, height)
-            width=width
-            height=height
-            aria-hidden=aria_hidden
-            aria-label=aria_label
-        >
-            <path d=path fill=fill></path>
-        </svg>
-    }
-}
+            aria-hidden=if aria_hidden { "true" } else { "false" }
+            aria-label=match aria_label {
+                Some(aria_label) => aria_label(),
+                None => "".to_string(),
+            }
 
-#[component]
-pub fn SVGDefIcon(
-    svg_def: &'static SVGDef,
-    #[prop(optional)] class: &'static str,
-    #[prop(optional)] fill: &'static str,
-    #[prop(optional, default = "24")] width: &'static str,
-    #[prop(optional, default = "24")] height: &'static str,
-    #[prop(optional, default = "img")] role: &'static str,
-    #[prop(optional, default = true)] aria_hidden: bool,
-    #[prop(optional)] aria_label: &'static str,
-) -> impl IntoView {
-    view! {
-        <svg
-            class=class
-            fill=fill
-            role=role
-            viewBox=format!("0 0 {} {}", width, height)
             width=width
             height=height
-            aria-hidden=aria_hidden
-            aria-label=aria_label
+            viewBox=match view_box {
+                "" => format!("0 0 {} {}", width, height),
+                _ => view_box.to_string(),
+            }
         >
-            <use_ href=format!("#{}", svg_def.id())></use_>
+
+            <path d=path.into() fill=fill></path>
         </svg>
     }
 }

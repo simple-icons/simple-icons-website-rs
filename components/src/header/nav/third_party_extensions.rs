@@ -73,14 +73,7 @@ fn ThirdPartyExtensionsButton() -> impl IntoView {
     view! {
         <HeaderMenuButton
             title=move_tr!("third-party-extensions")
-            additional_classes=move || {
-                if header_state().menu_open {
-                    "block".to_string()
-                } else {
-                    "hidden lg:block".to_string()
-                }
-            }
-
+            class=move || if header_state().menu_open { "block" } else { "hidden lg:block" }
             on:click=move |_| modal_open.set_extensions()
             svg_path=THIRD_PARTY_EXTENSIONS_ICON_SVG_PATH
         />
