@@ -175,10 +175,8 @@ impl ModalOpenSignal {
     }
 }
 
-fn modal_open_from_url() -> Option<ModalOpen> {
-    Url::params::get_param!(Modal, ModalOpen)
-}
-
 pub fn provide_modal_open_context() {
-    provide_context(ModalOpenSignal(create_rw_signal(modal_open_from_url())));
+    provide_context(ModalOpenSignal(create_rw_signal(
+        Url::params::get_param!(Modal, ModalOpen),
+    )));
 }

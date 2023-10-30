@@ -23,7 +23,7 @@ pub fn provide_language_context() -> LocaleSignal {
 }
 
 fn initial_language() -> Language {
-    match initial_language_from_url() {
+    match Url::params::get_param!(Language, Language) {
         Some(lang) => {
             set_language_in_localstorage(&lang);
             lang
@@ -48,10 +48,6 @@ fn initial_language_from_navigator_languages() -> Option<Language> {
         }
     }
     None
-}
-
-fn initial_language_from_url() -> Option<Language> {
-    Url::params::get_param!(Language, Language)
 }
 
 fn initial_language_from_localstorage() -> Option<Language> {

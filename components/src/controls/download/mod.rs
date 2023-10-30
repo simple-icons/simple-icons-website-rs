@@ -54,7 +54,7 @@ pub fn provide_download_type_context() {
 pub struct DownloadTypeSignal(pub RwSignal<DownloadType>);
 
 fn initial_download_type() -> DownloadType {
-    match get_download_type_from_url() {
+    match Url::params::get_param!(DownloadType, DownloadType) {
         Some(download_type) => {
             set_download_type_on_localstorage(&download_type);
             download_type
@@ -64,10 +64,6 @@ fn initial_download_type() -> DownloadType {
             None => DownloadType::default(),
         },
     }
-}
-
-fn get_download_type_from_url() -> Option<DownloadType> {
-    Url::params::get_param!(DownloadType, DownloadType)
 }
 
 fn get_download_type_from_localstorage() -> Option<DownloadType> {

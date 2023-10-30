@@ -50,7 +50,7 @@ pub fn provide_color_scheme_context() -> ColorSchemeSignal {
 }
 
 fn initial_color_scheme() -> ColorScheme {
-    match color_scheme_from_url() {
+    match Url::params::get_param!(ColorScheme, ColorScheme) {
         Some(color_scheme) => {
             set_color_scheme_on_localstorage(&color_scheme);
             color_scheme
@@ -60,10 +60,6 @@ fn initial_color_scheme() -> ColorScheme {
             None => ColorScheme::default(),
         },
     }
-}
-
-fn color_scheme_from_url() -> Option<ColorScheme> {
-    Url::params::get_param!(ColorScheme, ColorScheme)
 }
 
 fn color_scheme_from_localstorage() -> Option<ColorScheme> {

@@ -64,7 +64,7 @@ pub fn provide_layout_context() -> Layout {
 }
 
 fn initial_layout() -> Layout {
-    match layout_from_url() {
+    match Url::params::get_param!(Layout, Layout) {
         Some(layout) => {
             set_layout_on_localstorage(&layout);
             layout
@@ -74,10 +74,6 @@ fn initial_layout() -> Layout {
             None => Layout::default(),
         },
     }
-}
-
-fn layout_from_url() -> Option<Layout> {
-    Url::params::get_param!(Layout, Layout)
 }
 
 fn layout_from_localstorage() -> Option<Layout> {
