@@ -83,4 +83,15 @@ pub mod params {
         }
         None
     }
+
+    macro_rules! get_param {
+        ($param_name:ident, $from_str_dyn:ident) => {
+            match Url::params::get(&Url::params::Names::$param_name) {
+                Some(value) => $from_str_dyn::from_str(value.as_str()).ok(),
+                None => None,
+            }
+        };
+    }
+
+    pub(crate) use get_param;
 }

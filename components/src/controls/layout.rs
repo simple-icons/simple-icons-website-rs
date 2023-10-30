@@ -1,10 +1,13 @@
 use crate::controls::button::ControlButtonSVGPath;
-use crate::storage::LocalStorage;
+use crate::storage::{
+    conversion_get_from_localstorage, set_on_localstorage, LocalStorage,
+};
 use crate::Url;
 use i18n::move_tr;
 use leptos::{window, *};
 use simple_icons_website_config::CONFIG;
 use std::fmt;
+use std::str::FromStr;
 
 #[derive(Default, Copy, Clone, PartialEq)]
 pub enum Layout {
@@ -14,14 +17,6 @@ pub enum Layout {
 }
 
 impl Layout {
-    fn from_str(layout: &str) -> Option<Self> {
-        match layout {
-            "comfortable" => Some(Self::Comfortable),
-            "compact" => Some(Self::Compact),
-            _ => None,
-        }
-    }
-
     pub fn icons_per_page(&self) -> u32 {
         match self {
             Self::Comfortable => CONFIG
@@ -34,6 +29,18 @@ impl Layout {
                 .unwrap()
                 .get("icons_per_page_compact")
                 .unwrap(),
+        }
+    }
+}
+
+impl FromStr for Layout {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "comfortable" => Ok(Self::Comfortable),
+            "compact" => Ok(Self::Compact),
+            _ => Err(()),
         }
     }
 }
@@ -70,31 +77,15 @@ fn initial_layout() -> Layout {
 }
 
 fn layout_from_url() -> Option<Layout> {
-    match Url::params::get(&Url::params::Names::Layout) {
-        Some(layout) => Layout::from_str(layout.as_str()),
-        None => None,
-    }
+    Url::params::get_param!(Layout, Layout)
 }
 
 fn layout_from_localstorage() -> Option<Layout> {
-    match window()
-        .local_storage()
-        .unwrap()
-        .unwrap()
-        .get_item(LocalStorage::Keys::Layout.as_str())
-    {
-        Ok(Some(layout)) => Layout::from_str(layout.as_str()),
-        _ => None,
-    }
+    conversion_get_from_localstorage!(Layout, Layout)
 }
 
 fn set_layout_on_localstorage(layout: &Layout) {
-    window()
-        .local_storage()
-        .unwrap()
-        .unwrap()
-        .set_item(LocalStorage::Keys::Layout.as_str(), &layout.to_string())
-        .unwrap();
+    set_on_localstorage!(Layout, &layout.to_string())
 }
 
 fn set_layout(layout: Layout, layout_signal: &RwSignal<Layout>) {

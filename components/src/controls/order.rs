@@ -1,11 +1,16 @@
 use crate::controls::button::ControlButtonSVGPath;
 use crate::controls::layout::{Layout, LayoutSignal};
-use crate::controls::search::{fire_on_search_event, SearchValueSignal};
+use crate::controls::search::{
+    fire_on_search_event, get_search_value_from_localstorage, SearchValueSignal,
+};
 use crate::grid::{IconsGrid, IconsGridSignal, ICONS};
-use crate::storage::LocalStorage;
+use crate::storage::{
+    conversion_get_from_localstorage, set_on_localstorage, LocalStorage,
+};
 use i18n::move_tr;
 use leptos::{window, *};
 use std::fmt;
+use std::str::FromStr;
 use types::SimpleIcon;
 
 #[derive(Default, Copy, Clone, PartialEq)]
@@ -26,9 +31,7 @@ pub struct OrderMode {
 
 pub fn provide_order_mode_context(initial_search_value: &str) -> OrderMode {
     let initial_order_mode =
-        initial_order_mode_from_localstorage_and_search_value(
-            initial_search_value,
-        );
+        get_order_mode_from_localstorage_and_search_value(initial_search_value);
     provide_context(OrderModeSignal(create_rw_signal(initial_order_mode)));
     initial_order_mode
 }
@@ -60,22 +63,14 @@ impl From<&str> for OrderModeVariant {
     }
 }
 
-impl From<&str> for OrderMode {
-    fn from(order_mode: &str) -> Self {
-        match order_mode {
-            "alpha" => Self {
-                favorite: OrderModeVariant::Alphabetic,
-                current: OrderModeVariant::Alphabetic,
-            },
-            "color" => Self {
-                favorite: OrderModeVariant::Color,
-                current: OrderModeVariant::Color,
-            },
-            _ => Self {
-                favorite: OrderModeVariant::SearchMatch,
-                current: OrderModeVariant::SearchMatch,
-            },
-        }
+impl FromStr for OrderMode {
+    type Err = ();
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        Ok(Self {
+            favorite: OrderModeVariant::from(value),
+            current: OrderModeVariant::from(value),
+        })
     }
 }
 
@@ -92,33 +87,27 @@ impl fmt::Display for OrderModeVariant {
 #[derive(Copy, Clone)]
 pub struct OrderModeSignal(pub RwSignal<OrderMode>);
 
-fn initial_order_mode_from_localstorage() -> OrderMode {
-    let local_storage = window().local_storage().unwrap().unwrap();
-
-    match local_storage.get_item(LocalStorage::Keys::OrderMode.as_str()) {
-        Ok(Some(order_mode)) => OrderMode::from(order_mode.as_str()),
-        _ => OrderMode::default(),
-    }
+fn get_order_mode_from_localstorage() -> Option<OrderMode> {
+    conversion_get_from_localstorage!(OrderMode, OrderMode)
 }
 
-fn initial_order_mode_from_localstorage_and_search_value(
+fn get_order_mode_from_localstorage_and_search_value(
     search_value: &str,
 ) -> OrderMode {
-    let mut order_mode = initial_order_mode_from_localstorage();
+    let order_mode = get_order_mode_from_localstorage();
     if !search_value.is_empty() {
-        order_mode.current = OrderModeVariant::SearchMatch;
+        let mut order = order_mode.unwrap();
+        order.current = OrderModeVariant::SearchMatch;
+        return order;
     }
-    order_mode
+    match order_mode {
+        Some(order_mode) => order_mode,
+        None => OrderMode::default(),
+    }
 }
 
 fn set_order_mode_on_localstorage(order_mode: &OrderModeVariant) {
-    let local_storage = window().local_storage().unwrap().unwrap();
-    local_storage
-        .set_item(
-            LocalStorage::Keys::OrderMode.as_str(),
-            &order_mode.to_string(),
-        )
-        .unwrap();
+    set_on_localstorage!(OrderMode, &order_mode.to_string())
 }
 
 pub fn set_order_mode(
@@ -139,20 +128,7 @@ pub fn set_order_mode(
         match order_mode {
             &OrderModeVariant::Alphabetic | &OrderModeVariant::Color => {
                 icons_grid_signal.update(|grid| {
-                    let local_storage =
-                        window().local_storage().unwrap().unwrap();
-
-                    let search_value = match local_storage
-                        .get_item(LocalStorage::Keys::SearchValue.as_str())
-                    {
-                        Ok(Some(search_value)) => match search_value.is_empty()
-                        {
-                            true => None,
-                            false => Some(search_value),
-                        },
-                        _ => None,
-                    };
-
+                    let search_value = get_search_value_from_localstorage();
                     if search_value.is_some() {
                         // If we are searching, just update the order of the current
                         // icons

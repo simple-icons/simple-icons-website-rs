@@ -6,7 +6,9 @@ use crate::controls::order::{
 };
 use crate::event::dispatch_input_event_on_input;
 use crate::grid::{IconsGrid, IconsGridSignal, ICONS};
-use crate::storage::LocalStorage;
+use crate::storage::{
+    set_on_localstorage, transparent_get_from_localstorage, LocalStorage,
+};
 use crate::Ids;
 use crate::Url;
 use fuzzy::{build_searcher, search};
@@ -35,7 +37,7 @@ fn initial_search_value() -> String {
             set_search_value_on_localstorage(value.as_str());
             value
         }
-        None => match initial_search_value_from_localstorage() {
+        None => match get_search_value_from_localstorage() {
             Some(value) => {
                 Url::params::update(&Url::params::Names::Query, value.as_str());
                 set_search_value_on_localstorage(value.as_str());
@@ -49,23 +51,18 @@ fn initial_search_value() -> String {
     search_value
 }
 
-fn initial_search_value_from_localstorage() -> Option<String> {
-    let local_storage = window().local_storage().unwrap().unwrap();
-
-    match local_storage.get_item(LocalStorage::Keys::SearchValue.as_str()) {
-        Ok(Some(search_value)) => match search_value.is_empty() {
+pub fn get_search_value_from_localstorage() -> Option<String> {
+    match transparent_get_from_localstorage!(SearchValue) {
+        Some(value) => match value.is_empty() {
             true => None,
-            false => Some(search_value),
+            false => Some(value),
         },
-        _ => None,
+        None => None,
     }
 }
 
 pub fn set_search_value_on_localstorage(search_value: &str) {
-    let local_storage = window().local_storage().unwrap().unwrap();
-    local_storage
-        .set_item(LocalStorage::Keys::SearchValue.as_str(), search_value)
-        .unwrap();
+    set_on_localstorage!(SearchValue, search_value)
 }
 
 pub fn fire_on_search_event() {

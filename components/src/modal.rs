@@ -4,6 +4,7 @@ use crate::Url;
 use core::fmt;
 use i18n::move_tr;
 use leptos::{ev::MouseEvent, *};
+use std::str::FromStr;
 use web_sys;
 
 pub trait TitleFn = Fn() -> String + 'static;
@@ -127,14 +128,14 @@ impl fmt::Display for ModalOpen {
     }
 }
 
-impl TryFrom<&str> for ModalOpen {
-    type Error = ();
+impl FromStr for ModalOpen {
+    type Err = ();
 
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        match value {
-            "extensions" => Ok(ModalOpen::Extensions),
-            "languages" => Ok(ModalOpen::Languages),
-            "icon" => Ok(ModalOpen::Icon),
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "extensions" => Ok(Self::Extensions),
+            "languages" => Ok(Self::Languages),
+            "icon" => Ok(Self::Icon),
             _ => Err(()),
         }
     }
@@ -175,15 +176,7 @@ impl ModalOpenSignal {
 }
 
 fn modal_open_from_url() -> Option<ModalOpen> {
-    match Url::params::get(&Url::params::Names::Modal) {
-        Some(modal) => {
-            if let Ok(modal) = ModalOpen::try_from(modal.as_str()) {
-                return Some(modal);
-            }
-            None
-        }
-        None => None,
-    }
+    Url::params::get_param!(Modal, ModalOpen)
 }
 
 pub fn provide_modal_open_context() {

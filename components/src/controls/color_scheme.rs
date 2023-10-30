@@ -1,9 +1,12 @@
 use crate::controls::button::ControlButtonSVGPath;
-use crate::storage::LocalStorage;
+use crate::storage::{
+    conversion_get_from_localstorage, set_on_localstorage, LocalStorage,
+};
 use crate::Url;
 use i18n::move_tr;
 use leptos::{window, *};
 use std::fmt;
+use std::str::FromStr;
 
 #[derive(Clone, Copy, PartialEq, Default)]
 pub enum ColorScheme {
@@ -13,13 +16,15 @@ pub enum ColorScheme {
     System,
 }
 
-impl ColorScheme {
-    fn from_str(value: &str) -> Option<Self> {
+impl FromStr for ColorScheme {
+    type Err = ();
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
         match value {
-            "light" => Some(Self::Light),
-            "dark" => Some(Self::Dark),
-            "system" => Some(Self::System),
-            _ => None,
+            "light" => Ok(Self::Light),
+            "dark" => Ok(Self::Dark),
+            "system" => Ok(Self::System),
+            _ => Err(()),
         }
     }
 }
@@ -58,32 +63,15 @@ fn initial_color_scheme() -> ColorScheme {
 }
 
 fn color_scheme_from_url() -> Option<ColorScheme> {
-    match Url::params::get(&Url::params::Names::ColorScheme) {
-        Some(color_scheme) => ColorScheme::from_str(color_scheme.as_str()),
-        None => None,
-    }
+    Url::params::get_param!(ColorScheme, ColorScheme)
 }
 
 fn color_scheme_from_localstorage() -> Option<ColorScheme> {
-    match window()
-        .local_storage()
-        .unwrap()
-        .unwrap()
-        .get_item(LocalStorage::Keys::ColorScheme.as_str())
-    {
-        Ok(Some(color_scheme)) => ColorScheme::from_str(color_scheme.as_str()),
-        _ => None,
-    }
+    conversion_get_from_localstorage!(ColorScheme, ColorScheme)
 }
 
 fn set_color_scheme_on_localstorage(color_scheme: &ColorScheme) {
-    let local_storage = window().local_storage().unwrap().unwrap();
-    local_storage
-        .set_item(
-            LocalStorage::Keys::ColorScheme.as_str(),
-            &color_scheme.to_string(),
-        )
-        .unwrap();
+    set_on_localstorage!(ColorScheme, &color_scheme.to_string())
 }
 
 fn set_color_scheme(
