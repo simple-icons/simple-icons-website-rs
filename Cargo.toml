@@ -40,7 +40,7 @@ leptos_router = { version = "0.5.2", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos-use = "0.8.0"
+leptos-use = "0.8.1"
 console_log = "1.0.0"
 log = "0.4.17"
 console_error_panic_hook = "0.1.7"
