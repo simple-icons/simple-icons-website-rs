@@ -28,11 +28,11 @@ jobs:
           persist-credentials: false
       - name: Get toolchain config
         id: toolchain
-        uses: ./.github/workflows/get-toolchain.yml
+        uses: ./.github/actions/get-toolchain
       - name: Setup Rust nightly
         uses: hecrj/setup-rust-action@v2
         with:
-          rust-version: ${{ steps.toolchain.outputs.rust-version }}
+          rust-version: ${{ steps.toolchain.outputs.channel }}
           targets: wasm32-unknown-unknown
           profile: minimal
       - name: Cache Rust dependencies

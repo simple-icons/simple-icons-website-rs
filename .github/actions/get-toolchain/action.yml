@@ -1,0 +1,14 @@
+name: Get Rust toolchain configuration
+description: Get the Rust toolchain configuration for the current project defined in the `rust-toolchain` file
+outputs:
+  channel:
+    description: The Rust toolchain channel
+    value: ${{ steps.get-toolchain.outputs.channel }}
+runs:
+  using: composite
+  steps:
+    - id: get-toolchain
+      shell: sh
+      run: |
+        echo "channel=$(grep channel -i rust-toolchain.toml | cut -d '"' -f2)" \
+            >> $GITHUB_OUTPUT
