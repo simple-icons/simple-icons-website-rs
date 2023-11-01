@@ -52,20 +52,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Rust nightly
+      - name: Get toolchain config
+        id: toolchain
+        uses: ./.github/workflows/get-toolchain.yml
+      - name: Setup Rust
         uses: hecrj/setup-rust-action@v2
-        if: matrix.command == 'test'
         with:
-          rust-version: nightly
+          rust-version: ${{ steps.toolchain.outputs.rust-version }}
           targets: wasm32-unknown-unknown
-          profile: minimal
-      - name: Setup Rust nightly
-        uses: hecrj/setup-rust-action@v2
-        if: matrix.command == 'lint'
-        with:
-          rust-version: nightly
-          targets: wasm32-unknown-unknown
-          profile: default
+          profile: ${{ matrix.command == 'test' && 'minimal' || 'default' }}
       - name: Cache Rust dependencies
         uses: actions/cache@v3
         with:
@@ -77,7 +72,7 @@ jobs:
             ~/.cargo/.crates.toml
             ~/.cargo/.crates2.json
             target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.command }}-nightly
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.command }}-${{ steps.toolchain.outputs.rust-version }}
       - name: Use Node.js v18
         uses: actions/setup-node@v3
         with:

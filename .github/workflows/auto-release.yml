@@ -26,10 +26,13 @@ jobs:
           ref: master
           # Ensure custom credentials are used when pushing
           persist-credentials: false
+      - name: Get toolchain config
+        id: toolchain
+        uses: ./.github/workflows/get-toolchain.yml
       - name: Setup Rust nightly
         uses: hecrj/setup-rust-action@v2
         with:
-          rust-version: nightly
+          rust-version: ${{ steps.toolchain.outputs.rust-version }}
           targets: wasm32-unknown-unknown
           profile: minimal
       - name: Cache Rust dependencies
