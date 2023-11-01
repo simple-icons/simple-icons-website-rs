@@ -72,7 +72,7 @@ jobs:
             ~/.cargo/.crates.toml
             ~/.cargo/.crates2.json
             target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.command }}-${{ steps.toolchain.outputs.rust-version }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.command }}-${{ steps.toolchain.outputs.channel }}
       - name: Use Node.js v18
         uses: actions/setup-node@v3
         with:
