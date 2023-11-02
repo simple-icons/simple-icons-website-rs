@@ -2160,6 +2160,7 @@ dependencies = [
  "nanoserde",
  "serde_json",
  "simple-icons-website-config",
+ "svg-path-cst",
  "unicode-normalization",
 ]
 
@@ -2197,6 +2198,7 @@ dependencies = [
  "simple-icons-website-i18n",
  "simple-icons-website-macros",
  "simple-icons-website-types",
+ "svg-path-cst",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
@@ -2321,6 +2323,15 @@ name = "strsim"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
+
+[[package]]
+name = "svg-path-cst"
+version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d9d5fd2a871c222a3a713c27e1eb97f7ce8e143310b8b85152a28ac637b43178"
+dependencies = [
+ "snafu",
+]
 
 [[package]]
 name = "syn"

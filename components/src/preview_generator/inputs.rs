@@ -3,7 +3,7 @@ use crate::controls::search::fuzzy::search;
 use crate::event::dispatch_input_event_on_input;
 use crate::fetch::fetch_text;
 use crate::grid::ICONS;
-use crate::js_libs::svg::{svg_path_bbox, svg_path_segments};
+use crate::js_libs::svg::svg_path_bbox;
 use crate::preview_generator::{
     canvas::update_preview_canvas, helpers::is_valid_hex_color,
 };
@@ -14,6 +14,7 @@ use leptos::{
 };
 use leptos_use::on_click_outside;
 use simple_icons::sdk;
+use svg_path_cst::svg_path_cst;
 use types::SimpleIcon;
 use wasm_bindgen::JsCast;
 
@@ -57,7 +58,7 @@ pub fn PathInput(
 ) -> impl IntoView
 where {
     let (path_lint_errors, set_path_lint_errors) =
-        create_signal::<Vec<sdk::lint::LintError>>(Vec::new());
+        create_signal::<Vec<sdk::lint::LintError>>(vec![]);
     let (show_path_lint_errors, set_show_path_lint_errors) =
         create_signal(false);
     let input_ref = create_node_ref::<Input>();
@@ -65,22 +66,26 @@ where {
 
     fn process_lint_errors(
         path: &str,
-        path_lint_errors: ReadSignal<Vec<sdk::lint::LintError>>,
         set_path_lint_errors: WriteSignal<Vec<sdk::lint::LintError>>,
     ) {
-        let mut new_lint_errors = path_lint_errors().clone();
-        let (path_segments, path_segments_error) = svg_path_segments(path);
-        if let Some(err) = path_segments_error {
-            new_lint_errors.push((err, None, None));
-            set_path_lint_errors(new_lint_errors);
-            return;
-        }
+        let mut new_lint_errors = vec![];
+
+        let path_segments = match svg_path_cst(path) {
+            Ok(path_segments) => path_segments,
+            Err(err) => {
+                new_lint_errors.push((err.to_string(), None, None));
+                set_path_lint_errors(new_lint_errors);
+                return;
+            }
+        };
+
         let (path_bbox, path_bbox_error) = svg_path_bbox(path);
         if let Some(err) = path_bbox_error {
             new_lint_errors.push((err, None, None));
             set_path_lint_errors(new_lint_errors);
             return;
         }
+
         let lint_errors =
             sdk::lint::lint_path(path, &path_bbox, &path_segments);
         set_path_lint_errors(lint_errors);
@@ -103,7 +108,7 @@ where {
                 class:warn=move || !path_lint_errors().is_empty()
                 on:input=move |_| {
                     let p = input_ref.get().unwrap().value();
-                    process_lint_errors(&p, path_lint_errors, set_path_lint_errors);
+                    process_lint_errors(&p, set_path_lint_errors);
                     set_show_path_lint_errors(true);
                     set_path(p);
                     update_preview_canvas();
@@ -111,7 +116,7 @@ where {
 
                 on:focus=move |_| {
                     let p = input_ref.get().unwrap().value();
-                    process_lint_errors(&p, path_lint_errors, set_path_lint_errors);
+                    process_lint_errors(&p, set_path_lint_errors);
                     set_show_path_lint_errors(true);
                 }
             />
@@ -392,7 +397,7 @@ fn search_brand_suggestions(
     value: &str,
 ) -> (Vec<&'static SimpleIcon>, Vec<&'static SimpleIcon>) {
     let mut initial_icons: Vec<&'static SimpleIcon> = Vec::with_capacity(7);
-    let mut more_icons: Vec<&'static SimpleIcon> = Vec::new();
+    let mut more_icons: Vec<&'static SimpleIcon> = vec![];
     let search_result = js_sys::Array::from(&search(value));
     let search_result_length = search_result.length();
     for i in 0..search_result_length {
