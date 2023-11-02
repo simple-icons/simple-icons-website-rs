@@ -14,7 +14,6 @@ pub type LintErrorFixer = &'static dyn Fn(&str, Range) -> LintErrorFix;
 pub type LintError = (Path, Option<Range>, Option<LintErrorFixer>);
 
 pub type PathViewBox = (f64, f64, f64, f64);
-pub type PathSegment = (String, Vec<f64>);
 
 fn get_number_of_decimals(number: f64) -> u32 {
     number.to_string().split('.').last().unwrap().len() as u32
