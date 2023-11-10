@@ -133,7 +133,7 @@ where
             aria-hidden=if aria_hidden { "true" } else { "false" }
             width=move || if width.is_empty() { None } else { Some(width) }
             height=move || if height.is_empty() { None } else { Some(height) }
-            aria-label=match aria_label {
+            aria-label=move || match aria_label {
                 Some(aria_label) => aria_label(),
                 None => "".to_string(),
             }

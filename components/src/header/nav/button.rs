@@ -25,7 +25,7 @@ where
     view! {
         <li
             on:click=move |_| window().location().set_href(href).unwrap()
-            class=move || match header_state.get().menu_open {
+            class=move || match header_state().menu_open {
                 true => "block",
                 false => "hidden lg:block",
             }

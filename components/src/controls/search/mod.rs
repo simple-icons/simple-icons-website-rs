@@ -199,7 +199,7 @@ async fn on_search(
     order_mode_signal: RwSignal<OrderMode>,
     icons_per_page: usize,
 ) {
-    let value = search_input_ref.get().unwrap().value();
+    let value = search_input_ref().unwrap().value();
     search_signal.update(move |state| {
         Url::params::update(&Url::params::Names::Query, &value);
 
@@ -282,7 +282,7 @@ pub fn SearchControl() -> impl IntoView {
                     <span
                         title=move_tr!("clear-search")
                         on:click=move |_| {
-                            search_input_ref.get().unwrap().set_value("");
+                            search_input_ref().unwrap().set_value("");
                             fire_on_search_event();
                         }
                     >

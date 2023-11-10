@@ -111,7 +111,7 @@ where {
                 prop:value=path
                 class:warn=move || !path_lint_errors().is_empty()
                 on:input=move |_| {
-                    let p = input_ref.get().unwrap().value();
+                    let p = input_ref().unwrap().value();
                     process_lint_errors(&p, set_path_lint_errors);
                     set_show_path_lint_errors(true);
                     set_path(p);
@@ -119,7 +119,7 @@ where {
                 }
 
                 on:focus=move |_| {
-                    let p = input_ref.get().unwrap().value();
+                    let p = input_ref().unwrap().value();
                     process_lint_errors(&p, set_path_lint_errors);
                     set_show_path_lint_errors(true);
                 }
@@ -168,7 +168,7 @@ fn ShowLintErrorButton(
         <Button
             title=move || "Show".to_string()
             on:click=move |_| {
-                let input = input_ref.get().unwrap();
+                let input = input_ref().unwrap();
                 input.focus().unwrap();
                 input.set_selection_start(Some(start)).unwrap();
                 input.set_selection_end(Some(end)).unwrap();
@@ -188,7 +188,7 @@ fn FixLintErrorButton(
         <Button
             title=move || "Fix".to_string()
             on:click=move |_| {
-                let input = input_ref.get().unwrap();
+                let input = input_ref().unwrap();
                 let (new_value, (start, end)) = fixer(&input.value(), (start, end));
                 input.set_value(&new_value);
                 dispatch_input_event_on_input(&input);
