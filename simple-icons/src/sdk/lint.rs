@@ -1,8 +1,11 @@
 /// A rewriting in Rust of some rules linting SVGs in the Simple Icons repository.
+use svg_path_cst::{SVGPathCSTNode, SVGPathCommand, SVGPathSegment};
 
 static PATH_VALID_CHARACTERS: &str = "mMzZlLhHvVcCsSqQtTaAeE0123456789,.- ";
 static NUMBERS: &str = "0123456789";
 static STRAIGHT_LINE_PATH_COMMANDS: &str = "HhVvLlMm";
+
+static ICON_MAX_FLOAT_PRECISION: u32 = 5;
 
 type Path = String;
 type Range = (u32, u32);
@@ -11,22 +14,9 @@ pub type LintErrorFixer = &'static dyn Fn(&str, Range) -> LintErrorFix;
 pub type LintError = (Path, Option<Range>, Option<LintErrorFixer>);
 
 pub type PathViewBox = (f64, f64, f64, f64);
-pub type PathSegment = (String, Vec<f64>);
 
 fn get_number_of_decimals(number: f64) -> u32 {
     number.to_string().split('.').last().unwrap().len() as u32
-}
-
-fn get_max_decimals_in_numbers(numbers: &[f64]) -> u32 {
-    let mut max_decimals = 0;
-    for number in numbers.iter() {
-        // Get number of decimals in f64:
-        let decimals = get_number_of_decimals(number.to_owned());
-        if decimals > max_decimals {
-            max_decimals = decimals;
-        }
-    }
-    max_decimals
 }
 
 fn round_decimal(number: f64, decimals: u32) -> f64 {
@@ -179,26 +169,46 @@ pub fn icon_size(bbox: &PathViewBox) -> Vec<LintError> {
 }
 
 /// Check if the icon precision is less than 6 decimal places.
-pub fn icon_precision(segments: &[PathSegment]) -> Vec<LintError> {
+pub fn icon_precision(cst: &[SVGPathCSTNode]) -> Vec<LintError> {
     let mut errors: Vec<LintError> = vec![];
-
-    for (_command, args) in segments.iter() {
-        let max_precision = get_max_decimals_in_numbers(args);
-        if max_precision > 5 {
-            // TODO: CST SVG path parser with input validation to fix this rule
-            // and show the exact segments in linting errors.
-            errors.push((
-                format!(
-                    concat!(
-                        "Maximum precision should not be greater than 5,",
-                        " currently {}"
-                    ),
-                    max_precision
-                ),
-                None,
-                None,
-            ));
-            break;
+    let mut prev_segment_is_sign = false;
+    for node in cst.iter() {
+        if let SVGPathCSTNode::Segment(segment) = node {
+            for segment_node in segment.cst.iter() {
+                if let SVGPathCSTNode::Number {
+                    raw_number,
+                    start,
+                    end,
+                    value,
+                } = segment_node
+                {
+                    let number_precision = get_number_of_decimals(*value);
+                    if number_precision > ICON_MAX_FLOAT_PRECISION {
+                        errors.push((
+                            format!(
+                                concat!(
+                                    "Maximum precision should not be greater than {},",
+                                    " currently {} for number \"{}\""
+                                ),
+                                ICON_MAX_FLOAT_PRECISION,
+                                number_precision,
+                                raw_number,
+                            ),
+                            Some((
+                                (*start - if prev_segment_is_sign {1} else {0}) as u32,
+                                *end as u32,
+                            )),
+                            // TODO: fixes
+                            None,
+                        ));
+                    }
+                    prev_segment_is_sign = false;
+                } else if let SVGPathCSTNode::Sign { .. } = segment_node {
+                    prev_segment_is_sign = true;
+                } else if prev_segment_is_sign {
+                    prev_segment_is_sign = false;
+                }
+            }
         }
     }
 
@@ -245,11 +255,20 @@ fn points_are_collinear(
     x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2) == 0.0
 }
 
+fn find_next_segment(
+    nodes: &[SVGPathCSTNode],
+    index: usize,
+) -> Option<SVGPathCSTNode> {
+    for node in nodes.iter().skip(index) {
+        if let SVGPathCSTNode::Segment(segment) = node {
+            return Some(SVGPathCSTNode::Segment(segment.to_owned()));
+        }
+    }
+    None
+}
+
 /// Check if the icon has collinear segments.
-pub fn collinear_segments(
-    path: &str,
-    segments: &[PathSegment],
-) -> Vec<LintError> {
+pub fn collinear_segments(segments: &[SVGPathCSTNode]) -> Vec<LintError> {
     let mut errors: Vec<LintError> = vec![];
 
     let mut current_line: Vec<(f64, f64)> = vec![];
@@ -258,172 +277,196 @@ pub fn collinear_segments(
     let mut in_straight_line = false;
     let mut reset_start_point = false;
 
-    for (s, (command, args)) in segments.iter().enumerate() {
-        let next_segment: Option<(String, Vec<f64>)> =
-            segments.get(s + 1).cloned();
+    for (s, node) in segments.iter().enumerate() {
+        if let SVGPathCSTNode::Segment(segment) = &node {
+            let args = &segment.args;
+            let next_segment = find_next_segment(segments, s + 1);
 
-        if command == "M" {
-            current_abs_coordinate = (Some(args[0]), Some(args[1]));
-            start_point = None;
-        } else if command == "m" {
-            current_abs_coordinate = (
-                Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
-                Some(args[1] + current_abs_coordinate.1.unwrap_or(0.0)),
-            );
-            start_point = None;
-        } else if command == "H" {
-            current_abs_coordinate = (Some(args[0]), current_abs_coordinate.1);
-        } else if command == "h" {
-            current_abs_coordinate = (
-                Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
-                current_abs_coordinate.1,
-            );
-        } else if command == "V" {
-            current_abs_coordinate = (current_abs_coordinate.0, Some(args[0]));
-        } else if command == "v" {
-            current_abs_coordinate = (
-                current_abs_coordinate.0,
-                Some(args[0] + current_abs_coordinate.1.unwrap_or(0.0)),
-            );
-        } else if command == "L" {
-            current_abs_coordinate = (Some(args[0]), Some(args[1]));
-        } else if command == "l" {
-            current_abs_coordinate = (
-                Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
-                Some(args[1] + current_abs_coordinate.1.unwrap_or(0.0)),
-            );
-        } else if command == "Z" || command == "z" {
-            let (x, y) = start_point.unwrap_or((0.0, 0.0));
-            current_abs_coordinate = (Some(x), Some(y));
-            reset_start_point = true;
-        } else if command == "C" {
-            current_abs_coordinate = (Some(args[4]), Some(args[5]));
-        } else if command == "c" {
-            current_abs_coordinate = (
-                Some(args[4] + current_abs_coordinate.0.unwrap_or(0.0)),
-                Some(args[5] + current_abs_coordinate.1.unwrap_or(0.0)),
-            );
-        } else if command == "A" {
-            current_abs_coordinate = (Some(args[5]), Some(args[6]));
-        } else if command == "a" {
-            current_abs_coordinate = (
-                Some(args[5] + current_abs_coordinate.0.unwrap_or(0.0)),
-                Some(args[6] + current_abs_coordinate.1.unwrap_or(0.0)),
-            );
-        } else if command == "S" {
-            current_abs_coordinate = (Some(args[0]), Some(args[1]));
-        } else if command == "s" {
-            current_abs_coordinate = (
-                Some(args[2] + current_abs_coordinate.0.unwrap_or(0.0)),
-                Some(args[3] + current_abs_coordinate.1.unwrap_or(0.0)),
-            );
-        } else if command == "Q" {
-            current_abs_coordinate = (Some(args[2]), Some(args[3]));
-        } else if command == "q" {
-            current_abs_coordinate = (
-                Some(args[2] + current_abs_coordinate.0.unwrap_or(0.0)),
-                Some(args[3] + current_abs_coordinate.1.unwrap_or(0.0)),
-            );
-        } else if command == "T" {
-            current_abs_coordinate = (Some(args[0]), Some(args[1]));
-        } else if command == "t" {
-            current_abs_coordinate = (
-                Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
-                Some(args[1] + current_abs_coordinate.1.unwrap_or(0.0)),
-            );
-        } else {
-            // unknown command
-            let command_index_range: Option<(u32, u32)> =
-                path.find(command).map(|index| {
-                    (index as u32, index as u32 + command.len() as u32)
-                });
-            errors.push((
-                format!(
-                    "Unknown command \"{}\"{}",
-                    command,
-                    &match command_index_range {
-                        Some(range) => format!(" at index {}", range.0),
-                        None => "".to_string(),
-                    }
-                ),
-                command_index_range,
-                None,
-            ));
-            break;
-        }
-
-        if start_point.is_none() {
-            start_point = Some((
-                current_abs_coordinate.0.unwrap(),
-                current_abs_coordinate.1.unwrap(),
-            ));
-        } else if reset_start_point {
-            start_point = None;
-            reset_start_point = false;
-        }
-
-        let exiting_straight_line = in_straight_line
-            && !(next_segment.is_some()
-                && STRAIGHT_LINE_PATH_COMMANDS
-                    .contains(&next_segment.unwrap().0));
-        in_straight_line = STRAIGHT_LINE_PATH_COMMANDS.contains(command);
-
-        if in_straight_line {
-            current_line.push((
-                current_abs_coordinate.0.unwrap(),
-                current_abs_coordinate.1.unwrap(),
-            ));
-        } else {
-            if exiting_straight_line {
-                if STRAIGHT_LINE_PATH_COMMANDS.contains(command) {
-                    current_line.push((
-                        current_abs_coordinate.0.unwrap(),
-                        current_abs_coordinate.1.unwrap(),
-                    ));
+            match segment.command {
+                SVGPathCommand::MovetoUpper => {
+                    current_abs_coordinate = (Some(args[0]), Some(args[1]));
+                    start_point = None;
                 }
-
-                for p in 1..current_line.len() - 1 {
-                    let (x1, y1) = current_line[p - 1];
-                    let (x2, y2) = current_line[p];
-                    let (x3, y3) = current_line[p + 1];
-
-                    if points_are_collinear(x1, y1, x2, y2, x3, y3) {
-                        let (collinear_segment_command, _) = segments
-                            .get(s - current_line.len() + p + 1)
-                            .unwrap();
-                        errors.push((
-                            format!(
-                                concat!(
-                                    "Collinear segment found at command \"{}\""
-                                ),
-                                collinear_segment_command
-                            ),
-                            // TODO: CST SVG path parser with input validation
-                            // to fix most variants of this rule and show the
-                            // exact segments in errors
-                            None,
-                            None,
-                        ));
-                    }
+                SVGPathCommand::MovetoLower => {
+                    current_abs_coordinate = (
+                        Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
+                        Some(args[1] + current_abs_coordinate.1.unwrap_or(0.0)),
+                    );
+                    start_point = None;
+                }
+                SVGPathCommand::HorizontalUpper => {
+                    current_abs_coordinate =
+                        (Some(args[0]), current_abs_coordinate.1);
+                }
+                SVGPathCommand::HorizontalLower => {
+                    current_abs_coordinate = (
+                        Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
+                        current_abs_coordinate.1,
+                    );
+                }
+                SVGPathCommand::VerticalUpper => {
+                    current_abs_coordinate =
+                        (current_abs_coordinate.0, Some(args[0]));
+                }
+                SVGPathCommand::VerticalLower => {
+                    current_abs_coordinate = (
+                        current_abs_coordinate.0,
+                        Some(args[0] + current_abs_coordinate.1.unwrap_or(0.0)),
+                    );
+                }
+                SVGPathCommand::LinetoUpper => {
+                    current_abs_coordinate = (Some(args[0]), Some(args[1]));
+                }
+                SVGPathCommand::LinetoLower => {
+                    current_abs_coordinate = (
+                        Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
+                        Some(args[1] + current_abs_coordinate.1.unwrap_or(0.0)),
+                    );
+                }
+                SVGPathCommand::ClosepathUpper
+                | SVGPathCommand::ClosepathLower => {
+                    let (x, y) = start_point.unwrap_or((0.0, 0.0));
+                    current_abs_coordinate = (Some(x), Some(y));
+                    reset_start_point = true;
+                }
+                SVGPathCommand::CurvetoUpper => {
+                    current_abs_coordinate = (Some(args[4]), Some(args[5]));
+                }
+                SVGPathCommand::CurvetoLower => {
+                    current_abs_coordinate = (
+                        Some(args[4] + current_abs_coordinate.0.unwrap_or(0.0)),
+                        Some(args[5] + current_abs_coordinate.1.unwrap_or(0.0)),
+                    );
+                }
+                SVGPathCommand::ArcUpper => {
+                    current_abs_coordinate = (Some(args[5]), Some(args[6]));
+                }
+                SVGPathCommand::ArcLower => {
+                    current_abs_coordinate = (
+                        Some(args[5] + current_abs_coordinate.0.unwrap_or(0.0)),
+                        Some(args[6] + current_abs_coordinate.1.unwrap_or(0.0)),
+                    );
+                }
+                SVGPathCommand::SmoothCurvetoUpper => {
+                    current_abs_coordinate = (Some(args[2]), Some(args[3]));
+                }
+                SVGPathCommand::SmoothCurvetoLower => {
+                    current_abs_coordinate = (
+                        Some(args[2] + current_abs_coordinate.0.unwrap_or(0.0)),
+                        Some(args[3] + current_abs_coordinate.1.unwrap_or(0.0)),
+                    );
+                }
+                SVGPathCommand::QuadraticUpper => {
+                    current_abs_coordinate = (Some(args[2]), Some(args[3]));
+                }
+                SVGPathCommand::QuadraticLower => {
+                    current_abs_coordinate = (
+                        Some(args[2] + current_abs_coordinate.0.unwrap_or(0.0)),
+                        Some(args[3] + current_abs_coordinate.1.unwrap_or(0.0)),
+                    );
+                }
+                SVGPathCommand::SmoothQuadraticUpper => {
+                    current_abs_coordinate = (Some(args[0]), Some(args[1]));
+                }
+                SVGPathCommand::SmoothQuadraticLower => {
+                    current_abs_coordinate = (
+                        Some(args[0] + current_abs_coordinate.0.unwrap_or(0.0)),
+                        Some(args[1] + current_abs_coordinate.1.unwrap_or(0.0)),
+                    );
                 }
             }
-            current_line.clear();
+
+            if start_point.is_none() {
+                start_point = Some((
+                    current_abs_coordinate.0.unwrap(),
+                    current_abs_coordinate.1.unwrap(),
+                ));
+            } else if reset_start_point {
+                start_point = None;
+                reset_start_point = false;
+            }
+
+            let mut next_segment_is_straight_line = false;
+            if let Some(SVGPathCSTNode::Segment(ref next_seg)) = next_segment {
+                next_segment_is_straight_line = STRAIGHT_LINE_PATH_COMMANDS
+                    .contains(next_seg.command.to_char());
+            }
+
+            let exiting_straight_line = in_straight_line
+                && !(next_segment.is_some() && next_segment_is_straight_line);
+            in_straight_line =
+                STRAIGHT_LINE_PATH_COMMANDS.contains(segment.command.to_char());
+
+            if in_straight_line {
+                current_line.push((
+                    current_abs_coordinate.0.unwrap(),
+                    current_abs_coordinate.1.unwrap(),
+                ));
+            } else {
+                if exiting_straight_line {
+                    if STRAIGHT_LINE_PATH_COMMANDS
+                        .contains(segment.command.to_char())
+                    {
+                        current_line.push((
+                            current_abs_coordinate.0.unwrap(),
+                            current_abs_coordinate.1.unwrap(),
+                        ));
+                    }
+
+                    for p in 1..current_line.len() - 1 {
+                        let (x1, y1) = current_line[p - 1];
+                        let (x2, y2) = current_line[p];
+                        let (x3, y3) = current_line[p + 1];
+
+                        if points_are_collinear(x1, y1, x2, y2, x3, y3) {
+                            if let SVGPathCSTNode::Segment(SVGPathSegment {
+                                command,
+                                start,
+                                end,
+                                ..
+                            }) = segments
+                                .get(s - current_line.len() + p + 1)
+                                .unwrap()
+                            {
+                                errors.push((
+                                    format!(
+                                        concat!(
+                                            "Collinear segment found at command \"{}\""
+                                        ),
+                                        command.to_char()
+                                    ),
+                                    // TODO: show complete range including
+                                    //  previous and next segments
+                                    Some((*start as u32, *end as u32)),
+                                    // TODO: fix most variants of this rule
+                                    None,
+                                ));
+                            }
+                        }
+                    }
+                }
+                current_line.clear();
+            }
         }
     }
 
     errors
 }
 
-pub fn lint_path(
-    path: &str,
-    bbox: &PathViewBox,
-    segments: &[PathSegment],
-) -> Vec<LintError> {
+pub fn lint_path_characters(path: &str) -> Vec<LintError> {
     let mut errors: Vec<LintError> = path_format(path);
     errors.extend(negative_zeros(path));
-    errors.extend(icon_size(bbox));
-    errors.extend(icon_precision(segments));
+    errors
+}
+
+pub fn lint_path_bbox(bbox: &PathViewBox) -> Vec<LintError> {
+    let mut errors: Vec<LintError> = icon_size(bbox);
     errors.extend(icon_centered(bbox));
-    errors.extend(collinear_segments(path, segments));
+    errors
+}
+
+pub fn lint_path_segments(cst: &[SVGPathCSTNode]) -> Vec<LintError> {
+    let mut errors: Vec<LintError> = icon_precision(cst);
+    errors.extend(collinear_segments(cst));
     errors
 }

@@ -236,14 +236,14 @@ args = [
     "--minify",
 ]
 
-[tasks.build-svg-libraries]
-description = "Build the svg-path-bbox and svgpath JS libraries for the web"
+[tasks.build-svg-path-bbox]
+description = "Build the svg-path-bbox JS library for the web"
 command = "npx"
 args = [
     "esbuild",
-    "./components/src/js_libs/svg.js",
+    "./components/src/js_libs/svg-path-bbox.js",
     "--bundle",
-    "--outfile=./app/public/assets/dist/svg.js",
+    "--outfile=./app/public/assets/dist/svg-path-bbox.js",
     "--minify",
 ]
 
@@ -261,7 +261,7 @@ args = ["tsx", "scripts/create-cname.ts"]
 description = "Run pre-build scripts"
 run_task = { name = [
     "build-fast-fuzzy",
-    "build-svg-libraries",
+    "build-svg-path-bbox",
     "fetch-deprecated-icons",
     "create-sitemap",
     "create-cname",
