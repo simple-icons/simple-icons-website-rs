@@ -68,7 +68,11 @@ where {
         path: &str,
         set_path_lint_errors: WriteSignal<Vec<sdk::lint::LintError>>,
     ) {
-        let mut new_lint_errors = vec![];
+        let mut new_lint_errors = sdk::lint::lint_path_characters(path);
+        if !new_lint_errors.is_empty() {
+            set_path_lint_errors(new_lint_errors);
+            return;
+        }
 
         let path_segments = match svg_path_cst(path) {
             Ok(path_segments) => path_segments,
@@ -86,9 +90,9 @@ where {
             return;
         }
 
-        let lint_errors =
-            sdk::lint::lint_path(path, &path_bbox, &path_segments);
-        set_path_lint_errors(lint_errors);
+        new_lint_errors.extend(sdk::lint::lint_path_segments(&path_segments));
+        new_lint_errors.extend(sdk::lint::lint_path_bbox(&path_bbox));
+        set_path_lint_errors(new_lint_errors);
     }
 
     _ = on_click_outside(input_group_ref, move |_| {

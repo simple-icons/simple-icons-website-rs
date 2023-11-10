@@ -453,16 +453,20 @@ pub fn collinear_segments(segments: &[SVGPathCSTNode]) -> Vec<LintError> {
     errors
 }
 
-pub fn lint_path(
-    path: &str,
-    bbox: &PathViewBox,
-    cst: &[SVGPathCSTNode],
-) -> Vec<LintError> {
+pub fn lint_path_characters(path: &str) -> Vec<LintError> {
     let mut errors: Vec<LintError> = path_format(path);
     errors.extend(negative_zeros(path));
-    errors.extend(icon_size(bbox));
-    errors.extend(icon_precision(cst));
+    errors
+}
+
+pub fn lint_path_bbox(bbox: &PathViewBox) -> Vec<LintError> {
+    let mut errors: Vec<LintError> = icon_size(bbox);
     errors.extend(icon_centered(bbox));
+    errors
+}
+
+pub fn lint_path_segments(cst: &[SVGPathCSTNode]) -> Vec<LintError> {
+    let mut errors: Vec<LintError> = icon_precision(cst);
     errors.extend(collinear_segments(cst));
     errors
 }
