@@ -202,6 +202,7 @@ pub fn icon_precision(cst: &[SVGPathCSTNode]) -> Vec<LintError> {
                             None,
                         ));
                     }
+                    prev_segment_is_sign = false;
                 } else if let SVGPathCSTNode::Sign { .. } = segment_node {
                     prev_segment_is_sign = true;
                 } else if prev_segment_is_sign {
