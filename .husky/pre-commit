@@ -2,11 +2,10 @@
 . "$(dirname $0)/_/husky.sh"
 
 set -ex
-cargo_make_args='--skip-tasks nvm_use'
 
-cargo make $cargo_make_args format
+cargo make format
 git add -u
-cargo make $cargo_make_args fetch-deprecated-icons
-cargo make $cargo_make_args lint
+cargo make fetch-deprecated-icons
+cargo make lint
 
 git diff --cached --name-only --diff-filter=ACM -z

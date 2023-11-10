@@ -5,10 +5,10 @@
 - Install Rust with [rustup](https://rustup.rs/).
 - Add `wasm32-unknown-unknown` target with `rustup target add wasm32-unknown-unknown`.
 - Install [cargo-make](https://sagiegurari.github.io/cargo-make/) with `cargo install --force cargo-make`.
+- Install [fnm](https://github.com/Schniz/fnm) with `cargo install fnm` and [setup your Shell](https://github.com/Schniz/fnm#shell-setup).
 - Install NodeJS with npm and run `npm install`.
-- Install [nvm](https://github.com/nvm-sh/nvm).
 - Install Playwright browsers and dependencies with `npx playwright install --with-deps`.
-- Create an _.env_ file at the root including a Github personal token with the variable `GITHUB_TOKEN`.
+- Create an _.env_ file at the root including a Github personal token with the variable `GITHUB_TOKEN` like `GITHUB_TOKEN=...`.
 
 ## Commands
 

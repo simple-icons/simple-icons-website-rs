@@ -9,14 +9,14 @@ default_to_workspace = false
 
 [tasks.init]
 description = "Initialization task run before all others"
-run_task = { name = ["nvm_use", "npm_install", "setup_js_libraries_filenames"] }
+run_task = { name = ["fnm_use", "npm_install", "setup_js_libraries_filenames"] }
 
-[tasks.nvm_use]
-description = "Run 'nvm use' if installed"
+[tasks.fnm_use]
+description = "Run 'fnm use'"
 condition.env_not_set = ["CI"]
-command = "nvm"
-args = ["use"]
-ignore_errors = true
+install_crate = { crate_name = "fnm", binary = "fnm", test_arg = "--help" }
+command = "fnm"
+args = ["use", "--install-if-missing", "--silent-if-unchanged"]
 
 [tasks.setup_js_libraries_filenames]
 description = "Setup JS libraries filenames to be able to import cleanly with Trunk"
