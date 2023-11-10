@@ -2326,9 +2326,9 @@ checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "svg-path-cst"
-version = "0.0.5"
+version = "0.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9d5fd2a871c222a3a713c27e1eb97f7ce8e143310b8b85152a28ac637b43178"
+checksum = "4ac29403eb5a58c216ad30acfc3e5888fb0fe6578ffdafbc029d6c3e4c896aed"
 dependencies = [
  "snafu",
 ]
