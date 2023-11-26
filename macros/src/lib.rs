@@ -67,13 +67,12 @@ pub fn get_simple_icons_3rd_party_extensions(_: TokenStream) -> TokenStream {
         .split_once("## Third-Party Extensions")
         .unwrap()
         .1
-        .split_once("| :-- | :-- |")
-        .unwrap()
-        .1
-        .split("\n|");
+        .lines()
+        .skip(4);
+
     for line in extensions_table_lines {
         if line.trim().is_empty() {
-            continue;
+            break;
         }
         let name = line.split_once('[').unwrap().1.split_once("](").unwrap().0;
         let url = line.split_once("](").unwrap().1.split_once(')').unwrap().0;
