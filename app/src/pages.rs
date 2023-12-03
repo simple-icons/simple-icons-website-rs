@@ -72,7 +72,7 @@ pub fn Preview() -> impl IntoView {
 
             </div>
         </menu>
-        <div class="page-padding-x">
+        <div class="page-padding-x flex justify-center">
             <PreviewGenerator/>
         </div>
     }
