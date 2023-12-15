@@ -41,7 +41,7 @@ macro_rules! conversion_get_from_localstorage {
     ($key:ident, $from_str_dyn:ident) => {
         $crate::storage::_base_impl_get_from_localstorage!(
             $key,
-            <$from_str_dyn>::from_str(value.as_str()).ok(),
+            $from_str_dyn::from_str(value.as_str()).ok(),
             value
         )
     };

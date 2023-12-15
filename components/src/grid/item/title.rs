@@ -13,7 +13,7 @@ pub fn get_icon_localized_title(
     if let Some(aliases) = icon.aliases {
         if let Some(loc) = aliases.loc {
             let current_lang_region = language.id.to_string();
-            let current_lang = language.id.to_string();
+            let current_lang = language.id.language.to_string();
 
             for (lang, loc_title) in loc {
                 if *lang == current_lang_region {
