@@ -63,7 +63,7 @@ fn initial_language_from_localstorage() -> Option<&'static Language> {
 }
 
 pub fn set_language_in_localstorage(lang: &'static Language) {
-    set_on_localstorage!(Language, lang.id.language.as_str())
+    set_on_localstorage!(Language, &lang.id.to_string())
 }
 
 /// Languages list
