@@ -62,7 +62,7 @@ pub fn IconGridItemFooter(
             <button
                 title=view_icon_button_title
                 on:click=move |_| {
-                    fill_icon_details_modal_with_icon(icon, &locale_state());
+                    fill_icon_details_modal_with_icon(icon, locale_state());
                     current_icon_view.update(|state| *state = Some(icon));
                     modal_open.set_icon();
                 }

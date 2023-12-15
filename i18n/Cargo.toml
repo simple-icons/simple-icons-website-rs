@@ -12,6 +12,7 @@ name = "i18n"
 leptos.workspace = true
 lazy_static.workspace = true
 fluent-templates.workspace = true
+unic-langid.workspace = true
 
 [build-dependencies]
 serde_json.workspace = true

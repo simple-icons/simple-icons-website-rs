@@ -1,6 +1,6 @@
+use fluent_templates::loader::Loader;
 use fluent_templates::{
-    fluent_bundle::FluentValue, loader::langid, static_loader,
-    LanguageIdentifier, Loader,
+    fluent_bundle::FluentValue, static_loader, LanguageIdentifier,
 };
 use leptos::*;
 use std::collections::HashMap;
@@ -17,7 +17,7 @@ include!(concat!(env!("OUT_DIR"), "/languages.rs"));
 
 static_loader! {
     // Declare our `StaticLoader` named `LOCALES`.
-    static LOCALES = {
+    pub static LOCALES = {
         // The directory of localisations and fluent resources.
         locales: "../i18n/locales",
         // The language to falback on if something is not present.
@@ -32,27 +32,13 @@ impl PartialEq for Language {
     }
 }
 
-impl Language {
-    pub fn translate(&self, key: &'static str) -> String {
-        LOCALES.lookup(&self.id, key).unwrap()
-    }
-
-    pub fn translate_with_args(
-        &self,
-        key: &'static str,
-        args: &HashMap<String, FluentValue<'_>>,
-    ) -> String {
-        LOCALES.lookup_with_args(&self.id, key, args).unwrap()
-    }
-}
-
-impl Default for Language {
+impl Default for &'static Language {
     fn default() -> Self {
-        LANGUAGES[0].clone()
+        &LANGUAGES[0]
     }
 }
 
-impl FromStr for Language {
+impl FromStr for &'static Language {
     type Err = ();
 
     fn from_str(code: &str) -> Result<Self, Self::Err> {
@@ -61,14 +47,14 @@ impl FromStr for Language {
                 .iter()
                 .find(|lang| lang.id.matches(&target_lang, false, false))
             {
-                Some(lang) => Ok(lang.clone()),
+                Some(lang) => Ok(lang),
                 None => {
                     let mut lazy_target_lang = target_lang.clone();
                     lazy_target_lang.region = None;
                     match LANGUAGES.iter().find(|lang| {
                         lang.id.matches(&lazy_target_lang, true, true)
                     }) {
-                        Some(lang) => Ok(lang.clone()),
+                        Some(lang) => Ok(lang),
                         None => Err(()),
                     }
                 }
@@ -79,7 +65,32 @@ impl FromStr for Language {
 }
 
 #[derive(Copy, Clone)]
-pub struct LocaleSignal(pub RwSignal<Language>);
+pub struct LocaleSignal(pub RwSignal<&'static Language>);
+
+pub fn lookup(key: &'static str) -> String {
+    let lang_id = &expect_context::<LocaleSignal>().0().id;
+    LOCALES.lookup(lang_id, key).unwrap_or_else(|| {
+        panic!(
+            "Translation for key '{}' not found in locale '{}'",
+            key, lang_id
+        )
+    })
+}
+
+pub fn lookup_with_args(
+    key: &'static str,
+    args: &HashMap<String, FluentValue<'_>>,
+) -> String {
+    let lang_id = &expect_context::<LocaleSignal>().0().id;
+    LOCALES
+        .lookup_with_args(lang_id, key, args)
+        .unwrap_or_else(|| {
+            panic!(
+                "Translation for key '{}' not found in locale '{}'",
+                key, lang_id
+            )
+        })
+}
 
 /// Macro to translate strings in the website
 ///
@@ -93,14 +104,11 @@ pub struct LocaleSignal(pub RwSignal<Language>);
 /// has to know that the string is reactive.
 #[macro_export]
 macro_rules! tr {
-    ($key:expr) => {
-        ((&expect_context::<::i18n::LocaleSignal>().0)().translate($key))
-            .to_string()
-    };
+    ($key:expr) => {{
+        $crate::lookup($key)
+    }};
     ($key:expr, $args:expr) => {
-        ((&expect_context::<::i18n::LocaleSignal>().0)()
-            .translate_with_args($key, $args))
-        .to_string()
+        $crate::lookup_with_args($key, $args)
     };
 }
 

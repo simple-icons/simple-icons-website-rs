@@ -23,11 +23,13 @@ fn main() {
         }
     });
 
-    let mut languages_rs_result =
-        format!("pub static LANGUAGES: [Language; {}] = [", languages.len());
+    let mut languages_rs_result = format!(
+        "pub static LANGUAGES: [crate::Language; {}] = [",
+        languages.len()
+    );
     for language in languages.iter() {
         languages_rs_result.push_str(&format!(
-            "Language {{id: langid!(\"{}\"), name: \"{}\"}},",
+            "crate::Language {{id: ::unic_langid::langid!(\"{}\"), name: \"{}\"}},",
             language[0], language[1]
         ));
     }
