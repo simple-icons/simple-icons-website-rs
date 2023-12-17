@@ -104,9 +104,9 @@ pub fn lookup_with_args(
 /// has to know that the string is reactive.
 #[macro_export]
 macro_rules! tr {
-    ($key:expr) => {{
+    ($key:expr) => {
         $crate::lookup($key)
-    }};
+    };
     ($key:expr, $args:expr) => {
         $crate::lookup_with_args($key, $args)
     };

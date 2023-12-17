@@ -34,7 +34,6 @@ pub mod params {
     }
 
     /// Update a parameter value in the URL query using window history
-    #[inline(always)]
     pub fn update(k: &Names, v: &str) {
         let current_url =
             Url::try_from(window().location().search().unwrap().as_str())
@@ -63,7 +62,6 @@ pub mod params {
     }
 
     /// Get a URL param value from the URL of the browser
-    #[inline(always)]
     pub fn get(k: &Names) -> Option<String> {
         let query = window().location().search().unwrap();
         if !query.starts_with('?') {
@@ -83,15 +81,4 @@ pub mod params {
         }
         None
     }
-
-    macro_rules! get_param {
-        ($param_name:ident, $from_str_dyn:ident) => {
-            match Url::params::get(&Url::params::Names::$param_name) {
-                Some(value) => $from_str_dyn::from_str(value.as_str()).ok(),
-                None => None,
-            }
-        };
-    }
-
-    pub(crate) use get_param;
 }

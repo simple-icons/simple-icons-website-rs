@@ -6,15 +6,13 @@ use crate::controls::order::{
 };
 use crate::event::dispatch_input_event_on_input;
 use crate::grid::{IconsGrid, IconsGridSignal, ICONS};
-use crate::storage::{
-    set_on_localstorage, transparent_get_from_localstorage, LocalStorage,
-};
+use crate::storage::LocalStorage;
 use crate::Ids;
 use crate::Url;
 use fuzzy::{build_searcher, search};
 use i18n::move_tr;
 use js_sys::JsString;
-use leptos::{document, html::Input, window, *};
+use leptos::{document, html::Input, *};
 use types::SimpleIcon;
 use wasm_bindgen::JsCast;
 use web_sys;
@@ -52,17 +50,16 @@ fn initial_search_value() -> String {
 }
 
 pub fn get_search_value_from_localstorage() -> Option<String> {
-    match transparent_get_from_localstorage!(SearchValue) {
-        Some(value) => match value.is_empty() {
+    LocalStorage::get(LocalStorage::Keys::SearchValue)
+        .as_ref()
+        .and_then(|value| match value.is_empty() {
             true => None,
-            false => Some(value),
-        },
-        None => None,
-    }
+            false => Some(value.clone()),
+        })
 }
 
 pub fn set_search_value_on_localstorage(search_value: &str) {
-    set_on_localstorage!(SearchValue, search_value)
+    LocalStorage::set(LocalStorage::Keys::SearchValue, search_value);
 }
 
 pub fn fire_on_search_event() {

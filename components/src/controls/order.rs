@@ -4,11 +4,9 @@ use crate::controls::search::{
     fire_on_search_event, get_search_value_from_localstorage, SearchValueSignal,
 };
 use crate::grid::{IconsGrid, IconsGridSignal, ICONS};
-use crate::storage::{
-    conversion_get_from_localstorage, set_on_localstorage, LocalStorage,
-};
+use crate::storage::LocalStorage;
 use i18n::move_tr;
-use leptos::{window, *};
+use leptos::*;
 use std::fmt;
 use std::str::FromStr;
 use types::SimpleIcon;
@@ -88,7 +86,9 @@ impl fmt::Display for OrderModeVariant {
 pub struct OrderModeSignal(pub RwSignal<OrderMode>);
 
 fn get_order_mode_from_localstorage() -> Option<OrderMode> {
-    conversion_get_from_localstorage!(OrderMode, OrderMode)
+    LocalStorage::get(LocalStorage::Keys::OrderMode)
+        .as_ref()
+        .and_then(|value| OrderMode::from_str(value).ok())
 }
 
 fn get_order_mode_from_localstorage_and_search_value(
@@ -107,7 +107,7 @@ fn get_order_mode_from_localstorage_and_search_value(
 }
 
 fn set_order_mode_on_localstorage(order_mode: &OrderModeVariant) {
-    set_on_localstorage!(OrderMode, &order_mode.to_string())
+    LocalStorage::set(LocalStorage::Keys::OrderMode, &order_mode.to_string());
 }
 
 pub fn set_order_mode(

@@ -2,12 +2,10 @@ pub mod pdf;
 pub mod svg;
 
 use crate::controls::button::ControlButtonText;
-use crate::storage::{
-    conversion_get_from_localstorage, set_on_localstorage, LocalStorage,
-};
+use crate::storage::LocalStorage;
 use crate::Url;
 use i18n::{move_tr, tr};
-use leptos::{document, window, *};
+use leptos::{document, *};
 pub use pdf::download_pdf;
 use std::collections::HashMap;
 use std::fmt;
@@ -54,7 +52,9 @@ pub fn provide_download_type_context() {
 pub struct DownloadTypeSignal(pub RwSignal<DownloadType>);
 
 fn initial_download_type() -> DownloadType {
-    match Url::params::get_param!(DownloadType, DownloadType) {
+    match Url::params::get(&Url::params::Names::DownloadType)
+        .and_then(|value| value.parse().ok())
+    {
         Some(download_type) => {
             set_download_type_on_localstorage(&download_type);
             download_type
@@ -67,11 +67,16 @@ fn initial_download_type() -> DownloadType {
 }
 
 fn get_download_type_from_localstorage() -> Option<DownloadType> {
-    conversion_get_from_localstorage!(DownloadType, DownloadType)
+    LocalStorage::get(LocalStorage::Keys::DownloadType)
+        .as_ref()
+        .and_then(|value| DownloadType::from_str(value).ok())
 }
 
 fn set_download_type_on_localstorage(download_type: &DownloadType) {
-    set_on_localstorage!(DownloadType, &download_type.to_string())
+    LocalStorage::set(
+        LocalStorage::Keys::DownloadType,
+        &download_type.to_string(),
+    );
 }
 
 #[component]

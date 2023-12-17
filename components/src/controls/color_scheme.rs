@@ -1,10 +1,8 @@
 use crate::controls::button::ControlButtonSVGPath;
-use crate::storage::{
-    conversion_get_from_localstorage, set_on_localstorage, LocalStorage,
-};
+use crate::storage::LocalStorage;
 use crate::Url;
 use i18n::move_tr;
-use leptos::{window, *};
+use leptos::*;
 use std::fmt;
 use std::str::FromStr;
 
@@ -50,7 +48,9 @@ pub fn provide_color_scheme_context() -> ColorSchemeSignal {
 }
 
 fn initial_color_scheme() -> ColorScheme {
-    match Url::params::get_param!(ColorScheme, ColorScheme) {
+    match Url::params::get(&Url::params::Names::ColorScheme)
+        .and_then(|value| value.parse().ok())
+    {
         Some(color_scheme) => {
             set_color_scheme_on_localstorage(&color_scheme);
             color_scheme
@@ -63,11 +63,16 @@ fn initial_color_scheme() -> ColorScheme {
 }
 
 fn color_scheme_from_localstorage() -> Option<ColorScheme> {
-    conversion_get_from_localstorage!(ColorScheme, ColorScheme)
+    LocalStorage::get(LocalStorage::Keys::ColorScheme)
+        .as_ref()
+        .and_then(|value| ColorScheme::from_str(value).ok())
 }
 
 fn set_color_scheme_on_localstorage(color_scheme: &ColorScheme) {
-    set_on_localstorage!(ColorScheme, &color_scheme.to_string())
+    LocalStorage::set(
+        LocalStorage::Keys::ColorScheme,
+        &color_scheme.to_string(),
+    );
 }
 
 fn set_color_scheme(

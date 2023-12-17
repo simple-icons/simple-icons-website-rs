@@ -21,54 +21,22 @@ pub mod LocalStorage {
             }
         }
     }
-}
 
-macro_rules! _base_impl_get_from_localstorage {
-    ($key:ident, $return_expr:expr, $value:ident) => {
-        match window()
+    pub fn get(key: Keys) -> Option<String> {
+        ::leptos::window()
             .local_storage()
             .unwrap()
             .unwrap()
-            .get_item(LocalStorage::Keys::$key.as_str())
-        {
-            Ok(Some($value)) => $return_expr,
-            _ => None,
-        }
-    };
-}
+            .get_item(key.as_str())
+            .unwrap()
+    }
 
-macro_rules! conversion_get_from_localstorage {
-    ($key:ident, $from_str_dyn:ident) => {
-        $crate::storage::_base_impl_get_from_localstorage!(
-            $key,
-            $from_str_dyn::from_str(value.as_str()).ok(),
-            value
-        )
-    };
-}
-
-macro_rules! transparent_get_from_localstorage {
-    ($key:ident) => {
-        $crate::storage::_base_impl_get_from_localstorage!(
-            $key,
-            Some(value),
-            value
-        )
-    };
-}
-
-macro_rules! set_on_localstorage {
-    ($key:ident, $value:expr) => {
-        window()
+    pub fn set(key: Keys, value: &str) {
+        ::leptos::window()
             .local_storage()
             .unwrap()
             .unwrap()
-            .set_item(LocalStorage::Keys::$key.as_str(), $value)
+            .set_item(key.as_str(), value)
             .unwrap()
-    };
+    }
 }
-
-pub(crate) use _base_impl_get_from_localstorage;
-pub(crate) use conversion_get_from_localstorage;
-pub(crate) use set_on_localstorage;
-pub(crate) use transparent_get_from_localstorage;
