@@ -22,9 +22,12 @@ pub fn provide_language_context() -> LocaleSignal {
 
 fn initial_language() -> &'static Language {
     match Url::params::get(&Url::params::Names::Language)
-        .and_then(|value| value.parse().ok())
+        .and_then(|value| <&'static Language>::from_str(value.as_str()).ok())
     {
-        Some(value) => value,
+        Some(value) => {
+            set_language_in_localstorage(value);
+            value
+        }
         None => match initial_language_from_localstorage() {
             Some(lang) => lang,
             None => match initial_language_from_navigator_languages() {
