@@ -27,7 +27,7 @@ fn get_preview_canvas_context() -> web_sys::CanvasRenderingContext2d {
     ctx
 }
 
-fn create_badge_image_for_canvas(
+pub(crate) fn create_badge_image_for_canvas(
     badge_index: usize,
     badge_url: &str,
     x: f64,
@@ -78,7 +78,7 @@ fn create_badge_image_for_canvas(
 
 macro_rules! draw_badge_impl {
     ($badge_index:literal, $x:literal, $y:literal) => {{
-        let badge_img_src = document()
+        let badge_img_src = ::leptos::document()
             .get_elements_by_class_name("preview-badges")
             .item(0)
             .unwrap()
@@ -93,7 +93,7 @@ macro_rules! draw_badge_impl {
             .unwrap()
             .src();
 
-        create_badge_image_for_canvas(
+        $crate::preview_generator::canvas::create_badge_image_for_canvas(
             $badge_index,
             &badge_img_src,
             $x as f64,
