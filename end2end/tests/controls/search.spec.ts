@@ -18,7 +18,7 @@ test.describe('search', () => {
     // dup alias
     ['gotowebinar', 'GoToMeeting'],
     // loc alias
-    ['КиноПоиск', 'KinoPoisk'],
+    ['КиноПоиск', 'Kinopoisk'],
   ];
 
   for (const [searchValue, expectedTitle] of searchValues) {
