@@ -34,7 +34,7 @@
     "postcss": "8.4.31",
     "postcss-import": "15.1.0",
     "prettier": "3.0.0",
-    "simple-icons": "10.2.0",
+    "simple-icons": "10.3.0",
     "stylelint": "15.10.2",
     "stylelint-config-standard": "34.0.0",
     "stylelint-config-tailwindcss": "0.0.7",
