@@ -74,22 +74,19 @@ pub fn get_simple_icons_3rd_party_extensions(_: TokenStream) -> TokenStream {
         if line.trim().is_empty() {
             break;
         }
+
         let name = line.split_once('[').unwrap().1.split_once("](").unwrap().0;
         let url = line.split_once("](").unwrap().1.split_once(')').unwrap().0;
-        let author_name = line
-            .split_once('|')
-            .unwrap()
-            .1
+
+        let author_part = line.splitn(3, '|').nth(2).unwrap();
+        let author_name = author_part
             .split_once('[')
             .unwrap()
             .1
             .split_once(']')
             .unwrap()
             .0;
-        let author_url = line
-            .split_once('|')
-            .unwrap()
-            .1
+        let author_url = author_part
             .split_once("](")
             .unwrap()
             .1
