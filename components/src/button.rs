@@ -2,10 +2,10 @@ use crate::svg::{SVGDef, SVGIcon};
 use leptos::*;
 
 #[component]
-pub fn Button<'a, T>(
+pub fn Button<T>(
     title: T,
     #[prop(optional)] svg_path: &'static SVGDef,
-    #[prop(optional)] class: &'a str,
+    #[prop(optional)] class: &'static str,
     #[prop(optional)] id: &'static str,
 ) -> impl IntoView
 where

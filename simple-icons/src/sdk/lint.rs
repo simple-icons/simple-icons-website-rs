@@ -389,13 +389,13 @@ pub fn collinear_segments(segments: &[SVGPathCSTNode]) -> Vec<LintError> {
             let mut next_segment_is_straight_line = false;
             if let Some(SVGPathCSTNode::Segment(ref next_seg)) = next_segment {
                 next_segment_is_straight_line = STRAIGHT_LINE_PATH_COMMANDS
-                    .contains(next_seg.command.to_char());
+                    .contains(next_seg.command.to_u8() as char);
             }
 
             let exiting_straight_line = in_straight_line
                 && !(next_segment.is_some() && next_segment_is_straight_line);
-            in_straight_line =
-                STRAIGHT_LINE_PATH_COMMANDS.contains(segment.command.to_char());
+            in_straight_line = STRAIGHT_LINE_PATH_COMMANDS
+                .contains(segment.command.to_u8() as char);
 
             if in_straight_line {
                 current_line.push((
@@ -405,7 +405,7 @@ pub fn collinear_segments(segments: &[SVGPathCSTNode]) -> Vec<LintError> {
             } else {
                 if exiting_straight_line {
                     if STRAIGHT_LINE_PATH_COMMANDS
-                        .contains(segment.command.to_char())
+                        .contains(segment.command.to_u8() as char)
                     {
                         current_line.push((
                             current_abs_coordinate.0.unwrap(),
@@ -433,7 +433,7 @@ pub fn collinear_segments(segments: &[SVGPathCSTNode]) -> Vec<LintError> {
                                         concat!(
                                             "Collinear segment found at command \"{}\""
                                         ),
-                                        command.to_char()
+                                        command.to_u8() as char
                                     ),
                                     // TODO: show complete range including
                                     //  previous and next segments

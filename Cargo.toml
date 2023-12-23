@@ -27,25 +27,25 @@ simple-icons-website-i18n = { path = "./i18n" }
 simple-icons-website-config = { path = "./config" }
 simple-icons-website-types = { path = "./types" }
 simple-icons-website-components = { path = "./components" }
-leptos = { version = "0.5.2", default-features = false, features = [
+leptos = { version = "0.5.4", default-features = false, features = [
     "csr",
     "nightly",
     "miniserde",
 ] }
-leptos_meta = { version = "0.5.2", default-features = false, features = [
+leptos_meta = { version = "0.5.4", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos_router = { version = "0.5.2", default-features = false, features = [
+leptos_router = { version = "0.5.4", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos-use = "0.8.1"
+leptos-use = "0.9.0"
 console_log = "1.0.0"
-log = "0.4.17"
+log = "0.4.20"
 console_error_panic_hook = "0.1.7"
-wasm-bindgen = "0.2.87"
-web-sys = { version = "0.3.64", default-features = false, features = [
+wasm-bindgen = "0.2.89"
+web-sys = { version = "0.3.66", default-features = false, features = [
     "Element",
     "HtmlDocument",
     "HtmlCollection",
@@ -71,16 +71,16 @@ web-sys = { version = "0.3.64", default-features = false, features = [
     "CanvasRenderingContext2d",
     "OffscreenCanvasRenderingContext2d",
 ] }
-js-sys = "0.3.64"
-wasm-bindgen-futures = "0.4.37"
+js-sys = "0.3.66"
+wasm-bindgen-futures = "0.4.39"
 lazy_static = "1.4.0"
-syn = "2.0.28"
+syn = "2.0.42"
 colorsys = "0.6.7"
-serde_json = "1.0.104"
+serde_json = "1.0.108"
 nanoserde = "0.1.35"
-svg-path-cst = "0.0.6"
+svg-path-cst = "0.0.7"
 unicode-normalization = "0.1.22"
-icu_collator = "1.1.0"
+icu_collator = "1.4.0"
 fluent-templates = "0.8.0"
-unic-langid = "0.9.3"
-config = { version = "0.13.3", features = ["json"] }
+unic-langid = "0.9.4"
+config = { version = "0.13.4", features = ["json"] }

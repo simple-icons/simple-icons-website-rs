@@ -74,7 +74,7 @@ where {
             return;
         }
 
-        let path_segments = match svg_path_cst(path) {
+        let path_segments = match svg_path_cst(path.as_bytes()) {
             Ok(path_segments) => path_segments,
             Err(err) => {
                 new_lint_errors.push((err.to_string(), None, None));
