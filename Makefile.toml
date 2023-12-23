@@ -9,7 +9,7 @@ default_to_workspace = false
 
 [tasks.init]
 description = "Initialization task run before all others"
-run_task = { name = ["fnm_use", "npm_install", "setup_js_libraries_filenames"] }
+run_task = { name = ["fnm_use", "npm_install"] }
 
 [tasks.fnm_use]
 description = "Run 'fnm use'"
@@ -17,18 +17,6 @@ condition.env_not_set = ["CI"]
 install_crate = { crate_name = "fnm", binary = "fnm", test_arg = "--help" }
 command = "fnm"
 args = ["use", "--install-if-missing", "--silent-if-unchanged"]
-
-[tasks.setup_js_libraries_filenames]
-description = "Setup JS libraries filenames to be able to import cleanly with Trunk"
-script_runner = "node"
-script_extension = "js"
-script = '''
-const fs = require('fs');
-fs.copyFileSync(
-    'node_modules/blob-stream/.js',
-    'node_modules/blob-stream/blob-stream.js',
-)
-'''
 
 [tasks.npm_install]
 description = "Run 'npm install'"
@@ -70,7 +58,7 @@ args = [
     "--watch",
     "../config",
     "--ignore",
-    "./public/assets/dist",
+    "./public/assets/js",
     "--ignore",
     "../i18n/locales",
 ]
@@ -106,7 +94,7 @@ args = [
     "--input",
     "./stylesheet.css",
     "--output",
-    "./public/assets/dist/stylesheet.css",
+    "./public/assets/stylesheet.css",
     "--watch",
     "--no-minify",
 ]
@@ -133,7 +121,7 @@ args = [
     "--input",
     "./stylesheet.css",
     "--output",
-    "./public/assets/dist/stylesheet.css",
+    "./public/assets/stylesheet.css",
 ]
 cwd = "./app"
 
@@ -220,32 +208,41 @@ description = "Lint JS and TS files in the project with ESLint"
 command = "npx"
 args = ["eslint", ".", "--ignore-path", ".gitignore"]
 
+[tasks.build-js-libs]
+description = "Build the fast-fuzzy JS library for the web"
+script_runner = "@duckscript"
+script = '''
+rm -r ./app/public/assets/js
+mkdir -p ./app/public/assets/js
+
+# fast-fuzzy
+packagejson = readfile node_modules/fast-fuzzy/package.json
+fast_fuzzy = json_parse ${packagejson}
+exec npx esbuild ./components/src/controls/search/fast-fuzzy.js --bundle --outfile=./app/public/assets/js/fast-fuzzy-${fast_fuzzy.version}.js --minify
+
+# svg-path-bbox
+packagejson = readfile node_modules/svg-path-bbox/package.json
+svg_path_bbox = json_parse ${packagejson}
+exec npx esbuild ./components/src/js_libs/svg-path-bbox.js --bundle --outfile=./app/public/assets/js/svg-path-bbox-${svg_path_bbox.version}.js --minify
+
+# pdfkit
+packagejson = readfile node_modules/pdfkit/package.json
+pdfkit = json_parse ${packagejson}
+cp ./node_modules/pdfkit/js/pdfkit.standalone.js ./app/public/assets/js/pdfkit-${pdfkit.version}.js
+
+# blob-stream
+packagejson = readfile node_modules/blob-stream/package.json
+blob_stream = json_parse ${packagejson}
+cp ./node_modules/blob-stream/.js ./app/public/assets/js/blob-stream-${blob_stream.version}.js
+
+rm ./app/public/js-libs.html
+writefile ./app/public/js-libs.html "<script type=\"module\" src=\"/js/svg-path-bbox-${svg_path_bbox.version}.js\" defer></script><script type=\"module\" src=\"/js/fast-fuzzy-${fast_fuzzy.version}.js\" defer></script><script src=\"/js/pdfkit-${pdfkit.version}.js\" defer></script><script src=\"/js/blob-stream-${blob_stream.version}.js\" defer></script>"
+'''
+
 [tasks.fetch-deprecated-icons]
 description = "Fetch deprecated icons from simple-icons repository"
 command = "npx"
 args = ["tsx", "scripts/fetch-deprecated-icons.ts"]
-
-[tasks.build-fast-fuzzy]
-description = "Build the fast-fuzzy JS library for the web"
-command = "npx"
-args = [
-    "esbuild",
-    "./components/src/controls/search/fast-fuzzy.js",
-    "--bundle",
-    "--outfile=./app/public/assets/dist/fast-fuzzy.js",
-    "--minify",
-]
-
-[tasks.build-svg-path-bbox]
-description = "Build the svg-path-bbox JS library for the web"
-command = "npx"
-args = [
-    "esbuild",
-    "./components/src/js_libs/svg-path-bbox.js",
-    "--bundle",
-    "--outfile=./app/public/assets/dist/svg-path-bbox.js",
-    "--minify",
-]
 
 [tasks.create-sitemap]
 description = "Create sitemap.xml asset"
@@ -260,8 +257,7 @@ args = ["tsx", "scripts/create-cname.ts"]
 [tasks.run-pre-build-scripts]
 description = "Run pre-build scripts"
 run_task = { name = [
-    "build-fast-fuzzy",
-    "build-svg-path-bbox",
+    "build-js-libs",
     "fetch-deprecated-icons",
     "create-sitemap",
     "create-cname",
