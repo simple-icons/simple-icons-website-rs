@@ -29,7 +29,7 @@ pub fn ColorInput(
             <input
                 type="text"
                 style="width:68px"
-                name="preview-color"
+                id="preview-color"
                 value=color
                 prop:value=color
                 on:input=move |ev| {
@@ -106,7 +106,7 @@ where {
                 node_ref=input_ref
                 type="text"
                 style="width:682px"
-                name="preview-path"
+                id="preview-path"
                 value=path
                 prop:value=path
                 class:warn=move || !path_lint_errors().is_empty()
@@ -260,9 +260,8 @@ pub fn BrandInput(
             <input
                 node_ref=input_ref
                 type="text"
-                class="mr-7"
-                style="width:524px"
-                name="preview-brand"
+                class="mr-7 w-[524px]"
+                id="preview-brand"
                 value=brand
                 prop:value=brand
                 on:input=move |ev| {
@@ -337,8 +336,7 @@ fn BrandSuggestions(
                     on:click=move |_| {
                         set_show_more_brand_suggestions(true);
                         let input = document()
-                            .get_elements_by_name("preview-brand")
-                            .item(0)
+                            .get_element_by_id("preview-brand")
                             .unwrap()
                             .dyn_into::<web_sys::HtmlInputElement>()
                             .unwrap();
@@ -378,8 +376,7 @@ fn BrandSuggestion(
             spawn_local(async move {
                 if let Some(svg) = fetch_text(&format!("/icons/{}.svg", icon.slug)).await {
                     let path_input = document()
-                        .get_elements_by_name("preview-path")
-                        .item(0)
+                        .get_element_by_id("preview-path")
                         .unwrap()
                         .dyn_into::<web_sys::HtmlInputElement>()
                         .unwrap();
