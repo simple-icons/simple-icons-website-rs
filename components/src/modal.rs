@@ -3,9 +3,9 @@ use crate::svg::{SVGDef, SVGIcon};
 use crate::Url;
 use core::fmt;
 use i18n::move_tr;
-use leptos::{ev::MouseEvent, *};
+use leptos::{ev::MouseEvent, html::Div, *};
+use leptos_use::on_click_outside;
 use std::str::FromStr;
-use web_sys;
 
 #[component]
 fn ModalHeader(
@@ -16,7 +16,7 @@ fn ModalHeader(
     title_is_copyable: bool,
     /// Function executed when the close button is clicked
     /// or the user clicks outside the modal
-    on_close: Callback<MouseEvent>,
+    on_close: Callback<()>,
 ) -> impl IntoView {
     view! {
         <div>
@@ -31,7 +31,7 @@ fn ModalHeader(
 
                 {title}
             </h2>
-            <button type="button" title=move_tr!("close") on:click=on_close>
+            <button type="button" title=move_tr!("close") on:click=move |_| on_close(())>
                 <SVGIcon path=&SVGDef::Cross/>
             </button>
         </div>
@@ -39,40 +39,8 @@ fn ModalHeader(
 }
 
 #[component]
-fn ModalBody(children: Children) -> impl IntoView {
-    view! { <div>{children()}</div> }
-}
-
-#[component]
-fn ModalShadow(
-    children: Children,
-    /// Indicates whether the modal is open or not
-    is_open: Signal<bool>,
-    /// Function executed when the user clicks in the shadow of the modal
-    on_close: Callback<MouseEvent>,
-) -> impl IntoView {
-    let class: &'static str = "modal-shadow";
-
-    view! {
-        <div
-            class=class
-            class:hidden=move || !is_open()
-            on:click=move |ev: MouseEvent| {
-                let target = event_target::<web_sys::HtmlElement>(&ev);
-                if target.class_list().contains(class) {
-                    on_close(ev);
-                }
-            }
-        >
-
-            {children()}
-        </div>
-    }
-}
-
-#[component]
 pub fn Modal(
-    children: Children,
+    children: ChildrenFn,
     /// Title of the modal
     #[prop(optional)]
     title: Signal<String>,
@@ -83,15 +51,20 @@ pub fn Modal(
     is_open: Signal<bool>,
     /// Function executed when the close button is clicked
     /// or the user clicks outside the modal
-    on_close: Callback<MouseEvent>,
+    on_close: Callback<()>,
 ) -> impl IntoView {
+    let modal_ref = create_node_ref::<Div>();
+    _ = on_click_outside(modal_ref, move |_| on_close(()));
+
     view! {
-        <ModalShadow is_open=is_open on_close=on_close>
-            <div class="modal">
-                <ModalHeader title=title title_is_copyable=title_is_copyable on_close=on_close/>
-                <ModalBody>{children()}</ModalBody>
+        <Show when=is_open>
+            <div class="modal-shadow" is_open=is_open>
+                <div ref_=modal_ref class="modal">
+                    <ModalHeader title=title title_is_copyable=title_is_copyable on_close=on_close/>
+                    <div>{children()}</div>
+                </div>
             </div>
-        </ModalShadow>
+        </Show>
     }
 }
 
