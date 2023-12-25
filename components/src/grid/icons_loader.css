@@ -11,9 +11,4 @@
   .icons-loader > button {
     @apply button;
   }
-
-  /* Spinner to show when loading more icons */
-  .icons-loader > svg > circle {
-    @apply fill-custom-button-content-default-color;
-  }
 }

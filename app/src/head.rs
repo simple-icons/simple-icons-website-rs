@@ -48,13 +48,7 @@ pub fn Head() -> impl IntoView {
 
 /// Open graph meta tags
 #[component]
-fn MetaOpenGraph<F>(
-    /// Site description
-    description: F,
-) -> impl IntoView
-where
-    F: Fn() -> String + 'static,
-{
+fn MetaOpenGraph(description: Signal<String>) -> impl IntoView {
     let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
     let url = format!("https://{}/", &domain);
     view! {
@@ -69,13 +63,7 @@ where
 
 /// X (social network) meta tags
 #[component]
-fn MetaX<F>(
-    /// Site description
-    description: F,
-) -> impl IntoView
-where
-    F: Fn() -> String + 'static,
-{
+fn MetaX(description: Signal<String>) -> impl IntoView {
     let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
     let url = format!("https://{}/", &domain);
     view! {

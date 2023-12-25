@@ -70,3 +70,5 @@ preview-generator = 미리보기 생성기
 page-not-found = 페이지를 찾을 수 없음
 maybe-youre-looking-for = 아마도 다음을 찾고 있을지도 모릅니다
 copy-preview = 미리보기 복사
+show = 보기
+fix = 수정

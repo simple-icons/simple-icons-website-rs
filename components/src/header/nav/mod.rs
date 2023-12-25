@@ -40,12 +40,12 @@ pub fn HeaderMenu() -> impl IntoView {
                     svg_path=simple_icon_svg_path!("github")
                 />
                 <HeaderMenuLink
-                    title=move || "npm".to_string()
+                    title=(move || "npm".to_string()).into()
                     href="https://www.npmjs.com/package/simple-icons"
                     svg_path=simple_icon_svg_path!("npm")
                 />
                 <HeaderMenuLink
-                    title=move || "Packagist".to_string()
+                    title=(move || "Packagist".to_string()).into()
                     href="https://packagist.org/packages/simple-icons/simple-icons"
                     svg_path=simple_icon_svg_path!("packagist")
                 />
@@ -97,7 +97,13 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
             on:click=move |_| header_state.update(|state| state.toggle_menu())
             title=move_tr!("open-menu")
             svg_path="M1.412 3.53A1.412 1.412 0 0 0 0 4.94a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 4.94a1.412 1.412 0 0 0-1.412-1.412Zm0 7.058A1.412 1.412 0 0 0 0 12a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 12a1.412 1.412 0 0 0-1.412-1.412Zm0 7.06A1.412 1.412 0 0 0 0 19.057a1.412 1.412 0 0 0 1.412 1.413h21.176A1.412 1.412 0 0 0 24 19.059a1.412 1.412 0 0 0-1.412-1.412Z"
-            class=move || if header_state().menu_open { "hidden" } else { "block lg:hidden" }
+            class=Signal::derive(move || {
+                if header_state().menu_open {
+                    "hidden".to_string()
+                } else {
+                    "block lg:hidden".to_string()
+                }
+            })
         />
     }
 }
@@ -110,7 +116,10 @@ pub fn HeaderMenuCloseButton() -> impl IntoView {
     view! {
         <HeaderMenuButton
             title=move_tr!("close-menu")
-            class=move || if header_state().menu_open { "block" } else { "hidden" }
+            class=Signal::derive(move || {
+                if header_state().menu_open { "block".to_string() } else { "hidden".to_string() }
+            })
+
             svg_path=SVGDef::Cross.d()
             on:click=move |_| header_state.update(|state| state.toggle_menu())
         />

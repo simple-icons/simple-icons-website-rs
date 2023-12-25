@@ -15,7 +15,6 @@ pub mod js_libs;
 pub mod keyboard;
 pub mod modal;
 pub mod preview_generator;
-pub(crate) mod spinners;
 pub(crate) mod storage;
 pub mod svg;
 pub(crate) mod url;

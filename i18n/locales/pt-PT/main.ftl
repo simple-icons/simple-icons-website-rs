@@ -70,3 +70,5 @@ preview-generator = Gerador de visualização
 page-not-found = Página não encontrada
 maybe-youre-looking-for = Talvez você esteja procurando...
 copy-preview = Copiar visualização
+show = Mostrar
+fix = Corrigir

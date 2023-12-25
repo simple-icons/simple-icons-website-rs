@@ -73,7 +73,14 @@ fn ThirdPartyExtensionsButton() -> impl IntoView {
     view! {
         <HeaderMenuButton
             title=move_tr!("third-party-extensions")
-            class=move || if header_state().menu_open { "block" } else { "hidden lg:block" }
+            class=Signal::derive(move || {
+                if header_state().menu_open {
+                    "block".to_string()
+                } else {
+                    "hidden lg:block".to_string()
+                }
+            })
+
             on:click=move |_| modal_open.set_extensions()
             svg_path=THIRD_PARTY_EXTENSIONS_ICON_SVG_PATH
         />
@@ -89,8 +96,8 @@ pub fn ThirdPartyExtensions() -> impl IntoView {
         <ThirdPartyExtensionsButton/>
         <Modal
             title=move_tr!("third-party-extensions")
-            is_open=move || modal_open.0() == Some(ModalOpen::Extensions)
-            on_close=move |_| modal_open.set_none()
+            is_open=Signal::derive(move || modal_open.0() == Some(ModalOpen::Extensions))
+            on_close=(move |_| modal_open.set_none()).into()
         >
             <ThirdPartyExtensionsTable/>
         </Modal>

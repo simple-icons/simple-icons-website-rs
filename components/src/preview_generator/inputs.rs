@@ -166,7 +166,7 @@ fn ShowLintErrorButton(
 ) -> impl IntoView {
     view! {
         <Button
-            title=move || "Show".to_string()
+            title=move_tr!("show")
             on:click=move |_| {
                 let input = input_ref().unwrap();
                 input.focus().unwrap();
@@ -186,7 +186,7 @@ fn FixLintErrorButton(
 ) -> impl IntoView {
     view! {
         <Button
-            title=move || "Fix".to_string()
+            title=move_tr!("fix")
             on:click=move |_| {
                 let input = input_ref().unwrap();
                 let (new_value, (start, end)) = fixer(&input.value(), (start, end));

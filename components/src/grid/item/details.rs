@@ -347,13 +347,13 @@ pub fn IconDetailsModal() -> impl IntoView {
 
     view! {
         <Modal
-            title=move || "".to_string()
             title_is_copyable=true
-            is_open=move || current_icon_view().is_some()
-            on_close=move |_| {
+            is_open=Signal::derive(move || current_icon_view().is_some())
+            on_close=(move |_| {
                 current_icon_view.update(|state| *state = None);
                 modal_open.set_none();
-            }
+            })
+                .into()
         >
 
             <div class="icon-details-modal" id=Ids::IconDetailsModal.as_str()>

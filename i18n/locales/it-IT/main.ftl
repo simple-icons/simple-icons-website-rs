@@ -70,3 +70,5 @@ preview-generator = Generatore di anteprime
 page-not-found = Pagina non trovata
 maybe-youre-looking-for = Forse stai cercando...
 copy-preview = Copia anteprima
+show = Mostra
+fix = Correggi

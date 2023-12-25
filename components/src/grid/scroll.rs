@@ -1,26 +1,20 @@
 use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
 use crate::svg::{SVGDef, SVGIcon};
 use i18n::move_tr;
-use leptos::{ev::MouseEvent, *};
+use leptos::*;
 use leptos_use::use_window_scroll;
 
 #[component]
-pub fn ScrollButton<T, C>(
+pub fn ScrollButton(
     /// The title of the button
-    title: T,
-    /// The callback to be called when the button is clicked
-    on_click: C,
+    title: Signal<String>,
     /// The SVG path of the icon
     svg_path: &'static SVGDef,
     /// Additional classes to be added to the button
     class: &'static str,
-) -> impl IntoView
-where
-    T: Fn() -> String + 'static,
-    C: Fn(MouseEvent) + 'static,
-{
+) -> impl IntoView {
     view! {
-        <button class=format!("scroll-button {}", class) title=title on:click=on_click>
+        <button class=format!("scroll-button {}", class) title=title>
             <SVGIcon path=svg_path/>
         </button>
     }
@@ -35,7 +29,7 @@ pub fn ScrollToHeaderButton() -> impl IntoView {
             <ScrollButton
                 class="scroll-to-header-button"
                 title=move_tr!("go-to-header")
-                on_click=move |_| {
+                on:click=move |_| {
                     document().query_selector("header").unwrap().unwrap().scroll_into_view()
                 }
 
@@ -57,7 +51,7 @@ pub fn ScrollToFooterButton() -> impl IntoView {
             <ScrollButton
                 class="scroll-to-footer-button"
                 title=move_tr!("go-to-footer")
-                on_click=move |_| {
+                on:click=move |_| {
                     icons_loader.update(|state| state.load = false);
                     let footer = document().query_selector("footer").unwrap().unwrap();
                     footer.scroll_into_view();

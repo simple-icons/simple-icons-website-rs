@@ -128,9 +128,9 @@ macro_rules! tr {
 #[macro_export]
 macro_rules! move_tr {
     ($key:expr) => {
-        move || $crate::tr!($key)
+        Signal::derive(move || $crate::tr!($key))
     };
     ($key:expr, $args:expr) => {
-        move || $crate::tr!($key, $args)
+        Signal::derive(move || $crate::tr!($key, $args))
     };
 }

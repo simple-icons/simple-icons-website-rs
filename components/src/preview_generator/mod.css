@@ -125,7 +125,7 @@
   }
 
   .preview-path-lint-errors li > :last-child {
-    @apply flex flex-row max-w-[70px] mr-1 relative float-right;
+    @apply flex flex-row mr-1 relative float-right select-none;
   }
 
   .preview-path-lint-errors li > :last-child button {

@@ -2,23 +2,18 @@ use crate::header::HeaderStateSignal;
 use crate::svg::SVGIcon;
 use leptos::*;
 
-pub trait TitleFn = Fn() -> String + 'static + Copy;
-
 /// Header menu link
 ///
 /// Each link of the header menu
 #[component]
-pub fn HeaderMenuLink<T>(
+pub fn HeaderMenuLink(
     /// Title of the link
-    title: T,
+    title: Signal<String>,
     /// URL of the link
     href: &'static str,
     /// SVG path of the icon
     svg_path: &'static str,
-) -> impl IntoView
-where
-    T: TitleFn,
-{
+) -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
     let title_fn = create_memo(move |_| title());
 
@@ -47,18 +42,14 @@ where
 ///
 /// Each button of the header menu that is not a link
 #[component]
-pub fn HeaderMenuButton<C, T>(
+pub fn HeaderMenuButton(
     /// Additional classes to add to the button
-    class: C,
+    class: Signal<String>,
     /// Title of the button
-    title: T,
+    title: Signal<String>,
     /// SVG path of the icon
     svg_path: &'static str,
-) -> impl IntoView
-where
-    C: Fn() -> &'static str + 'static,
-    T: TitleFn,
-{
+) -> impl IntoView {
     view! {
         <li title=title class=class tabindex=0>
             <SVGIcon role="button" path=svg_path width="36" height="36" view_box="0 0 24 24"/>

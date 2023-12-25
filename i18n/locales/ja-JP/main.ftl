@@ -68,3 +68,5 @@ save-preview = プレビューを保存
 icons = アイコン
 preview-generator = プレビュー ジェネレーター
 copy-preview = プレビューをコピー
+show = 表示
+fix = 修正

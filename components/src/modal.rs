@@ -7,25 +7,17 @@ use leptos::{ev::MouseEvent, *};
 use std::str::FromStr;
 use web_sys;
 
-pub trait TitleFn = Fn() -> String + 'static;
-pub trait IsOpenFn = Fn() -> bool + 'static;
-pub trait OnCloseFn = Fn(MouseEvent) + 'static + Copy;
-
 #[component]
-fn ModalHeader<T, C>(
+fn ModalHeader(
     /// Title of the modal
-    title: T,
+    title: Signal<String>,
     /// Indicates whether the title is copyable
     #[prop(optional)]
     title_is_copyable: bool,
     /// Function executed when the close button is clicked
     /// or the user clicks outside the modal
-    on_close: C,
-) -> impl IntoView
-where
-    T: TitleFn,
-    C: OnCloseFn,
-{
+    on_close: Callback<MouseEvent>,
+) -> impl IntoView {
     view! {
         <div>
             <h2
@@ -52,17 +44,13 @@ fn ModalBody(children: Children) -> impl IntoView {
 }
 
 #[component]
-fn ModalShadow<O, C>(
+fn ModalShadow(
     children: Children,
     /// Indicates whether the modal is open or not
-    is_open: O,
+    is_open: Signal<bool>,
     /// Function executed when the user clicks in the shadow of the modal
-    on_close: C,
-) -> impl IntoView
-where
-    O: IsOpenFn,
-    C: OnCloseFn,
-{
+    on_close: Callback<MouseEvent>,
+) -> impl IntoView {
     let class: &'static str = "modal-shadow";
 
     view! {
@@ -83,24 +71,20 @@ where
 }
 
 #[component]
-pub fn Modal<T, O, C>(
+pub fn Modal(
     children: Children,
     /// Title of the modal
-    title: T,
+    #[prop(optional)]
+    title: Signal<String>,
     /// Indicates whether the title is copyable
     #[prop(optional)]
     title_is_copyable: bool,
     /// Indicates whether the modal is open or not
-    is_open: O,
+    is_open: Signal<bool>,
     /// Function executed when the close button is clicked
     /// or the user clicks outside the modal
-    on_close: C,
-) -> impl IntoView
-where
-    O: IsOpenFn,
-    T: TitleFn,
-    C: OnCloseFn,
-{
+    on_close: Callback<MouseEvent>,
+) -> impl IntoView {
     view! {
         <ModalShadow is_open=is_open on_close=on_close>
             <div class="modal">

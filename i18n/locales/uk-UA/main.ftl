@@ -70,3 +70,5 @@ preview-generator = Генератор попереднього перегляд
 page-not-found = Сторінку не знайдено
 maybe-youre-looking-for = Можливо, ви шукаєте…
 copy-preview = Копіювати превью
+show = Показати
+fix = Виправити

@@ -100,7 +100,7 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                 <ControlButtonText
                     text=move_tr!("svg")
                     title=download_svg_title
-                    active=move || { download_type() == DownloadType::SVG }
+                    active=Signal::derive(move || { download_type() == DownloadType::SVG })
                     on:click=move |_| {
                         download_type
                             .update(move |state| {
@@ -113,7 +113,7 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                 <ControlButtonText
                     text=move_tr!("pdf")
                     title=download_pdf_title
-                    active=move || { download_type() == DownloadType::PDF }
+                    active=Signal::derive(move || { download_type() == DownloadType::PDF })
                     on:click=move |_| {
                         download_type
                             .update(|state| {

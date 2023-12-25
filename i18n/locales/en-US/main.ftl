@@ -70,3 +70,5 @@ preview-generator = Preview generator
 page-not-found = Page not found
 maybe-youre-looking-for = Maybe you're looking for...
 copy-preview = Copy preview
+show = Show
+fix = Fix
