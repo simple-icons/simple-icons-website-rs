@@ -60,8 +60,7 @@ pub fn Modal(
         <div class=move || {
             let mut cls = "modal-shadow".to_string();
             if !is_open() {
-                cls.push(' ');
-                cls.push_str("hidden");
+                cls.push_str(" hidden");
             }
             cls
         }>
