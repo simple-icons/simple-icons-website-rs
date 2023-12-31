@@ -57,14 +57,19 @@ pub fn Modal(
     _ = on_click_outside(modal_ref, move |_| on_close(()));
 
     view! {
-        <Show when=is_open>
-            <div class="modal-shadow" is_open=is_open>
-                <div ref_=modal_ref class="modal">
-                    <ModalHeader title=title title_is_copyable=title_is_copyable on_close=on_close/>
-                    <div>{children()}</div>
-                </div>
+        <div class=move || {
+            let mut cls = "modal-shadow".to_string();
+            if !is_open() {
+                cls.push(' ');
+                cls.push_str("hidden");
+            }
+            cls
+        }>
+            <div ref_=modal_ref class="modal">
+                <ModalHeader title=title title_is_copyable=title_is_copyable on_close=on_close/>
+                <div>{children()}</div>
             </div>
-        </Show>
+        </div>
     }
 }
 
