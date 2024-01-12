@@ -97,7 +97,8 @@ pub fn ThirdPartyExtensions() -> impl IntoView {
         <Modal
             title=move_tr!("third-party-extensions")
             is_open=Signal::derive(move || modal_open.0() == Some(ModalOpen::Extensions))
-            on_close=(move |_| modal_open.set_none()).into()
+            on_close=Signal::derive(move || modal_open.set_none())
+            on_close_focus_search_bar=true
         >
             <ThirdPartyExtensionsTable/>
         </Modal>

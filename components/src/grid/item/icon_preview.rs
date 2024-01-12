@@ -1,9 +1,8 @@
 use crate::copy::copy_setting_copied_transition_in_element;
 use crate::fetch::fetch_text;
 use i18n::move_tr;
-use leptos::{ev::MouseEvent, *};
+use leptos::{ev::MouseEvent, wasm_bindgen::JsCast, *};
 use std::collections::HashMap;
-use wasm_bindgen::JsCast;
 use web_sys;
 
 /// Copy image children source content to clipboard

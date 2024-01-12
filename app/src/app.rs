@@ -10,10 +10,9 @@ use components::header::{
 };
 use components::modal::provide_modal_open_context;
 use components::svg::SVGDefsDefinition;
-use leptos::{html::Footer as FooterHtmlElement, *};
+use leptos::{html::Footer as FooterHtmlElement, wasm_bindgen::JsCast, *};
 use leptos_router::{Route, Router, Routes};
 use leptos_use::use_preferred_dark;
-use wasm_bindgen::JsCast;
 
 /// Title of the page
 pub static TITLE: &str = "Simple Icons";

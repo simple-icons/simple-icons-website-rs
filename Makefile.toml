@@ -209,34 +209,37 @@ command = "npx"
 args = ["eslint", ".", "--ignore-path", ".gitignore"]
 
 [tasks.build-js-libs]
-description = "Build the fast-fuzzy JS library for the web"
+description = "Build the JS libraries for the web"
 script_runner = "@duckscript"
 script = '''
 rm -r ./app/public/assets/js
 mkdir ./app/public/assets/js
+jslibs = set ./app/public/js-libs.html
+writefile ${jslibs} ""
 
 # fast-fuzzy
 packagejson = readfile node_modules/fast-fuzzy/package.json
 fast_fuzzy = json_parse ${packagejson}
 exec npx esbuild ./components/src/controls/search/fast-fuzzy.js --bundle --outfile=./app/public/assets/js/fast-fuzzy-${fast_fuzzy.version}.js --minify
+appendfile ${jslibs} "<script type=\"module\" src=\"/js/fast-fuzzy-${fast_fuzzy.version}.js\" defer></script>"
 
 # svg-path-bbox
 packagejson = readfile node_modules/svg-path-bbox/package.json
 svg_path_bbox = json_parse ${packagejson}
 exec npx esbuild ./components/src/js_libs/svg-path-bbox.js --bundle --outfile=./app/public/assets/js/svg-path-bbox-${svg_path_bbox.version}.js --minify
+appendfile ${jslibs} "<script type=\"module\" src=\"/js/svg-path-bbox-${svg_path_bbox.version}.js\" defer></script>"
 
 # pdfkit
 packagejson = readfile node_modules/pdfkit/package.json
 pdfkit = json_parse ${packagejson}
 cp ./node_modules/pdfkit/js/pdfkit.standalone.js ./app/public/assets/js/pdfkit-${pdfkit.version}.js
+appendfile ${jslibs} "<script src=\"/js/pdfkit-${pdfkit.version}.js\" defer></script>"
 
 # blob-stream
 packagejson = readfile node_modules/blob-stream/package.json
 blob_stream = json_parse ${packagejson}
 cp ./node_modules/blob-stream/.js ./app/public/assets/js/blob-stream-${blob_stream.version}.js
-
-rm ./app/public/js-libs.html
-writefile ./app/public/js-libs.html "<script type=\"module\" src=\"/js/svg-path-bbox-${svg_path_bbox.version}.js\" defer></script><script type=\"module\" src=\"/js/fast-fuzzy-${fast_fuzzy.version}.js\" defer></script><script src=\"/js/pdfkit-${pdfkit.version}.js\" defer></script><script src=\"/js/blob-stream-${blob_stream.version}.js\" defer></script>"
+appendfile ${jslibs} "<script src=\"/js/blob-stream-${blob_stream.version}.js\" defer></script>"
 '''
 
 [tasks.fetch-deprecated-icons]

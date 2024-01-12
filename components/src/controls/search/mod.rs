@@ -12,13 +12,27 @@ use crate::Url;
 use fuzzy::{build_searcher, search};
 use i18n::move_tr;
 use js_sys::JsString;
-use leptos::{document, html::Input, *};
+use leptos::{document, html::Input, wasm_bindgen::JsCast, *};
 use types::SimpleIcon;
-use wasm_bindgen::JsCast;
 use web_sys;
 
 #[derive(Copy, Clone)]
 pub struct SearchValueSignal(pub RwSignal<String>);
+
+pub fn get_search_input() -> web_sys::HtmlInputElement {
+    document()
+        .get_element_by_id(Ids::SearchInput.as_str())
+        .unwrap()
+        .dyn_into::<web_sys::HtmlInputElement>()
+        .unwrap()
+}
+
+/// Set the focus on the search bar
+pub fn focus_search_bar() {
+    let input = get_search_input();
+    input.blur().unwrap();
+    input.focus().unwrap();
+}
 
 pub fn provide_search_context() -> String {
     let initial_search_value = initial_search_value();
@@ -63,11 +77,7 @@ pub fn set_search_value_on_localstorage(search_value: &str) {
 }
 
 pub fn fire_on_search_event() {
-    let input = document()
-        .get_element_by_id(Ids::SearchInput.as_str())
-        .unwrap()
-        .dyn_into::<web_sys::HtmlInputElement>()
-        .unwrap();
+    let input = get_search_input();
     dispatch_input_event_on_input(&input);
 }
 

@@ -1,3 +1,4 @@
+use crate::controls::search::focus_search_bar;
 use crate::copy::copy_inner_text_on_click;
 use crate::svg::{SVGDef, SVGIcon};
 use crate::Url;
@@ -16,7 +17,7 @@ fn ModalHeader(
     title_is_copyable: bool,
     /// Function executed when the close button is clicked
     /// or the user clicks outside the modal
-    on_close: Callback<()>,
+    on_close: Signal<()>,
 ) -> impl IntoView {
     view! {
         <div>
@@ -31,7 +32,7 @@ fn ModalHeader(
 
                 {title}
             </h2>
-            <button type="button" title=move_tr!("close") on:click=move |_| on_close(())>
+            <button type="button" title=move_tr!("close") on:click=move |_| on_close()>
                 <SVGIcon path=&SVGDef::Cross/>
             </button>
         </div>
@@ -51,10 +52,27 @@ pub fn Modal(
     is_open: Signal<bool>,
     /// Function executed when the close button is clicked
     /// or the user clicks outside the modal
-    on_close: Callback<()>,
+    on_close: Signal<()>,
+    /// Set the focus on the search bar when the modal is closed
+    #[prop(optional, default = false)]
+    on_close_focus_search_bar: bool,
 ) -> impl IntoView {
     let modal_ref = create_node_ref::<Div>();
-    _ = on_click_outside(modal_ref, move |_| on_close(()));
+    _ = on_click_outside(modal_ref, move |_| {
+        if is_open() {
+            on_close();
+            if on_close_focus_search_bar {
+                focus_search_bar();
+            }
+        }
+    });
+
+    let on_close_header = move || {
+        on_close();
+        if on_close_focus_search_bar {
+            focus_search_bar();
+        }
+    };
 
     view! {
         <div class=move || {
@@ -65,7 +83,12 @@ pub fn Modal(
             cls
         }>
             <div ref_=modal_ref class="modal">
-                <ModalHeader title=title title_is_copyable=title_is_copyable on_close=on_close/>
+                <ModalHeader
+                    title=title
+                    title_is_copyable=title_is_copyable
+                    on_close=Signal::derive(on_close_header)
+                />
+
                 <div>{children()}</div>
             </div>
         </div>

@@ -1,5 +1,7 @@
-use leptos::*;
-use wasm_bindgen::{closure::Closure, JsCast};
+use leptos::{
+    wasm_bindgen::{closure::Closure, JsCast},
+    *,
+};
 
 pub fn get_canvas_container() -> web_sys::HtmlCanvasElement {
     document()

@@ -1,6 +1,5 @@
-use leptos::{document, ev::keydown, set_timeout};
+use leptos::{document, ev::keydown, set_timeout, wasm_bindgen::JsCast};
 use leptos_use::use_event_listener;
-use wasm_bindgen::JsCast;
 use web_sys::{HtmlButtonElement, KeyboardEvent};
 
 pub fn load_keyboard_shortcut_ctrl_and_key_on_click_id(

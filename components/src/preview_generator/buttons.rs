@@ -9,10 +9,9 @@ use crate::preview_generator::{
 use crate::svg::{svg_with_title_path_opt_fill, SVGDef};
 use crate::Ids;
 use i18n::{move_tr, tr};
-use leptos::*;
+use leptos::{wasm_bindgen::JsCast, *};
 use simple_icons::sdk;
 use std::collections::HashMap;
-use wasm_bindgen::JsCast;
 
 #[component]
 pub fn PreviewButtons(

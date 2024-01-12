@@ -1,6 +1,5 @@
-use leptos::document;
-use wasm_bindgen::prelude::*;
 use web_sys;
+use {leptos::document, wasm_bindgen::prelude::*};
 
 #[wasm_bindgen(module = "/src/controls/download/pdf.js")]
 extern "C" {

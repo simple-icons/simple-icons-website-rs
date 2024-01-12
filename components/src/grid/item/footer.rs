@@ -1,5 +1,6 @@
-use crate::controls::download::{
-    download_pdf, download_svg, DownloadType, DownloadTypeSignal,
+use crate::controls::{
+    download::{download_pdf, download_svg, DownloadType, DownloadTypeSignal},
+    search::focus_search_bar,
 };
 use crate::copy::copy_setting_copied_transition_in_element;
 use crate::grid::item::details::fill_icon_details_modal_with_icon;
@@ -79,6 +80,7 @@ pub fn IconGridItemFooter(
                     } else {
                         download_pdf(icon.slug);
                     }
+                    focus_search_bar();
                 }
             >
 

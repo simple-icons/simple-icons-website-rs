@@ -8,10 +8,9 @@ use crate::grid::CurrentIconViewSignal;
 use crate::modal::{Modal, ModalOpenSignal};
 use crate::Ids;
 use i18n::{move_tr, tr, Language};
-use leptos::{ev::MouseEvent, *};
+use leptos::{ev::MouseEvent, wasm_bindgen::JsCast, *};
 use std::collections::HashMap;
 use types::SimpleIcon;
-use wasm_bindgen::JsCast;
 use web_sys;
 
 fn get_slug_from_modal_container() -> String {
@@ -349,11 +348,11 @@ pub fn IconDetailsModal() -> impl IntoView {
         <Modal
             title_is_copyable=true
             is_open=Signal::derive(move || current_icon_view().is_some())
-            on_close=(move |_| {
+            on_close_focus_search_bar=true
+            on_close=Signal::derive(move || {
                 current_icon_view.update(|state| *state = None);
                 modal_open.set_none();
             })
-                .into()
         >
 
             <div class="icon-details-modal" id=Ids::IconDetailsModal.as_str()>
