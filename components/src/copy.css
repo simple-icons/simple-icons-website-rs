@@ -21,11 +21,16 @@
    * Note that you need to specify the size of the icon using `before:bg-[size:*]`.
    **/
   .copy-button {
-    @apply relative cursor-pointer before:content-[''] before:absolute
+    @apply relative cursor-pointer
+      before:content-[''] before:absolute
       before:hidden before:hover:flex before:focus:flex
       before:w-full before:h-full
       before:bg-center before:bg-no-repeat
       before:z-10;
+  }
+
+  .copy-button.copied {
+    @apply before:flex;
   }
 
   .copy-button-color-scheme {
