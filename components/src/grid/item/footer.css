@@ -6,7 +6,7 @@ main > ul > li > :last-child {
 /* Hex color */
 main > ul > li > :last-child > :first-child {
   @apply w-1/2 text-xs
-    text-[var(--light-contrast-color)]
+    text-custom-light-contrast-color
     /* Without !important doesn't work */
     hover:!text-transparent focus:!text-transparent
     copy-button-white before:bg-[size:1.2rem]
@@ -14,7 +14,7 @@ main > ul > li > :last-child > :first-child {
 }
 
 main > ul > li > :last-child > :first-child.dark {
-  @apply text-[var(--dark-contrast-color)] copy-button-black;
+  @apply text-custom-dark-contrast-color copy-button-black;
 }
 
 @layer components {

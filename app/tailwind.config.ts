@@ -10,13 +10,24 @@ import postcssImportPlugin from 'postcss-import';
  * all custom colors into TailwindCSS configuration.
  */
 const parseRootCssVariables = (): Array<string> => {
-  return fs
-    .readFileSync(path.resolve(`${__dirname}/stylesheet.css`), 'utf8')
+  const css = fs.readFileSync(
+    path.resolve(`${__dirname}/stylesheet.css`),
+    'utf8',
+  );
+  const root = css
+    .split(':root')[1]
+    .split('}', 2)[0]
+    .split('\n')
+    .filter((line) => line.startsWith('  --') && line.includes('-color:'))
+    .map((line) => line.split('--')[1].split(':')[0]);
+
+  const dark = css
     .split('body.dark {', 2)[1]
     .split('}', 2)[0]
     .split('\n')
     .filter((line) => line.startsWith('  --'))
     .map((line) => line.split('--')[1].split(':')[0]);
+  return [...root, ...dark];
 };
 
 export default {
