@@ -41,6 +41,7 @@
   /* Modal body */
   .modal > :last-child {
     @apply w-full px-1 xs:px-4 py-4
-      overflow-y-auto overflow-x-hidden;
+      overflow-y-auto overflow-x-hidden
+      scroll-bar;
   }
 }

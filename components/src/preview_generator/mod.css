@@ -69,7 +69,8 @@
   .preview-brand-suggestions {
     @apply absolute z-40 ml-[60px] mt-2 max-h-[333px]
       border border-[var(--divider-color)]
-      rounded-br-md rounded-tr-[5px] rounded-bl-md overflow-hidden;
+      rounded-br-md rounded-tr-[5px] rounded-bl-md overflow-hidden
+      scroll-bar;
   }
 
   .preview-brand-suggestions li {
@@ -109,7 +110,8 @@
     @apply absolute z-40 ml-[60px] mt-2 max-h-[319px] flex flex-col
       border border-[var(--divider-color)] box-border
       rounded-br-md rounded-tr-[4px] rounded-bl-md overflow-y-auto
-      bg-[#cbc407] text-[#333] text-xs max-w-[682px];
+      bg-[#cbc407] text-[#333] text-xs max-w-[682px]
+      scroll-bar;
   }
 
   .preview-path-lint-errors li {
