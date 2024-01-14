@@ -9,6 +9,16 @@ permissions:
   contents: write
 
 jobs:
+  lighthouse:
+    name: Audit URLs using Lighthouse
+    uses: treosh/lighthouse-ci-action@10.1.0
+    with:
+      urls: |
+        https://wasm.simpleicons.org/
+        https://wasm.simpleicons.org/preview/
+      uploadArtifacts: true
+      temporaryPublicStorage: true
+
   run:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
