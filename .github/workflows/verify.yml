@@ -12,6 +12,8 @@ jobs:
   lighthouse:
     name: Lighthouse report
     runs-on: ubuntu-latest
+    if: |
+      github.ref == 'refs/heads/master'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
