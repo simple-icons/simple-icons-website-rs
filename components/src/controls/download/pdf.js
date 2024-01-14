@@ -1,6 +1,38 @@
-export const download_pdf_ = async (slug, errorGeneratingPdfMessage) => {
+const addScripts = (pdfkitVersion, blobStreamVersion) => {
+  if (!window.PDFDocument) {
+    const script = document.createElement('script');
+    script.src = `/js/pdfkit-${pdfkitVersion}.js`;
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+  if (!window.blobStream) {
+    const script = document.createElement('script');
+    script.src = `/js/blob-stream-${blobStreamVersion}.js`;
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      if (window.PDFDocument && window.blobStream) {
+        clearInterval(interval);
+        resolve();
+      }
+    }, 100);
+  });
+};
+
+export const download_pdf_ = async (
+  slug,
+  errorGeneratingPdfMessage,
+  pdfkitVersion,
+  blobStreamVersion,
+) => {
   const icon_svg_url = `/icons/${slug}.svg`;
-  const res = await fetch(icon_svg_url);
+  const [res, ,] = await Promise.all([
+    fetch(icon_svg_url),
+    addScripts(pdfkitVersion, blobStreamVersion),
+  ]);
   const svg = await res.text();
   const svg_path = svg.split('"')[7];
 

@@ -280,3 +280,15 @@ pub fn icons_array(_: TokenStream) -> TokenStream {
 
     icons_array_code.parse().unwrap()
 }
+
+/// Get number of icons available in the simple-icons npm package
+#[proc_macro]
+pub fn js_library_version(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as LitStr);
+    let path = format!("node_modules/{}/package.json", input.value());
+    let package_json_content = fs::read_to_string(Path::new(&path)).unwrap();
+    let package_json: serde_json::Value =
+        serde_json::from_str(package_json_content.as_str()).unwrap();
+    let version = package_json["version"].as_str().unwrap();
+    format!("\"{}\"", version).parse().unwrap()
+}

@@ -2238,6 +2238,7 @@ dependencies = [
 name = "simple-icons-website-macros"
 version = "0.1.0"
 dependencies = [
+ "serde_json",
  "simple-icons",
  "simple-icons-website-config",
  "simple-icons-website-types",

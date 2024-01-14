@@ -209,7 +209,7 @@ command = "npx"
 args = ["eslint", ".", "--ignore-path", ".gitignore"]
 
 [tasks.build-js-libs]
-description = "Build the JS libraries for the web"
+description = "Build JS libraries for the web"
 script_runner = "@duckscript"
 script = '''
 rm -r ./app/public/assets/js
@@ -233,13 +233,11 @@ appendfile ${jslibs} "<script type=\"module\" src=\"/js/svg-path-bbox-${svg_path
 packagejson = readfile node_modules/pdfkit/package.json
 pdfkit = json_parse ${packagejson}
 cp ./node_modules/pdfkit/js/pdfkit.standalone.js ./app/public/assets/js/pdfkit-${pdfkit.version}.js
-appendfile ${jslibs} "<script src=\"/js/pdfkit-${pdfkit.version}.js\" defer></script>"
 
 # blob-stream
 packagejson = readfile node_modules/blob-stream/package.json
 blob_stream = json_parse ${packagejson}
 cp ./node_modules/blob-stream/.js ./app/public/assets/js/blob-stream-${blob_stream.version}.js
-appendfile ${jslibs} "<script src=\"/js/blob-stream-${blob_stream.version}.js\" defer></script>"
 '''
 
 [tasks.fetch-deprecated-icons]
