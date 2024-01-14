@@ -281,7 +281,7 @@ pub fn icons_array(_: TokenStream) -> TokenStream {
     icons_array_code.parse().unwrap()
 }
 
-/// Get number of icons available in the simple-icons npm package
+/// Get JS library version from package.json
 #[proc_macro]
 pub fn js_library_version(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as LitStr);
