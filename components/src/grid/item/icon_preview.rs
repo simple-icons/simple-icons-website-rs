@@ -46,7 +46,7 @@ pub fn IconGridItemPreview(
     });
     view! {
         <button title=button_title on:click=on_click_copy_image_children_src_content>
-            <img src=format!("/icons/{}.svg", slug) alt=img_alt/>
+            <img src=format!("/icons/{}.svg", slug) alt=img_alt width=56 height=56/>
         </button>
     }
 }
