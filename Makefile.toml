@@ -104,7 +104,12 @@ cwd = "."
 clear = true
 description = "Build the app for production"
 install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
-run_task = { name = ["run-pre-build-scripts", "build-css", "build-wasm"] }
+run_task = { name = [
+    "run-pre-build-scripts",
+    "build-css",
+    "build-wasm",
+    "minify-css"
+] }
 
 [tasks.build-wasm]
 description = "Build the WASM app for production"
@@ -124,6 +129,11 @@ args = [
     "./public/assets/stylesheet.css",
 ]
 cwd = "./app"
+
+[tasks.minify-css]
+description = "Minify CSS with LightningCSS"
+command = "tsx"
+args = ["scripts/minify-css.ts"]
 
 [tasks.serve-for-prod]
 description = "Serve the app with anywhere"

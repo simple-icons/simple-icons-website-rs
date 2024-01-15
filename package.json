@@ -31,6 +31,7 @@
     "eslint": "8.48.0",
     "eslint-config-simple-icons": "0.1.2",
     "husky": "8.0.3",
+    "lightningcss": "1.23.0",
     "postcss": "8.4.31",
     "postcss-import": "15.1.0",
     "prettier": "3.0.0",
