@@ -84,21 +84,11 @@ pub fn ControlsToggler() -> impl IntoView {
     let size =
         create_memo(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
 
-    let is_sm_screen = use_media_query("(max-width: 640px)");
-
     view! {
         <div class="control">
             <label class="block">""</label>
             <button
-                class=move || {
-                    format!(
-                        "absolute right-0 {} rounded",
-                        match is_sm_screen() {
-                            true => "",
-                            false => "bottom-0",
-                        },
-                    )
-                }
+                class="absolute right-0 sm:bottom-0 rounded"
 
                 title=move || {
                     if controls_state().buttons_group_open {
