@@ -6,14 +6,14 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const getCssFiles = async () => {
-  const files = await fs.readdir(path.join(__dirname, '../app/dist'));
+  const files = await fs.readdir(path.join(__dirname, '../app/public/assets'));
   return files.filter((file) => file.endsWith('.css'));
 };
 
 const minifyCss = async () => {
   const cssFiles = await getCssFiles();
   for (const cssFile of cssFiles) {
-    const cssFilePath = path.join(__dirname, '../app/dist', cssFile);
+    const cssFilePath = path.join(__dirname, '../app/public/assets', cssFile);
 
     const cssFileContent = await fs.readFile(cssFilePath, 'utf-8');
     const minifiedCss = transform({

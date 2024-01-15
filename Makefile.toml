@@ -107,8 +107,8 @@ install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
 run_task = { name = [
     "run-pre-build-scripts",
     "build-css",
-    "build-wasm",
-    "minify-css"
+    "minify-css",
+    "build-wasm"
 ] }
 
 [tasks.build-wasm]
