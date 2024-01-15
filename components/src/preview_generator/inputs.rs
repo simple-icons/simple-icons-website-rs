@@ -7,13 +7,14 @@ use crate::js_libs::svg::svg_path_bbox;
 use crate::preview_generator::{
     canvas::update_preview_canvas, helpers::is_valid_hex_color,
 };
-use i18n::move_tr;
+use i18n::{move_tr, tr};
 use leptos::{
     html::{Div, Input},
     *,
 };
 use leptos_use::on_click_outside;
-use simple_icons::sdk;
+use simple_icons::{sdk, sdk::lint::errors::PathLintError};
+use std::collections::HashMap;
 use svg_path_cst::svg_path_cst;
 use types::SimpleIcon;
 use wasm_bindgen::JsCast;
@@ -51,6 +52,86 @@ pub fn ColorInput(
     }
 }
 
+pub fn tr_lint_error(err: &PathLintError) -> String {
+    match err {
+        PathLintError::MustStartWithMovetoCommand { command } => {
+            tr!(
+                "must-start-with-moveto-command",
+                &HashMap::from([(
+                    "command".to_string(),
+                    command.to_string().into()
+                )])
+            )
+        }
+        PathLintError::InvalidCharacterAtIndex { index, character } => {
+            tr!(
+                "invalid-character-at-index",
+                &HashMap::from([
+                    ("index".to_string(), index.to_string().into()),
+                    ("character".to_string(), character.to_string().into()),
+                ])
+            )
+        }
+        PathLintError::FoundNegativeZeroAtIndex { index } => {
+            tr!(
+                "found-negative-zero-at-index",
+                &HashMap::from([(
+                    "index".to_string(),
+                    index.to_string().into()
+                )])
+            )
+        }
+        PathLintError::ReportedSizeIsZero => {
+            tr!("reported-svg-path-size-is-zero")
+        }
+        PathLintError::MaximumPrecisionMustBeLessThan {
+            max_precision,
+            precision,
+            number,
+        } => {
+            tr!(
+                "maximum-precision-must-be-less-than",
+                &HashMap::from([
+                    (
+                        "max_precision".to_string(),
+                        max_precision.to_string().into()
+                    ),
+                    ("precision".to_string(), precision.to_string().into()),
+                    ("number".to_string(), number.to_string().into()),
+                ])
+            )
+        }
+        PathLintError::IconMustBeCentered { x, y } => {
+            tr!(
+                "icon-must-be-centered",
+                &HashMap::from([
+                    ("x".to_string(), x.to_string().into()),
+                    ("y".to_string(), y.to_string().into()),
+                ])
+            )
+        }
+        PathLintError::CollinearSegmentFoundAtCommand { command } => {
+            tr!(
+                "collinear-segment-found-at-command",
+                &HashMap::from([(
+                    "command".to_string(),
+                    command.to_string().into()
+                )])
+            )
+        }
+        PathLintError::IncorrectIconSize { width, height } => {
+            tr!(
+                "incorrect-svg-path-icon-size",
+                &HashMap::from([
+                    ("width".to_string(), width.to_string().into()),
+                    ("height".to_string(), height.to_string().into()),
+                ])
+            )
+        }
+        _ => err.to_string(),
+    }
+}
+
 #[component]
 pub fn PathInput(
     path: ReadSignal<String>,
@@ -77,7 +158,13 @@ where {
         let path_segments = match svg_path_cst(path.as_bytes()) {
             Ok(path_segments) => path_segments,
             Err(err) => {
-                new_lint_errors.push((err.to_string(), None, None));
+                new_lint_errors.push((
+                    PathLintError::SyntaxError {
+                        message: err.to_string(),
+                    },
+                    None,
+                    None,
+                ));
                 set_path_lint_errors(new_lint_errors);
                 return;
             }
@@ -85,7 +172,11 @@ where {
 
         let (path_bbox, path_bbox_error) = svg_path_bbox(path);
         if let Some(err) = path_bbox_error {
-            new_lint_errors.push((err, None, None));
+            new_lint_errors.push((
+                PathLintError::ViewboxSyntaxError { message: err },
+                None,
+                None,
+            ));
             set_path_lint_errors(new_lint_errors);
             return;
         }
@@ -143,7 +234,7 @@ where {
                         children=move |error| {
                             view! {
                                 <LintError
-                                    message=error.0
+                                    message=Signal::derive(move || tr_lint_error(&error.0))
                                     range=error.1
                                     fixer=error.2
                                     input_ref=input_ref
@@ -208,7 +299,7 @@ fn FixLintErrorButton(
 
 #[component]
 fn LintError(
-    message: String,
+    message: Signal<String>,
     range: Option<(u32, u32)>,
     fixer: Option<sdk::lint::LintErrorFixer>,
     input_ref: NodeRef<Input>,

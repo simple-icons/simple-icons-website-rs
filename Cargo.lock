@@ -564,7 +564,7 @@ dependencies = [
  "log",
  "once_cell",
  "serde_json",
- "snafu",
+ "snafu 0.7.5",
  "unic-langid",
 ]
 
@@ -2171,6 +2171,7 @@ dependencies = [
  "nanoserde",
  "serde_json",
  "simple-icons-website-config",
+ "snafu 0.8.0",
  "svg-path-cst",
  "unicode-normalization",
 ]
@@ -2281,7 +2282,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e4de37ad025c587a29e8f3f5605c00f70b98715ef90b9061a815b9e59e9042d6"
 dependencies = [
  "doc-comment",
- "snafu-derive",
+ "snafu-derive 0.7.5",
+]
+
+[[package]]
+name = "snafu"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d342c51730e54029130d7dc9fd735d28c4cd360f1368c01981d4f03ff207f096"
+dependencies = [
+ "snafu-derive 0.8.0",
 ]
 
 [[package]]
@@ -2294,6 +2304,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "snafu-derive"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "080c44971436b1af15d6f61ddd8b543995cf63ab8e677d46b00cc06f4ef267a0"
+dependencies = [
+ "heck",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.42",
 ]
 
 [[package]]
@@ -2343,7 +2365,7 @@ version = "0.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cfc726d884f1de21492183956a9866a3047d84feeea8d1b3d394111e0c5868b3"
 dependencies = [
- "snafu",
+ "snafu 0.7.5",
 ]
 
 [[package]]

@@ -7,11 +7,109 @@ static STRAIGHT_LINE_PATH_COMMANDS: &str = "HhVvLlMm";
 
 static ICON_MAX_FLOAT_PRECISION: u32 = 5;
 
+pub mod errors {
+    use snafu::prelude::*;
+
+    /// Syntax errors that can occur when parsing an SVG path
+    ///
+    /// These errors try to be exhaustive.
+    #[derive(Debug, PartialEq, Snafu, Clone)]
+    pub enum PathLintError {
+        /// The first command in a path is not moveto
+        #[snafu(display(
+            "Must start with \"moveto\" command (\"M\" or \"m\"), but starts with \"{command}\""
+        ))]
+        MustStartWithMovetoCommand {
+            /// Command letter found
+            command: String,
+        },
+
+        /// Invalid character at index
+        #[snafu(display(
+            "Contains invalid character \"{character}\" at index {index}"
+        ))]
+        InvalidCharacterAtIndex {
+            /// Invalid character
+            character: char,
+            /// Index of the invalid character
+            index: u32,
+        },
+
+        /// Found negative zero at index
+        #[snafu(display("Found \"-0\" at index {index}"))]
+        FoundNegativeZeroAtIndex {
+            /// Index of the negative zero
+            index: u32,
+        },
+
+        /// Size of an icon reported as 0x0 px
+        #[snafu(display(
+            "Size was reported as 0 x 0 so check if the path is valid"
+        ))]
+        ReportedSizeIsZero,
+
+        /// Maximum precision must be less than `ICON_MAX_FLOAT_PRECISION`
+        #[snafu(display(
+            "Maximum precision should not be greater than {max_precision}, currently {precision} for number \"{number}\""
+        ))]
+        MaximumPrecisionMustBeLessThan {
+            /// Maximum precision allowed
+            max_precision: u32,
+            /// Precision of the number
+            precision: u32,
+            /// Number that has too much precision
+            number: String,
+        },
+
+        /// Icon must be centered at (12, 12)
+        #[snafu(display(
+            "Icon must be centered at (12, 12), currently at ({x}, {y})"
+        ))]
+        IconMustBeCentered {
+            /// X coordinate of the center
+            x: f64,
+            /// Y coordinate of the center
+            y: f64,
+        },
+
+        /// Collinear segment found at command
+        #[snafu(display("Collinear segment found at command \"{command}\""))]
+        CollinearSegmentFoundAtCommand {
+            /// Command letter
+            command: char,
+        },
+
+        /// Incorrect icon size
+        #[snafu(display("Size must be exactly 24 pixels in one dimension, currently {width} x {height}"))]
+        IncorrectIconSize {
+            /// Width of the icon
+            width: f64,
+            /// Height of the icon
+            height: f64,
+        },
+
+        /// SVG syntax error
+        #[snafu(display("Syntax error: {message}"))]
+        SyntaxError {
+            /// Error message
+            message: String,
+        },
+
+        /// Incorrect parsing in viewbox
+        #[snafu(display("Syntax error parsing viewbox: {message}"))]
+        ViewboxSyntaxError {
+            /// Error message
+            message: String,
+        },
+    }
+}
+
 type Path = String;
 type Range = (u32, u32);
 pub type LintErrorFix = (Path, Range);
 pub type LintErrorFixer = &'static dyn Fn(&str, Range) -> LintErrorFix;
-pub type LintError = (Path, Option<Range>, Option<LintErrorFixer>);
+pub type LintError =
+    (errors::PathLintError, Option<Range>, Option<LintErrorFixer>);
 
 pub type PathViewBox = (f64, f64, f64, f64);
 
@@ -70,14 +168,9 @@ pub fn path_format(path: &str) -> Vec<LintError> {
     if !path.is_empty() && !path.starts_with('M') && !path.starts_with('m') {
         let first_char = path.chars().take(1).collect::<String>();
         errors.push((
-            format!(
-                concat!(
-                    "Must start with \"moveto\" command (\"M\" or \"m\")",
-                    " but starts with \"{}\"",
-                ),
-                first_char,
-            )
-            .to_string(),
+            errors::PathLintError::MustStartWithMovetoCommand {
+                command: first_char,
+            },
             Some((0, 1)),
             Some(&fix_path_not_starts_with_moveto_command),
         ));
@@ -86,10 +179,10 @@ pub fn path_format(path: &str) -> Vec<LintError> {
     for (i, character) in path.chars().enumerate() {
         if !PATH_VALID_CHARACTERS.contains(character) {
             errors.push((
-                format!(
-                    "Contains invalid character \"{}\" at index {}",
-                    character, i,
-                ),
+                errors::PathLintError::InvalidCharacterAtIndex {
+                    character,
+                    index: i as u32,
+                },
                 Some((i as u32, i as u32 + 1)),
                 Some(&fix_removing_characters_in_range),
             ));
@@ -130,7 +223,9 @@ pub fn negative_zeros(path: &str) -> Vec<LintError> {
         let next_char = path.chars().nth(i + 1).unwrap_or('\0');
         if "0\0".contains(next_char) {
             errors.push((
-                format!("Found \"-0\" at index {}", i),
+                errors::PathLintError::FoundNegativeZeroAtIndex {
+                    index: i as u32,
+                },
                 Some((i as u32, i as u32 + 2)),
                 Some(&fix_negative_zero),
             ));
@@ -146,21 +241,10 @@ pub fn icon_size(bbox: &PathViewBox) -> Vec<LintError> {
     let mut errors: Vec<LintError> = vec![];
 
     if width == 0.0 && height == 0.0 {
-        errors.push((
-            "Size was reported as 0 x 0 so check if the path is valid"
-                .to_string(),
-            None,
-            None,
-        ));
+        errors.push((errors::PathLintError::ReportedSizeIsZero, None, None));
     } else if width != 24.0 && height != 24.0 {
         errors.push((
-            format!(
-                concat!(
-                    "Size must be exactly 24 pixels in one dimension,",
-                    " currently {:.4} x {:.4}"
-                ),
-                width, height
-            ),
+            errors::PathLintError::IncorrectIconSize { width, height },
             None,
             None,
         ));
@@ -185,17 +269,15 @@ pub fn icon_precision(cst: &[SVGPathCSTNode]) -> Vec<LintError> {
                     let number_precision = get_number_of_decimals(*value);
                     if number_precision > ICON_MAX_FLOAT_PRECISION {
                         errors.push((
-                            format!(
-                                concat!(
-                                    "Maximum precision should not be greater than {},",
-                                    " currently {} for number \"{}\""
-                                ),
-                                ICON_MAX_FLOAT_PRECISION,
-                                number_precision,
-                                raw_number,
-                            ),
+                            errors::PathLintError::MaximumPrecisionMustBeLessThan {
+                                max_precision: ICON_MAX_FLOAT_PRECISION,
+                                precision: number_precision,
+                                number: raw_number.to_string(),
+                            },
                             Some((
-                                (*start - if prev_segment_is_sign {1} else {0}) as u32,
+                                (*start
+                                    - if prev_segment_is_sign { 1 } else { 0 })
+                                    as u32,
                                 *end as u32,
                             )),
                             // TODO: fixes
@@ -227,13 +309,10 @@ pub fn icon_centered(bbox: &PathViewBox) -> Vec<LintError> {
     let icon_tolerance = 0.001;
     if deviance_x > icon_tolerance || deviance_y > icon_tolerance {
         errors.push((
-            format!(
-                concat!(
-                    "Icon must be centered at (12, 12), currently at",
-                    " ({}, {})"
-                ),
-                center_x, center_y
-            ),
+            errors::PathLintError::IconMustBeCentered {
+                x: center_x,
+                y: center_y,
+            },
             None,
             None,
         ));
@@ -429,12 +508,9 @@ pub fn collinear_segments(segments: &[SVGPathCSTNode]) -> Vec<LintError> {
                                 .unwrap()
                             {
                                 errors.push((
-                                    format!(
-                                        concat!(
-                                            "Collinear segment found at command \"{}\""
-                                        ),
-                                        command.to_u8() as char
-                                    ),
+                                    errors::PathLintError::CollinearSegmentFoundAtCommand {
+                                        command: command.to_u8() as char,
+                                    },
                                     // TODO: show complete range including
                                     //  previous and next segments
                                     Some((*start as u32, *end as u32)),
