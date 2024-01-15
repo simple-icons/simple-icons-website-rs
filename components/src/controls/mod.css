@@ -4,7 +4,7 @@
 /* Controls group */
 menu {
   @apply box-content flex flex-row page-padding-x
-    pt-1.5 sm:pt-0 pb-1.5 h-7 xs:h-9 sm:h-16
+    pt-1.5 sm:pt-0 pb-1.5 h-7 sm:h-16
     sticky sm:-top-[1.4rem] z-20
     bg-custom-background-color;
 }

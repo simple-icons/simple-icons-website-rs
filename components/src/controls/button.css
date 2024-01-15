@@ -2,8 +2,8 @@
   /* Buttons */
   .control-button {
     @apply w-7 h-7 xs:h-9 xs:w-9
-      box-border px-[5.5px] py-[4px]
-      font-bold text-sm xs:text-base
+      xs:px-[5.5px] px-[4px] xs:py-[4px] py-[2px]
+      box-border font-bold text-sm xs:text-base
       border-[1px] border-solid
       border-custom-button-background-selected-color
       shadow-custom-shadows-color

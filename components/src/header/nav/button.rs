@@ -30,9 +30,8 @@ pub fn HeaderMenuLink(
                 path=svg_path
                 role="link"
                 aria_label=title_fn
-                view_box="0 0 24 24"
-                width=""
-                height=""
+                width=(|| "36").into()
+                height=(|| "36").into()
             />
         </li>
     }
@@ -52,7 +51,7 @@ pub fn HeaderMenuButton(
 ) -> impl IntoView {
     view! {
         <li title=title class=class tabindex=0>
-            <SVGIcon role="button" path=svg_path width="36" height="36" view_box="0 0 24 24"/>
+            <SVGIcon role="button" path=svg_path width=(|| "36").into() height=(|| "36").into()/>
         </li>
     }
 }

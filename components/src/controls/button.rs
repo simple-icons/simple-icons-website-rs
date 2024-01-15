@@ -1,5 +1,8 @@
 use crate::svg::SVGIcon;
 use leptos::*;
+use leptos_use::use_media_query;
+
+pub(crate) static XS_ICON_SIZE: &str = "19";
 
 /// Abstract control button
 #[component]
@@ -35,13 +38,19 @@ pub fn ControlButtonSVGPath(
     class: &'static str,
 ) -> impl IntoView {
     let title_fn = create_memo(move |_| title());
+    let is_xs_screen = use_media_query("(max-width: 475px)");
+    let size =
+        create_memo(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
+
     view! {
         <ControlButton title=title active=active class=class>
             <SVGIcon
                 role="img"
                 aria_hidden=true
                 aria_label=title_fn
-                view_box="0 0 24 24"
+                view_box=(|| "0 0 24 24".into()).into()
+                width=size.into()
+                height=size.into()
                 path=svg_path
             />
 

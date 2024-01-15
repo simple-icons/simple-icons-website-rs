@@ -117,9 +117,15 @@ pub fn SVGIcon<P>(
     #[prop(optional)] aria_label: Option<Memo<String>>,
     #[prop(optional)] class: &'static str,
     #[prop(optional)] fill: &'static str,
-    #[prop(optional, default = "24")] width: &'static str,
-    #[prop(optional, default = "24")] height: &'static str,
-    #[prop(optional)] view_box: &'static str,
+    #[prop(optional, default = Signal::derive(|| "24"))] width: Signal<
+        &'static str,
+    >,
+    #[prop(optional, default = Signal::derive(|| "24"))] height: Signal<
+        &'static str,
+    >,
+    #[prop(optional, default = Signal::derive(|| "".into()))] view_box: Signal<
+        String,
+    >,
     #[prop(optional, default = "img")] role: &'static str,
     #[prop(optional, default = true)] aria_hidden: bool,
 ) -> impl IntoView
@@ -131,16 +137,16 @@ where
             class=class
             role=role
             aria-hidden=if aria_hidden { "true" } else { "false" }
-            width=move || if width.is_empty() { None } else { Some(width) }
-            height=move || if height.is_empty() { None } else { Some(height) }
+            width=width
+            height=height
             aria-label=move || match aria_label {
                 Some(aria_label) => aria_label(),
                 None => "".to_string(),
             }
 
-            viewBox=match view_box {
-                "" => format!("0 0 {} {}", width, height),
-                _ => view_box.to_string(),
+            viewBox=move || match view_box().as_str() {
+                "" => "0 0 24 24".into(),
+                bbox => bbox.to_string(),
             }
         >
 
