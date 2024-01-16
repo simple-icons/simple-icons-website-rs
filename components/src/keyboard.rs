@@ -11,8 +11,6 @@ pub fn load_keyboard_shortcut_ctrl_and_key_on_click_id(
                 document().body().unwrap(),
                 keydown,
                 move |ev: web_sys::KeyboardEvent| {
-                    ::log::info!("ev.ctrl_key(): {}", ev.ctrl_key());
-                    ::log::info!("ev.key(): {}", ev.key());
                     if ev.ctrl_key() && ev.key() == key {
                         document()
                             .get_element_by_id(button_id)
