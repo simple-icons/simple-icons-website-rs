@@ -85,3 +85,4 @@ fluent-templates = "0.8.0"
 unic-langid = "0.9.4"
 config = { version = "0.13.4", features = ["json"] }
 snafu = { version = "0.8.0", default_features = false }
+rand = "0.8.5"

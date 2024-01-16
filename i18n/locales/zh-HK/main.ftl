@@ -80,3 +80,4 @@ maximum-precision-must-be-less-than = 最大精度不得大于 { $max_precision 
 icon-must-be-centered = 图标必须居中于 (12, 12)，当前位于 ({ $x }, { $y })
 collinear-segment-found-at-command = 在命令“{ $command }”处找到共线线段
 incorrect-svg-path-icon-size = 尺寸在一维中必须恰好为 24 像素，目前为 { $width } x { $height }
+random = 随机

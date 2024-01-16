@@ -80,3 +80,4 @@ maximum-precision-must-be-less-than = La precisión máxima no debe ser mayor qu
 icon-must-be-centered = El icono debe estar centrado en (12, 12), actualmente en ({ $x }, { $y })
 collinear-segment-found-at-command = Segmento colineal encontrado en el comando "{ $command }"
 incorrect-svg-path-icon-size = El tamaño debe ser exactamente 24 píxeles en una dimensión, actualmente { $width } x { $height }
+random = Aleatorio

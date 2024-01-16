@@ -7,16 +7,19 @@ use crate::grid::{IconsGrid, IconsGridSignal, ICONS};
 use crate::storage::LocalStorage;
 use i18n::move_tr;
 use leptos::*;
+use rand::seq::SliceRandom;
+use rand::thread_rng;
 use std::fmt;
 use std::str::FromStr;
 use types::SimpleIcon;
 
 #[derive(Default, Copy, Clone, PartialEq)]
 pub enum OrderModeVariant {
-    #[default]
     Alphabetic,
     Color,
     SearchMatch,
+    #[default]
+    Random,
 }
 
 #[derive(Copy, Clone, Default)]
@@ -45,6 +48,9 @@ pub fn sort_icons(
         OrderModeVariant::Color => {
             icons.sort_by(|a, b| a.order_color.cmp(&b.order_color));
         }
+        OrderModeVariant::Random => {
+            icons.shuffle(&mut thread_rng());
+        }
         _ => {
             // Search match order is handled by the search control
         }
@@ -56,6 +62,7 @@ impl From<&str> for OrderModeVariant {
         match order_mode {
             "alpha" => Self::Alphabetic,
             "color" => Self::Color,
+            "random" => Self::Random,
             _ => Self::SearchMatch,
         }
     }
@@ -78,6 +85,7 @@ impl fmt::Display for OrderModeVariant {
             Self::Alphabetic => write!(f, "alpha"),
             Self::Color => write!(f, "color"),
             Self::SearchMatch => write!(f, "search"),
+            Self::Random => write!(f, "random"),
         }
     }
 }
@@ -126,7 +134,9 @@ pub fn set_order_mode(
     });
     if update_grid {
         match order_mode {
-            &OrderModeVariant::Alphabetic | &OrderModeVariant::Color => {
+            &OrderModeVariant::Alphabetic
+            | &OrderModeVariant::Color
+            | OrderModeVariant::Random => {
                 icons_grid_signal.update(|grid| {
                     let search_value = get_search_value_from_localstorage();
                     if search_value.is_some() {
@@ -183,6 +193,20 @@ pub fn OrderControl() -> impl IntoView {
                     active=Signal::derive(move || order_mode().current == OrderModeVariant::Color)
                     on:click=move |_| set_order_mode(
                         &OrderModeVariant::Color,
+                        &order_mode,
+                        &icons_grid,
+                        Some(&layout_signal()),
+                        true,
+                    )
+                />
+            },
+            view! {
+                <ControlButtonSVGPath
+                    title=move_tr!("random")
+                    svg_path="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"
+                    active=Signal::derive(move || order_mode().current == OrderModeVariant::Random)
+                    on:click=move |_| set_order_mode(
+                        &OrderModeVariant::Random,
                         &order_mode,
                         &icons_grid,
                         Some(&layout_signal()),
