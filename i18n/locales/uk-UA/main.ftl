@@ -41,6 +41,7 @@ load-more-icons = Завантажити ще
 go-to-header = Вгору
 go-to-footer = Вниз
 deprecated = Застаріле
+deprecations = Застарілі
 will-be-removed-at = { $icon } буде вилучено у версії v{ $version }
 will-be-removed-at-extended = { $icon } буде вилучено { $date } у версії { $version } (див { $pr })
 scalable-vector-graphic = Scalable Vector Graphic

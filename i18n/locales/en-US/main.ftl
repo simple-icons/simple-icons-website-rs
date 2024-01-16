@@ -41,6 +41,7 @@ load-more-icons = Load more icons
 go-to-header = Go to header
 go-to-footer = Go to footer
 deprecated = Deprecated
+deprecations = Deprecations
 will-be-removed-at = { $icon } will be removed at v{ $version }
 will-be-removed-at-extended = { $icon } will be removed at { $version } about { $date } (see { $pr })
 scalable-vector-graphic = Scalable Vector Graphic

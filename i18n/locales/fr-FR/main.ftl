@@ -41,6 +41,7 @@ load-more-icons = Charger plus d'icônes
 go-to-header = Aller à l'en-tête
 go-to-footer = Aller au pied de page
 deprecated = Obsolète
+deprecations = Obsolètes
 will-be-removed-at = { $icon } sera supprimé en v{ $version }
 will-be-removed-at-extended = { $icon } sera supprimé en { $version } à propos de { $date } (voir { $pr })
 scalable-vector-graphic = Image vectorielle

@@ -41,6 +41,7 @@ load-more-icons = 加载更多圖標
 go-to-header = 轉到標題
 go-to-footer = 轉到頁腳
 deprecated = 已過時（未來將停用）
+deprecations = 已過時（未來將停用）
 will-be-removed-at = { $icon } 將在 { $version }
 will-be-removed-at-extended = { $icon } 將在 { $version } 關於 { $date }（參見{ $pr }）處刪除
 scalable-vector-graphic = 可縮放矢量圖形

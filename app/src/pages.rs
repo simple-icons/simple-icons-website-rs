@@ -117,12 +117,22 @@ pub fn Error404() -> impl IntoView {
             <hr class="w-1/2 my-4 border-t-[var(--divider-color)]"/>
             <p class="text-lg font-bold font-sans pt-2">{move_tr!("maybe-youre-looking-for")}</p>
             <ul class="flex flex-col sm:flex-row py-5">
+
                 <li class="flex p-1">
                     <Button
                         class="mx-auto"
                         title=move_tr!("icons")
                         on:click=move |_| use_navigate()("/", Default::default())
                         svg_path=&SVGDef::Grid
+                    />
+                </li>
+
+                <li class="flex p-1">
+                    <Button
+                        class="mx-auto"
+                        title=move_tr!("deprecations")
+                        on:click=move |_| use_navigate()("/deprecations", Default::default())
+                        svg_path=&SVGDef::Warning
                     />
                 </li>
                 <li class="flex p-1">

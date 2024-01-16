@@ -41,6 +41,7 @@ load-more-icons = さらにアイコンを読み込む
 go-to-header = ヘッダーに移動
 go-to-footer = フッターに移動
 deprecated = 廃止されました
+deprecations = 廃止
 will-be-removed-at = { $icon } は { $version } で削除されます
 will-be-removed-at-extended = { $icon } は { $version } で削除されます { $date } (参照 { $pr })
 scalable-vector-graphic = スケーラブルなベクター グラフィック

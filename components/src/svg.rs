@@ -31,6 +31,8 @@ pub enum SVGDef {
     /// Circle arrow icons
     CircleArrowUp,
     CircleArrowDown,
+    /// Warning icon
+    Warning,
 }
 
 impl SVGDef {
@@ -49,6 +51,7 @@ impl SVGDef {
             Self::Copy => Ids::CopySVGPath.as_str(),
             Self::CircleArrowUp => Ids::CircleArrowUpSVGPath.as_str(),
             Self::CircleArrowDown => Ids::CircleArrowDownSVGPath.as_str(),
+            Self::Warning => Ids::WarningSVGPath.as_str(),
         }
     }
 
@@ -67,6 +70,7 @@ impl SVGDef {
             Self::Copy => "M18,2H9C7.9,2,7,2.9,7,4v12c0,1.1,0.9,2,2,2h9c1.1,0,2-0.9,2-2V4C20,2.9,19.1,2,18,2z M18,16H9V4h9V16z M3,15v-2h2v2H3z M3,9.5h2v2H3V9.5z M10,20h2v2h-2V20z M3,18.5v-2h2v2H3z M5,22c-1.1,0-2-0.9-2-2h2V22z M8.5,22h-2v-2h2V22z M13.5,22L13.5,22l0-2h2 v0C15.5,21.1,14.6,22,13.5,22z M5,6L5,6l0,2H3v0C3,6.9,3.9,6,5,6z",
             Self::CircleArrowUp => "M12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8m0 2c5.52 0 10-4.48 10-10S17.52 2 12 2S2 6.48 2 12s4.48 10 10 10zm-1-10v3c0 .55.45 1 1 1s1-.45 1-1v-3h1.79c.45 0 .67-.54.35-.85l-2.79-2.79c-.2-.2-.51-.2-.71 0l-2.79 2.79a.5.5 0 0 0 .36.85H11z",
             Self::CircleArrowDown => "M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8s-8-3.59-8-8s3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm1 10V9c0-.55-.45-1-1-1s-1 .45-1 1v3H9.21c-.45 0-.67.54-.35.85l2.79 2.79c.2.2.51.2.71 0l2.79-2.79a.5.5 0 0 0-.35-.85H13z",
+            Self::Warning => "M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z",
         }
     }
 }
@@ -106,6 +110,7 @@ pub fn SVGDefsDefinition() -> impl IntoView {
                 <path id=SVGDef::Copy.id() d=SVGDef::Copy.d()></path>
                 <path id=SVGDef::CircleArrowUp.id() d=SVGDef::CircleArrowUp.d()></path>
                 <path id=SVGDef::CircleArrowDown.id() d=SVGDef::CircleArrowDown.d()></path>
+                <path id=SVGDef::Warning.id() d=SVGDef::Warning.d()></path>
             </defs>
         </svg>
     }
