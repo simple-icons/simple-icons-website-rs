@@ -1,17 +1,44 @@
-use crate::button::Button;
-use crate::controls::download::{download, download_pdf, download_svg};
-use crate::copy::copy_inner_text_on_click;
+use crate::controls::download::{
+    copy_as_base64_jpg, download, download_jpg, download_pdf, download_png,
+    download_svg,
+};
+use crate::copy::{
+    copy_inner_text_on_click, copy_setting_copied_transition_in_element,
+};
 use crate::fetch::fetch_text;
 use crate::grid::item::icon_preview::on_click_copy_image_children_src_content;
 use crate::grid::item::title::get_icon_localized_title;
 use crate::grid::CurrentIconViewSignal;
+use crate::menu::{Menu, MenuItem};
 use crate::modal::{Modal, ModalOpenSignal};
 use crate::Ids;
 use i18n::{move_tr, tr, Language};
-use leptos::{ev::MouseEvent, wasm_bindgen::JsCast, *};
+use icondata::{
+    BiCheckRegular, BiMenuAltRightRegular, BiMenuRegular, BsCode, IoColorWand,
+    TbJpg, TbPdf, TbPng, TbSvg, VsSymbolNamespace,
+};
+use leptos::{html::Span, wasm_bindgen::JsCast, *};
+use leptos_icons::Icon;
+use leptos_use::on_click_outside;
 use std::collections::HashMap;
 use types::SimpleIcon;
 use web_sys;
+
+fn get_brand_name_from_modal_container() -> String {
+    document()
+        .get_element_by_id(Ids::IconDetailsModal.as_str())
+        .unwrap()
+        .parent_element()
+        .unwrap()
+        .parent_element()
+        .unwrap()
+        .get_elements_by_tag_name("h2")
+        .item(0)
+        .unwrap()
+        .dyn_into::<web_sys::HtmlElement>()
+        .unwrap()
+        .inner_text()
+}
 
 fn get_slug_from_modal_container() -> String {
     document()
@@ -21,6 +48,18 @@ fn get_slug_from_modal_container() -> String {
         .item(0)
         .unwrap()
         .dyn_into::<web_sys::HtmlElement>()
+        .unwrap()
+        .inner_text()
+}
+
+fn get_hex_from_modal_container() -> String {
+    document()
+        .get_element_by_id(Ids::IconDetailsModal.as_str())
+        .unwrap()
+        .get_elements_by_tag_name("button")
+        .item(1)
+        .unwrap()
+        .dyn_into::<web_sys::HtmlButtonElement>()
         .unwrap()
         .inner_text()
 }
@@ -234,43 +273,6 @@ pub fn fill_icon_details_modal_with_icon(
             .add_1("hidden")
             .unwrap();
     }
-
-    // Set download buttons
-    let modal_footer = modal_body
-        .first_element_child()
-        .unwrap()
-        .next_element_sibling()
-        .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
-
-    let download_colored_icon_container = modal_footer
-        .get_elements_by_tag_name("button")
-        .item(1)
-        .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
-
-    spawn_local(async move {
-        if let Some(svg) =
-            fetch_text(&format!("/icons/{}.svg", icon.slug)).await
-        {
-            let colored_icon_svg = svg.replacen(
-                "<svg",
-                &format!("<svg fill=\"#{}\"", icon.hex),
-                1,
-            );
-            download_colored_icon_container
-                .set_attribute(
-                    "data-url",
-                    &format!(
-                        "data:image/svg+xml;utf8,{}",
-                        js_sys::encode_uri_component(&colored_icon_svg)
-                    ),
-                )
-                .unwrap();
-        }
-    });
 }
 
 /// Details modal icon preview
@@ -297,8 +299,83 @@ fn IconDetailsModalInformation() -> impl IntoView {
     }
 }
 
+/// Detail modal view for icons
 #[component]
-fn IconDetailsModalFooter() -> impl IntoView {
+pub fn IconDetailsModal() -> impl IntoView {
+    let current_icon_view = expect_context::<CurrentIconViewSignal>().0;
+    let modal_open = expect_context::<ModalOpenSignal>();
+
+    let (controls_open, set_controls_open) = create_signal(false);
+    let menu_ref = create_node_ref::<Span>();
+    _ = on_click_outside(menu_ref, move |_| {
+        if controls_open() {
+            set_controls_open(false);
+        }
+    });
+
+    let modal_is_open = Signal::derive(move || current_icon_view().is_some());
+
+    let (copying_as_base64_svg, set_copying_as_base64_svg) =
+        create_signal(false);
+    let copy_as_base64_svg_icon = create_memo(move |_| {
+        if copying_as_base64_svg() {
+            BiCheckRegular
+        } else {
+            BsCode
+        }
+    });
+
+    let copy_as_base64_svg_text = create_memo(move |_| {
+        if copying_as_base64_svg() {
+            tr!("copied")
+        } else {
+            tr!("copy-as-base64-svg")
+        }
+    });
+
+    let (copying_as_base64_jpg, set_copying_as_base64_jpg) =
+        create_signal(false);
+    let copy_as_base64_jpg_icon = create_memo(move |_| {
+        if copying_as_base64_jpg() {
+            BiCheckRegular
+        } else {
+            BsCode
+        }
+    });
+
+    let copy_as_base64_jpg_text = create_memo(move |_| {
+        if copying_as_base64_jpg() {
+            tr!("copied")
+        } else {
+            tr!("copy-as-base64-jpg")
+        }
+    });
+
+    let (copying_hex, set_copying_hex) = create_signal(false);
+    let copy_hex_msg = create_memo(move |_| {
+        if copying_hex() {
+            tr!("copied")
+        } else {
+            tr!("copy-hex-color")
+        }
+    });
+
+    let copy_hex_icon = create_memo(move |_| {
+        if copying_hex() {
+            BiCheckRegular
+        } else {
+            IoColorWand
+        }
+    });
+
+    let controls_menu_item_class = move || {
+        concat!(
+            "my-auto dark:bg-gray-700 bg-slate-300 text-sm",
+            " hover:bg-slate-200 dark:hover:bg-slate-600 z-50"
+        )
+        .to_string()
+    };
+
     let download_svg_msg = move_tr!("download-filetype", &{
         let mut map = HashMap::new();
         map.insert("filetype".to_string(), tr!("svg").into());
@@ -314,40 +391,49 @@ fn IconDetailsModalFooter() -> impl IntoView {
         map.insert("filetype".to_string(), tr!("pdf").into());
         map
     });
-    view! {
-        <div>
-            <Button
-                on:click=move |_| download_svg(&get_slug_from_modal_container())
-                title=download_svg_msg
-            />
-            <Button
-                title=download_colored_svg_msg
-                on:click=move |ev: MouseEvent| download(
-                    &format!("{}-color.svg", get_slug_from_modal_container()),
-                    &event_target::<web_sys::HtmlButtonElement>(&ev)
-                        .get_attribute("data-url")
-                        .unwrap(),
-                )
-            />
+    let download_jpg_msg = move_tr!("download-filetype", &{
+        let mut map = HashMap::new();
+        map.insert("filetype".to_string(), tr!("jpg").into());
+        map
+    });
+    let download_png_msg = move_tr!("download-filetype", &{
+        let mut map = HashMap::new();
+        map.insert("filetype".to_string(), tr!("png").into());
+        map
+    });
 
-            <Button
-                on:click=move |_| download_pdf(&get_slug_from_modal_container())
-                title=download_pdf_msg
-            />
-        </div>
-    }
-}
+    let (copying_svg, set_copying_svg) = create_signal(false);
+    let copy_svg_msg = create_memo(move |_| match copying_svg() {
+        true => tr!("copied"),
+        false => tr!("copy-filetype", &{
+            let mut map = HashMap::new();
+            map.insert("filetype".to_string(), tr!("svg").into());
+            map
+        }),
+    });
 
-/// Detail modal view for icons
-#[component]
-pub fn IconDetailsModal() -> impl IntoView {
-    let current_icon_view = expect_context::<CurrentIconViewSignal>().0;
-    let modal_open = expect_context::<ModalOpenSignal>();
+    let copy_svg_icon = create_memo(move |_| match copying_svg() {
+        true => BiCheckRegular,
+        false => TbSvg,
+    });
+
+    let (copying_brand_name, set_copying_brand_name) = create_signal(false);
+    let copy_brand_name_msg =
+        create_memo(move |_| match copying_brand_name() {
+            true => tr!("copied"),
+            false => tr!("copy-brand-name"),
+        });
+
+    let copy_brand_name_icon =
+        create_memo(move |_| match copying_brand_name() {
+            true => BiCheckRegular,
+            false => VsSymbolNamespace,
+        });
 
     view! {
         <Modal
             title_is_copyable=true
-            is_open=Signal::derive(move || current_icon_view().is_some())
+            is_open=modal_is_open
             on_close_focus_search_bar=true
             on_close=Signal::derive(move || {
                 current_icon_view.update(|state| *state = None);
@@ -360,7 +446,253 @@ pub fn IconDetailsModal() -> impl IntoView {
                     <IconDetailsModalPreview/>
                     <IconDetailsModalInformation/>
                 </div>
-                <IconDetailsModalFooter/>
+                <div class="cursor-pointer absolute right-[47px] top-[14px] z-50">
+                    <span
+                        ref_=menu_ref
+                        on:click=move |_| set_controls_open(!controls_open.get_untracked())
+                    >
+                        <Icon
+                            icon=Signal::derive(move || match controls_open() {
+                                true => BiMenuRegular,
+                                false => BiMenuAltRightRegular,
+                            })
+
+                            width="27"
+                            height="27"
+                        />
+                    </span>
+                    <Show when=controls_open>
+                        <Menu class=(|| {
+                            concat!(
+                                "absolute top-8 right-1 text-sm",
+                                " border-custom-divider-color bg-slate-300 dark:bg-gray-700",
+                                " max-h-72 scroll-bar overflow-y-auto",
+                            )
+                                .to_string()
+                        })
+                            .into()>
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=download_svg_msg
+                                icon=Signal::derive(move || TbSvg)
+                                on:click=move |_| {
+                                    let slug = get_slug_from_modal_container();
+                                    set_controls_open(true);
+                                    download_svg(&slug);
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=download_pdf_msg
+                                icon=Signal::derive(move || TbPdf)
+                                on:click=move |_| {
+                                    let slug = get_slug_from_modal_container();
+                                    set_controls_open(true);
+                                    download_pdf(&slug);
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=download_png_msg
+                                icon=Signal::derive(move || TbPng)
+                                on:click=move |_| {
+                                    let slug = get_slug_from_modal_container();
+                                    set_controls_open(true);
+                                    download_png(&slug);
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=download_jpg_msg
+                                icon=Signal::derive(move || TbJpg)
+                                on:click=move |_| {
+                                    let slug = get_slug_from_modal_container();
+                                    set_controls_open(true);
+                                    download_jpg(&slug);
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=download_colored_svg_msg
+                                icon=Signal::derive(move || TbSvg)
+                                on:click=move |_| {
+                                    let slug = get_slug_from_modal_container();
+                                    let hex = get_hex_from_modal_container();
+                                    set_controls_open(true);
+                                    spawn_local(async move {
+                                        if let Some(svg) = fetch_text(
+                                                &format!("/icons/{}.svg", slug),
+                                            )
+                                            .await
+                                        {
+                                            let colored_icon_svg = svg
+                                                .replacen("<svg", &format!("<svg fill=\"{}\"", hex), 1);
+                                            download(
+                                                &format!("{}-color.svg", slug),
+                                                &format!(
+                                                    "data:image/svg+xml;utf8,{}",
+                                                    js_sys::encode_uri_component(&colored_icon_svg),
+                                                ),
+                                            );
+                                        }
+                                    });
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=copy_svg_msg.into()
+                                icon=copy_svg_icon.into()
+                                on:click=move |_| {
+                                    let slug = get_slug_from_modal_container();
+                                    set_controls_open(true);
+                                    set_copying_svg(true);
+                                    spawn_local(async move {
+                                        if let Some(svg) = fetch_text(
+                                                &format!("/icons/{}.svg", slug),
+                                            )
+                                            .await
+                                        {
+                                            spawn_local(
+                                                copy_setting_copied_transition_in_element(
+                                                    svg,
+                                                    document()
+                                                        .get_element_by_id(Ids::IconDetailsModal.as_str())
+                                                        .unwrap()
+                                                        .get_elements_by_tag_name("button")
+                                                        .item(0)
+                                                        .unwrap()
+                                                        .dyn_into::<web_sys::HtmlElement>()
+                                                        .unwrap(),
+                                                ),
+                                            );
+                                        }
+                                    });
+                                    set_timeout(
+                                        move || set_copying_svg(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=copy_hex_msg.into()
+                                icon=copy_hex_icon.into()
+                                on:click=move |ev| {
+                                    let hex = get_hex_from_modal_container();
+                                    set_controls_open(true);
+                                    set_copying_hex(true);
+                                    spawn_local(
+                                        copy_setting_copied_transition_in_element(
+                                            hex,
+                                            ev
+                                                .target()
+                                                .unwrap()
+                                                .dyn_into::<web_sys::HtmlElement>()
+                                                .unwrap(),
+                                        ),
+                                    );
+                                    set_timeout(
+                                        move || set_copying_hex(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=copy_as_base64_svg_text.into()
+                                icon=copy_as_base64_svg_icon.into()
+                                on:click=move |ev| {
+                                    if copying_as_base64_svg.get_untracked() {
+                                        return;
+                                    }
+                                    set_copying_as_base64_svg(true);
+                                    set_controls_open(true);
+                                    set_timeout(
+                                        move || set_copying_as_base64_svg(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                    let slug = get_slug_from_modal_container();
+                                    spawn_local(async move {
+                                        if let Some(svg) = fetch_text(
+                                                &format!("/icons/{}.svg", slug),
+                                            )
+                                            .await
+                                        {
+                                            let base64 = window().btoa(&svg).unwrap();
+                                            let base64_svg = format!(
+                                                "data:image/svg+xml;base64,{}",
+                                                base64,
+                                            );
+                                            spawn_local(
+                                                copy_setting_copied_transition_in_element(
+                                                    base64_svg,
+                                                    ev
+                                                        .target()
+                                                        .unwrap()
+                                                        .dyn_into::<web_sys::HtmlElement>()
+                                                        .unwrap(),
+                                                ),
+                                            );
+                                        }
+                                    });
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=copy_as_base64_jpg_text.into()
+                                icon=copy_as_base64_jpg_icon.into()
+                                on:click=move |_| {
+                                    if copying_as_base64_jpg.get_untracked() {
+                                        return;
+                                    }
+                                    set_copying_as_base64_jpg(true);
+                                    set_controls_open(true);
+                                    set_timeout(
+                                        move || set_copying_as_base64_jpg(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                    let slug = get_slug_from_modal_container();
+                                    copy_as_base64_jpg(&slug);
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=copy_brand_name_msg.into()
+                                icon=copy_brand_name_icon.into()
+                                on:click=move |ev| {
+                                    let brand_name = get_brand_name_from_modal_container();
+                                    set_controls_open(true);
+                                    set_copying_brand_name(true);
+                                    spawn_local(
+                                        copy_setting_copied_transition_in_element(
+                                            brand_name,
+                                            ev
+                                                .target()
+                                                .unwrap()
+                                                .dyn_into::<web_sys::HtmlElement>()
+                                                .unwrap(),
+                                        ),
+                                    );
+                                    set_timeout(
+                                        move || set_copying_brand_name(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                }
+                            />
+
+                        </Menu>
+                    </Show>
+                </div>
             </div>
         </Modal>
     }

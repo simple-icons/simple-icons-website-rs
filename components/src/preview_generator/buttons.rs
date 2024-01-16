@@ -171,7 +171,7 @@ fn PreviewCopyButton() -> impl IntoView {
                     move || {
                         set_copied(false);
                     },
-                    std::time::Duration::from_millis(1000),
+                    std::time::Duration::from_secs(1),
                 );
             }
         >

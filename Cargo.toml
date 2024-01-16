@@ -86,3 +86,5 @@ unic-langid = "0.9.4"
 config = { version = "0.13.4", features = ["json"] }
 snafu = { version = "0.8.0", default_features = false }
 rand = "0.8.5"
+leptos_icons = "0.2.1"
+icondata = "0.3.0"

@@ -1,3 +1,4 @@
+pub mod image;
 pub mod pdf;
 pub mod svg;
 
@@ -5,6 +6,7 @@ use crate::controls::button::ControlButtonText;
 use crate::storage::LocalStorage;
 use crate::Url;
 use i18n::{move_tr, tr};
+pub use image::{copy_as_base64_jpg, download_jpg, download_png};
 use leptos::{document, *};
 pub use pdf::download_pdf;
 use std::collections::HashMap;

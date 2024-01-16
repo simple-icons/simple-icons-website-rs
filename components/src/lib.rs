@@ -13,6 +13,7 @@ pub mod header;
 mod ids;
 pub mod js_libs;
 pub mod keyboard;
+pub mod menu;
 pub mod modal;
 pub mod preview_generator;
 pub(crate) mod storage;

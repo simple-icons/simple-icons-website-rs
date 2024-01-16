@@ -6,11 +6,6 @@
   @apply flex flex-row flex-grow;
 }
 
-/* Footer */
-.icon-details-modal > :last-child {
-  @apply flex flex-col md:flex-row justify-between gap-2 px-4;
-}
-
 /* Icon preview */
 .icon-details-modal > :first-child > button {
   @apply w-1/2 copy-button-color-scheme
