@@ -46,17 +46,20 @@ pub mod params {
             params.insert(k.as_str().to_string(), v.to_string());
         }
 
-        let query = params.to_query_string();
+        let q = params.to_query_string();
+        let query = q.trim_matches('?');
+        let pathname = window().location().pathname().unwrap();
+        let url = match query.is_empty() {
+            false => format!("{}?{}", pathname, query),
+            true => pathname,
+        };
         window()
             .history()
             .unwrap()
             .replace_state_with_url(
                 &wasm_bindgen::JsValue::NULL,
                 "",
-                Some(match query.is_empty() {
-                    true => &current_url.pathname,
-                    false => &query,
-                }),
+                Some(&url),
             )
             .ok();
     }

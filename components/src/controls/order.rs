@@ -169,6 +169,26 @@ pub fn OrderControl() -> impl IntoView {
     let layout_signal = expect_context::<LayoutSignal>().0;
     let icons = store_value(expect_context::<IconsIndexSignal>().0);
 
+    create_effect(move |_| match order_mode.get_untracked().current {
+        OrderModeVariant::Random => set_order_mode(
+            &OrderModeVariant::Random,
+            &order_mode,
+            &icons_grid,
+            Some(&layout_signal()),
+            true,
+            icons(),
+        ),
+        OrderModeVariant::Color => set_order_mode(
+            &OrderModeVariant::Color,
+            &order_mode,
+            &icons_grid,
+            Some(&layout_signal()),
+            true,
+            icons(),
+        ),
+        _ => {}
+    });
+
     view! {
         <div class="control">
             <label>{move_tr!("order")}</label>
