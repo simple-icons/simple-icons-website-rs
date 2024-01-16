@@ -80,4 +80,4 @@ maximum-precision-must-be-less-than = Maximum precision should not be greater th
 icon-must-be-centered = Icon must be centered at (12, 12), currently at ({ $x }, { $y })
 collinear-segment-found-at-command = Collinear segment found at command "{ $command }"
 incorrect-svg-path-icon-size = Size must be exactly 24 pixels in one dimension, currently { $width } x { $height }
-random = Random
+sort-randomly = Sort randomly

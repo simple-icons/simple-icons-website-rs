@@ -80,4 +80,4 @@ maximum-precision-must-be-less-than = Максимальна точність н
 icon-must-be-centered = Піктограма має бути в центрі (12, 12), наразі в ({ $x }, { $y })
 collinear-segment-found-at-command = Знайдено колінеарний сегмент за командою «{ $command }»
 incorrect-svg-path-icon-size = Розмір має бути рівно 24 пікселями в одному вимірі, наразі { $width } x { $height }
-random = Випадковий
+sort-randomly = Випадково

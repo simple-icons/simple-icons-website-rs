@@ -80,4 +80,4 @@ maximum-precision-must-be-less-than = 최대 정밀도는 { $max_precision }보�
 icon-must-be-centered = 아이콘은 (12, 12), 현재 ({ $x }, { $y }) 중앙에 있어야 합니다.
 collinear-segment-found-at-command = "{ $command }" 명령에서 공선 세그먼트가 발견되었습니다.
 incorrect-svg-path-icon-size = 크기는 한 차원에서 정확히 24픽셀이어야 합니다. 현재 { $width } x { $height }
-random = 무작위
+sort-randomly = 무작위로 정렬

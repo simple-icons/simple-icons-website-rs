@@ -78,4 +78,4 @@ maximum-precision-must-be-less-than = 最大精度は { $max_precision } を超�
 icon-must-be-centered = アイコンの中心は (12, 12) である必要がありますが、現在は ({ $x }, { $y }) です。
 collinear-segment-found-at-command = 「{ $command }」コマンドで共線セグメントが見つかりました
 incorrect-svg-path-icon-size = サイズは 1 次元で正確に 24 ピクセルである必要があります。現時点では { $width } x { $height }
-random = ランダム
+sort-randomly = ランダムに並べ替え
