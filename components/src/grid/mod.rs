@@ -37,14 +37,14 @@ impl IconsGrid {
         search_value: &str,
         order_mode: &OrderModeVariant,
         layout: &Layout,
-        possible_icons: Vec<&'static SimpleIcon>,
+        icons: Vec<&'static SimpleIcon>,
     ) -> Self {
         let (icons, loaded_icons) =
             initial_icons_from_search_value_order_mode_and_layout(
                 search_value,
                 order_mode,
                 layout,
-                possible_icons,
+                icons,
             );
         Self {
             icons,
@@ -78,13 +78,13 @@ pub fn provide_icons_grid_contexts(
     initial_search_value: &str,
     initial_order_mode: &OrderMode,
     initial_layout: &Layout,
-    possible_icons: Vec<&'static SimpleIcon>,
+    icons: Vec<&'static SimpleIcon>,
 ) {
     provide_context(IconsGridSignal(create_rw_signal(IconsGrid::new(
         initial_search_value,
         &initial_order_mode.current,
         initial_layout,
-        possible_icons,
+        icons,
     ))));
     provide_context(IconsLoaderSignal(
         create_rw_signal(IconsLoader::default()),
