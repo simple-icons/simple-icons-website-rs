@@ -41,7 +41,7 @@ test.describe('search', () => {
     const orderModeControlButtons = await page.locator(
       `${ORDER_MODE_CONTROL_SELECTOR} button`,
     );
-    await expect(orderModeControlButtons).toHaveCount(3);
+    await expect(orderModeControlButtons).toHaveCount(4);
     await expect(orderModeControlButtons.nth(2)).toHaveClass('selected');
 
     await expect(
