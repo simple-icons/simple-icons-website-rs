@@ -67,3 +67,48 @@ export const copy_as_base64_jpg_ = (slug) => {
     };
   });
 };
+
+export const copy_as_base64_png_ = (slug) => {
+  download_image(slug, 'png', (url) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const base64 = canvas.toDataURL('image/png');
+      navigator.clipboard.writeText(base64);
+    };
+  });
+};
+
+const copy_as_image = (slug, format) => {
+  download_image(slug, format, (url) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((blob) => {
+        navigator.clipboard.write([
+          new ClipboardItem({
+            [blob.type]: blob,
+          }),
+        ]);
+      });
+    };
+  });
+};
+
+export const copy_as_image_png_ = (slug) => {
+  copy_as_image(slug, 'png');
+};
+
+export const copy_as_image_jpg_ = (slug) => {
+  copy_as_image(slug, 'jpg');
+};

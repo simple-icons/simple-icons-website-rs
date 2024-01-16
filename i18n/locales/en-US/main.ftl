@@ -88,3 +88,4 @@ copy-as-base64-svg = Copy as base64 SVG
 copied = Copied
 copy-brand-name = Copy brand name
 copy-as-base64-jpg = Copy as base64 JPG
+copy-as-base64-png = Copy as base64 PNG

@@ -88,3 +88,4 @@ copy-as-base64-svg = Base64 SVG로 복사
 copied = 복사됨
 copy-brand-name = 브랜드 이름 복사
 copy-as-base64-jpg = Base64 JPG로 복사
+copy-as-base64-png = Base64 PNG로 복사

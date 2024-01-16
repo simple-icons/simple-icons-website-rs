@@ -1,5 +1,6 @@
 use crate::controls::download::{
-    copy_as_base64_jpg, download, download_jpg, download_pdf, download_png,
+    copy_as_base64_jpg, copy_as_base64_png, copy_as_image_jpg,
+    copy_as_image_png, download, download_jpg, download_pdf, download_png,
     download_svg,
 };
 use crate::copy::{
@@ -351,6 +352,24 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
+    let (copying_as_base64_png, set_copying_as_base64_png) =
+        create_signal(false);
+    let copy_as_base64_png_icon = create_memo(move |_| {
+        if copying_as_base64_png() {
+            BiCheckRegular
+        } else {
+            BsCode
+        }
+    });
+
+    let copy_as_base64_png_text = create_memo(move |_| {
+        if copying_as_base64_png() {
+            tr!("copied")
+        } else {
+            tr!("copy-as-base64-png")
+        }
+    });
+
     let (copying_hex, set_copying_hex) = create_signal(false);
     let copy_hex_msg = create_memo(move |_| {
         if copying_hex() {
@@ -417,6 +436,36 @@ pub fn IconDetailsModal() -> impl IntoView {
         false => TbSvg,
     });
 
+    let (copying_png, set_copying_png) = create_signal(false);
+    let copy_png_msg = create_memo(move |_| match copying_png() {
+        true => tr!("copied"),
+        false => tr!("copy-filetype", &{
+            let mut map = HashMap::new();
+            map.insert("filetype".to_string(), tr!("png").into());
+            map
+        }),
+    });
+
+    let copy_png_icon = create_memo(move |_| match copying_png() {
+        true => BiCheckRegular,
+        false => TbPng,
+    });
+
+    let (copying_jpg, set_copying_jpg) = create_signal(false);
+    let copy_jpg_msg = create_memo(move |_| match copying_jpg() {
+        true => tr!("copied"),
+        false => tr!("copy-filetype", &{
+            let mut map = HashMap::new();
+            map.insert("filetype".to_string(), tr!("jpg").into());
+            map
+        }),
+    });
+
+    let copy_jpg_icon = create_memo(move |_| match copying_jpg() {
+        true => BiCheckRegular,
+        false => TbJpg,
+    });
+
     let (copying_brand_name, set_copying_brand_name) = create_signal(false);
     let copy_brand_name_msg =
         create_memo(move |_| match copying_brand_name() {
@@ -466,7 +515,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                             concat!(
                                 "absolute top-8 right-1 text-sm",
                                 " border-custom-divider-color bg-slate-300 dark:bg-gray-700",
-                                " max-h-72 scroll-bar overflow-y-auto",
+                                " max-h-[330px] scroll-bar overflow-y-auto",
                             )
                                 .to_string()
                         })
@@ -582,6 +631,38 @@ pub fn IconDetailsModal() -> impl IntoView {
 
                             <MenuItem
                                 class=controls_menu_item_class()
+                                text=copy_png_msg.into()
+                                icon=copy_png_icon.into()
+                                on:click=move |_| {
+                                    let slug = get_slug_from_modal_container();
+                                    set_controls_open(true);
+                                    set_copying_png(true);
+                                    copy_as_image_png(&slug);
+                                    set_timeout(
+                                        move || set_copying_png(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=copy_jpg_msg.into()
+                                icon=copy_jpg_icon.into()
+                                on:click=move |_| {
+                                    let slug = get_slug_from_modal_container();
+                                    set_controls_open(true);
+                                    set_copying_jpg(true);
+                                    copy_as_image_jpg(&slug);
+                                    set_timeout(
+                                        move || set_copying_jpg(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
                                 text=copy_hex_msg.into()
                                 icon=copy_hex_icon.into()
                                 on:click=move |ev| {
@@ -662,6 +743,25 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     );
                                     let slug = get_slug_from_modal_container();
                                     copy_as_base64_jpg(&slug);
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=copy_as_base64_png_text.into()
+                                icon=copy_as_base64_png_icon.into()
+                                on:click=move |_| {
+                                    if copying_as_base64_png.get_untracked() {
+                                        return;
+                                    }
+                                    set_copying_as_base64_png(true);
+                                    set_controls_open(true);
+                                    set_timeout(
+                                        move || set_copying_as_base64_png(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                    let slug = get_slug_from_modal_container();
+                                    copy_as_base64_png(&slug);
                                 }
                             />
 

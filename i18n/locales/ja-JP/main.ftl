@@ -86,3 +86,4 @@ copy-as-base64-svg = Base64 SVG としてコピー
 copied = コピーしました
 copy-brand-name = ブランド名をコピー
 copy-as-base64-jpg = Base64 JPG としてコピー
+copy-as-base64-png = Base64 PNG としてコピー
