@@ -34,3 +34,7 @@ Used to include an image of the icon showing a preview of it in pull requests.
 - <kbd>Ctrl</kbd> + <kbd>C</kbd>: Copy preview
 - <kbd>Ctrl</kbd> + <kbd>↓</kbd>: Download SVG
 - <kbd>Ctrl</kbd> + <kbd>↑</kbd>: Upload SVG
+
+## Deprecations at `/deprecations`
+
+Grid with all deprecated icons. You can use the same parameters as in the index.

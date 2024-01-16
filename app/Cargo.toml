@@ -9,6 +9,7 @@ simple-icons-website-components.workspace = true
 simple-icons-website-macros.workspace = true
 simple-icons-website-i18n.workspace = true
 simple-icons-website-config.workspace = true
+simple-icons-website-types.workspace = true
 leptos.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true

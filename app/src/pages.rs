@@ -6,7 +6,9 @@ use components::controls::layout::provide_layout_context;
 use components::controls::order::provide_order_mode_context;
 use components::controls::search::provide_search_context;
 use components::controls::Controls;
-use components::grid::{provide_icons_grid_contexts, Grid};
+use components::grid::{
+    provide_icons_grid_contexts, Grid, IconsIndexSignal, ICONS,
+};
 use components::preview_generator::PreviewGenerator;
 use components::svg::SVGDef;
 use i18n::move_tr;
@@ -37,20 +39,45 @@ fn index_redirections() {
 pub fn Index() -> impl IntoView {
     index_redirections();
 
-    let initial_search_value = provide_search_context();
+    let icons = expect_context::<IconsIndexSignal>().0;
+    let initial_search_value = provide_search_context(icons.clone());
     let initial_order_mode = provide_order_mode_context(&initial_search_value);
     provide_download_type_context();
     let initial_layout = provide_layout_context();
+
     provide_icons_grid_contexts(
         &initial_search_value,
         &initial_order_mode,
         &initial_layout,
+        icons,
     );
 
     view! {
         <Controls/>
         <Grid/>
     }
+}
+
+#[component]
+pub fn AllIconsIndex() -> impl IntoView {
+    provide_context::<IconsIndexSignal>(IconsIndexSignal(
+        ICONS.iter().collect(),
+    ));
+
+    view! { <Index/> }
+}
+
+#[component]
+pub fn DeprecationsIndex() -> impl IntoView {
+    // TODO: generate at build time
+    let mut deprecated_icons = vec![];
+    for icon in ICONS.iter() {
+        if icon.deprecation.as_ref().is_some() {
+            deprecated_icons.push(icon);
+        }
+    }
+    provide_context::<IconsIndexSignal>(IconsIndexSignal(deprecated_icons));
+    view! { <Index/> }
 }
 
 #[component]

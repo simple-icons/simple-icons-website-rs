@@ -5,7 +5,7 @@ use crate::controls::order::{
     set_order_mode, OrderMode, OrderModeSignal, OrderModeVariant,
 };
 use crate::event::dispatch_input_event_on_input;
-use crate::grid::{IconsGrid, IconsGridSignal, ICONS};
+use crate::grid::{IconsGrid, IconsGridSignal, IconsIndexSignal, ICONS};
 use crate::storage::LocalStorage;
 use crate::Ids;
 use crate::Url;
@@ -34,8 +34,8 @@ pub fn focus_search_bar() {
     input.focus().unwrap();
 }
 
-pub fn provide_search_context() -> String {
-    let initial_search_value = initial_search_value();
+pub fn provide_search_context(icons: Vec<&'static SimpleIcon>) -> String {
+    let initial_search_value = initial_search_value(icons);
     provide_context(SearchValueSignal(create_rw_signal(
         initial_search_value.clone(),
     )));
@@ -43,7 +43,7 @@ pub fn provide_search_context() -> String {
     initial_search_value
 }
 
-fn initial_search_value() -> String {
+fn initial_search_value(icons: Vec<&'static SimpleIcon>) -> String {
     let search_value = match Url::params::get(&Url::params::Names::Query) {
         Some(value) => {
             set_search_value_on_localstorage(value.as_str());
@@ -59,7 +59,7 @@ fn initial_search_value() -> String {
         },
     };
 
-    init_searcher();
+    init_searcher(icons);
     search_value
 }
 
@@ -81,8 +81,8 @@ pub fn fire_on_search_event() {
     dispatch_input_event_on_input(&input);
 }
 
-fn init_searcher() {
-    let icons_candidates_ids = ICONS
+fn init_searcher(icons: Vec<&'static SimpleIcon>) {
+    let icons_candidates_ids = icons
         .iter()
         .map(|icon| {
             let mut candidates: Vec<&str> = vec![icon.title, icon.slug];
@@ -205,6 +205,7 @@ async fn on_search(
     icons_grid_signal: RwSignal<IconsGrid>,
     order_mode_signal: RwSignal<OrderMode>,
     icons_per_page: usize,
+    icons: Vec<&'static SimpleIcon>,
 ) {
     let value = search_input_ref().unwrap().value();
     search_signal.update(move |state| {
@@ -213,7 +214,7 @@ async fn on_search(
         if value.is_empty() {
             // Reset grid
             icons_grid_signal.update(|grid| {
-                grid.icons = ICONS.iter().collect();
+                grid.icons = icons.clone();
                 grid.loaded_icons =
                     grid.icons.iter().take(icons_per_page).copied().collect();
             });
@@ -224,6 +225,7 @@ async fn on_search(
                 &icons_grid_signal,
                 None,
                 true,
+                icons,
             );
             set_search_value_on_localstorage(&value);
             *state = value;
@@ -239,6 +241,7 @@ async fn on_search(
             &icons_grid_signal,
             None,
             false,
+            icons,
         );
         *state = search_value_copy;
     });
@@ -250,6 +253,7 @@ pub fn SearchControl() -> impl IntoView {
     let search = expect_context::<SearchValueSignal>().0;
     let order_mode = expect_context::<OrderModeSignal>().0;
     let layout = expect_context::<LayoutSignal>().0;
+    let icons = expect_context::<IconsIndexSignal>().0;
 
     let search_input_ref = create_node_ref::<Input>();
     // Focus on load. Fallback for Safari, see:
@@ -280,6 +284,7 @@ pub fn SearchControl() -> impl IntoView {
                                 icons_grid,
                                 order_mode,
                                 layout().icons_per_page() as usize,
+                                icons.clone(),
                             ),
                         )
                     }

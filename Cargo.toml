@@ -27,16 +27,16 @@ simple-icons-website-i18n = { path = "./i18n" }
 simple-icons-website-config = { path = "./config" }
 simple-icons-website-types = { path = "./types" }
 simple-icons-website-components = { path = "./components" }
-leptos = { version = "0.5.4", default-features = false, features = [
+leptos = { version = "0.5.5", default-features = false, features = [
     "csr",
     "nightly",
     "miniserde",
 ] }
-leptos_meta = { version = "0.5.4", default-features = false, features = [
+leptos_meta = { version = "0.5.5", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos_router = { version = "0.5.4", default-features = false, features = [
+leptos_router = { version = "0.5.5", default-features = false, features = [
     "csr",
     "nightly"
 ] }

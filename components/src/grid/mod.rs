@@ -19,6 +19,10 @@ use wasm_bindgen::JsCast;
 
 pub const ICONS: [SimpleIcon; get_number_of_icons!()] = icons_array!();
 
+/// Icons rendered in a page
+#[derive(Clone)]
+pub struct IconsIndexSignal(pub Vec<&'static SimpleIcon>);
+
 /// Icons grid
 #[derive(Clone)]
 pub struct IconsGrid {
@@ -33,12 +37,14 @@ impl IconsGrid {
         search_value: &str,
         order_mode: &OrderModeVariant,
         layout: &Layout,
+        possible_icons: Vec<&'static SimpleIcon>,
     ) -> Self {
         let (icons, loaded_icons) =
             initial_icons_from_search_value_order_mode_and_layout(
                 search_value,
                 order_mode,
                 layout,
+                possible_icons,
             );
         Self {
             icons,
@@ -72,11 +78,13 @@ pub fn provide_icons_grid_contexts(
     initial_search_value: &str,
     initial_order_mode: &OrderMode,
     initial_layout: &Layout,
+    possible_icons: Vec<&'static SimpleIcon>,
 ) {
     provide_context(IconsGridSignal(create_rw_signal(IconsGrid::new(
         initial_search_value,
         &initial_order_mode.current,
         initial_layout,
+        possible_icons,
     ))));
     provide_context(IconsLoaderSignal(
         create_rw_signal(IconsLoader::default()),
@@ -87,13 +95,14 @@ fn initial_icons_from_search_value_order_mode_and_layout(
     search_value: &str,
     order_mode: &OrderModeVariant,
     layout: &Layout,
+    icons: Vec<&'static SimpleIcon>,
 ) -> (Vec<&'static SimpleIcon>, Vec<&'static SimpleIcon>) {
     let icons_per_page: usize = layout.icons_per_page() as usize;
     if search_value.is_empty() {
-        let mut icons: Vec<&'static SimpleIcon> = ICONS.iter().collect();
         if order_mode != &OrderModeVariant::Alphabetic {
+            let mut icons_copy = icons.clone();
             // Alphabetical is the default order of the icons in the static array
-            sort_icons(order_mode, &mut icons);
+            sort_icons(order_mode, &mut icons_copy);
         }
         let loaded_icons: Vec<&'static SimpleIcon> =
             icons.iter().take(icons_per_page).copied().collect();
