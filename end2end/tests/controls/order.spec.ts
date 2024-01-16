@@ -15,7 +15,7 @@ test.describe('order mode', () => {
     const orderModeButtons = await page.locator(
       `${ORDER_MODE_CONTROL_SELECTOR} button`,
     );
-    await expect(orderModeButtons).toHaveCount(2);
+    await expect(orderModeButtons).toHaveCount(3);
     await expect(orderModeButtons.nth(0)).toHaveClass('selected');
 
     const gridItemIconsTitles = await getGridItemsIconsTitles(page);
