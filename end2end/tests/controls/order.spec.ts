@@ -10,13 +10,13 @@ import { getIconsData as getSimpleIconsData } from 'simple-icons/sdk';
 const ORDER_MODE_CONTROL_SELECTOR = selectors.controls.buttons.getByNthChild(1);
 
 test.describe('order mode', () => {
-  test('is alphabetical by default', async ({ page }) => {
+  test('is random by default', async ({ page }) => {
     await page.goto('/');
     const orderModeButtons = await page.locator(
       `${ORDER_MODE_CONTROL_SELECTOR} button`,
     );
     await expect(orderModeButtons).toHaveCount(3);
-    await expect(orderModeButtons.nth(0)).toHaveClass('selected');
+    await expect(orderModeButtons.nth(2)).toHaveClass('selected');
 
     const gridItemIconsTitles = await getGridItemsIconsTitles(page);
 

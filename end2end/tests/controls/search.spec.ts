@@ -42,7 +42,7 @@ test.describe('search', () => {
       `${ORDER_MODE_CONTROL_SELECTOR} button`,
     );
     await expect(orderModeControlButtons).toHaveCount(4);
-    await expect(orderModeControlButtons.nth(2)).toHaveClass('selected');
+    await expect(orderModeControlButtons.nth(3)).toHaveClass('selected');
 
     await expect(
       await page.evaluate(() => localStorage.getItem('order-mode')),
