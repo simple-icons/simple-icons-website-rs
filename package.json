@@ -18,34 +18,34 @@
   },
   "scripts": {
     "postinstall": "npm run setup:husky",
-    "setup:husky": "node -e 'process.exit(process.env.CI === undefined)' || husky install"
+    "setup:husky": "node -e 'process.exit(process.env.CI === undefined ? 1 : 0)' || husky install"
   },
   "devDependencies": {
-    "@playwright/test": "1.36.2",
-    "@types/node": "20.4.5",
-    "@typescript-eslint/eslint-plugin": "6.5.0",
-    "@typescript-eslint/parser": "6.5.0",
+    "@playwright/test": "1.41.0",
+    "@types/node": "20.11.4",
+    "@typescript-eslint/eslint-plugin": "6.19.0",
+    "@typescript-eslint/parser": "6.19.0",
     "anywhere": "1.6.0",
-    "autoprefixer": "10.4.14",
-    "esbuild": "0.18.17",
-    "eslint": "8.48.0",
+    "autoprefixer": "10.4.16",
+    "esbuild": "0.19.11",
+    "eslint": "8.56.0",
     "eslint-config-simple-icons": "0.1.2",
     "husky": "8.0.3",
     "lightningcss": "1.23.0",
-    "postcss": "8.4.31",
-    "postcss-import": "15.1.0",
-    "prettier": "3.0.0",
+    "postcss": "8.4.33",
+    "postcss-import": "16.0.0",
+    "prettier": "3.2.2",
     "simple-icons": "11.1.0",
-    "stylelint": "15.10.2",
-    "stylelint-config-standard": "34.0.0",
+    "stylelint": "16.1.0",
+    "stylelint-config-standard": "36.0.0",
     "stylelint-config-tailwindcss": "0.0.7",
-    "tailwindcss": "3.3.3",
-    "tsx": "3.13.0"
+    "tailwindcss": "3.4.1",
+    "tsx": "4.7.0"
   },
   "dependencies": {
     "blob-stream": "0.1.3",
     "fast-fuzzy": "1.12.0",
-    "pdfkit": "0.13.0",
+    "pdfkit": "0.14.0",
     "svg-path-bbox": "1.2.4"
   }
 }
