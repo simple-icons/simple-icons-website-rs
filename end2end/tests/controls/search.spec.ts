@@ -41,6 +41,6 @@ test.describe('search', () => {
 
     await expect(
       await page.evaluate(() => localStorage.getItem('order-mode')),
-    ).toBe(null);
+    ).toBe('random');
   });
 });
