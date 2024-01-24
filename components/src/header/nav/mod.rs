@@ -40,12 +40,12 @@ pub fn HeaderMenu() -> impl IntoView {
                     svg_path=simple_icon_svg_path!("github")
                 />
                 <HeaderMenuLink
-                    title=(move || "npm".to_string()).into()
+                    title="npm"
                     href="https://www.npmjs.com/package/simple-icons"
                     svg_path=simple_icon_svg_path!("npm")
                 />
                 <HeaderMenuLink
-                    title=(move || "Packagist".to_string()).into()
+                    title="Packagist"
                     href="https://packagist.org/packages/simple-icons/simple-icons"
                     svg_path=simple_icon_svg_path!("packagist")
                 />
