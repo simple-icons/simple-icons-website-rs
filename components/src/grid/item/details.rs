@@ -511,15 +511,11 @@ pub fn IconDetailsModal() -> impl IntoView {
                         />
                     </span>
                     <Show when=controls_open>
-                        <Menu class=(|| {
-                            concat!(
-                                "absolute top-8 right-1 text-sm",
-                                " border-custom-divider-color bg-slate-300 dark:bg-gray-700",
-                                " max-h-[330px] scroll-bar overflow-y-auto",
-                            )
-                                .to_string()
-                        })
-                            .into()>
+                        <Menu class=concat!(
+                            "absolute top-8 right-1 text-sm",
+                            " border-custom-divider-color bg-slate-300 dark:bg-gray-700",
+                            " max-h-[330px] scroll-bar overflow-y-auto",
+                        )>
 
                             <MenuItem
                                 class=controls_menu_item_class()
@@ -595,8 +591,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
                             <MenuItem
                                 class=controls_menu_item_class()
-                                text=copy_svg_msg.into()
-                                icon=copy_svg_icon.into()
+                                text=copy_svg_msg
+                                icon=copy_svg_icon
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
                                     set_controls_open(true);
@@ -631,8 +627,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
                             <MenuItem
                                 class=controls_menu_item_class()
-                                text=copy_png_msg.into()
-                                icon=copy_png_icon.into()
+                                text=copy_png_msg
+                                icon=copy_png_icon
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
                                     set_controls_open(true);
@@ -647,8 +643,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
                             <MenuItem
                                 class=controls_menu_item_class()
-                                text=copy_jpg_msg.into()
-                                icon=copy_jpg_icon.into()
+                                text=copy_jpg_msg
+                                icon=copy_jpg_icon
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
                                     set_controls_open(true);
@@ -663,8 +659,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
                             <MenuItem
                                 class=controls_menu_item_class()
-                                text=copy_hex_msg.into()
-                                icon=copy_hex_icon.into()
+                                text=copy_hex_msg
+                                icon=copy_hex_icon
                                 on:click=move |ev| {
                                     let hex = get_hex_from_modal_container();
                                     set_controls_open(true);
@@ -688,8 +684,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
                             <MenuItem
                                 class=controls_menu_item_class()
-                                text=copy_as_base64_svg_text.into()
-                                icon=copy_as_base64_svg_icon.into()
+                                text=copy_as_base64_svg_text
+                                icon=copy_as_base64_svg_icon
                                 on:click=move |ev| {
                                     if copying_as_base64_svg.get_untracked() {
                                         return;
@@ -729,8 +725,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
                             <MenuItem
                                 class=controls_menu_item_class()
-                                text=copy_as_base64_jpg_text.into()
-                                icon=copy_as_base64_jpg_icon.into()
+                                text=copy_as_base64_jpg_text
+                                icon=copy_as_base64_jpg_icon
                                 on:click=move |_| {
                                     if copying_as_base64_jpg.get_untracked() {
                                         return;
@@ -748,8 +744,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
                             <MenuItem
                                 class=controls_menu_item_class()
-                                text=copy_as_base64_png_text.into()
-                                icon=copy_as_base64_png_icon.into()
+                                text=copy_as_base64_png_text
+                                icon=copy_as_base64_png_icon
                                 on:click=move |_| {
                                     if copying_as_base64_png.get_untracked() {
                                         return;
@@ -767,8 +763,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
                             <MenuItem
                                 class=controls_menu_item_class()
-                                text=copy_brand_name_msg.into()
-                                icon=copy_brand_name_icon.into()
+                                text=copy_brand_name_msg
+                                icon=copy_brand_name_icon
                                 on:click=move |ev| {
                                     let brand_name = get_brand_name_from_modal_container();
                                     set_controls_open(true);

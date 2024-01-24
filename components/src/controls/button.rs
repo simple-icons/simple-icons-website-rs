@@ -12,7 +12,8 @@ pub fn ControlButton(
     /// Button children
     children: Children,
     /// The control is active
-    active: Signal<bool>,
+    #[prop(into)]
+    active: MaybeSignal<bool>,
     /// Optional classes
     #[prop(optional)]
     class: &'static str,
@@ -32,7 +33,8 @@ pub fn ControlButtonSVGPath(
     /// Button icon SVG path
     svg_path: &'static str,
     /// The control is active
-    active: Signal<bool>,
+    #[prop(into)]
+    active: MaybeSignal<bool>,
     /// Optional classes
     #[prop(optional)]
     class: &'static str,
@@ -43,14 +45,14 @@ pub fn ControlButtonSVGPath(
         create_memo(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
 
     view! {
-        <ControlButton title=title active=active class=class>
+        <ControlButton title active class>
             <SVGIcon
                 role="img"
                 aria_hidden=true
                 aria_label=title_fn
-                view_box=(|| "0 0 24 24".into()).into()
-                width=size.into()
-                height=size.into()
+                view_box="0 0 24 24"
+                width=size
+                height=size
                 path=svg_path
             />
 
@@ -69,7 +71,7 @@ pub fn ControlButtonText(
     active: Signal<bool>,
 ) -> impl IntoView {
     view! {
-        <ControlButton title=title active=active>
+        <ControlButton title active=active>
             <span>{text}</span>
         </ControlButton>
     }

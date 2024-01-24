@@ -3,7 +3,7 @@ use leptos_icons::Icon;
 
 #[component]
 pub fn Menu(
-    class: Signal<String>,
+    #[prop(optional, into)] class: MaybeSignal<String>,
     children: Children,
     #[prop(optional)] ref_: NodeRef<Ul>,
 ) -> impl IntoView {
@@ -16,9 +16,9 @@ pub fn Menu(
 
 #[component]
 pub fn MenuItem(
-    #[prop(optional)] class: String,
-    text: Signal<String>,
-    #[prop(optional)] icon: Option<Signal<icondata::Icon>>,
+    #[prop(optional, into)] class: MaybeSignal<String>,
+    #[prop(optional, into)] text: MaybeSignal<String>,
+    #[prop(optional, into)] icon: Option<MaybeSignal<icondata::Icon>>,
     #[prop(optional)] children: Option<Children>,
 ) -> impl IntoView {
     view! {
@@ -27,7 +27,7 @@ pub fn MenuItem(
                 "flex flex-row gap-x-2 px-3 py-1.5 cursor-pointer rounded-sm",
                 " whitespace-nowrap my-auto {}",
             ),
-            class,
+            class(),
         )>
             {match icon {
                 Some(icon) => {

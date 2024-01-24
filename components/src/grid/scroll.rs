@@ -7,7 +7,8 @@ use leptos_use::use_window_scroll;
 #[component]
 pub fn ScrollButton(
     /// The title of the button
-    title: Signal<String>,
+    #[prop(into)]
+    title: MaybeSignal<String>,
     /// The SVG path of the icon
     svg_path: &'static SVGDef,
     /// Additional classes to be added to the button

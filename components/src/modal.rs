@@ -11,7 +11,7 @@ use std::str::FromStr;
 #[component]
 fn ModalHeader(
     /// Title of the modal
-    title: Signal<String>,
+    title: MaybeSignal<String>,
     /// Indicates whether the title is copyable
     #[prop(optional)]
     title_is_copyable: bool,
@@ -43,8 +43,8 @@ fn ModalHeader(
 pub fn Modal(
     children: ChildrenFn,
     /// Title of the modal
-    #[prop(optional)]
-    title: Signal<String>,
+    #[prop(optional, into)]
+    title: MaybeSignal<String>,
     /// Indicates whether the title is copyable
     #[prop(optional)]
     title_is_copyable: bool,
@@ -54,7 +54,7 @@ pub fn Modal(
     /// or the user clicks outside the modal
     on_close: Signal<()>,
     /// Set the focus on the search bar when the modal is closed
-    #[prop(optional, default = false)]
+    #[prop(optional)]
     on_close_focus_search_bar: bool,
 ) -> impl IntoView {
     let modal_ref = create_node_ref::<Div>();
@@ -84,7 +84,7 @@ pub fn Modal(
         }>
             <div ref_=modal_ref class="modal">
                 <ModalHeader
-                    title=title
+                    title
                     title_is_copyable=title_is_copyable
                     on_close=Signal::derive(on_close_header)
                 />

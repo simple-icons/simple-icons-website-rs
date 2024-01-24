@@ -119,16 +119,14 @@ pub fn SVGDefsDefinition() -> impl IntoView {
 #[component]
 pub fn SVGIcon<P>(
     path: P,
-    #[prop(optional)] aria_label: Option<Memo<String>>,
+    #[prop(optional, into)] aria_label: Option<MaybeSignal<String>>,
     #[prop(optional)] class: &'static str,
     #[prop(optional)] fill: &'static str,
-    #[prop(optional, default = Signal::derive(|| "24"))] width: Signal<
-        &'static str,
-    >,
-    #[prop(optional, default = Signal::derive(|| "24"))] height: Signal<
-        &'static str,
-    >,
-    #[prop(optional, default = Signal::derive(|| "".into()))] view_box: Signal<
+    #[prop(optional, into, default = MaybeSignal::Static("24"))]
+    width: MaybeSignal<&'static str>,
+    #[prop(optional, into, default = MaybeSignal::Static("24"))]
+    height: MaybeSignal<&'static str>,
+    #[prop(optional, into, default = MaybeSignal::Static("".into()))] view_box: MaybeSignal<
         String,
     >,
     #[prop(optional, default = "img")] role: &'static str,
@@ -144,7 +142,7 @@ where
             aria-hidden=if aria_hidden { "true" } else { "false" }
             width=width
             height=height
-            aria-label=move || match aria_label {
+            aria-label=move || match &aria_label {
                 Some(aria_label) => aria_label(),
                 None => "".to_string(),
             }

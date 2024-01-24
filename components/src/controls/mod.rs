@@ -112,9 +112,9 @@ pub fn ControlsToggler() -> impl IntoView {
                             <SVGIcon
                                 role="img"
                                 aria_hidden=true
-                                view_box=(|| "-1 -1 27 27".into()).into()
-                                width=size.into()
-                                height=size.into()
+                                view_box="-1 -1 27 27"
+                                width=size
+                                height=size
                                 path=&SVGDef::View
                             />
                         }
@@ -124,9 +124,9 @@ pub fn ControlsToggler() -> impl IntoView {
                             <SVGIcon
                                 role="img"
                                 aria_hidden=true
-                                view_box=(|| "-1 -1 27 27".into()).into()
-                                width=size.into()
-                                height=size.into()
+                                view_box="-1 -1 27 27"
+                                width=size
+                                height=size
                                 path=&SVGDef::Controls
                             />
                         }

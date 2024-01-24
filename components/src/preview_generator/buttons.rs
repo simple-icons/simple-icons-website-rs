@@ -223,8 +223,8 @@ fn PreviewDownloadSVGButton(
 
     view! {
         <Button
+            title
             svg_path=&SVGDef::Download
-            title=title
             id=button_id
             on:click=move |_| {
                 let filename = format!("{}.svg", &sdk::title_to_slug(&brand()));
