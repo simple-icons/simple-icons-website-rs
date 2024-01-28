@@ -132,8 +132,8 @@ cwd = "./app"
 
 [tasks.minify-css]
 description = "Minify CSS with LightningCSS"
-command = "tsx"
-args = ["scripts/minify-css.ts"]
+command = "npx"
+args = ["tsx", "scripts/minify-css.ts"]
 
 [tasks.serve-for-prod]
 description = "Serve the app with anywhere"
