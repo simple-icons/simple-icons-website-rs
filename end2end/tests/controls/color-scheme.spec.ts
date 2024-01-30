@@ -64,7 +64,7 @@ test.describe('color scheme', () => {
     ).toBe(oppositeColorScheme);
   });
 
-  const colorSchemeButtons = ['light', 'dark', 'system'];
+  const colorSchemeButtons = ['light', 'dark', 'auto'];
   for (const colorSchemeButtonIndex in colorSchemeButtons) {
     const colorScheme = colorSchemeButtons[colorSchemeButtonIndex];
     test(`${colorScheme} through URL`, async ({ page }) => {
