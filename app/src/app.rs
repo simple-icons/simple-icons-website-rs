@@ -1,18 +1,20 @@
 use crate::head::Head;
 use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
-use components::controls::color_scheme::{
-    provide_color_scheme_context, ColorScheme,
-};
+use components::controls::color_scheme::initial_color_scheme;
 use components::copy::CopyInput;
 use components::footer::Footer;
 use components::header::{
     nav::language_selector::provide_language_context, Header,
 };
 use components::modal::provide_modal_open_context;
+use components::storage::LocalStorage;
 use components::svg::SVGDefsDefinition;
 use leptos::{html::Footer as FooterHtmlElement, wasm_bindgen::JsCast, *};
 use leptos_router::{Route, Router, Routes};
-use leptos_use::use_preferred_dark;
+use leptos_use::{
+    use_color_mode_with_options, ColorMode, UseColorModeOptions,
+    UseColorModeReturn,
+};
 
 /// Title of the page
 pub static TITLE: &str = "Simple Icons";
@@ -20,23 +22,18 @@ pub static TITLE: &str = "Simple Icons";
 /// The main application component
 #[component]
 pub fn App() -> impl IntoView {
-    let color_scheme = provide_color_scheme_context().0;
-    let dark_preferred = use_preferred_dark();
+    let UseColorModeReturn { mode, set_mode, .. } = use_color_mode_with_options(
+        UseColorModeOptions::default()
+            .storage_key(LocalStorage::Keys::ColorScheme.as_str())
+            .target(document().body().unwrap())
+            .attribute("class")
+            .emit_auto(true)
+            .initial_value(initial_color_scheme()),
+    );
 
-    create_effect(move |_| {
-        let body_class_list = document().body().unwrap().class_list();
-        body_class_list.remove_2("dark", "light").unwrap();
-        body_class_list
-            .add_1(match color_scheme() {
-                ColorScheme::Dark => "dark",
-                ColorScheme::Light => "light",
-                ColorScheme::System => match dark_preferred() {
-                    true => "dark",
-                    false => "light",
-                },
-            })
-            .unwrap();
-    });
+    provide_context::<(Signal<ColorMode>, WriteSignal<ColorMode>)>((
+        mode, set_mode,
+    ));
 
     let locale_signal = provide_language_context().0;
     create_effect(move |_| {

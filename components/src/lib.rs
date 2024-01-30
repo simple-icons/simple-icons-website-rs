@@ -16,7 +16,7 @@ pub mod keyboard;
 pub mod menu;
 pub mod modal;
 pub mod preview_generator;
-pub(crate) mod storage;
+pub mod storage;
 pub mod svg;
 pub(crate) mod url;
 
