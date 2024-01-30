@@ -20,7 +20,7 @@ pub fn initial_color_scheme() -> ColorMode {
         }
         None => match color_scheme_from_localstorage() {
             Some(color_scheme) => color_scheme,
-            None => ColorMode::Light,
+            None => ColorMode::Auto,
         },
     }
 }
