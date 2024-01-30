@@ -22,7 +22,11 @@ pub static TITLE: &str = "Simple Icons";
 /// The main application component
 #[component]
 pub fn App() -> impl IntoView {
-    let UseColorModeReturn { mode, set_mode, .. } = use_color_mode_with_options(
+    let UseColorModeReturn {
+        mode: color_mode,
+        set_mode: set_color_mode,
+        ..
+    } = use_color_mode_with_options(
         UseColorModeOptions::default()
             .storage_key(LocalStorage::Keys::ColorScheme.as_str())
             .target(document().body().unwrap())
@@ -32,7 +36,8 @@ pub fn App() -> impl IntoView {
     );
 
     provide_context::<(Signal<ColorMode>, WriteSignal<ColorMode>)>((
-        mode, set_mode,
+        color_mode,
+        set_color_mode,
     ));
 
     let locale_signal = provide_language_context().0;
