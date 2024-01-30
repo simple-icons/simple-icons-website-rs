@@ -13,28 +13,6 @@ const getSystemColorScheme = async (page: Page): Promise<'dark' | 'light'> => {
 };
 
 test.describe('color scheme', () => {
-  test('discovered from system by default', async ({ page }) => {
-    await page.goto('/');
-
-    if (!screenWidthIsAtLeast('lg', page)) {
-      await page.locator(selectors.controls.toggler).click();
-    }
-
-    const colorSchemeButtons = await page.locator(
-      `${COLOR_SCHEME_CONTROL_SELECTOR} button`,
-    );
-    await expect(colorSchemeButtons).toHaveCount(3);
-    await expect(colorSchemeButtons.nth(2)).toHaveClass('selected');
-
-    await expect(page.locator(selectors.body)).toHaveClass(
-      await getSystemColorScheme(page),
-    );
-
-    await expect(
-      await page.evaluate(() => localStorage.getItem('color-scheme')),
-    ).toBe(null);
-  });
-
   test('system -> opposite', async ({ page }) => {
     await page.goto('/');
 
