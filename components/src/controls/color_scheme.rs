@@ -6,9 +6,14 @@ use leptos::*;
 use leptos_use::ColorMode;
 
 pub fn initial_color_scheme() -> ColorMode {
-    match Url::params::get(&Url::params::Names::ColorScheme)
-        .and_then(|value| value.parse().ok())
-    {
+    match Url::params::get(&Url::params::Names::ColorScheme).and_then(|value| {
+        match value.as_ref() {
+            "light" => Some(ColorMode::Light),
+            "dark" => Some(ColorMode::Dark),
+            "system" | "auto" => Some(ColorMode::Auto),
+            _ => None,
+        }
+    }) {
         Some(color_scheme) => {
             set_color_scheme_on_localstorage(&color_scheme);
             color_scheme
