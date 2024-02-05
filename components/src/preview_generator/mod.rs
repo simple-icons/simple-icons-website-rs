@@ -269,7 +269,11 @@ fn PreviewBadge(
         }
         if text_color.is_some() {
             spawn_local(async move {
-                let url = badge_url(&color.get_untracked(), &svg(), style);
+                let url = badge_url(
+                    &color.get_untracked(),
+                    &svg.get_untracked(),
+                    style,
+                );
                 let badge_svg = fetch_text(&url).await.unwrap();
                 let styled_badge_svg = badge_svg.replace(
                     "id=\"rlink\"",
