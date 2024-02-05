@@ -27,20 +27,20 @@ simple-icons-website-i18n = { path = "./i18n" }
 simple-icons-website-config = { path = "./config" }
 simple-icons-website-types = { path = "./types" }
 simple-icons-website-components = { path = "./components" }
-leptos = { version = "0.5.5", default-features = false, features = [
+leptos = { version = "0.6.5", default-features = false, features = [
     "csr",
     "nightly",
     "miniserde",
 ] }
-leptos_meta = { version = "0.5.5", default-features = false, features = [
+leptos_meta = { version = "0.6.5", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos_router = { version = "0.5.5", default-features = false, features = [
+leptos_router = { version = "0.6.5", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos-use = "0.9.0"
+leptos-use = "0.10.1"
 console_log = "1.0.0"
 log = "0.4.20"
 console_error_panic_hook = "0.1.7"
@@ -83,8 +83,8 @@ unicode-normalization = "0.1.22"
 icu_collator = "1.4.0"
 fluent-templates = "0.8.0"
 unic-langid = "0.9.4"
-config = { version = "0.13.4", features = ["json"] }
+config = { version = "0.14.0", features = ["json"] }
 snafu = { version = "0.8.0", default_features = false }
 rand = "0.8.5"
-leptos_icons = "0.2.1"
+leptos_icons = "0.3.0"
 icondata = "0.3.0"

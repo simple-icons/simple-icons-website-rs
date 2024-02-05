@@ -12,7 +12,7 @@ use leptos::{
     html::{Div, Input},
     *,
 };
-use leptos_use::on_click_outside;
+use leptos_use::{on_click_outside, use_device_pixel_ratio};
 use simple_icons::{sdk, sdk::lint::errors::PathLintError};
 use std::collections::HashMap;
 use svg_path_cst::svg_path_cst;
@@ -24,6 +24,7 @@ pub fn ColorInput(
     color: ReadSignal<String>,
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
+    let pixel_ratio = use_device_pixel_ratio();
     view! {
         <div class="preview-input-group">
             <label for="preview-color">{move_tr!("color")}</label>
@@ -42,7 +43,7 @@ pub fn ColorInput(
                     input.set_selection_start(selection_start).unwrap();
                     input.set_selection_end(selection_end).unwrap();
                     set_color(normalized_value);
-                    update_preview_canvas();
+                    update_preview_canvas(pixel_ratio.get_untracked());
                 }
 
                 class:invalid=move || !is_valid_hex_color(&color())
@@ -138,6 +139,8 @@ pub fn PathInput(
     set_path: WriteSignal<String>,
 ) -> impl IntoView
 where {
+    let pixel_ratio = use_device_pixel_ratio();
+
     let (path_lint_errors, set_path_lint_errors) =
         create_signal::<Vec<sdk::lint::LintError>>(vec![]);
     let (show_path_lint_errors, set_show_path_lint_errors) =
@@ -206,7 +209,7 @@ where {
                     process_lint_errors(&p, set_path_lint_errors);
                     set_show_path_lint_errors(true);
                     set_path(p);
-                    update_preview_canvas();
+                    update_preview_canvas(pixel_ratio.get_untracked());
                 }
 
                 on:focus=move |_| {
@@ -330,6 +333,8 @@ pub fn BrandInput(
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
+    let pixel_ratio = use_device_pixel_ratio();
+
     let (brand_suggestions, set_brand_suggestions) =
         create_signal(Vec::<&SimpleIcon>::with_capacity(7));
     let (more_brand_suggestions, set_more_brand_suggestions) =
@@ -360,7 +365,7 @@ pub fn BrandInput(
                     let (bs, more_bs) = search_brand_suggestions(&value);
                     let more_bs_length = more_bs.len();
                     set_brand(value.clone());
-                    update_preview_canvas();
+                    update_preview_canvas(pixel_ratio.get_untracked());
                     set_brand_suggestions(bs);
                     set_more_brand_suggestions(more_bs);
                     set_show_brand_suggestions(true);
@@ -460,6 +465,7 @@ fn BrandSuggestion(
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
+    let pixel_ratio = use_device_pixel_ratio();
     view! {
         <li on:click=move |_| {
             set_brand(icon.title.to_string());
@@ -473,7 +479,7 @@ fn BrandSuggestion(
                         .unwrap();
                     path_input.set_value(&sdk::svg_to_path(&svg));
                     dispatch_input_event_on_input(&path_input);
-                    update_preview_canvas();
+                    update_preview_canvas(pixel_ratio.get_untracked());
                 }
             });
         }>

@@ -4,7 +4,7 @@ use crate::copy::copy_canvas_container_as_image;
 use crate::grid::ICONS;
 use crate::keyboard::load_keyboard_shortcut_ctrl_and_key_on_click_id;
 use crate::preview_generator::{
-    canvas::get_canvas_container, helpers::is_valid_hex_color,
+    canvas::canvas as canvas_container, helpers::is_valid_hex_color,
 };
 use crate::svg::{svg_with_title_path_opt_fill, SVGDef};
 use crate::Ids;
@@ -164,7 +164,7 @@ fn PreviewCopyButton() -> impl IntoView {
             class=class
             id=button_id
             on:click=move |_| {
-                let canvas = get_canvas_container();
+                let canvas = canvas_container();
                 spawn_local(copy_canvas_container_as_image(canvas));
                 set_copied(true);
                 set_timeout(
@@ -198,7 +198,7 @@ fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
             title=move_tr!("save-preview")
             id=button_id
             on:click=move |_| {
-                let canvas = get_canvas_container();
+                let canvas = canvas_container();
                 let filename = format!("{}.png", &sdk::title_to_slug(&brand()));
                 let url = canvas.to_data_url().unwrap();
                 download(&filename, &url);

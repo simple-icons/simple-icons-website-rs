@@ -1,32 +1,27 @@
+use js_sys::Math;
 use leptos::{
     wasm_bindgen::{closure::Closure, JsCast},
     *,
 };
 
-pub fn get_canvas_container() -> web_sys::HtmlCanvasElement {
+pub fn canvas() -> web_sys::HtmlCanvasElement {
     document()
-        .get_elements_by_class_name("preview-figure")
-        .item(0)
+        .query_selector(".preview-figure canvas")
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap()
-        .get_elements_by_tag_name("canvas")
-        .item(0)
         .unwrap()
         .dyn_into::<web_sys::HtmlCanvasElement>()
         .unwrap()
 }
 
-fn get_preview_canvas_context() -> web_sys::CanvasRenderingContext2d {
-    let canvas = get_canvas_container();
-    let ctx = canvas
+fn canvas_ctx(
+    canvas_container: &web_sys::HtmlCanvasElement,
+) -> web_sys::CanvasRenderingContext2d {
+    canvas_container
         .get_context("2d")
         .unwrap()
         .unwrap()
         .dyn_into::<web_sys::CanvasRenderingContext2d>()
-        .unwrap();
-    ctx.set_font("1rem sans");
-    ctx
+        .unwrap()
 }
 
 pub(crate) fn create_badge_image_for_canvas(
@@ -65,7 +60,7 @@ pub(crate) fn create_badge_image_for_canvas(
             .dyn_into::<web_sys::HtmlImageElement>()
             .unwrap();
 
-        let ctx = get_preview_canvas_context();
+        let ctx = canvas_ctx(&canvas());
         ctx.draw_image_with_html_image_element(&img, x, 420.0 + y)
             .unwrap();
         document().body().unwrap().remove_child(&img).unwrap();
@@ -118,7 +113,9 @@ fn update_badges_in_canvas() {
 }
 
 /// Function triggered to update the canvas with the current SVG
-pub fn update_preview_canvas() {
+pub fn update_preview_canvas(pixel_ratio: f64) {
+    let ratio = Math::max(pixel_ratio, 1.0);
+
     let container = document()
         .get_elements_by_class_name("preview-figure")
         .item(0);
@@ -138,13 +135,20 @@ pub fn update_preview_canvas() {
         .unwrap()
         .dyn_into::<web_sys::HtmlCanvasElement>()
         .unwrap();
-    let ctx = canvas
-        .get_context("2d")
-        .unwrap()
-        .unwrap()
-        .dyn_into::<web_sys::CanvasRenderingContext2d>()
+    canvas
+        .set_attribute("width", &format!("{}", Math::floor(740.0 * ratio)))
         .unwrap();
+    canvas
+        .set_attribute("height", &format!("{}", Math::floor(490.0 * ratio)))
+        .unwrap();
+    canvas
+        .set_attribute("style", "width: 740px; height: 490px;")
+        .unwrap();
+
+    let ctx = canvas_ctx(&canvas);
+    ctx.set_font("1rem sans");
     ctx.clear_rect(0.0, 0.0, canvas.width().into(), canvas.height().into());
+    ctx.scale(ratio, ratio).unwrap();
 
     // Draw the SVG of the preview card in the canvas
     let preview_card_svg =
