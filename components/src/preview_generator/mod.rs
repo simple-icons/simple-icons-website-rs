@@ -109,18 +109,18 @@ where {
     view! {
         <figure class="preview-figure">
             <svg
-                width=canvas::WIDTH.to_string()
-                height=(canvas::HEIGHT - 70).to_string()
+                width=canvas::WIDTH
+                height=canvas::HEIGHT - 70
                 viewBox=format!("0 0 {} {}", canvas::WIDTH, canvas::HEIGHT - 70)
                 xmlns="http://www.w3.org/2000/svg"
                 class="pt-3"
             >
                 <rect
                     fill=move || format!("#{}", color())
-                    height=(canvas::HEIGHT - 70).to_string()
+                    height=canvas::HEIGHT - 70
                     rx="10"
                     ry="10"
-                    width=canvas::WIDTH.to_string()
+                    width=canvas::WIDTH
                     x="0"
                     y="0"
                 ></rect>
@@ -263,7 +263,7 @@ fn PreviewBadge(
     let on_load = move |ev: web_sys::Event| {
         let target = event_target::<web_sys::HtmlInputElement>(&ev);
 
-        if target.get_attribute("reloaded") == Some("true".to_string()) {
+        if target.get_attribute("reloaded") == Some("true".into()) {
             target.set_attribute("reloaded", "false").unwrap();
             return;
         }
