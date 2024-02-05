@@ -316,10 +316,10 @@ fn LintError(
                 </Show>
                 <Show when=move || fixer.is_some()>
                     <FixLintErrorButton
+                        input_ref
                         start=range.unwrap().0
                         end=range.unwrap().1
                         fixer=fixer.unwrap()
-                        input_ref=input_ref
                     />
                 </Show>
             </div>
@@ -385,12 +385,12 @@ pub fn BrandInput(
 
             <Show when=move || show_brand_suggestions() && !brand_suggestions().is_empty()>
                 <BrandSuggestions
-                    show_more_brand_suggestions=show_more_brand_suggestions
-                    brand_suggestions=brand_suggestions
-                    more_brand_suggestions=more_brand_suggestions
-                    set_brand=set_brand
-                    set_color=set_color
-                    set_show_more_brand_suggestions=set_show_more_brand_suggestions
+                    show_more_brand_suggestions
+                    brand_suggestions
+                    more_brand_suggestions
+                    set_brand
+                    set_color
+                    set_show_more_brand_suggestions
                 />
             </Show>
         </div>
@@ -448,9 +448,7 @@ fn BrandSuggestions(
                     each=more_brand_suggestions
                     key=move |icon| icon.slug
                     children=move |icon| {
-                        view! {
-                            <BrandSuggestion icon=icon set_brand=set_brand set_color=set_color/>
-                        }
+                        view! { <BrandSuggestion icon set_brand set_color/> }
                     }
                 />
 
