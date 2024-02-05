@@ -204,7 +204,7 @@ where {
                     </g>
                 </g>
             </svg>
-            <canvas height=canvas::HEIGHT.to_string() width=canvas::WIDTH.to_string()></canvas>
+            <canvas height=canvas::HEIGHT width=canvas::WIDTH></canvas>
         </figure>
     }
 }
