@@ -4,6 +4,9 @@ use leptos::{
     *,
 };
 
+pub(crate) static WIDTH: u32 = 740;
+pub(crate) static HEIGHT: u32 = 490;
+
 pub fn canvas() -> web_sys::HtmlCanvasElement {
     document()
         .query_selector(".preview-figure canvas")
@@ -136,13 +139,22 @@ pub fn update_preview_canvas(pixel_ratio: f64) {
         .dyn_into::<web_sys::HtmlCanvasElement>()
         .unwrap();
     canvas
-        .set_attribute("width", &format!("{}", Math::floor(740.0 * ratio)))
+        .set_attribute(
+            "width",
+            &format!("{}", Math::floor(WIDTH as f64 * ratio)),
+        )
         .unwrap();
     canvas
-        .set_attribute("height", &format!("{}", Math::floor(490.0 * ratio)))
+        .set_attribute(
+            "height",
+            &format!("{}", Math::floor(HEIGHT as f64 * ratio)),
+        )
         .unwrap();
     canvas
-        .set_attribute("style", "width: 740px; height: 490px;")
+        .set_attribute(
+            "style",
+            format!("width: {}px; height: {}px;", WIDTH, HEIGHT).as_str(),
+        )
         .unwrap();
 
     let ctx = canvas_ctx(&canvas);

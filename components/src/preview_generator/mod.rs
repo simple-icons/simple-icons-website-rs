@@ -109,18 +109,18 @@ where {
     view! {
         <figure class="preview-figure">
             <svg
-                width="740"
-                height="420"
-                viewBox="0 0 740 420"
+                width=canvas::WIDTH.to_string()
+                height=(canvas::HEIGHT - 70).to_string()
+                viewBox=format!("0 0 {} {}", canvas::WIDTH, canvas::HEIGHT - 70)
                 xmlns="http://www.w3.org/2000/svg"
                 class="pt-3"
             >
                 <rect
                     fill=move || format!("#{}", color())
-                    height="420"
+                    height=(canvas::HEIGHT - 70).to_string()
                     rx="10"
                     ry="10"
-                    width="740"
+                    width=canvas::WIDTH.to_string()
                     x="0"
                     y="0"
                 ></rect>
@@ -204,7 +204,7 @@ where {
                     </g>
                 </g>
             </svg>
-            <canvas height="490" width="740"></canvas>
+            <canvas height=canvas::HEIGHT.to_string() width=canvas::WIDTH.to_string()></canvas>
         </figure>
     }
 }
