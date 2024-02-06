@@ -38,6 +38,16 @@ pub fn get_number_of_icons(_: TokenStream) -> TokenStream {
     }
 }
 
+/// Get number of deprecated icons available in the simple-icons npm package
+#[proc_macro]
+pub fn get_number_of_deprecated_icons(_: TokenStream) -> TokenStream {
+    fetch_deprecated_simple_icons()
+        .len()
+        .to_string()
+        .parse()
+        .unwrap()
+}
+
 /// Get a string with the SVG path of a simple icon by slug
 #[proc_macro]
 pub fn simple_icon_svg_path(input: TokenStream) -> TokenStream {
@@ -128,8 +138,7 @@ pub fn get_simple_icons_3rd_party_extensions(_: TokenStream) -> TokenStream {
     extensions_array_code.parse().unwrap()
 }
 
-#[proc_macro]
-pub fn icons_array(_: TokenStream) -> TokenStream {
+fn icons_array_impl(only_include_deprecated: bool) -> String {
     let max_icons = get_max_icons_from_config();
     let simple_icons = get_simple_icons(max_icons);
 
@@ -152,6 +161,10 @@ pub fn icons_array(_: TokenStream) -> TokenStream {
         let deprecated_icon = deprecated_icons
             .iter()
             .find(|deprecated_icon| *deprecated_icon.slug == icon.slug);
+
+        if only_include_deprecated && deprecated_icon.is_none() {
+            continue;
+        }
 
         icons_array_code.push_str(&format!(
             concat!(
@@ -278,7 +291,17 @@ pub fn icons_array(_: TokenStream) -> TokenStream {
     }
     icons_array_code.push(']');
 
-    icons_array_code.parse().unwrap()
+    icons_array_code
+}
+
+#[proc_macro]
+pub fn icons_array(_: TokenStream) -> TokenStream {
+    icons_array_impl(false).parse().unwrap()
+}
+
+#[proc_macro]
+pub fn deprecated_icons_array(_: TokenStream) -> TokenStream {
+    icons_array_impl(true).parse().unwrap()
 }
 
 /// Get JS library version from package.json

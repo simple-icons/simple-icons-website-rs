@@ -13,11 +13,16 @@ use item::{details::IconDetailsModal, IconGridItem};
 use leptos::{html::Footer, NodeRef, *};
 use leptos_use::use_intersection_observer;
 use scroll::ScrollButtons;
-use simple_icons_macros::{get_number_of_icons, icons_array};
+use simple_icons_macros::{
+    deprecated_icons_array, get_number_of_deprecated_icons,
+    get_number_of_icons, icons_array,
+};
 use types::SimpleIcon;
 use wasm_bindgen::JsCast;
 
 pub const ICONS: [SimpleIcon; get_number_of_icons!()] = icons_array!();
+pub const DEPRECATED_ICONS: [SimpleIcon; get_number_of_deprecated_icons!()] =
+    deprecated_icons_array!();
 
 /// Icons rendered in a page
 #[derive(Clone)]

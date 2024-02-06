@@ -7,7 +7,8 @@ use components::controls::order::provide_order_mode_context;
 use components::controls::search::provide_search_context;
 use components::controls::Controls;
 use components::grid::{
-    provide_icons_grid_contexts, Grid, IconsIndexSignal, ICONS,
+    provide_icons_grid_contexts, Grid, IconsIndexSignal, DEPRECATED_ICONS,
+    ICONS,
 };
 use components::preview_generator::PreviewGenerator;
 use components::svg::SVGDef;
@@ -69,14 +70,9 @@ pub fn AllIconsIndex() -> impl IntoView {
 
 #[component]
 pub fn DeprecationsIndex() -> impl IntoView {
-    // TODO: generate at build time
-    let mut deprecated_icons = vec![];
-    for icon in ICONS.iter() {
-        if icon.deprecation.as_ref().is_some() {
-            deprecated_icons.push(icon);
-        }
-    }
-    provide_context::<IconsIndexSignal>(IconsIndexSignal(deprecated_icons));
+    provide_context::<IconsIndexSignal>(IconsIndexSignal(
+        DEPRECATED_ICONS.iter().collect(),
+    ));
     view! { <Index/> }
 }
 
