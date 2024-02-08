@@ -3,7 +3,7 @@ use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
 use components::controls::color_scheme::initial_color_scheme;
 use components::copy::CopyInput;
 use components::footer::Footer;
-use components::header::{nav::language_selector::initial_language, Header};
+use components::header::Header;
 use components::modal::provide_modal_open_context;
 use components::storage::LocalStorage;
 use components::svg::SVGDefsDefinition;
@@ -20,7 +20,7 @@ use leptos_use::{
 pub static TITLE: &str = "Simple Icons";
 
 static_loader! {
-    pub static LOCALES = {
+    static LOCALES = {
         locales: "./locales",
         fallback_language: "en-US",
         customise: |bundle| bundle.set_use_isolating(false),
@@ -50,11 +50,28 @@ pub fn App() -> impl IntoView {
 
     let i18n = leptos_fluent! {{
         locales: LOCALES,
-        languages_json: "./locales/languages.json",
+        languages: "./locales/languages.json",
         // Synchronize <html lang="..."> attribute with the current language
+        // using `leptos::create_effect`
         sync_html_tag_lang: true,
+        // Load initial language from the URL
+        initial_language_from_url: true,
+        // Parameter name to look for the initial language in the URL
+        //
+        // TODO: This should also accept an identifier or expression, so we
+        //       can pass `components::Url::params::Names::Language` directly
+        initial_language_from_url_param: "lang",
+        // Save initial language from the URL to the local storage
+        initial_language_from_url_to_localstorage: true,
+        // Load initial language from local storage if not found in URL param
+        initial_language_from_localstorage: true,
+        // Load initial language from `navigator.languages` if not found in
+        // local storage
+        initial_language_from_navigator: true,
+        // Name of the local storage key to store the language
+        localstorage_key: "language",
     }};
-    i18n.provide_context(initial_language(&i18n));
+    i18n.provide_context(None);
 
     // Create a context to store a node reference to the footer
     // to use it in other components of pages

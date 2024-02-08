@@ -1,9 +1,7 @@
 use crate::header::{nav::button::HeaderMenuButton, HeaderStateSignal};
 use crate::modal::{Modal, ModalOpen, ModalOpenSignal};
-use crate::storage::LocalStorage;
-use crate::Url;
-use leptos::{window, *};
-use leptos_fluent::{i18n, I18n, Language};
+use leptos::*;
+use leptos_fluent::{i18n, Language};
 
 static LANGUAGE_SELECTOR_ICON_SVG_PATH: &str = concat!(
     "m12.87 15.07-2.54-2.51.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2",
@@ -12,49 +10,6 @@ static LANGUAGE_SELECTOR_ICON_SVG_PATH: &str = concat!(
     "M18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7 1.62-4.33",
     "L19.12 17h-3.24z",
 );
-
-pub fn initial_language(i18n: &I18n) -> &'static Language {
-    match Url::params::get(&Url::params::Names::Language)
-        .and_then(|value| i18n.language_from_str(value.as_str()))
-    {
-        Some(value) => {
-            set_language_in_localstorage(value);
-            value
-        }
-        None => match initial_language_from_localstorage(i18n) {
-            Some(lang) => lang,
-            None => match initial_language_from_navigator_languages(i18n) {
-                Some(lang) => lang,
-                None => i18n.default_language(),
-            },
-        },
-    }
-}
-
-fn initial_language_from_navigator_languages(
-    i18n: &I18n,
-) -> Option<&'static Language> {
-    let languages = window().navigator().languages().to_vec();
-    for raw_language in languages {
-        let language =
-            raw_language.as_string().expect("Language not parseable");
-        if let Some(lang) = i18n.language_from_str(language.as_str()) {
-            return Some(lang);
-        }
-    }
-    None
-}
-
-fn initial_language_from_localstorage(
-    i18n: &I18n,
-) -> Option<&'static Language> {
-    LocalStorage::get(LocalStorage::Keys::Language)
-        .and_then(|value| i18n.language_from_str(value.as_str()))
-}
-
-pub fn set_language_in_localstorage(lang: &'static Language) {
-    LocalStorage::set(LocalStorage::Keys::Language, &lang.id.to_string());
-}
 
 /// Languages list
 #[component]
@@ -73,8 +28,7 @@ pub fn LanguagesList() -> impl IntoView {
                             class=move || if *lang == current_language() { "hidden" } else { "" }
                             on:click=move |_| {
                                 modal_open.set_none();
-                                i18n().language.set(lang);
-                                set_language_in_localstorage(lang);
+                                i18n().set_language_with_localstorage(lang);
                             }
                         >
 

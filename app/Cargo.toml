@@ -22,4 +22,3 @@ wasm-bindgen.workspace = true
 web-sys.workspace = true
 serde_json.workspace = true
 leptos-use.workspace = true
-once_cell = "*"

@@ -26,9 +26,8 @@ Is useful to run only certain tests in a browser. For example: `cargo make test 
 
 ## Add translation
 
-- Add a language and identifier to _i18n/languages.json_.
-- Copy the _en-US/_ folder into _i18n/locales/{id}_ changing `{id}` with the identifier of the translation.
-- Replace the translations in the new _i18n/locales/{id}/main.ftl_ file.
+- Add a language and identifier to _app/languages.json_.
+- Copy the _en-US/_ folder into _app/locales/{id}_ changing `{id}` with the identifier of the translation.
 
 ## Arquitecture
 
