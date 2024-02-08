@@ -102,8 +102,7 @@ fn PreviewFigure(
     brand: ReadSignal<String>,
     color: ReadSignal<String>,
     path: ReadSignal<String>,
-) -> impl IntoView
-where {
+) -> impl IntoView {
     let fill_color = create_memo(move |_| contrast_color_for(&color()));
 
     view! {
@@ -213,8 +212,7 @@ where {
 fn PreviewBadges(
     color: ReadSignal<String>,
     path: ReadSignal<String>,
-) -> impl IntoView
-where {
+) -> impl IntoView {
     let white_svg =
         create_memo(move |_| svg_with_path_opt_fill(&path(), Some("FFF")));
     let color_svg =

@@ -5,12 +5,12 @@ pub mod svg;
 use crate::controls::button::ControlButtonText;
 use crate::storage::LocalStorage;
 use crate::Url;
-use i18n::{move_tr, tr};
 pub use image::{
     copy_as_base64_jpg, copy_as_base64_png, copy_as_image_jpg,
     copy_as_image_png, download_jpg, download_png,
 };
 use leptos::{document, *};
+use leptos_fluent_i18n::I18n;
 pub use pdf::download_pdf;
 use std::collections::HashMap;
 use std::fmt;
@@ -87,23 +87,31 @@ fn set_download_type_on_localstorage(download_type: &DownloadType) {
 #[component]
 pub fn DownloadFileTypeControl() -> impl IntoView {
     let download_type = expect_context::<DownloadTypeSignal>().0;
-    let download_svg_title = move_tr!("download-filetype", &{
-        let mut map = HashMap::new();
-        map.insert("filetype".to_string(), tr!("svg").into());
-        map
+    let i18n = store_value(expect_context::<I18n>());
+
+    let download_svg_title = Signal::derive(move || {
+        let i18n = i18n();
+        i18n.trs("download-filetype", &{
+            let mut map = HashMap::new();
+            map.insert("filetype".to_string(), i18n.tr("svg").into());
+            map
+        })
     });
-    let download_pdf_title = move_tr!("download-filetype", &{
-        let mut map = HashMap::new();
-        map.insert("filetype".to_string(), tr!("pdf").into());
-        map
+    let download_pdf_title = Signal::derive(move || {
+        let i18n = i18n();
+        i18n.trs("download-filetype", &{
+            let mut map = HashMap::new();
+            map.insert("filetype".to_string(), i18n.tr("pdf").into());
+            map
+        })
     });
 
     view! {
         <div class="control">
-            <label>{move_tr!("download")}</label>
+            <label>{move || i18n().tr("download")}</label>
             <div class="flex flex-row">
                 <ControlButtonText
-                    text=move_tr!("svg")
+                    text=Signal::derive(move || i18n().tr("svg"))
                     title=download_svg_title
                     active=Signal::derive(move || { download_type() == DownloadType::SVG })
                     on:click=move |_| {
@@ -116,7 +124,7 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                 />
 
                 <ControlButtonText
-                    text=move_tr!("pdf")
+                    text=Signal::derive(move || i18n().tr("pdf"))
                     title=download_pdf_title
                     active=Signal::derive(move || { download_type() == DownloadType::PDF })
                     on:click=move |_| {

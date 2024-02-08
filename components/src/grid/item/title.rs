@@ -1,7 +1,6 @@
 use crate::copy::copy_setting_copied_transition_in_element;
-use i18n::move_tr;
-use i18n::Language;
 use leptos::{ev::MouseEvent, *};
+use leptos_fluent_i18n::{I18n, Language};
 use std::collections::HashMap;
 use types::SimpleIcon;
 use web_sys;
@@ -44,12 +43,15 @@ pub fn IconGridItemTitle(
     /// Slug
     slug: &'static str,
 ) -> impl IntoView {
-    let container_title = move_tr!("copy-icon-slug", &{
-        let mut map = HashMap::new();
-        map.insert("icon".to_string(), brand_name().into());
-        map.insert("slug".to_string(), slug.into());
-        map
-    });
+    let i18n = expect_context::<I18n>();
+    let container_title = move || {
+        i18n.trs("copy-icon-slug", &{
+            let mut map = HashMap::new();
+            map.insert("icon".to_string(), brand_name().into());
+            map.insert("slug".to_string(), slug.into());
+            map
+        })
+    };
     view! {
         <h2
             title=container_title

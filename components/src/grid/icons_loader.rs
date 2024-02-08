@@ -1,7 +1,7 @@
 use crate::controls::layout::LayoutSignal;
 use crate::grid::IconsGridSignal;
-use i18n::move_tr;
 use leptos::*;
+use leptos_fluent_i18n::I18n;
 
 /// Data structure to control the loading of more icons
 #[derive(Clone, Copy)]
@@ -36,6 +36,7 @@ pub fn IconsLoader() -> impl IntoView {
     let icons_grid_signal = expect_context::<IconsGridSignal>().0;
     let icons_loader = expect_context::<IconsLoaderSignal>().0;
     let layout = expect_context::<LayoutSignal>().0;
+    let i18n = store_value(expect_context::<I18n>());
 
     let show_load_more_icons_button = move || {
         let loader_state = icons_loader();
@@ -80,7 +81,7 @@ pub fn IconsLoader() -> impl IntoView {
                         <path d="M0 0h24v24H0z" fill="none"></path>
                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                     </svg>
-                    {move_tr!("load-more-icons")}
+                    {move || i18n().tr("load-more-icons")}
                 </button>
             </div>
         </Show>

@@ -1,8 +1,8 @@
 //! App footer
 
 use crate::svg::SVGIcon;
-use i18n::{move_tr, tr};
 use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
+use leptos_fluent_i18n::I18n;
 use simple_icons_macros::simple_icon_svg_path;
 use std::collections::HashMap;
 
@@ -14,6 +14,7 @@ pub fn Footer(
     /// Reference to the footer container, for using in sibling components
     container_ref: NodeRef<FooterHtmlElement>,
 ) -> impl IntoView {
+    let i18n = expect_context::<I18n>();
     view! {
         <footer node_ref=container_ref>
             <ReportProblems/>
@@ -30,7 +31,7 @@ pub fn Footer(
 
                 href="https://github.com/simple-icons/simple-icons-website"
             >
-                {move_tr!("made-on")}
+                {move || i18n.tr("made-on")}
             </a>
         </footer>
     }
@@ -61,18 +62,19 @@ fn ReportLink(
 
 #[component]
 pub fn ReportProblems() -> impl IntoView {
+    let i18n = store_value(expect_context::<I18n>());
     view! {
         <div class="flex flex-col py-8">
             <p>
-                {move_tr!("icon-missing")} {" "}
+                {move || i18n().tr("icon-missing")} {" "}
                 <ReportLink href="https://github.com/simple-icons/simple-icons/issues/new?assignees=&labels=new+icon&template=icon_request.yml">
-                    {move_tr!("submit-a-request")}
+                    {move || i18n().tr("submit-a-request")}
                 </ReportLink>
             </p>
             <p>
-                {move_tr!("icon-outdated")} {" "}
+                {move || i18n().tr("icon-outdated")} {" "}
                 <ReportLink href="https://github.com/simple-icons/simple-icons/issues/new?assignees=&labels=icon+outdated&template=icon_update.yml">
-                    {move_tr!("report-outdated-icon")}
+                    {move || i18n().tr("report-outdated-icon")}
                 </ReportLink>
             </p>
         </div>
@@ -81,6 +83,7 @@ pub fn ReportProblems() -> impl IntoView {
 
 #[component]
 pub fn XButton() -> impl IntoView {
+    let i18n = expect_context::<I18n>();
     view! {
         <a
             class="x-button"
@@ -90,54 +93,64 @@ pub fn XButton() -> impl IntoView {
             href="https://x.com/intent/tweet?url=https://simpleicons.org&text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
         >
             <SVGIcon fill="white" class="h-4 mr-3" path=X_ICON_SVG_PATH/>
-            <span>{move_tr!("share-this")}</span>
+            <span>{move || i18n.tr("share-this")}</span>
         </a>
     }
 }
 
 #[component]
 pub fn About() -> impl IntoView {
-    let maintained_by_html = move_tr!("maintained-by", &{
-        let mut map = HashMap::new();
-        map.insert(
-            "license".to_string(),
-            format!(
-                "<a href=\"https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md\">{}</a>",
-                tr!("cco")
-            ).into(),
-        );
-        map.insert(
-            "maintainers".to_string(),
-            format!(
-                "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
-                tr!("simple-icons-contributors")
-            ).into(),
-        );
-        map
-    });
-    let use_platform_html = move_tr!("use-platform", &{
-        let mut map = HashMap::new();
-        map.insert(
-            "platform".to_string(),
-            format!(
-                "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
-                tr!("github"),
-            ).into(),
-        );
-        map
-    });
-    let supported_by_html = move_tr!("supported-by", &{
-        let mut map = HashMap::new();
-        map.insert(
-            "platform".to_string(),
-            format!(
+    let i18n = store_value(expect_context::<I18n>());
+    let maintained_by_html = move || {
+        let i18n = i18n();
+        i18n.trs("maintained-by", &{
+            let mut map = HashMap::new();
+            map.insert(
+                "license".to_string(),
+                format!(
+                    "<a href=\"https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md\">{}</a>",
+                    i18n.tr("cco")
+                ).into(),
+            );
+            map.insert(
+                "maintainers".to_string(),
+                format!(
+                    "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
+                    i18n.tr("simple-icons-contributors")
+                ).into(),
+            );
+            map
+        })
+    };
+    let use_platform_html = move || {
+        let i18n = i18n();
+        i18n.trs("use-platform", &{
+            let mut map = HashMap::new();
+            map.insert(
+                "platform".to_string(),
+                format!(
+                    "<a href=\"https://github.com/simple-icons/simple-icons\">{}</a>",
+                    i18n.tr("github"),
+                ).into(),
+            );
+            map
+        })
+    };
+    let supported_by_html = move || {
+        let i18n = i18n();
+        i18n.trs("supported-by", &{
+            let mut map = HashMap::new();
+            map.insert(
+                "platform".to_string(),
+                format!(
                 "<a href=\"https://opencollective.com/simple-icons\">{}</a>",
-                tr!("open-collective"),
+                i18n.tr("open-collective"),
             )
-            .into(),
-        );
-        map
-    });
+                .into(),
+            );
+            map
+        })
+    };
     view! {
         <div class="footer-about">
             <p inner_html=maintained_by_html></p>

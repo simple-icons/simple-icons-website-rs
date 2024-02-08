@@ -11,8 +11,8 @@ use crate::header::{
     HeaderStateSignal,
 };
 use crate::svg::SVGDef;
-use i18n::move_tr;
 use leptos::*;
+use leptos_fluent_i18n::I18n;
 use simple_icons_macros::simple_icon_svg_path;
 
 // UNPKG icon is not available in simple-icons
@@ -31,11 +31,13 @@ static LEGAL_DISCLAIMER_SVG_PATH: &str = "m23.9 9.7-3.54-7.89-.005-.01a.542.542 
 /// - Button to open third party extensions table built by [`HeaderMenuButton`].
 #[component]
 pub fn HeaderMenu() -> impl IntoView {
+    let i18n = store_value(expect_context::<I18n>());
+
     view! {
         <nav>
             <ul>
                 <HeaderMenuLink
-                    title=move_tr!("main-repository")
+                    title=Signal::derive(move || i18n().tr("main-repository"))
                     href="https://github.com/simple-icons/simple-icons"
                     svg_path=simple_icon_svg_path!("github")
                 />
@@ -50,27 +52,27 @@ pub fn HeaderMenu() -> impl IntoView {
                     svg_path=simple_icon_svg_path!("packagist")
                 />
                 <HeaderMenuLink
-                    title=move_tr!("jsdelivr")
+                    title=Signal::derive(move || i18n().tr("jsdelivr"))
                     href="https://www.jsdelivr.com/package/npm/simple-icons"
                     svg_path=simple_icon_svg_path!("jsdelivr")
                 />
                 <HeaderMenuLink
-                    title=move_tr!("unpkg")
+                    title=Signal::derive(move || i18n().tr("unpkg"))
                     href="https://unpkg.com/browse/simple-icons/"
                     svg_path=UNPKG_ICON_SVG_PATH
                 />
                 <HeaderMenuLink
-                    title=move_tr!("discord")
+                    title=Signal::derive(move || i18n().tr("discord"))
                     href="https://discord.gg/vUXFa7t5xJ"
                     svg_path=simple_icon_svg_path!("discord")
                 />
                 <HeaderMenuLink
-                    title=move_tr!("open-collective")
+                    title=Signal::derive(move || i18n().tr("open-collective"))
                     href="https://opencollective.com/simple-icons"
                     svg_path=simple_icon_svg_path!("opencollective")
                 />
                 <HeaderMenuLink
-                    title=move_tr!("legal-disclaimer")
+                    title=Signal::derive(move || i18n().tr("legal-disclaimer"))
                     href="https://github.com/simple-icons/simple-icons/blob/master/DISCLAIMER.md"
                     svg_path=LEGAL_DISCLAIMER_SVG_PATH
                 />
@@ -91,11 +93,12 @@ pub fn HeaderMenu() -> impl IntoView {
 #[component]
 pub fn HeaderMenuBurgerButton() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
+    let i18n = expect_context::<I18n>();
 
     view! {
         <HeaderMenuButton
             on:click=move |_| header_state.update(|state| state.toggle_menu())
-            title=move_tr!("open-menu")
+            title=Signal::derive(move || i18n.tr("open-menu"))
             svg_path="M1.412 3.53A1.412 1.412 0 0 0 0 4.94a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 4.94a1.412 1.412 0 0 0-1.412-1.412Zm0 7.058A1.412 1.412 0 0 0 0 12a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 12a1.412 1.412 0 0 0-1.412-1.412Zm0 7.06A1.412 1.412 0 0 0 0 19.057a1.412 1.412 0 0 0 1.412 1.413h21.176A1.412 1.412 0 0 0 24 19.059a1.412 1.412 0 0 0-1.412-1.412Z"
             class=Signal::derive(move || {
                 if header_state().menu_open {
@@ -112,10 +115,11 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
 #[component]
 pub fn HeaderMenuCloseButton() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
+    let i18n = expect_context::<I18n>();
 
     view! {
         <HeaderMenuButton
-            title=move_tr!("close-menu")
+            title=Signal::derive(move || i18n.tr("close-menu"))
             class=Signal::derive(move || {
                 if header_state().menu_open { "block".to_string() } else { "hidden".to_string() }
             })

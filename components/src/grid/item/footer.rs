@@ -7,9 +7,9 @@ use crate::grid::item::details::fill_icon_details_modal_with_icon;
 use crate::grid::CurrentIconViewSignal;
 use crate::modal::ModalOpenSignal;
 use crate::svg::{SVGDef, SVGIcon};
-use i18n::{move_tr, LocaleSignal};
 use leptos::ev::MouseEvent;
 use leptos::*;
+use leptos_fluent_i18n::I18n;
 use std::collections::HashMap;
 use types::SimpleIcon;
 use web_sys;
@@ -34,21 +34,23 @@ pub fn IconGridItemFooter(
     let current_icon_view = expect_context::<CurrentIconViewSignal>().0;
 
     // Locale context
-    let locale_state = expect_context::<LocaleSignal>().0;
+    let i18n = store_value(expect_context::<I18n>());
 
     // Modal open context
     let modal_open = expect_context::<ModalOpenSignal>();
 
-    let view_icon_button_title = move_tr!("view-icon", &{
-        let mut map = HashMap::new();
-        map.insert("icon".to_string(), icon_localized_title().into());
-        map
-    });
+    let view_icon_button_title = move || {
+        i18n().trs("view-icon", &{
+            let mut map = HashMap::new();
+            map.insert("icon".to_string(), icon_localized_title().into());
+            map
+        })
+    };
 
     view! {
         <div>
             <button
-                title=move_tr!("copy-hex-color")
+                title=Signal::derive(move || i18n().tr("copy-hex-color"))
                 class:dark=icon.hex_is_relatively_light
                 style=format!("background: {}", css_hex)
                 on:click=move |ev: MouseEvent| {
@@ -63,7 +65,7 @@ pub fn IconGridItemFooter(
             <button
                 title=view_icon_button_title
                 on:click=move |_| {
-                    fill_icon_details_modal_with_icon(icon, locale_state());
+                    fill_icon_details_modal_with_icon(icon, &i18n());
                     current_icon_view.update(|state| *state = Some(icon));
                     modal_open.set_icon();
                 }
@@ -72,8 +74,11 @@ pub fn IconGridItemFooter(
                 <SVGIcon path=&SVGDef::View/>
             </button>
             <button
-                title=move_tr!("download")
-                data-error-generating-pdf-msg=move_tr!("error-generating-pdf")
+                title=Signal::derive(move || i18n().tr("download"))
+                data-error-generating-pdf-msg=Signal::derive(move || {
+                    i18n().tr("error-generating-pdf")
+                })
+
                 on:click=move |_| {
                     if download_type() == DownloadType::SVG {
                         download_svg(icon.slug);

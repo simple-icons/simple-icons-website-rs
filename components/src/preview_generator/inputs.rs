@@ -7,11 +7,11 @@ use crate::js_libs::svg::svg_path_bbox;
 use crate::preview_generator::{
     canvas::update_preview_canvas, helpers::is_valid_hex_color,
 };
-use i18n::{move_tr, tr};
 use leptos::{
     html::{Div, Input},
     *,
 };
+use leptos_fluent_i18n::I18n;
 use leptos_use::{on_click_outside, use_device_pixel_ratio};
 use simple_icons::{sdk, sdk::lint::errors::PathLintError};
 use std::collections::HashMap;
@@ -25,9 +25,11 @@ pub fn ColorInput(
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
     let pixel_ratio = use_device_pixel_ratio();
+    let i18n = expect_context::<I18n>();
+
     view! {
         <div class="preview-input-group">
-            <label for="preview-color">{move_tr!("color")}</label>
+            <label for="preview-color">{move || i18n.tr("color")}</label>
             <input
                 type="text"
                 style="width:68px"
@@ -53,92 +55,13 @@ pub fn ColorInput(
     }
 }
 
-pub fn tr_lint_error(err: &PathLintError) -> String {
-    match err {
-        PathLintError::MustStartWithMovetoCommand { command } => {
-            tr!(
-                "must-start-with-moveto-command",
-                &HashMap::from([(
-                    "command".to_string(),
-                    command.to_string().into()
-                )])
-            )
-        }
-        PathLintError::InvalidCharacterAtIndex { index, character } => {
-            tr!(
-                "invalid-character-at-index",
-                &HashMap::from([
-                    ("index".to_string(), index.to_string().into()),
-                    ("character".to_string(), character.to_string().into()),
-                ])
-            )
-        }
-        PathLintError::FoundNegativeZeroAtIndex { index } => {
-            tr!(
-                "found-negative-zero-at-index",
-                &HashMap::from([(
-                    "index".to_string(),
-                    index.to_string().into()
-                )])
-            )
-        }
-        PathLintError::ReportedSizeIsZero => {
-            tr!("reported-svg-path-size-is-zero")
-        }
-        PathLintError::MaximumPrecisionMustBeLessThan {
-            max_precision,
-            precision,
-            number,
-        } => {
-            tr!(
-                "maximum-precision-must-be-less-than",
-                &HashMap::from([
-                    (
-                        "max_precision".to_string(),
-                        max_precision.to_string().into()
-                    ),
-                    ("precision".to_string(), precision.to_string().into()),
-                    ("number".to_string(), number.to_string().into()),
-                ])
-            )
-        }
-        PathLintError::IconMustBeCentered { x, y } => {
-            tr!(
-                "icon-must-be-centered",
-                &HashMap::from([
-                    ("x".to_string(), x.to_string().into()),
-                    ("y".to_string(), y.to_string().into()),
-                ])
-            )
-        }
-        PathLintError::CollinearSegmentFoundAtCommand { command } => {
-            tr!(
-                "collinear-segment-found-at-command",
-                &HashMap::from([(
-                    "command".to_string(),
-                    command.to_string().into()
-                )])
-            )
-        }
-        PathLintError::IncorrectIconSize { width, height } => {
-            tr!(
-                "incorrect-svg-path-icon-size",
-                &HashMap::from([
-                    ("width".to_string(), width.to_string().into()),
-                    ("height".to_string(), height.to_string().into()),
-                ])
-            )
-        }
-        _ => err.to_string(),
-    }
-}
-
 #[component]
 pub fn PathInput(
     path: ReadSignal<String>,
     set_path: WriteSignal<String>,
-) -> impl IntoView
-where {
+) -> impl IntoView {
+    let i18n = store_value(expect_context::<I18n>());
+
     let pixel_ratio = use_device_pixel_ratio();
 
     let (path_lint_errors, set_path_lint_errors) =
@@ -193,9 +116,79 @@ where {
         set_show_path_lint_errors(false)
     });
 
+    let tr_lint_error = move |err: &PathLintError| -> String {
+        match err {
+            PathLintError::MustStartWithMovetoCommand { command } => i18n()
+                .trs(
+                    "must-start-with-moveto-command",
+                    &HashMap::from([(
+                        "command".to_string(),
+                        command.to_string().into(),
+                    )]),
+                ),
+            PathLintError::InvalidCharacterAtIndex { index, character } => {
+                i18n().trs(
+                    "invalid-character-at-index",
+                    &HashMap::from([
+                        ("index".to_string(), index.to_string().into()),
+                        ("character".to_string(), character.to_string().into()),
+                    ]),
+                )
+            }
+            PathLintError::FoundNegativeZeroAtIndex { index } => i18n().trs(
+                "found-negative-zero-at-index",
+                &HashMap::from([(
+                    "index".to_string(),
+                    index.to_string().into(),
+                )]),
+            ),
+            PathLintError::ReportedSizeIsZero => {
+                i18n().tr("reported-svg-path-size-is-zero")
+            }
+            PathLintError::MaximumPrecisionMustBeLessThan {
+                max_precision,
+                precision,
+                number,
+            } => i18n().trs(
+                "maximum-precision-must-be-less-than",
+                &HashMap::from([
+                    (
+                        "max_precision".to_string(),
+                        max_precision.to_string().into(),
+                    ),
+                    ("precision".to_string(), precision.to_string().into()),
+                    ("number".to_string(), number.to_string().into()),
+                ]),
+            ),
+            PathLintError::IconMustBeCentered { x, y } => i18n().trs(
+                "icon-must-be-centered",
+                &HashMap::from([
+                    ("x".to_string(), x.to_string().into()),
+                    ("y".to_string(), y.to_string().into()),
+                ]),
+            ),
+            PathLintError::CollinearSegmentFoundAtCommand { command } => i18n()
+                .trs(
+                    "collinear-segment-found-at-command",
+                    &HashMap::from([(
+                        "command".to_string(),
+                        command.to_string().into(),
+                    )]),
+                ),
+            PathLintError::IncorrectIconSize { width, height } => i18n().trs(
+                "incorrect-svg-path-icon-size",
+                &HashMap::from([
+                    ("width".to_string(), width.to_string().into()),
+                    ("height".to_string(), height.to_string().into()),
+                ]),
+            ),
+            _ => err.to_string(),
+        }
+    };
+
     view! {
         <div node_ref=input_group_ref class="preview-input-group">
-            <label for="preview-path">{move_tr!("path")}</label>
+            <label for="preview-path">{move || i18n().tr("path")}</label>
             <input
                 node_ref=input_ref
                 type="text"
@@ -258,9 +251,10 @@ fn ShowLintErrorButton(
     end: u32,
     input_ref: NodeRef<Input>,
 ) -> impl IntoView {
+    let i18n = expect_context::<I18n>();
     view! {
         <Button
-            title=move_tr!("show")
+            title=Signal::derive(move || i18n.tr("show"))
             on:click=move |_| {
                 let input = input_ref().unwrap();
                 input.focus().unwrap();
@@ -278,9 +272,10 @@ fn FixLintErrorButton(
     fixer: sdk::lint::LintErrorFixer,
     input_ref: NodeRef<Input>,
 ) -> impl IntoView {
+    let i18n = expect_context::<I18n>();
     view! {
         <Button
-            title=move_tr!("fix")
+            title=Signal::derive(move || i18n.tr("fix"))
             on:click=move |_| {
                 let input = input_ref().unwrap();
                 let (new_value, (start, end)) = fixer(&input.value(), (start, end));
@@ -333,6 +328,8 @@ pub fn BrandInput(
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
+    let i18n = expect_context::<I18n>();
+
     let pixel_ratio = use_device_pixel_ratio();
 
     let (brand_suggestions, set_brand_suggestions) =
@@ -352,7 +349,7 @@ pub fn BrandInput(
 
     view! {
         <div class="preview-input-group">
-            <label for="preview-brand">{move_tr!("brand")}</label>
+            <label for="preview-brand">{move || i18n.tr("brand")}</label>
             <input
                 node_ref=input_ref
                 type="text"
@@ -406,6 +403,8 @@ fn BrandSuggestions(
     set_color: WriteSignal<String>,
     set_show_more_brand_suggestions: WriteSignal<bool>,
 ) -> impl IntoView {
+    let i18n = store_value(expect_context::<I18n>());
+
     view! {
         <ul class=move || {
             format!(
@@ -428,7 +427,7 @@ fn BrandSuggestions(
                 <li
                     class="more-suggestions"
                     role="button"
-                    title=move_tr!("load-more-icons")
+                    title=move || i18n().tr("load-more-icons")
                     on:click=move |_| {
                         set_show_more_brand_suggestions(true);
                         let input = document()

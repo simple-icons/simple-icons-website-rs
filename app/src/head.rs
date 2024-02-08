@@ -1,6 +1,6 @@
 use crate::app::TITLE;
-use i18n::{move_tr, tr};
 use leptos::*;
+use leptos_fluent_i18n::I18n;
 use leptos_meta::*;
 use simple_icons_macros::get_number_of_icons;
 use simple_icons_website_config::CONFIG;
@@ -10,11 +10,15 @@ use std::collections::HashMap;
 pub fn Head() -> impl IntoView {
     provide_meta_context();
 
-    let description = move_tr!("site-description", &{
-        let mut map = HashMap::new();
-        map.insert("n-icons".to_string(), get_number_of_icons!().into());
-        map.insert("svg".to_string(), tr!("svg").into());
-        map
+    let i18n = expect_context::<I18n>();
+
+    let description = Signal::derive(move || {
+        i18n.trs("site-description", &{
+            let mut map = HashMap::new();
+            map.insert("n-icons".to_string(), get_number_of_icons!().into());
+            map.insert("svg".to_string(), i18n.tr("svg").into());
+            map
+        })
     });
     let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();
     let url = format!("https://{}/", &domain);
@@ -38,8 +42,8 @@ pub fn Head() -> impl IntoView {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Roboto+Mono:wght@400;600"
         />
-        <MetaOpenGraph description=description/>
-        <MetaX description=description/>
+        <MetaOpenGraph description/>
+        <MetaX description/>
         <Meta name="msvalidate.01" content="14319924BC1F00DC15EF0EAA29E72404"/>
         <Meta name="yandex-verification" content="8b467a0b98aa2725"/>
         <LdJSONMetadata/>

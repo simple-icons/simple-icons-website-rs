@@ -3,7 +3,8 @@ members = [
     "app",
     "components",
     "config",
-    "i18n",
+    "leptos-fluent-i18n",
+    "leptos-fluent-i18n/leptos-fluent-i18n-macros",
     "macros",
     "simple-icons",
     "types",
@@ -23,10 +24,10 @@ opt-level = 'z'
 [workspace.dependencies]
 simple-icons = { path = "./simple-icons" }
 simple-icons-website-macros = { path = "./macros" }
-simple-icons-website-i18n = { path = "./i18n" }
 simple-icons-website-config = { path = "./config" }
 simple-icons-website-types = { path = "./types" }
 simple-icons-website-components = { path = "./components" }
+leptos-fluent-i18n = { path = "./leptos-fluent-i18n" }
 leptos = { version = "0.6.5", default-features = false, features = [
     "csr",
     "nightly",

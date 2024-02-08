@@ -11,9 +11,9 @@ use crate::svg::{SVGDef, SVGIcon};
 use button::XS_ICON_SIZE;
 use color_scheme::ColorSchemeControl;
 use download::DownloadFileTypeControl;
-use i18n::tr;
 use layout::LayoutControl;
 use leptos::*;
+use leptos_fluent_i18n::I18n;
 use leptos_use::use_media_query;
 use order::OrderControl;
 use search::SearchControl;
@@ -84,6 +84,8 @@ pub fn ControlsToggler() -> impl IntoView {
     let size =
         create_memo(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
 
+    let i18n = expect_context::<I18n>();
+
     view! {
         <div class="control">
             <label class="block">""</label>
@@ -92,9 +94,9 @@ pub fn ControlsToggler() -> impl IntoView {
 
                 title=move || {
                     if controls_state().buttons_group_open {
-                        tr!("open-search-bar")
+                        i18n.tr("open-search-bar")
                     } else {
-                        tr!("open-controls")
+                        i18n.tr("open-controls")
                     }
                 }
 

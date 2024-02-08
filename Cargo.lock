@@ -1366,6 +1366,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "leptos-fluent-i18n"
+version = "0.1.0"
+dependencies = [
+ "fluent-templates",
+ "leptos",
+ "leptos-fluent-i18n-macros",
+ "once_cell",
+ "unic-langid-impl",
+]
+
+[[package]]
+name = "leptos-fluent-i18n-macros"
+version = "0.1.0"
+dependencies = [
+ "once_cell",
+ "proc-macro2",
+ "quote",
+ "serde_json",
+ "syn 2.0.48",
+ "unic-langid-impl",
+]
+
+[[package]]
 name = "leptos-use"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2344,17 +2367,20 @@ version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
  "console_log",
+ "fluent-templates",
  "leptos",
+ "leptos-fluent-i18n",
  "leptos-use",
  "leptos_meta",
  "leptos_router",
  "log",
+ "once_cell",
  "serde_json",
  "simple-icons-website-components",
  "simple-icons-website-config",
- "simple-icons-website-i18n",
  "simple-icons-website-macros",
  "simple-icons-website-types",
+ "unic-langid",
  "wasm-bindgen",
  "web-sys",
 ]
@@ -2366,6 +2392,7 @@ dependencies = [
  "icondata",
  "js-sys",
  "leptos",
+ "leptos-fluent-i18n",
  "leptos-use",
  "leptos_icons",
  "leptos_router",
@@ -2373,7 +2400,6 @@ dependencies = [
  "rand",
  "simple-icons",
  "simple-icons-website-config",
- "simple-icons-website-i18n",
  "simple-icons-website-macros",
  "simple-icons-website-types",
  "svg-path-cst",
@@ -2388,17 +2414,6 @@ version = "0.1.0"
 dependencies = [
  "config 0.14.0",
  "lazy_static",
-]
-
-[[package]]
-name = "simple-icons-website-i18n"
-version = "0.1.0"
-dependencies = [
- "fluent-templates",
- "lazy_static",
- "leptos",
- "serde_json",
- "unic-langid",
 ]
 
 [[package]]

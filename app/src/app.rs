@@ -3,13 +3,12 @@ use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
 use components::controls::color_scheme::initial_color_scheme;
 use components::copy::CopyInput;
 use components::footer::Footer;
-use components::header::{
-    nav::language_selector::provide_language_context, Header,
-};
+use components::header::{nav::language_selector::initial_language, Header};
 use components::modal::provide_modal_open_context;
 use components::storage::LocalStorage;
 use components::svg::SVGDefsDefinition;
 use leptos::{html::Footer as FooterHtmlElement, wasm_bindgen::JsCast, *};
+use leptos_fluent_i18n::leptos_fluent_i18n;
 use leptos_router::{Route, Router, Routes};
 use leptos_use::{
     use_color_mode_with_options, ColorMode, UseColorModeOptions,
@@ -18,6 +17,14 @@ use leptos_use::{
 
 /// Title of the page
 pub static TITLE: &str = "Simple Icons";
+
+::fluent_templates::static_loader! {
+    pub static LOCALES = {
+        locales: "./locales",
+        fallback_language: "en-US",
+        customise: |bundle| bundle.set_use_isolating(false),
+    };
+}
 
 /// The main application component
 #[component]
@@ -40,14 +47,21 @@ pub fn App() -> impl IntoView {
         set_color_mode,
     ));
 
-    let locale_signal = provide_language_context().0;
+    let i18n = {
+        leptos_fluent_i18n! {{
+            locales: LOCALES,
+            languages_json: "./locales/languages.json",
+        }}
+    };
+    i18n.provide_context(initial_language(&i18n));
+
     create_effect(move |_| {
         let html = document()
             .document_element()
             .unwrap()
             .dyn_into::<web_sys::HtmlHtmlElement>()
             .unwrap();
-        html.set_lang(&locale_signal().id.to_string());
+        html.set_lang(&i18n.language.0().id.to_string());
     });
 
     // Create a context to store a node reference to the footer

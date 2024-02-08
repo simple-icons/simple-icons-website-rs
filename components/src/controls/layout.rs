@@ -1,8 +1,8 @@
 use crate::controls::button::ControlButtonSVGPath;
 use crate::storage::LocalStorage;
 use crate::Url;
-use i18n::move_tr;
 use leptos::*;
+use leptos_fluent_i18n::I18n;
 use simple_icons_website_config::CONFIG;
 use std::fmt;
 use std::str::FromStr;
@@ -94,19 +94,20 @@ fn set_layout(layout: Layout, layout_signal: &RwSignal<Layout>) {
 #[component]
 pub fn LayoutControl() -> impl IntoView {
     let layout = expect_context::<LayoutSignal>().0;
+    let i18n = store_value(expect_context::<I18n>());
 
     view! {
         <div class="control">
-            <label>{move_tr!("layout")}</label>
+            <label>{Signal::derive(move || i18n().tr("layout"))}</label>
             <div>
                 <ControlButtonSVGPath
-                    title=move_tr!("comfortable")
+                    title=Signal::derive(move || i18n().tr("comfortable"))
                     svg_path="M19 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h14zm0 4V4H5v2h14zm0 10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h14zm0 4v-2H5v2h14zm0-11a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h14zm0 4v-2H5v2h14z"
                     active=Signal::derive(move || layout() == Layout::Comfortable)
                     on:click=move |_| set_layout(Layout::Comfortable, &layout)
                 />
                 <ControlButtonSVGPath
-                    title=move_tr!("compact")
+                    title=Signal::derive(move || i18n().tr("compact"))
                     svg_path="M2 5.5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-13zm9 0H4v3h7v-3zm2 0v3h7v-3h-7zm7 5h-7v3h7v-3zm0 5h-7v3h7v-3zm-9 3v-3H4v3h7zm-7-5h7v-3H4v3z"
                     active=Signal::derive(move || layout() == Layout::Compact)
                     on:click=move |_| set_layout(Layout::Compact, &layout)

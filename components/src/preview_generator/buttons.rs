@@ -8,8 +8,8 @@ use crate::preview_generator::{
 };
 use crate::svg::{svg_with_title_path_opt_fill, SVGDef};
 use crate::Ids;
-use i18n::{move_tr, tr};
 use leptos::{wasm_bindgen::JsCast, *};
+use leptos_fluent_i18n::I18n;
 use simple_icons::sdk;
 use std::collections::HashMap;
 
@@ -43,6 +43,8 @@ fn PreviewUploadSVGButton(
 ) -> impl IntoView {
     let input_id = Ids::PreviewUploadSVGButton.as_str();
     load_keyboard_shortcut_ctrl_and_key_on_click_id(input_id, "ArrowUp");
+
+    let i18n = expect_context::<I18n>();
 
     async fn on_upload_svg_file(
         file: web_sys::File,
@@ -129,7 +131,7 @@ fn PreviewUploadSVGButton(
 
             <Button
                 svg_path=&SVGDef::Upload
-                title=move_tr!("upload-svg")
+                title=Signal::derive(move || i18n.tr("upload-svg"))
                 on:click=move |ev| {
                     event_target::<web_sys::HtmlButtonElement>(&ev)
                         .previous_element_sibling()
@@ -159,6 +161,8 @@ fn PreviewCopyButton() -> impl IntoView {
     let button_id = Ids::PreviewCopyButton.as_str();
     load_keyboard_shortcut_ctrl_and_key_on_click_id(button_id, "c");
 
+    let i18n = expect_context::<I18n>();
+
     view! {
         <button
             class=class
@@ -182,7 +186,7 @@ fn PreviewCopyButton() -> impl IntoView {
                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
                 </Show>
             </svg>
-            {move_tr!("copy-preview")}
+            {move || i18n.tr("copy-preview")}
         </button>
     }
 }
@@ -192,10 +196,12 @@ fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
     let button_id = Ids::PreviewSaveButton.as_str();
     load_keyboard_shortcut_ctrl_and_key_on_click_id(button_id, "s");
 
+    let i18n = expect_context::<I18n>();
+
     view! {
         <Button
             svg_path=&SVGDef::Save
-            title=move_tr!("save-preview")
+            title=Signal::derive(move || i18n.tr("save-preview"))
             id=button_id
             on:click=move |_| {
                 let canvas = canvas_container();
@@ -212,10 +218,14 @@ fn PreviewDownloadSVGButton(
     brand: ReadSignal<String>,
     path: ReadSignal<String>,
 ) -> impl IntoView {
-    let title = move_tr!("download-filetype", &{
-        let mut map = HashMap::new();
-        map.insert("filetype".to_string(), tr!("svg").into());
-        map
+    let i18n = expect_context::<I18n>();
+
+    let title = Signal::derive(move || {
+        i18n.trs("download-filetype", &{
+            let mut map = HashMap::new();
+            map.insert("filetype".to_string(), i18n.tr("svg").into());
+            map
+        })
     });
 
     let button_id = Ids::PreviewDownloadSVGButton.as_str();

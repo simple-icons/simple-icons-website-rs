@@ -54,13 +54,11 @@ args = [
     "--watch",
     "../simple-icons",
     "--watch",
-    "../i18n",
-    "--watch",
     "../config",
     "--ignore",
     "./public/assets/js",
     "--ignore",
-    "../i18n/locales",
+    "./locales",
 ]
 cwd = "./app"
 

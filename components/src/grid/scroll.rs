@@ -1,7 +1,7 @@
 use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
 use crate::svg::{SVGDef, SVGIcon};
-use i18n::move_tr;
 use leptos::*;
+use leptos_fluent_i18n::I18n;
 use leptos_use::use_window_scroll;
 
 #[component]
@@ -24,12 +24,13 @@ pub fn ScrollButton(
 #[component]
 pub fn ScrollToHeaderButton() -> impl IntoView {
     let (_, window_scroll_y) = use_window_scroll();
+    let i18n = store_value(expect_context::<I18n>());
 
     view! {
         <Show when=move || { window_scroll_y() >= 200.0 }>
             <ScrollButton
                 class="scroll-to-header-button"
-                title=move_tr!("go-to-header")
+                title=Signal::derive(move || i18n().tr("go-to-header"))
                 on:click=move |_| {
                     document().query_selector("header").unwrap().unwrap().scroll_into_view()
                 }
@@ -44,6 +45,7 @@ pub fn ScrollToHeaderButton() -> impl IntoView {
 pub fn ScrollToFooterButton() -> impl IntoView {
     let icons_loader = expect_context::<IconsLoaderSignal>().0;
     let icons_grid = expect_context::<IconsGridSignal>().0;
+    let i18n = store_value(expect_context::<I18n>());
 
     view! {
         <Show when=move || {
@@ -51,7 +53,7 @@ pub fn ScrollToFooterButton() -> impl IntoView {
         }>
             <ScrollButton
                 class="scroll-to-footer-button"
-                title=move_tr!("go-to-footer")
+                title=Signal::derive(move || i18n().tr("go-to-footer"))
                 on:click=move |_| {
                     icons_loader.update(|state| state.load = false);
                     let footer = document().query_selector("footer").unwrap().unwrap();

@@ -12,8 +12,8 @@ use components::grid::{
 };
 use components::preview_generator::PreviewGenerator;
 use components::svg::SVGDef;
-use i18n::move_tr;
 use leptos::*;
+use leptos_fluent_i18n::I18n;
 use leptos_router::{use_navigate, use_query_map, NavigateOptions};
 
 fn index_redirections() {
@@ -78,6 +78,7 @@ pub fn DeprecationsIndex() -> impl IntoView {
 
 #[component]
 pub fn Preview() -> impl IntoView {
+    let i18n = expect_context::<I18n>();
     view! {
         <menu class="page-padding-x -mt-4 lg:bg-transparent flex flex-row lg:flex-col">
             <ColorSchemeControl/>
@@ -88,7 +89,7 @@ pub fn Preview() -> impl IntoView {
             )>
                 <Button
                     class="mx-auto max-h-[40px]"
-                    title=move_tr!("icons")
+                    title=Signal::derive(move || i18n.tr("icons"))
                     on:click=move |_| use_navigate()("/", Default::default())
                     svg_path=&SVGDef::Grid
                 />
@@ -103,21 +104,25 @@ pub fn Preview() -> impl IntoView {
 
 #[component]
 pub fn Error404() -> impl IntoView {
+    let i18n = store_value(expect_context::<I18n>());
+
     view! {
         <menu class="page-padding-x -mt-4 bg-transparent">
             <ColorSchemeControl/>
         </menu>
         <div class="page-padding-x -mt-2 sm:-mt-[52px] flex flex-col items-center justify-center h-full">
             <h1 class="text-8xl font-bold">{"404"}</h1>
-            <p class="text-2xl font-bold">{move_tr!("page-not-found")}</p>
+            <p class="text-2xl font-bold">{move || i18n().tr("page-not-found")}</p>
             <hr class="w-1/2 my-4 border-t-[var(--divider-color)]"/>
-            <p class="text-lg font-bold font-sans pt-2">{move_tr!("maybe-youre-looking-for")}</p>
+            <p class="text-lg font-bold font-sans pt-2">
+                {move || i18n().tr("maybe-youre-looking-for")}
+            </p>
             <ul class="flex flex-col sm:flex-row py-5">
 
                 <li class="flex p-1">
                     <Button
                         class="mx-auto"
-                        title=move_tr!("icons")
+                        title=Signal::derive(move || i18n().tr("icons"))
                         on:click=move |_| use_navigate()("/", Default::default())
                         svg_path=&SVGDef::Grid
                     />
@@ -126,7 +131,7 @@ pub fn Error404() -> impl IntoView {
                 <li class="flex p-1">
                     <Button
                         class="mx-auto"
-                        title=move_tr!("deprecations")
+                        title=Signal::derive(move || i18n().tr("deprecations"))
                         on:click=move |_| use_navigate()("/deprecations", Default::default())
                         svg_path=&SVGDef::Warning
                     />
@@ -134,7 +139,7 @@ pub fn Error404() -> impl IntoView {
                 <li class="flex p-1">
                     <Button
                         class="mx-auto"
-                        title=move_tr!("preview-generator")
+                        title=Signal::derive(move || i18n().tr("preview-generator"))
                         on:click=move |_| use_navigate()("/preview", Default::default())
                         svg_path=&SVGDef::EyeBox
                     />

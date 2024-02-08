@@ -10,9 +10,9 @@ use crate::storage::LocalStorage;
 use crate::Ids;
 use crate::Url;
 use fuzzy::{build_searcher, search};
-use i18n::move_tr;
 use js_sys::JsString;
 use leptos::{document, html::Input, wasm_bindgen::JsCast, *};
+use leptos_fluent_i18n::I18n;
 use types::SimpleIcon;
 use web_sys;
 
@@ -254,6 +254,7 @@ pub fn SearchControl() -> impl IntoView {
     let order_mode = expect_context::<OrderModeSignal>().0;
     let layout = expect_context::<LayoutSignal>().0;
     let icons = expect_context::<IconsIndexSignal>().0;
+    let i18n = store_value(expect_context::<I18n>());
 
     let search_input_ref = create_node_ref::<Input>();
     // Focus on load. Fallback for Safari, see:
@@ -265,7 +266,7 @@ pub fn SearchControl() -> impl IntoView {
     // The onfocus attribute puts the cursor at the end of the input
     view! {
         <div class="control">
-            <label for=Ids::SearchInput.as_str()>{move_tr!("search")}</label>
+            <label for=Ids::SearchInput.as_str()>{move || i18n().tr("search")}</label>
             <div class="search">
                 <input
                     node_ref=search_input_ref
@@ -273,7 +274,7 @@ pub fn SearchControl() -> impl IntoView {
                     type="search"
                     autocomplete="off"
                     autofocus
-                    placeholder=move_tr!("search-by-brand")
+                    placeholder=move || i18n().tr("search-by-brand")
                     value=search
                     onfocus="var value = this.value; this.value = null; this.value = value;"
                     on:input=move |_| {
@@ -292,7 +293,7 @@ pub fn SearchControl() -> impl IntoView {
 
                 <Show when=move || !search().is_empty()>
                     <span
-                        title=move_tr!("clear-search")
+                        title=move || i18n().tr("clear-search")
                         on:click=move |_| {
                             search_input_ref().unwrap().set_value("");
                             fire_on_search_event();
