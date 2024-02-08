@@ -55,8 +55,6 @@ args = [
     "../simple-icons",
     "--watch",
     "../config",
-    "--watch",
-    "../leptos-fluent",
     "--ignore",
     "./public/assets/js",
     "--ignore",

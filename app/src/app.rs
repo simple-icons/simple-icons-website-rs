@@ -7,6 +7,7 @@ use components::header::{nav::language_selector::initial_language, Header};
 use components::modal::provide_modal_open_context;
 use components::storage::LocalStorage;
 use components::svg::SVGDefsDefinition;
+use fluent_templates::static_loader;
 use leptos::{html::Footer as FooterHtmlElement, *};
 use leptos_fluent::leptos_fluent;
 use leptos_router::{Route, Router, Routes};
@@ -18,7 +19,7 @@ use leptos_use::{
 /// Title of the page
 pub static TITLE: &str = "Simple Icons";
 
-::fluent_templates::static_loader! {
+static_loader! {
     pub static LOCALES = {
         locales: "./locales",
         fallback_language: "en-US",
@@ -47,14 +48,12 @@ pub fn App() -> impl IntoView {
         set_color_mode,
     ));
 
-    let i18n = {
-        leptos_fluent! {{
-            locales: LOCALES,
-            languages_json: "./locales/languages.json",
-            // Synchronize <html lang="..."> attribute with the current language
-            sync_html_tag_lang: true,
-        }}
-    };
+    let i18n = leptos_fluent! {{
+        locales: LOCALES,
+        languages_json: "./locales/languages.json",
+        // Synchronize <html lang="..."> attribute with the current language
+        sync_html_tag_lang: true,
+    }};
     i18n.provide_context(initial_language(&i18n));
 
     // Create a context to store a node reference to the footer
