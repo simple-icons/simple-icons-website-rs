@@ -19,7 +19,6 @@ fn ModalHeader(
     /// or the user clicks outside the modal
     on_close: Signal<()>,
 ) -> impl IntoView {
-    let i18n = i18n();
     view! {
         <div>
             <h2
@@ -33,7 +32,7 @@ fn ModalHeader(
 
                 {title}
             </h2>
-            <button type="button" title=move || i18n.tr("close") on:click=move |_| on_close()>
+            <button type="button" title=move || i18n().tr("close") on:click=move |_| on_close()>
                 <SVGIcon path=&SVGDef::Cross/>
             </button>
         </div>

@@ -84,8 +84,6 @@ pub fn ControlsToggler() -> impl IntoView {
     let size =
         create_memo(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
 
-    let i18n = i18n();
-
     view! {
         <div class="control">
             <label class="block">""</label>
@@ -94,9 +92,9 @@ pub fn ControlsToggler() -> impl IntoView {
 
                 title=move || {
                     if controls_state().buttons_group_open {
-                        i18n.tr("open-search-bar")
+                        i18n().tr("open-search-bar")
                     } else {
-                        i18n.tr("open-controls")
+                        i18n().tr("open-controls")
                     }
                 }
 

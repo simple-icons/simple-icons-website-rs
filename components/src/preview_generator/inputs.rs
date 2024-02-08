@@ -25,11 +25,10 @@ pub fn ColorInput(
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
     let pixel_ratio = use_device_pixel_ratio();
-    let i18n = i18n();
 
     view! {
         <div class="preview-input-group">
-            <label for="preview-color">{move || i18n.tr("color")}</label>
+            <label for="preview-color">{move || i18n().tr("color")}</label>
             <input
                 type="text"
                 style="width:68px"
@@ -249,10 +248,9 @@ fn ShowLintErrorButton(
     end: u32,
     input_ref: NodeRef<Input>,
 ) -> impl IntoView {
-    let i18n = i18n();
     view! {
         <Button
-            title=Signal::derive(move || i18n.tr("show"))
+            title=Signal::derive(move || i18n().tr("show"))
             on:click=move |_| {
                 let input = input_ref().unwrap();
                 input.focus().unwrap();
@@ -270,10 +268,9 @@ fn FixLintErrorButton(
     fixer: sdk::lint::LintErrorFixer,
     input_ref: NodeRef<Input>,
 ) -> impl IntoView {
-    let i18n = i18n();
     view! {
         <Button
-            title=Signal::derive(move || i18n.tr("fix"))
+            title=Signal::derive(move || i18n().tr("fix"))
             on:click=move |_| {
                 let input = input_ref().unwrap();
                 let (new_value, (start, end)) = fixer(&input.value(), (start, end));
@@ -326,8 +323,6 @@ pub fn BrandInput(
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
-    let i18n = i18n();
-
     let pixel_ratio = use_device_pixel_ratio();
 
     let (brand_suggestions, set_brand_suggestions) =
@@ -347,7 +342,7 @@ pub fn BrandInput(
 
     view! {
         <div class="preview-input-group">
-            <label for="preview-brand">{move || i18n.tr("brand")}</label>
+            <label for="preview-brand">{move || i18n().tr("brand")}</label>
             <input
                 node_ref=input_ref
                 type="text"

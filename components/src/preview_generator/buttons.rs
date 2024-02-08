@@ -44,8 +44,6 @@ fn PreviewUploadSVGButton(
     let input_id = Ids::PreviewUploadSVGButton.as_str();
     load_keyboard_shortcut_ctrl_and_key_on_click_id(input_id, "ArrowUp");
 
-    let i18n = i18n();
-
     async fn on_upload_svg_file(
         file: web_sys::File,
         set_brand: WriteSignal<String>,
@@ -131,7 +129,7 @@ fn PreviewUploadSVGButton(
 
             <Button
                 svg_path=&SVGDef::Upload
-                title=Signal::derive(move || i18n.tr("upload-svg"))
+                title=Signal::derive(move || i18n().tr("upload-svg"))
                 on:click=move |ev| {
                     event_target::<web_sys::HtmlButtonElement>(&ev)
                         .previous_element_sibling()
@@ -161,8 +159,6 @@ fn PreviewCopyButton() -> impl IntoView {
     let button_id = Ids::PreviewCopyButton.as_str();
     load_keyboard_shortcut_ctrl_and_key_on_click_id(button_id, "c");
 
-    let i18n = i18n();
-
     view! {
         <button
             class=class
@@ -186,7 +182,7 @@ fn PreviewCopyButton() -> impl IntoView {
                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
                 </Show>
             </svg>
-            {move || i18n.tr("copy-preview")}
+            {move || i18n().tr("copy-preview")}
         </button>
     }
 }

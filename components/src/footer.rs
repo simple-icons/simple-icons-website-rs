@@ -14,7 +14,6 @@ pub fn Footer(
     /// Reference to the footer container, for using in sibling components
     container_ref: NodeRef<FooterHtmlElement>,
 ) -> impl IntoView {
-    let i18n = i18n();
     view! {
         <footer node_ref=container_ref>
             <ReportProblems/>
@@ -31,7 +30,7 @@ pub fn Footer(
 
                 href="https://github.com/simple-icons/simple-icons-website"
             >
-                {move || i18n.tr("made-on")}
+                {move || i18n().tr("made-on")}
             </a>
         </footer>
     }
@@ -82,7 +81,6 @@ pub fn ReportProblems() -> impl IntoView {
 
 #[component]
 pub fn XButton() -> impl IntoView {
-    let i18n = i18n();
     view! {
         <a
             class="x-button"
@@ -92,7 +90,7 @@ pub fn XButton() -> impl IntoView {
             href="https://x.com/intent/tweet?url=https://simpleicons.org&text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
         >
             <SVGIcon fill="white" class="h-4 mr-3" path=X_ICON_SVG_PATH/>
-            <span>{move || i18n.tr("share-this")}</span>
+            <span>{move || i18n().tr("share-this")}</span>
         </a>
     }
 }
