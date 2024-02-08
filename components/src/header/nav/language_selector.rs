@@ -47,11 +47,10 @@ pub fn LanguagesList() -> impl IntoView {
 pub fn LanguageSelectorButton() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
     let modal_open = expect_context::<ModalOpenSignal>();
-    let i18n = i18n();
 
     view! {
         <HeaderMenuButton
-            title=Signal::derive(move || i18n.tr("change-language"))
+            title=Signal::derive(move || i18n().tr("change-language"))
             on:click=move |_| modal_open.set_languages()
             svg_path=LANGUAGE_SELECTOR_ICON_SVG_PATH
             class=Signal::derive(move || match header_state().menu_open {
@@ -66,12 +65,11 @@ pub fn LanguageSelectorButton() -> impl IntoView {
 #[component]
 pub fn LanguageSelector() -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();
-    let i18n = i18n();
 
     view! {
         <LanguageSelectorButton/>
         <Modal
-            title=Signal::derive(move || i18n.tr("select-a-language"))
+            title=Signal::derive(move || i18n().tr("select-a-language"))
             is_open=Signal::derive(move || modal_open.0() == Some(ModalOpen::Languages))
             on_close=Signal::derive(move || modal_open.set_none())
             on_close_focus_search_bar=true
