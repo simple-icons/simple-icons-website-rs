@@ -7,8 +7,8 @@ use components::header::{nav::language_selector::initial_language, Header};
 use components::modal::provide_modal_open_context;
 use components::storage::LocalStorage;
 use components::svg::SVGDefsDefinition;
-use leptos::{html::Footer as FooterHtmlElement, wasm_bindgen::JsCast, *};
-use leptos_fluent_i18n::leptos_fluent_i18n;
+use leptos::{html::Footer as FooterHtmlElement, *};
+use leptos_fluent::leptos_fluent;
 use leptos_router::{Route, Router, Routes};
 use leptos_use::{
     use_color_mode_with_options, ColorMode, UseColorModeOptions,
@@ -48,21 +48,14 @@ pub fn App() -> impl IntoView {
     ));
 
     let i18n = {
-        leptos_fluent_i18n! {{
+        leptos_fluent! {{
             locales: LOCALES,
             languages_json: "./locales/languages.json",
+            // Synchronize <html lang="..."> attribute with the current language
+            sync_html_tag_lang: true,
         }}
     };
     i18n.provide_context(initial_language(&i18n));
-
-    create_effect(move |_| {
-        let html = document()
-            .document_element()
-            .unwrap()
-            .dyn_into::<web_sys::HtmlHtmlElement>()
-            .unwrap();
-        html.set_lang(&i18n.language.0().id.to_string());
-    });
 
     // Create a context to store a node reference to the footer
     // to use it in other components of pages

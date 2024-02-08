@@ -4,7 +4,7 @@ use crate::svg::{SVGDef, SVGIcon};
 use crate::Url;
 use core::fmt;
 use leptos::{ev::MouseEvent, html::Div, *};
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use leptos_use::on_click_outside;
 use std::str::FromStr;
 

@@ -1,7 +1,7 @@
 use crate::controls::layout::LayoutSignal;
 use crate::grid::IconsGridSignal;
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 
 /// Data structure to control the loading of more icons
 #[derive(Clone, Copy)]

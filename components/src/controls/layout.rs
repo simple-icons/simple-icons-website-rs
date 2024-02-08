@@ -2,7 +2,7 @@ use crate::controls::button::ControlButtonSVGPath;
 use crate::storage::LocalStorage;
 use crate::Url;
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use simple_icons_website_config::CONFIG;
 use std::fmt;
 use std::str::FromStr;

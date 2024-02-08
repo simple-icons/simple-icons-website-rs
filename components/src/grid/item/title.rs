@@ -1,6 +1,6 @@
 use crate::copy::copy_setting_copied_transition_in_element;
 use leptos::{ev::MouseEvent, *};
-use leptos_fluent_i18n::{I18n, Language};
+use leptos_fluent::{I18n, Language};
 use std::collections::HashMap;
 use types::SimpleIcon;
 use web_sys;

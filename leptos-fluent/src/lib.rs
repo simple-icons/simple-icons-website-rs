@@ -8,7 +8,7 @@ use fluent_templates::{
 use leptos::{
     provide_context, RwSignal, SignalGet, SignalGetUntracked, SignalSet,
 };
-pub use leptos_fluent_i18n_macros::leptos_fluent_i18n;
+pub use leptos_fluent_macros::leptos_fluent;
 use once_cell::sync::Lazy;
 use std::collections::HashMap;
 use std::rc::Rc;

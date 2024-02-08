@@ -11,7 +11,7 @@ use leptos::{
     html::{Div, Input},
     *,
 };
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use leptos_use::{on_click_outside, use_device_pixel_ratio};
 use simple_icons::{sdk, sdk::lint::errors::PathLintError};
 use std::collections::HashMap;

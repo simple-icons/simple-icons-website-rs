@@ -9,7 +9,7 @@ use crate::modal::ModalOpenSignal;
 use crate::svg::{SVGDef, SVGIcon};
 use leptos::ev::MouseEvent;
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use std::collections::HashMap;
 use types::SimpleIcon;
 use web_sys;

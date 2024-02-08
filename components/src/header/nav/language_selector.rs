@@ -3,7 +3,7 @@ use crate::modal::{Modal, ModalOpen, ModalOpenSignal};
 use crate::storage::LocalStorage;
 use crate::Url;
 use leptos::{window, *};
-use leptos_fluent_i18n::{I18n, Language};
+use leptos_fluent::{I18n, Language};
 
 static LANGUAGE_SELECTOR_ICON_SVG_PATH: &str = concat!(
     "m12.87 15.07-2.54-2.51.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2",
@@ -69,10 +69,9 @@ pub fn LanguagesList() -> impl IntoView {
                 each=move || i18n.languages
                 key=move |lang| lang.id.to_string()
                 children=move |lang: &&Language| {
-                    let current_lang = current_language();
                     view! {
                         <li
-                            class:hidden=move || *lang == current_lang
+                            class=move || if *lang == current_language() { "hidden" } else { "" }
                             on:click=move |_| {
                                 modal_open.set_none();
                                 expect_context::<I18n>().language.set(lang);

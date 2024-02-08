@@ -18,7 +18,7 @@ use icondata::{
     TbJpg, TbPdf, TbPng, TbSvg, VsSymbolNamespace,
 };
 use leptos::{html::Span, wasm_bindgen::JsCast, *};
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
 use std::collections::HashMap;
@@ -69,7 +69,7 @@ pub fn fill_icon_details_modal_with_icon(
     icon: &'static SimpleIcon,
     i18n: &I18n,
 ) {
-    let language = i18n.language.0();
+    let language = i18n.language.get();
     let icon_localized_title = get_icon_localized_title(icon, language);
 
     let modal_body = document()

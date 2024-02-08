@@ -1366,18 +1366,18 @@ dependencies = [
 ]
 
 [[package]]
-name = "leptos-fluent-i18n"
+name = "leptos-fluent"
 version = "0.1.0"
 dependencies = [
  "fluent-templates",
  "leptos",
- "leptos-fluent-i18n-macros",
+ "leptos-fluent-macros",
  "once_cell",
  "unic-langid-impl",
 ]
 
 [[package]]
-name = "leptos-fluent-i18n-macros"
+name = "leptos-fluent-macros"
 version = "0.1.0"
 dependencies = [
  "once_cell",
@@ -1386,6 +1386,7 @@ dependencies = [
  "serde_json",
  "syn 2.0.48",
  "unic-langid-impl",
+ "web-sys",
 ]
 
 [[package]]
@@ -2369,7 +2370,7 @@ dependencies = [
  "console_log",
  "fluent-templates",
  "leptos",
- "leptos-fluent-i18n",
+ "leptos-fluent",
  "leptos-use",
  "leptos_meta",
  "leptos_router",
@@ -2392,7 +2393,7 @@ dependencies = [
  "icondata",
  "js-sys",
  "leptos",
- "leptos-fluent-i18n",
+ "leptos-fluent",
  "leptos-use",
  "leptos_icons",
  "leptos_router",

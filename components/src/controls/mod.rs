@@ -13,7 +13,7 @@ use color_scheme::ColorSchemeControl;
 use download::DownloadFileTypeControl;
 use layout::LayoutControl;
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use leptos_use::use_media_query;
 use order::OrderControl;
 use search::SearchControl;

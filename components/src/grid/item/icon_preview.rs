@@ -1,7 +1,7 @@
 use crate::copy::copy_setting_copied_transition_in_element;
 use crate::fetch::fetch_text;
 use leptos::{ev::MouseEvent, wasm_bindgen::JsCast, *};
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use std::collections::HashMap;
 use web_sys;
 

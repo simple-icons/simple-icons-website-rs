@@ -6,7 +6,7 @@ use crate::controls::search::{
 use crate::grid::{IconsGrid, IconsGridSignal, IconsIndexSignal};
 use crate::storage::LocalStorage;
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use std::fmt;

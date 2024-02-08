@@ -12,6 +12,7 @@ use syn::{
 struct I18nLoader {
     locales_ident: syn::Ident,
     languages_json_file: PathBuf,
+    sync_html_tag_lang: bool,
 }
 
 impl Parse for I18nLoader {
@@ -25,21 +26,18 @@ impl Parse for I18nLoader {
         braced!(fields in input);
         let mut locales_identifier: Option<syn::Ident> = None;
         let mut languages_json_path: Option<syn::LitStr> = None;
+        let mut sync_html_tag_lang_litbool: Option<syn::LitBool> = None;
 
         while !fields.is_empty() {
             let k = fields.parse::<Ident>()?;
             fields.parse::<syn::Token![:]>()?;
 
-            //if k == "customise" {
-            //    customise = Some(fields.parse()?);
-            //} else if k == "core_locales" {
-            //    core_locales = Some(fields.parse()?);
-            //} else if k == "fallback_language" {
-            //    fallback_language = Some(fields.parse()?);
             if k == "locales" {
                 locales_identifier = Some(fields.parse()?);
             } else if k == "languages_json" {
                 languages_json_path = Some(fields.parse()?);
+            } else if k == "sync_html_tag_lang" {
+                sync_html_tag_lang_litbool = Some(fields.parse()?);
             } else {
                 return Err(syn::Error::new(k.span(), "Not a valid parameter"));
             }
@@ -68,17 +66,22 @@ impl Parse for I18nLoader {
         Ok(Self {
             locales_ident,
             languages_json_file,
+            sync_html_tag_lang: match sync_html_tag_lang_litbool {
+                Some(lit) => lit.value,
+                None => false,
+            },
         })
     }
 }
 
 #[proc_macro]
-pub fn leptos_fluent_i18n(
+pub fn leptos_fluent(
     input: proc_macro::TokenStream,
 ) -> proc_macro::TokenStream {
     let I18nLoader {
         locales_ident,
         languages_json_file,
+        sync_html_tag_lang,
     } = parse_macro_input!(input as I18nLoader);
 
     let languages = serde_json::from_str::<Vec<Vec<String>>>(
@@ -97,28 +100,52 @@ pub fn leptos_fluent_i18n(
             .iter()
             .map(|(id, name)| {
                 format!(
-                    "&::leptos_fluent_i18n::Language{{ id: ::unic_langid::langid!(\"{}\"), name: \"{}\" }}",
+                    concat!(
+                        "&::leptos_fluent::Language{{",
+                        " id: ::unic_langid::langid!(\"{}\"),",
+                        " name: \"{}\"",
+                        " }}",
+                    ),
                     id, name
                 )
             })
             .collect::<Vec<String>>()
             .join(",")
-    ).parse::<TokenStream>().unwrap();
+    )
+    .parse::<TokenStream>()
+    .unwrap();
     let n_languages = languages.len();
+
+    let sync_html_tag_lang_quote = if sync_html_tag_lang {
+        quote! {
+            use leptos::wasm_bindgen::JsCast;
+            ::leptos::create_effect(move |_| ::leptos::document()
+                .document_element()
+                .unwrap()
+                .unchecked_into::<::web_sys::HtmlHtmlElement>()
+                .set_lang(
+                    &::leptos::expect_context::<::leptos_fluent::I18n>().language.get().id.to_string())
+            );
+        }
+    } else {
+        quote! {}
+    };
 
     let quote = quote! {
         const LANGUAGES: [
-            &::leptos_fluent_i18n::Language; #n_languages
+            &::leptos_fluent::Language; #n_languages
         ] = #languages_quote;
-        ::leptos_fluent_i18n::I18n {
+        let i18n = ::leptos_fluent::I18n {
             language: ::std::rc::Rc::new(
-                ::leptos_fluent_i18n::LanguageSignal(
+                ::leptos_fluent::LanguageSignal(
                     ::leptos::create_rw_signal(LANGUAGES[0])
                 )
             ),
             languages: &LANGUAGES,
             locales: &#locales_ident,
-        }
+        };
+        #sync_html_tag_lang_quote;
+        i18n
     };
 
     // println!("{}", quote);

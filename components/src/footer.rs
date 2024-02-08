@@ -2,7 +2,7 @@
 
 use crate::svg::SVGIcon;
 use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use simple_icons_macros::simple_icon_svg_path;
 use std::collections::HashMap;
 

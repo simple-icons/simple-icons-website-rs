@@ -9,7 +9,7 @@ use crate::preview_generator::{
 use crate::svg::{svg_with_title_path_opt_fill, SVGDef};
 use crate::Ids;
 use leptos::{wasm_bindgen::JsCast, *};
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use simple_icons::sdk;
 use std::collections::HashMap;
 

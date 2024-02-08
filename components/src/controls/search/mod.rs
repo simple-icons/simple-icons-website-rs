@@ -12,7 +12,7 @@ use crate::Url;
 use fuzzy::{build_searcher, search};
 use js_sys::JsString;
 use leptos::{document, html::Input, wasm_bindgen::JsCast, *};
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use types::SimpleIcon;
 use web_sys;
 

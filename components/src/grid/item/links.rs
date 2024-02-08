@@ -1,5 +1,5 @@
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 
 #[component]
 pub fn IconGridItemLinks(

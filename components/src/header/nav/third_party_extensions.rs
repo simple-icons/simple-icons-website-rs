@@ -3,7 +3,7 @@ use crate::modal::Modal;
 use crate::modal::{ModalOpen, ModalOpenSignal};
 use crate::svg::SVGIcon;
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use simple_icons_macros::get_simple_icons_3rd_party_extensions;
 use types::ThirdPartyExtension;
 

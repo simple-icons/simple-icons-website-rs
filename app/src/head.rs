@@ -1,6 +1,6 @@
 use crate::app::TITLE;
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use leptos_meta::*;
 use simple_icons_macros::get_number_of_icons;
 use simple_icons_website_config::CONFIG;

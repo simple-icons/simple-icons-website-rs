@@ -10,7 +10,7 @@ pub use image::{
     copy_as_image_png, download_jpg, download_png,
 };
 use leptos::{document, *};
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 pub use pdf::download_pdf;
 use std::collections::HashMap;
 use std::fmt;

@@ -12,7 +12,7 @@ use crate::header::{
 };
 use crate::svg::SVGDef;
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use simple_icons_macros::simple_icon_svg_path;
 
 // UNPKG icon is not available in simple-icons

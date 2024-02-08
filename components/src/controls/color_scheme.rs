@@ -2,7 +2,7 @@ use crate::controls::button::ControlButtonSVGPath;
 use crate::storage::LocalStorage;
 use crate::Url;
 use leptos::*;
-use leptos_fluent_i18n::I18n;
+use leptos_fluent::I18n;
 use leptos_use::ColorMode;
 
 pub fn initial_color_scheme() -> ColorMode {
