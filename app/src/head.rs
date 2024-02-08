@@ -1,6 +1,6 @@
 use crate::app::TITLE;
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use leptos_meta::*;
 use simple_icons_macros::get_number_of_icons;
 use simple_icons_website_config::CONFIG;
@@ -10,7 +10,7 @@ use std::collections::HashMap;
 pub fn Head() -> impl IntoView {
     provide_meta_context();
 
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     let description = Signal::derive(move || {
         i18n.trs("site-description", &{

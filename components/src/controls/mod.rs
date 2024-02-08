@@ -13,7 +13,7 @@ use color_scheme::ColorSchemeControl;
 use download::DownloadFileTypeControl;
 use layout::LayoutControl;
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use leptos_use::use_media_query;
 use order::OrderControl;
 use search::SearchControl;
@@ -84,7 +84,7 @@ pub fn ControlsToggler() -> impl IntoView {
     let size =
         create_memo(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
 
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     view! {
         <div class="control">

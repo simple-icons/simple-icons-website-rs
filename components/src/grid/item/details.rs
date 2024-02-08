@@ -18,7 +18,7 @@ use icondata::{
     TbJpg, TbPdf, TbPng, TbSvg, VsSymbolNamespace,
 };
 use leptos::{html::Span, wasm_bindgen::JsCast, *};
-use leptos_fluent::I18n;
+use leptos_fluent::{i18n, I18n};
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
 use std::collections::HashMap;
@@ -290,8 +290,6 @@ fn IconDetailsModalPreview() -> impl IntoView {
 /// Details modal icon information
 #[component]
 fn IconDetailsModalInformation() -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
-
     view! {
         <div>
             <h3 on:click=copy_inner_text_on_click></h3>
@@ -309,8 +307,6 @@ fn IconDetailsModalInformation() -> impl IntoView {
 /// Detail modal view for icons
 #[component]
 pub fn IconDetailsModal() -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
-
     let current_icon_view = expect_context::<CurrentIconViewSignal>().0;
     let modal_open = expect_context::<ModalOpenSignal>();
 

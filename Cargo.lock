@@ -1367,9 +1367,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent"
-version = "0.0.1"
+version = "0.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cf7b102c67c1015b0d38c910126e5076e854d4cb63c49229c42f709582d45e3b"
+checksum = "9ad47362f552f563fc2e4dad11d38fbb3182272726a78cba546db439cfbf754c"
 dependencies = [
  "fluent-templates",
  "leptos",

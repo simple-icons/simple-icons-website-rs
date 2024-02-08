@@ -2,7 +2,7 @@ use crate::controls::button::ControlButtonSVGPath;
 use crate::storage::LocalStorage;
 use crate::Url;
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use simple_icons_website_config::CONFIG;
 use std::fmt;
 use std::str::FromStr;
@@ -94,7 +94,6 @@ fn set_layout(layout: Layout, layout_signal: &RwSignal<Layout>) {
 #[component]
 pub fn LayoutControl() -> impl IntoView {
     let layout = expect_context::<LayoutSignal>().0;
-    let i18n = store_value(expect_context::<I18n>());
 
     view! {
         <div class="control">

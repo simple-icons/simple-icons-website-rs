@@ -3,7 +3,7 @@ use crate::modal::{Modal, ModalOpen, ModalOpenSignal};
 use crate::storage::LocalStorage;
 use crate::Url;
 use leptos::{window, *};
-use leptos_fluent::{I18n, Language};
+use leptos_fluent::{i18n, I18n, Language};
 
 static LANGUAGE_SELECTOR_ICON_SVG_PATH: &str = concat!(
     "m12.87 15.07-2.54-2.51.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2",
@@ -60,13 +60,12 @@ pub fn set_language_in_localstorage(lang: &'static Language) {
 #[component]
 pub fn LanguagesList() -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();
-    let i18n = expect_context::<I18n>();
-    let current_language = Signal::derive(move || i18n.language.get());
+    let current_language = Signal::derive(move || i18n().language.get());
 
     view! {
         <ul class="language-selector">
             <For
-                each=move || i18n.languages
+                each=move || i18n().languages
                 key=move |lang| lang.id.to_string()
                 children=move |lang: &&Language| {
                     view! {
@@ -74,7 +73,7 @@ pub fn LanguagesList() -> impl IntoView {
                             class=move || if *lang == current_language() { "hidden" } else { "" }
                             on:click=move |_| {
                                 modal_open.set_none();
-                                expect_context::<I18n>().language.set(lang);
+                                i18n().language.set(lang);
                                 set_language_in_localstorage(lang);
                             }
                         >
@@ -94,7 +93,7 @@ pub fn LanguagesList() -> impl IntoView {
 pub fn LanguageSelectorButton() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
     let modal_open = expect_context::<ModalOpenSignal>();
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     view! {
         <HeaderMenuButton
@@ -113,7 +112,7 @@ pub fn LanguageSelectorButton() -> impl IntoView {
 #[component]
 pub fn LanguageSelector() -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     view! {
         <LanguageSelectorButton/>

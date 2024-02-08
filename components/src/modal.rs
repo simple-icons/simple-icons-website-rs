@@ -4,7 +4,7 @@ use crate::svg::{SVGDef, SVGIcon};
 use crate::Url;
 use core::fmt;
 use leptos::{ev::MouseEvent, html::Div, *};
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use leptos_use::on_click_outside;
 use std::str::FromStr;
 
@@ -19,7 +19,7 @@ fn ModalHeader(
     /// or the user clicks outside the modal
     on_close: Signal<()>,
 ) -> impl IntoView {
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
     view! {
         <div>
             <h2

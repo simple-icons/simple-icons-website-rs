@@ -6,7 +6,7 @@ use crate::controls::search::{
 use crate::grid::{IconsGrid, IconsGridSignal, IconsIndexSignal};
 use crate::storage::LocalStorage;
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use std::fmt;
@@ -163,7 +163,6 @@ pub fn set_order_mode(
 
 #[component]
 pub fn OrderControl() -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
     let order_mode = expect_context::<OrderModeSignal>().0;
     let icons_grid = expect_context::<IconsGridSignal>().0;
     let search_signal = expect_context::<SearchValueSignal>().0;

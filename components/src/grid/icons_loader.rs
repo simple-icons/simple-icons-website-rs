@@ -1,7 +1,7 @@
 use crate::controls::layout::LayoutSignal;
 use crate::grid::IconsGridSignal;
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 
 /// Data structure to control the loading of more icons
 #[derive(Clone, Copy)]
@@ -36,7 +36,6 @@ pub fn IconsLoader() -> impl IntoView {
     let icons_grid_signal = expect_context::<IconsGridSignal>().0;
     let icons_loader = expect_context::<IconsLoaderSignal>().0;
     let layout = expect_context::<LayoutSignal>().0;
-    let i18n = store_value(expect_context::<I18n>());
 
     let show_load_more_icons_button = move || {
         let loader_state = icons_loader();

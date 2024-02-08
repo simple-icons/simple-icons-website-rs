@@ -10,7 +10,7 @@ pub use image::{
     copy_as_image_png, download_jpg, download_png,
 };
 use leptos::{document, *};
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 pub use pdf::download_pdf;
 use std::collections::HashMap;
 use std::fmt;
@@ -87,7 +87,6 @@ fn set_download_type_on_localstorage(download_type: &DownloadType) {
 #[component]
 pub fn DownloadFileTypeControl() -> impl IntoView {
     let download_type = expect_context::<DownloadTypeSignal>().0;
-    let i18n = store_value(expect_context::<I18n>());
 
     let download_svg_title = Signal::derive(move || {
         let i18n = i18n();

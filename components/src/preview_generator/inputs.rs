@@ -11,7 +11,7 @@ use leptos::{
     html::{Div, Input},
     *,
 };
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use leptos_use::{on_click_outside, use_device_pixel_ratio};
 use simple_icons::{sdk, sdk::lint::errors::PathLintError};
 use std::collections::HashMap;
@@ -25,7 +25,7 @@ pub fn ColorInput(
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
     let pixel_ratio = use_device_pixel_ratio();
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     view! {
         <div class="preview-input-group">
@@ -60,8 +60,6 @@ pub fn PathInput(
     path: ReadSignal<String>,
     set_path: WriteSignal<String>,
 ) -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
-
     let pixel_ratio = use_device_pixel_ratio();
 
     let (path_lint_errors, set_path_lint_errors) =
@@ -251,7 +249,7 @@ fn ShowLintErrorButton(
     end: u32,
     input_ref: NodeRef<Input>,
 ) -> impl IntoView {
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
     view! {
         <Button
             title=Signal::derive(move || i18n.tr("show"))
@@ -272,7 +270,7 @@ fn FixLintErrorButton(
     fixer: sdk::lint::LintErrorFixer,
     input_ref: NodeRef<Input>,
 ) -> impl IntoView {
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
     view! {
         <Button
             title=Signal::derive(move || i18n.tr("fix"))
@@ -328,7 +326,7 @@ pub fn BrandInput(
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     let pixel_ratio = use_device_pixel_ratio();
 
@@ -403,8 +401,6 @@ fn BrandSuggestions(
     set_color: WriteSignal<String>,
     set_show_more_brand_suggestions: WriteSignal<bool>,
 ) -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
-
     view! {
         <ul class=move || {
             format!(

@@ -1,7 +1,7 @@
 use crate::copy::copy_setting_copied_transition_in_element;
 use crate::fetch::fetch_text;
 use leptos::{ev::MouseEvent, wasm_bindgen::JsCast, *};
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use std::collections::HashMap;
 use web_sys;
 
@@ -34,8 +34,6 @@ pub fn IconGridItemPreview(
     /// Brand title
     title: Memo<&'static str>,
 ) -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
-
     let button_title = move || {
         i18n().trs("copy-icon-svg", &{
             let mut map = HashMap::new();

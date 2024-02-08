@@ -2,7 +2,7 @@ use crate::controls::button::ControlButtonSVGPath;
 use crate::storage::LocalStorage;
 use crate::Url;
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use leptos_use::ColorMode;
 
 pub fn initial_color_scheme() -> ColorMode {
@@ -48,7 +48,6 @@ fn set_color_scheme_on_localstorage(color_scheme: &ColorMode) {
 pub fn ColorSchemeControl() -> impl IntoView {
     let (color_scheme, set_color_scheme) =
         expect_context::<(Signal<ColorMode>, WriteSignal<ColorMode>)>();
-    let i18n = store_value(expect_context::<I18n>());
 
     view! {
         <div class="control">

@@ -12,7 +12,7 @@ use crate::Url;
 use fuzzy::{build_searcher, search};
 use js_sys::JsString;
 use leptos::{document, html::Input, wasm_bindgen::JsCast, *};
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use types::SimpleIcon;
 use web_sys;
 
@@ -254,7 +254,6 @@ pub fn SearchControl() -> impl IntoView {
     let order_mode = expect_context::<OrderModeSignal>().0;
     let layout = expect_context::<LayoutSignal>().0;
     let icons = expect_context::<IconsIndexSignal>().0;
-    let i18n = store_value(expect_context::<I18n>());
 
     let search_input_ref = create_node_ref::<Input>();
     // Focus on load. Fallback for Safari, see:

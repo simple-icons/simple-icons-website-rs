@@ -9,7 +9,7 @@ use crate::modal::ModalOpenSignal;
 use crate::svg::{SVGDef, SVGIcon};
 use leptos::ev::MouseEvent;
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use std::collections::HashMap;
 use types::SimpleIcon;
 use web_sys;
@@ -32,9 +32,6 @@ pub fn IconGridItemFooter(
 
     // Context to handle the opening state of detail modals
     let current_icon_view = expect_context::<CurrentIconViewSignal>().0;
-
-    // Locale context
-    let i18n = store_value(expect_context::<I18n>());
 
     // Modal open context
     let modal_open = expect_context::<ModalOpenSignal>();

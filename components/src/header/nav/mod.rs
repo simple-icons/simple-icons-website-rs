@@ -12,7 +12,7 @@ use crate::header::{
 };
 use crate::svg::SVGDef;
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use simple_icons_macros::simple_icon_svg_path;
 
 // UNPKG icon is not available in simple-icons
@@ -31,8 +31,6 @@ static LEGAL_DISCLAIMER_SVG_PATH: &str = "m23.9 9.7-3.54-7.89-.005-.01a.542.542 
 /// - Button to open third party extensions table built by [`HeaderMenuButton`].
 #[component]
 pub fn HeaderMenu() -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
-
     view! {
         <nav>
             <ul>
@@ -93,7 +91,7 @@ pub fn HeaderMenu() -> impl IntoView {
 #[component]
 pub fn HeaderMenuBurgerButton() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     view! {
         <HeaderMenuButton
@@ -115,7 +113,7 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
 #[component]
 pub fn HeaderMenuCloseButton() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     view! {
         <HeaderMenuButton

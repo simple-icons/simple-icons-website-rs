@@ -9,7 +9,7 @@ use crate::preview_generator::{
 use crate::svg::{svg_with_title_path_opt_fill, SVGDef};
 use crate::Ids;
 use leptos::{wasm_bindgen::JsCast, *};
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use simple_icons::sdk;
 use std::collections::HashMap;
 
@@ -44,7 +44,7 @@ fn PreviewUploadSVGButton(
     let input_id = Ids::PreviewUploadSVGButton.as_str();
     load_keyboard_shortcut_ctrl_and_key_on_click_id(input_id, "ArrowUp");
 
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     async fn on_upload_svg_file(
         file: web_sys::File,
@@ -161,7 +161,7 @@ fn PreviewCopyButton() -> impl IntoView {
     let button_id = Ids::PreviewCopyButton.as_str();
     load_keyboard_shortcut_ctrl_and_key_on_click_id(button_id, "c");
 
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     view! {
         <button
@@ -196,7 +196,7 @@ fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
     let button_id = Ids::PreviewSaveButton.as_str();
     load_keyboard_shortcut_ctrl_and_key_on_click_id(button_id, "s");
 
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     view! {
         <Button
@@ -218,7 +218,7 @@ fn PreviewDownloadSVGButton(
     brand: ReadSignal<String>,
     path: ReadSignal<String>,
 ) -> impl IntoView {
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
 
     let title = Signal::derive(move || {
         i18n.trs("download-filetype", &{

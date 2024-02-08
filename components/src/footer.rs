@@ -2,7 +2,7 @@
 
 use crate::svg::SVGIcon;
 use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use simple_icons_macros::simple_icon_svg_path;
 use std::collections::HashMap;
 
@@ -14,7 +14,7 @@ pub fn Footer(
     /// Reference to the footer container, for using in sibling components
     container_ref: NodeRef<FooterHtmlElement>,
 ) -> impl IntoView {
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
     view! {
         <footer node_ref=container_ref>
             <ReportProblems/>
@@ -62,7 +62,6 @@ fn ReportLink(
 
 #[component]
 pub fn ReportProblems() -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
     view! {
         <div class="flex flex-col py-8">
             <p>
@@ -83,7 +82,7 @@ pub fn ReportProblems() -> impl IntoView {
 
 #[component]
 pub fn XButton() -> impl IntoView {
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
     view! {
         <a
             class="x-button"
@@ -100,7 +99,6 @@ pub fn XButton() -> impl IntoView {
 
 #[component]
 pub fn About() -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
     let maintained_by_html = move || {
         let i18n = i18n();
         i18n.trs("maintained-by", &{

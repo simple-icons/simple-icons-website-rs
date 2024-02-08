@@ -1,7 +1,7 @@
 use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
 use crate::svg::{SVGDef, SVGIcon};
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use leptos_use::use_window_scroll;
 
 #[component]
@@ -24,7 +24,6 @@ pub fn ScrollButton(
 #[component]
 pub fn ScrollToHeaderButton() -> impl IntoView {
     let (_, window_scroll_y) = use_window_scroll();
-    let i18n = store_value(expect_context::<I18n>());
 
     view! {
         <Show when=move || { window_scroll_y() >= 200.0 }>
@@ -45,7 +44,6 @@ pub fn ScrollToHeaderButton() -> impl IntoView {
 pub fn ScrollToFooterButton() -> impl IntoView {
     let icons_loader = expect_context::<IconsLoaderSignal>().0;
     let icons_grid = expect_context::<IconsGridSignal>().0;
-    let i18n = store_value(expect_context::<I18n>());
 
     view! {
         <Show when=move || {

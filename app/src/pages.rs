@@ -13,7 +13,7 @@ use components::grid::{
 use components::preview_generator::PreviewGenerator;
 use components::svg::SVGDef;
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 use leptos_router::{use_navigate, use_query_map, NavigateOptions};
 
 fn index_redirections() {
@@ -78,7 +78,7 @@ pub fn DeprecationsIndex() -> impl IntoView {
 
 #[component]
 pub fn Preview() -> impl IntoView {
-    let i18n = expect_context::<I18n>();
+    let i18n = i18n();
     view! {
         <menu class="page-padding-x -mt-4 lg:bg-transparent flex flex-row lg:flex-col">
             <ColorSchemeControl/>
@@ -104,8 +104,6 @@ pub fn Preview() -> impl IntoView {
 
 #[component]
 pub fn Error404() -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
-
     view! {
         <menu class="page-padding-x -mt-4 bg-transparent">
             <ColorSchemeControl/>

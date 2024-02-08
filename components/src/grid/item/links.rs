@@ -1,5 +1,5 @@
 use leptos::*;
-use leptos_fluent::I18n;
+use leptos_fluent::i18n;
 
 #[component]
 pub fn IconGridItemLinks(
@@ -10,7 +10,6 @@ pub fn IconGridItemLinks(
     /// License type
     license_type: Option<&'static str>,
 ) -> impl IntoView {
-    let i18n = store_value(expect_context::<I18n>());
     let brand_guidelines = move || i18n().tr("brand-guidelines");
     view! {
         <div class="links">
