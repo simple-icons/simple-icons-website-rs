@@ -43,9 +43,8 @@ pub fn IconGridItemTitle(
     /// Slug
     slug: &'static str,
 ) -> impl IntoView {
-    let i18n = i18n();
     let container_title = move || {
-        i18n.trs("copy-icon-slug", &{
+        i18n().trs("copy-icon-slug", &{
             let mut map = HashMap::new();
             map.insert("icon".to_string(), brand_name().into());
             map.insert("slug".to_string(), slug.into());

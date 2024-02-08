@@ -18,7 +18,7 @@ use icondata::{
     TbJpg, TbPdf, TbPng, TbSvg, VsSymbolNamespace,
 };
 use leptos::{html::Span, wasm_bindgen::JsCast, *};
-use leptos_fluent::{i18n, I18n};
+use leptos_fluent::i18n;
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
 use std::collections::HashMap;
@@ -65,11 +65,8 @@ fn get_hex_from_modal_container() -> String {
         .inner_text()
 }
 
-pub fn fill_icon_details_modal_with_icon(
-    icon: &'static SimpleIcon,
-    i18n: &I18n,
-) {
-    let language = i18n.language.get();
+pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
+    let language = i18n().language.get();
     let icon_localized_title = get_icon_localized_title(icon, language);
 
     let modal_body = document()
@@ -101,7 +98,7 @@ pub fn fill_icon_details_modal_with_icon(
     modal_slug
         .set_attribute(
             "title",
-            &i18n.trs("copy-icon-slug", &{
+            &i18n().trs("copy-icon-slug", &{
                 let mut map = HashMap::new();
                 map.insert("icon".to_string(), icon_localized_title.into());
                 map.insert("slug".to_string(), icon.slug.into());
@@ -149,7 +146,7 @@ pub fn fill_icon_details_modal_with_icon(
     modal_preview_button
         .set_attribute(
             "title",
-            &i18n.trs("copy-icon-svg", &{
+            &i18n().trs("copy-icon-svg", &{
                 let mut map = HashMap::new();
                 map.insert("icon".to_string(), icon_localized_title.into());
                 map
@@ -226,7 +223,7 @@ pub fn fill_icon_details_modal_with_icon(
         .unwrap();
 
     if let Some(deprecation) = icon.deprecation {
-        modal_deprecation_paragraph.set_inner_html(&i18n.trs(
+        modal_deprecation_paragraph.set_inner_html(&i18n().trs(
             "will-be-removed-at-extended",
             &{
                 let mut map = HashMap::new();
