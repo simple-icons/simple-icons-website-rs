@@ -18,7 +18,7 @@ pub mod modal;
 pub mod preview_generator;
 pub mod storage;
 pub mod svg;
-pub(crate) mod url;
+pub mod url;
 
 pub(crate) use ids::Ids;
-pub(crate) use url as Url;
+pub use url as Url;

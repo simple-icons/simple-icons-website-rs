@@ -13,7 +13,7 @@ pub mod params {
     /// Enum to ensure that the params names are unique
     pub enum Names {
         Query,
-        // Language,
+        Language,
         DownloadType,
         Layout,
         ColorScheme,
@@ -24,7 +24,7 @@ pub mod params {
         pub fn as_str(&self) -> &'static str {
             match self {
                 Self::Query => "q",
-                // Self::Language => "lang",
+                Self::Language => "lang",
                 Self::DownloadType => "download-type",
                 Self::Layout => "layout",
                 Self::ColorScheme => "color-scheme",

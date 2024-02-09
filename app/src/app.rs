@@ -7,6 +7,7 @@ use components::header::Header;
 use components::modal::provide_modal_open_context;
 use components::storage::LocalStorage;
 use components::svg::SVGDefsDefinition;
+use components::Url;
 use fluent_templates::static_loader;
 use leptos::{html::Footer as FooterHtmlElement, *};
 use leptos_fluent::leptos_fluent;
@@ -57,9 +58,7 @@ pub fn App() -> impl IntoView {
         // Load initial language from the URL
         initial_language_from_url: true,
         // Parameter name to look for the initial language in the URL
-        // TODO: This should also accept an identifier or expression, so we
-        //       can pass `components::Url::params::Names::Language` directly
-        initial_language_from_url_param: "lang",
+        initial_language_from_url_param: Url::params::Names::Language.as_str(),
         // Save initial language from the URL to the local storage
         initial_language_from_url_to_localstorage: true,
         // Load initial language from local storage if not found in URL param
@@ -68,9 +67,7 @@ pub fn App() -> impl IntoView {
         // local storage
         initial_language_from_navigator: true,
         // Name of the local storage key to store the language
-        // TODO: This should also accept an identifier or expression, so we can
-        //       pass `components::storage::LocalStorage::Keys::Language` directly
-        localstorage_key: "language",
+        localstorage_key: LocalStorage::Keys::Language.as_str(),
     }}
     .provide_context(None);
 
