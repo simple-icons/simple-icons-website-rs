@@ -52,6 +52,7 @@ pub fn App() -> impl IntoView {
     leptos_fluent! {{
         locales: LOCALES,
         languages: "./locales/languages.json",
+        provide_context: true,
         // Synchronize <html lang="..."> attribute with the current language
         // using `leptos::create_effect`
         sync_html_tag_lang: true,
@@ -68,8 +69,7 @@ pub fn App() -> impl IntoView {
         initial_language_from_navigator: true,
         // Name of the local storage key to store the language
         localstorage_key: LocalStorage::Keys::Language.as_str(),
-    }}
-    .provide_context(None);
+    }};
 
     // Create a context to store a node reference to the footer
     // to use it in other components of pages
