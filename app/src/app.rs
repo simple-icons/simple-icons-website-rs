@@ -57,7 +57,6 @@ pub fn App() -> impl IntoView {
         // Load initial language from the URL
         initial_language_from_url: true,
         // Parameter name to look for the initial language in the URL
-        //
         // TODO: This should also accept an identifier or expression, so we
         //       can pass `components::Url::params::Names::Language` directly
         initial_language_from_url_param: "lang",
@@ -69,6 +68,8 @@ pub fn App() -> impl IntoView {
         // local storage
         initial_language_from_navigator: true,
         // Name of the local storage key to store the language
+        // TODO: This should also accept an identifier or expression, so we can
+        //       pass `components::storage::LocalStorage::Keys::Language` directly
         localstorage_key: "language",
     }};
     i18n.provide_context(None);
