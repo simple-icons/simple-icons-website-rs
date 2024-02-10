@@ -17,7 +17,7 @@ use icondata::{
     BiCheckRegular, BiMenuAltRightRegular, BiMenuRegular, BsCode, IoColorWand,
     TbJpg, TbPdf, TbPng, TbSvg, VsSymbolNamespace,
 };
-use leptos::{html::Span, wasm_bindgen::JsCast, *};
+use leptos::{html::Ul, wasm_bindgen::JsCast, *};
 use leptos_fluent::i18n;
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
@@ -308,9 +308,9 @@ pub fn IconDetailsModal() -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();
 
     let (controls_open, set_controls_open) = create_signal(false);
-    let menu_ref = create_node_ref::<Span>();
+    let menu_ref = create_node_ref::<Ul>();
     _ = on_click_outside(menu_ref, move |_| {
-        if controls_open() {
+        if controls_open.get_untracked() {
             set_controls_open(false);
         }
     });
@@ -521,10 +521,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                     <IconDetailsModalInformation/>
                 </div>
                 <div class="cursor-pointer absolute right-[47px] top-[14px] z-50">
-                    <span
-                        ref_=menu_ref
-                        on:click=move |_| set_controls_open(!controls_open.get_untracked())
-                    >
+                    <span on:click=move |_| set_controls_open(!controls_open.get_untracked())>
                         <Icon
                             icon=Signal::derive(move || match controls_open() {
                                 true => BiMenuRegular,
@@ -536,11 +533,14 @@ pub fn IconDetailsModal() -> impl IntoView {
                         />
                     </span>
                     <Show when=controls_open>
-                        <Menu class=concat!(
-                            "absolute top-8 right-1 text-sm",
-                            " border-custom-divider-color bg-slate-300 dark:bg-gray-700",
-                            " max-h-[330px] scroll-bar overflow-y-auto",
-                        )>
+                        <Menu
+                            ref_=menu_ref
+                            class=concat!(
+                                "absolute top-8 right-1 text-sm",
+                                " border-custom-divider-color bg-slate-300 dark:bg-gray-700",
+                                " max-h-[330px] scroll-bar overflow-y-auto",
+                            )
+                        >
 
                             <MenuItem
                                 class=controls_menu_item_class()
@@ -548,7 +548,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 icon=Signal::derive(move || TbSvg)
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
-                                    set_controls_open(true);
                                     download_svg(&slug);
                                 }
                             />
@@ -559,7 +558,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 icon=Signal::derive(move || TbPdf)
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
-                                    set_controls_open(true);
                                     download_pdf(&slug);
                                 }
                             />
@@ -570,7 +568,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 icon=Signal::derive(move || TbPng)
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
-                                    set_controls_open(true);
                                     download_png(&slug);
                                 }
                             />
@@ -581,7 +578,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 icon=Signal::derive(move || TbJpg)
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
-                                    set_controls_open(true);
                                     download_jpg(&slug);
                                 }
                             />
@@ -593,7 +589,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
                                     let hex = get_hex_from_modal_container();
-                                    set_controls_open(true);
                                     spawn_local(async move {
                                         if let Some(svg) = fetch_text(
                                                 &format!("/icons/{}.svg", slug),
@@ -620,7 +615,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 icon=copy_svg_icon
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
-                                    set_controls_open(true);
                                     set_copying_svg(true);
                                     spawn_local(async move {
                                         if let Some(svg) = fetch_text(
@@ -656,7 +650,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 icon=copy_png_icon
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
-                                    set_controls_open(true);
                                     set_copying_png(true);
                                     copy_as_image_png(&slug);
                                     set_timeout(
@@ -672,7 +665,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 icon=copy_jpg_icon
                                 on:click=move |_| {
                                     let slug = get_slug_from_modal_container();
-                                    set_controls_open(true);
                                     set_copying_jpg(true);
                                     copy_as_image_jpg(&slug);
                                     set_timeout(
@@ -688,7 +680,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 icon=copy_hex_icon
                                 on:click=move |ev| {
                                     let hex = get_hex_from_modal_container();
-                                    set_controls_open(true);
                                     set_copying_hex(true);
                                     spawn_local(
                                         copy_setting_copied_transition_in_element(
@@ -716,7 +707,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                         return;
                                     }
                                     set_copying_as_base64_svg(true);
-                                    set_controls_open(true);
                                     set_timeout(
                                         move || set_copying_as_base64_svg(false),
                                         std::time::Duration::from_secs(1),
@@ -757,7 +747,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                         return;
                                     }
                                     set_copying_as_base64_jpg(true);
-                                    set_controls_open(true);
                                     set_timeout(
                                         move || set_copying_as_base64_jpg(false),
                                         std::time::Duration::from_secs(1),
@@ -776,7 +765,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                         return;
                                     }
                                     set_copying_as_base64_png(true);
-                                    set_controls_open(true);
                                     set_timeout(
                                         move || set_copying_as_base64_png(false),
                                         std::time::Duration::from_secs(1),
@@ -792,7 +780,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 icon=copy_brand_name_icon
                                 on:click=move |ev| {
                                     let brand_name = get_brand_name_from_modal_container();
-                                    set_controls_open(true);
                                     set_copying_brand_name(true);
                                     spawn_local(
                                         copy_setting_copied_transition_in_element(

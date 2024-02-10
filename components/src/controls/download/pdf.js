@@ -60,7 +60,6 @@ export const download_pdf_ = async (
     const a = document.createElement('a');
     a.href = url;
     a.download = `${slug}.pdf`;
-    document.body.appendChild(a);
     a.click();
     URL.revokeObjectURL(url);
   });

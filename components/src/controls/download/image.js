@@ -35,7 +35,6 @@ const setToLinkAndDownload = (url, slug, format) => {
   a.href = url;
   a.download = `${slug}.${format}`;
   a.click();
-  document.body.removeChild(a);
   const DOMURL = window.URL || window.webkitURL || window;
   DOMURL.revokeObjectURL(url);
 };
