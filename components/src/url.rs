@@ -47,11 +47,9 @@ pub mod params {
         }
 
         let query = params.to_string().as_string().unwrap();
-        let query = query.trim_matches('?');
-        let pathname = url.pathname();
-        let url = match query.is_empty() {
-            false => format!("{}?{}", pathname, query),
-            true => pathname,
+        let url = match query.len() < 2 {
+            true => url.pathname(),
+            false => format!("{}?{}", url.pathname(), query),
         };
         window()
             .history()
@@ -61,6 +59,7 @@ pub mod params {
                 "",
                 Some(&url),
             )
+            .map_err(|e| log::error!("Failed to update the URL: {:?}", e))
             .ok();
     }
 

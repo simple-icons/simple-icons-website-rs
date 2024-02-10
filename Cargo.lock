@@ -1367,9 +1367,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent"
-version = "0.0.9"
+version = "0.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "44b9d26af57b511b053302ff53f3311018faa4ca5f5b2e8d37fc688e53910b8d"
+checksum = "1a18c0878ac4b9648aeaa8f32b70ce7b867430fd14eb7693e39500e554f9cdbc"
 dependencies = [
  "fluent-templates",
  "leptos",
@@ -1382,9 +1382,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent-macros"
-version = "0.0.9"
+version = "0.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71d33f9e4907cc18a29e2732bf7be8b5c8d679a83362e08eb3e046eb108b4afc"
+checksum = "b3a0239a654bcf2b53107f89351d0bc048f30b8559aec97337a5a94d8f7c5be6"
 dependencies = [
  "once_cell",
  "proc-macro2",
@@ -1705,18 +1705,18 @@ dependencies = [
 
 [[package]]
 name = "nanoserde"
-version = "0.1.35"
+version = "0.1.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4a983d0b19ed0fcd803c4f04f9b20d5e6dd17e06d44d98742a0985ac45dab1bc"
+checksum = "5de9cf844ab1e25a0353525bd74cb889843a6215fa4a0d156fd446f4857a1b99"
 dependencies = [
  "nanoserde-derive",
 ]
 
 [[package]]
 name = "nanoserde-derive"
-version = "0.1.21"
+version = "0.1.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d4dc96541767a4279572fdcf9f95af9cc1c9b2a2254e7a079203c81e206a9059"
+checksum = "e943b2c21337b7e3ec6678500687cdc741b7639ad457f234693352075c082204"
 
 [[package]]
 name = "nom"
@@ -2247,9 +2247,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.111"
+version = "1.0.113"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "176e46fa42316f18edd598015a5166857fc835ec732f5215eac6b7bdbf0a84f4"
+checksum = "69801b70b1c3dac963ecb03a364ba0ceda9cf60c71cfe475e99864759c8b8a79"
 dependencies = [
  "itoa",
  "ryu",
@@ -2960,9 +2960,9 @@ dependencies = [
 
 [[package]]
 name = "wasm-bindgen-futures"
-version = "0.4.40"
+version = "0.4.41"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bde2032aeb86bdfaecc8b261eef3cba735cc426c1f3a3416d1e0791be95fc461"
+checksum = "877b9c3f61ceea0e56331985743b13f3d25c406a7098d45180fb5f09bc19ed97"
 dependencies = [
  "cfg-if",
  "js-sys",
