@@ -41,8 +41,9 @@ export const download_pdf_ = async (
     type: 'image/svg+xml;charset=utf-8',
   });
 
-  const DOMURL = window.URL || window.webkitURL || window;
-  const url = DOMURL.createObjectURL(svgBlob);
+  const url = (window.URL || window.webkitURL || window).createObjectURL(
+    svgBlob,
+  );
 
   const canvas = document.createElement('canvas');
   canvas.width = width;
@@ -82,7 +83,7 @@ export const download_pdf_ = async (
       a.href = url_;
       a.download = `${slug}.pdf`;
       a.click();
-      URL.revokeObjectURL(url_);
+      (window.URL || window.webkitURL || window).revokeObjectURL(url);
     });
   };
 };

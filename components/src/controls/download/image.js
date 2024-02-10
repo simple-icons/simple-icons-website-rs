@@ -35,8 +35,7 @@ const setToLinkAndDownload = (url, slug, format) => {
   a.href = url;
   a.download = `${slug}.${format}`;
   a.click();
-  const DOMURL = window.URL || window.webkitURL || window;
-  DOMURL.revokeObjectURL(url);
+  (window.URL || window.webkitURL || window).revokeObjectURL(url);
 };
 
 export const download_png_ = (slug) => {
