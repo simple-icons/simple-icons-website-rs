@@ -65,29 +65,6 @@ pub mod params {
 
     /// Get a URL param value from the URL of the browser
     pub fn get(k: &Names) -> Option<String> {
-        let url = current_url();
-        let params = url.search_params();
-        let iterator = js_sys::try_iter(&params).unwrap().unwrap();
-
-        for pair in iterator {
-            let pair = pair.unwrap();
-            let key = js_sys::Reflect::get(&pair, &0.into())
-                .unwrap()
-                .as_string()
-                .unwrap();
-            if key.as_str() != k.as_str() {
-                continue;
-            }
-            let value = js_sys::Reflect::get(&pair, &1.into())
-                .unwrap()
-                .as_string()
-                .unwrap();
-            if value.is_empty() {
-                return None;
-            } else {
-                return Some(value);
-            }
-        }
-        None
+        current_url().search_params().get(k.as_str())
     }
 }
