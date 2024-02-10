@@ -87,15 +87,10 @@ fn set_download_type_on_localstorage(download_type: &DownloadType) {
 pub fn DownloadFileTypeControl() -> impl IntoView {
     let download_type = expect_context::<DownloadTypeSignal>().0;
 
-    let download_svg_title = Signal::derive(move || {
-        tr!("download-filetype", {
-            "filetype" => tr!("svg"),
-        })
-    });
-    let download_pdf_title = Signal::derive(move || {
-        tr!("download-filetype", {
-            "filetype" => tr!("pdf"),
-        })
+    let download_svg_title =
+        move_tr!("download-filetype", {"filetype" => tr!("svg")});
+    let download_pdf_title = move_tr!("download-filetype", {
+        "filetype" => tr!("pdf"),
     });
 
     view! {
