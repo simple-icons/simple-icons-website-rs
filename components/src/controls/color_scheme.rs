@@ -15,33 +15,14 @@ pub fn initial_color_scheme() -> ColorMode {
         }
     }) {
         Some(color_scheme) => {
-            set_color_scheme_on_localstorage(&color_scheme);
+            LocalStorage::set(
+                LocalStorage::Keys::ColorScheme,
+                &color_scheme.to_string(),
+            );
             color_scheme
         }
-        None => match color_scheme_from_localstorage() {
-            Some(color_scheme) => color_scheme,
-            None => ColorMode::Auto,
-        },
+        None => ColorMode::Auto,
     }
-}
-
-fn color_scheme_from_localstorage() -> Option<ColorMode> {
-    match LocalStorage::get(LocalStorage::Keys::ColorScheme) {
-        None => None,
-        Some(value) => match value.as_ref() {
-            "light" => Some(ColorMode::Light),
-            "dark" => Some(ColorMode::Dark),
-            "system" | "auto" => Some(ColorMode::Auto),
-            _ => None,
-        },
-    }
-}
-
-fn set_color_scheme_on_localstorage(color_scheme: &ColorMode) {
-    LocalStorage::set(
-        LocalStorage::Keys::ColorScheme,
-        &color_scheme.to_string(),
-    );
 }
 
 #[component]
