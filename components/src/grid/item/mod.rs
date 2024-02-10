@@ -20,9 +20,8 @@ use types::SimpleIcon;
 /// Each icon displayed in the icons grid
 #[component]
 pub fn IconGridItem(icon: &'static SimpleIcon) -> impl IntoView {
-    let i18n = i18n();
     let icon_localized_title = create_memo(move |_| {
-        get_icon_localized_title(icon, i18n.language.get())
+        get_icon_localized_title(icon, i18n().language.get())
     });
 
     view! {

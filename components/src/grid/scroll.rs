@@ -1,7 +1,7 @@
 use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
 use crate::svg::{SVGDef, SVGIcon};
 use leptos::*;
-use leptos_fluent::i18n;
+use leptos_fluent::move_tr;
 use leptos_use::use_window_scroll;
 
 #[component]
@@ -29,7 +29,7 @@ pub fn ScrollToHeaderButton() -> impl IntoView {
         <Show when=move || { window_scroll_y() >= 200.0 }>
             <ScrollButton
                 class="scroll-to-header-button"
-                title=Signal::derive(move || i18n().tr("go-to-header"))
+                title=move_tr!("go-to-header")
                 on:click=move |_| {
                     document().query_selector("header").unwrap().unwrap().scroll_into_view()
                 }
@@ -51,7 +51,7 @@ pub fn ScrollToFooterButton() -> impl IntoView {
         }>
             <ScrollButton
                 class="scroll-to-footer-button"
-                title=Signal::derive(move || i18n().tr("go-to-footer"))
+                title=move_tr!("go-to-footer")
                 on:click=move |_| {
                     icons_loader.update(|state| state.load = false);
                     let footer = document().query_selector("footer").unwrap().unwrap();

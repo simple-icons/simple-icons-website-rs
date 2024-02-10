@@ -11,10 +11,9 @@ use leptos::{
     html::{Div, Input},
     *,
 };
-use leptos_fluent::i18n;
+use leptos_fluent::{move_tr, tr};
 use leptos_use::{on_click_outside, use_device_pixel_ratio};
 use simple_icons::{sdk, sdk::lint::errors::PathLintError};
-use std::collections::HashMap;
 use svg_path_cst::svg_path_cst;
 use types::SimpleIcon;
 use wasm_bindgen::JsCast;
@@ -28,7 +27,7 @@ pub fn ColorInput(
 
     view! {
         <div class="preview-input-group">
-            <label for="preview-color">{move || i18n().tr("color")}</label>
+            <label for="preview-color">{move || tr!("color")}</label>
             <input
                 type="text"
                 style="width:68px"
@@ -115,69 +114,55 @@ pub fn PathInput(
 
     let tr_lint_error = move |err: &PathLintError| -> String {
         match err {
-            PathLintError::MustStartWithMovetoCommand { command } => i18n()
-                .trs(
-                    "must-start-with-moveto-command",
-                    &HashMap::from([(
-                        "command".to_string(),
-                        command.to_string().into(),
-                    )]),
-                ),
+            PathLintError::MustStartWithMovetoCommand { command } => tr!(
+                "must-start-with-moveto-command",
+                { "command" => command.to_string() }
+            ),
             PathLintError::InvalidCharacterAtIndex { index, character } => {
-                i18n().trs(
+                tr!(
                     "invalid-character-at-index",
-                    &HashMap::from([
-                        ("index".to_string(), index.to_string().into()),
-                        ("character".to_string(), character.to_string().into()),
-                    ]),
+                    {
+                        "index" => index.to_string(),
+                        "character" => character.to_string()
+                    }
                 )
             }
-            PathLintError::FoundNegativeZeroAtIndex { index } => i18n().trs(
+            PathLintError::FoundNegativeZeroAtIndex { index } => tr!(
                 "found-negative-zero-at-index",
-                &HashMap::from([(
-                    "index".to_string(),
-                    index.to_string().into(),
-                )]),
+                {"index" => index.to_string()}
             ),
             PathLintError::ReportedSizeIsZero => {
-                i18n().tr("reported-svg-path-size-is-zero")
+                tr!("reported-svg-path-size-is-zero")
             }
             PathLintError::MaximumPrecisionMustBeLessThan {
                 max_precision,
                 precision,
                 number,
-            } => i18n().trs(
+            } => tr!(
                 "maximum-precision-must-be-less-than",
-                &HashMap::from([
-                    (
-                        "max_precision".to_string(),
-                        max_precision.to_string().into(),
-                    ),
-                    ("precision".to_string(), precision.to_string().into()),
-                    ("number".to_string(), number.to_string().into()),
-                ]),
+                {
+                    "max_precision" => max_precision.to_string(),
+                    "precision" => precision.to_string(),
+                    "number" => number.to_string()
+                }
             ),
-            PathLintError::IconMustBeCentered { x, y } => i18n().trs(
+            PathLintError::IconMustBeCentered { x, y } => tr!(
                 "icon-must-be-centered",
-                &HashMap::from([
-                    ("x".to_string(), x.to_string().into()),
-                    ("y".to_string(), y.to_string().into()),
-                ]),
+                {
+                    "x" => x.to_string(),
+                    "y" => y.to_string()
+                }
             ),
-            PathLintError::CollinearSegmentFoundAtCommand { command } => i18n()
-                .trs(
-                    "collinear-segment-found-at-command",
-                    &HashMap::from([(
-                        "command".to_string(),
-                        command.to_string().into(),
-                    )]),
-                ),
-            PathLintError::IncorrectIconSize { width, height } => i18n().trs(
+            PathLintError::CollinearSegmentFoundAtCommand { command } => tr!(
+                "collinear-segment-found-at-command",
+                {"command" => command.to_string()}
+            ),
+            PathLintError::IncorrectIconSize { width, height } => tr!(
                 "incorrect-svg-path-icon-size",
-                &HashMap::from([
-                    ("width".to_string(), width.to_string().into()),
-                    ("height".to_string(), height.to_string().into()),
-                ]),
+                {
+                    "width" => width.to_string(),
+                    "height" => height.to_string()
+                }
             ),
             _ => err.to_string(),
         }
@@ -185,7 +170,7 @@ pub fn PathInput(
 
     view! {
         <div node_ref=input_group_ref class="preview-input-group">
-            <label for="preview-path">{move || i18n().tr("path")}</label>
+            <label for="preview-path">{move || tr!("path")}</label>
             <input
                 node_ref=input_ref
                 type="text"
@@ -250,7 +235,7 @@ fn ShowLintErrorButton(
 ) -> impl IntoView {
     view! {
         <Button
-            title=Signal::derive(move || i18n().tr("show"))
+            title=move_tr!("show")
             on:click=move |_| {
                 let input = input_ref().unwrap();
                 input.focus().unwrap();
@@ -270,7 +255,7 @@ fn FixLintErrorButton(
 ) -> impl IntoView {
     view! {
         <Button
-            title=Signal::derive(move || i18n().tr("fix"))
+            title=move_tr!("fix")
             on:click=move |_| {
                 let input = input_ref().unwrap();
                 let (new_value, (start, end)) = fixer(&input.value(), (start, end));
@@ -342,7 +327,7 @@ pub fn BrandInput(
 
     view! {
         <div class="preview-input-group">
-            <label for="preview-brand">{move || i18n().tr("brand")}</label>
+            <label for="preview-brand">{move || tr!("brand")}</label>
             <input
                 node_ref=input_ref
                 type="text"
@@ -418,7 +403,7 @@ fn BrandSuggestions(
                 <li
                     class="more-suggestions"
                     role="button"
-                    title=move || i18n().tr("load-more-icons")
+                    title=move || tr!("load-more-icons")
                     on:click=move |_| {
                         set_show_more_brand_suggestions(true);
                         let input = document()

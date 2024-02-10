@@ -1,5 +1,5 @@
 use leptos::*;
-use leptos_fluent::i18n;
+use leptos_fluent::tr;
 
 #[component]
 pub fn IconGridItemLinks(
@@ -10,7 +10,7 @@ pub fn IconGridItemLinks(
     /// License type
     license_type: Option<&'static str>,
 ) -> impl IntoView {
-    let brand_guidelines = move || i18n().tr("brand-guidelines");
+    let brand_guidelines = move || tr!("brand-guidelines");
     view! {
         <div class="links">
 
@@ -33,15 +33,14 @@ pub fn IconGridItemLinks(
                 }
                 if license_type.is_some() || license_url.is_some() {
                     let title = move || {
-                        let i18n = i18n();
                         match license_type {
                             Some(license_type) => {
                                 match license_type {
-                                    "custom" => i18n.tr("custom-license"),
+                                    "custom" => tr!("custom-license"),
                                     _ => license_type.to_string(),
                                 }
                             }
-                            None => i18n.tr("license"),
+                            None => tr!("license"),
                         }
                     };
                     links

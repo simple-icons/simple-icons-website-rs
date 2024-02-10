@@ -3,7 +3,7 @@ use crate::modal::Modal;
 use crate::modal::{ModalOpen, ModalOpenSignal};
 use crate::svg::SVGIcon;
 use leptos::*;
-use leptos_fluent::i18n;
+use leptos_fluent::move_tr;
 use simple_icons_macros::get_simple_icons_3rd_party_extensions;
 use types::ThirdPartyExtension;
 
@@ -69,11 +69,10 @@ fn ThirdPartyExtensionsTable() -> impl IntoView {
 fn ThirdPartyExtensionsButton() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
     let modal_open = expect_context::<ModalOpenSignal>();
-    let i18n = i18n();
 
     view! {
         <HeaderMenuButton
-            title=Signal::derive(move || i18n.tr("third-party-extensions"))
+            title=move_tr!("third-party-extensions")
             class=Signal::derive(move || {
                 if header_state().menu_open {
                     "block".to_string()
@@ -92,12 +91,11 @@ fn ThirdPartyExtensionsButton() -> impl IntoView {
 #[component]
 pub fn ThirdPartyExtensions() -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();
-    let i18n = i18n();
 
     view! {
         <ThirdPartyExtensionsButton/>
         <Modal
-            title=Signal::derive(move || i18n.tr("third-party-extensions"))
+            title=move_tr!("third-party-extensions")
             is_open=Signal::derive(move || modal_open.0() == Some(ModalOpen::Extensions))
             on_close=Signal::derive(move || modal_open.set_none())
             on_close_focus_search_bar=true

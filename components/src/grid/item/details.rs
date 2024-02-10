@@ -18,10 +18,9 @@ use icondata::{
     TbJpg, TbPdf, TbPng, TbSvg, VsSymbolNamespace,
 };
 use leptos::{html::Ul, wasm_bindgen::JsCast, *};
-use leptos_fluent::i18n;
+use leptos_fluent::{i18n, move_tr, tr};
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
-use std::collections::HashMap;
 use types::SimpleIcon;
 use web_sys;
 
@@ -98,11 +97,9 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
     modal_slug
         .set_attribute(
             "title",
-            &i18n().trs("copy-icon-slug", &{
-                let mut map = HashMap::new();
-                map.insert("icon".to_string(), icon_localized_title.into());
-                map.insert("slug".to_string(), icon.slug.into());
-                map
+            &tr!("copy-icon-slug", {
+                "icon" => icon_localized_title,
+                "slug" => icon.slug,
             }),
         )
         .unwrap();
@@ -146,10 +143,8 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
     modal_preview_button
         .set_attribute(
             "title",
-            &i18n().trs("copy-icon-svg", &{
-                let mut map = HashMap::new();
-                map.insert("icon".to_string(), icon_localized_title.into());
-                map
+            &tr!("copy-icon-svg", {
+                "icon" => icon_localized_title,
             }),
         )
         .unwrap();
@@ -223,23 +218,16 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
         .unwrap();
 
     if let Some(deprecation) = icon.deprecation {
-        modal_deprecation_paragraph.set_inner_html(&i18n().trs(
+        modal_deprecation_paragraph.set_inner_html(&tr!(
             "will-be-removed-at-extended",
-            &{
-                let mut map = HashMap::new();
-                map.insert("icon".to_string(), icon_localized_title.into());
-                map.insert(
-                    "version".to_string(),
-                    format!(
-                        "<a href=\"{}\">v{}</a>",
-                        deprecation.get_milestone_url(),
-                        deprecation.removal_at_version,
-                    )
-                    .into(),
-                );
-                map.insert(
-                    "date".to_string(),
-                    js_sys::Date::new(&wasm_bindgen::JsValue::from(
+            {
+                "icon" => icon_localized_title,
+                "version" => format!(
+                    "<a href=\"{}\">v{}</a>",
+                    deprecation.get_milestone_url(),
+                    deprecation.removal_at_version,
+                ),
+                "date" => js_sys::Date::new(&wasm_bindgen::JsValue::from(
                         deprecation.milestone_due_on,
                     ))
                     .to_locale_date_string(
@@ -247,19 +235,12 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
                         &wasm_bindgen::JsValue::from(js_sys::Object::new()),
                     )
                     .as_string()
-                    .unwrap()
-                    .into(),
-                );
-                map.insert(
-                    "pr".to_string(),
-                    format!(
-                        "<a href=\"{}\">#{}</a>",
-                        deprecation.get_pull_request_url(),
-                        deprecation.pull_request_number,
-                    )
-                    .into(),
-                );
-                map
+                    .unwrap(),
+                "pr" => format!(
+                    "<a href=\"{}\">#{}</a>",
+                    deprecation.get_pull_request_url(),
+                    deprecation.pull_request_number,
+                ),
             },
         ));
         modal_deprecation_paragraph
@@ -290,12 +271,9 @@ fn IconDetailsModalInformation() -> impl IntoView {
     view! {
         <div>
             <h3 on:click=copy_inner_text_on_click></h3>
-            <button
-                on:click=copy_inner_text_on_click
-                title=move || i18n().tr("copy-hex-color")
-            ></button>
-            <a target="_blank">{move || i18n().tr("brand-guidelines")}</a>
-            <a target="_blank" title=move || i18n().tr("license")></a>
+            <button on:click=copy_inner_text_on_click title=move || tr!("copy-hex-color")></button>
+            <a target="_blank">{move || tr!("brand-guidelines")}</a>
+            <a target="_blank" title=move || tr!("license")></a>
             <p></p>
         </div>
     }
@@ -329,9 +307,9 @@ pub fn IconDetailsModal() -> impl IntoView {
 
     let copy_as_base64_svg_text = create_memo(move |_| {
         if copying_as_base64_svg() {
-            i18n().tr("copied")
+            tr!("copied")
         } else {
-            i18n().tr("copy-as-base64-svg")
+            tr!("copy-as-base64-svg")
         }
     });
 
@@ -347,9 +325,9 @@ pub fn IconDetailsModal() -> impl IntoView {
 
     let copy_as_base64_jpg_text = create_memo(move |_| {
         if copying_as_base64_jpg() {
-            i18n().tr("copied")
+            tr!("copied")
         } else {
-            i18n().tr("copy-as-base64-jpg")
+            tr!("copy-as-base64-jpg")
         }
     });
 
@@ -365,18 +343,18 @@ pub fn IconDetailsModal() -> impl IntoView {
 
     let copy_as_base64_png_text = create_memo(move |_| {
         if copying_as_base64_png() {
-            i18n().tr("copied")
+            tr!("copied")
         } else {
-            i18n().tr("copy-as-base64-png")
+            tr!("copy-as-base64-png")
         }
     });
 
     let (copying_hex, set_copying_hex) = create_signal(false);
     let copy_hex_msg = create_memo(move |_| {
         if copying_hex() {
-            i18n().tr("copied")
+            tr!("copied")
         } else {
-            i18n().tr("copy-hex-color")
+            tr!("copy-hex-color")
         }
     });
 
@@ -396,58 +374,21 @@ pub fn IconDetailsModal() -> impl IntoView {
         .to_string()
     };
 
-    let download_svg_msg = Signal::derive(move || {
-        let i18n = i18n();
-        i18n.trs("download-filetype", &{
-            let mut map = HashMap::new();
-            map.insert("filetype".to_string(), i18n.tr("svg").into());
-            map
-        })
-    });
-    let download_colored_svg_msg = Signal::derive(move || {
-        let i18n = i18n();
-        i18n.trs("download-filetype", &{
-            let mut map = HashMap::new();
-            map.insert("filetype".to_string(), i18n.tr("colored-svg").into());
-            map
-        })
-    });
-    let download_pdf_msg = Signal::derive(move || {
-        let i18n = i18n();
-        i18n.trs("download-filetype", &{
-            let mut map = HashMap::new();
-            map.insert("filetype".to_string(), i18n.tr("pdf").into());
-            map
-        })
-    });
-    let download_jpg_msg = Signal::derive(move || {
-        let i18n = i18n();
-        i18n.trs("download-filetype", &{
-            let mut map = HashMap::new();
-            map.insert("filetype".to_string(), i18n.tr("jpg").into());
-            map
-        })
-    });
-    let download_png_msg = Signal::derive(move || {
-        let i18n = i18n();
-        i18n.trs("download-filetype", &{
-            let mut map = HashMap::new();
-            map.insert("filetype".to_string(), i18n.tr("png").into());
-            map
-        })
-    });
+    let download_svg_msg =
+        move_tr!("download-filetype", {"filetype" => tr!("svg")});
+    let download_colored_svg_msg =
+        move_tr!("download-filetype", {"filetype" => tr!("colored-svg")});
+    let download_pdf_msg =
+        move_tr!("download-filetype", {"filetype" => tr!("pdf")});
+    let download_jpg_msg =
+        move_tr!("download-filetype", {"filetype" => tr!("jpg")});
+    let download_png_msg =
+        move_tr!("download-filetype", {"filetype" => tr!("png")});
 
     let (copying_svg, set_copying_svg) = create_signal(false);
     let copy_svg_msg = create_memo(move |_| match copying_svg() {
-        true => i18n().tr("copied"),
-        false => {
-            let i18n = i18n();
-            i18n.trs("copy-filetype", &{
-                let mut map = HashMap::new();
-                map.insert("filetype".to_string(), i18n.tr("svg").into());
-                map
-            })
-        }
+        true => tr!("copied"),
+        false => tr!("copy-filetype", {"filetype" => tr!("svg")}),
     });
 
     let copy_svg_icon = create_memo(move |_| match copying_svg() {
@@ -457,15 +398,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
     let (copying_png, set_copying_png) = create_signal(false);
     let copy_png_msg = create_memo(move |_| match copying_png() {
-        true => i18n().tr("copied"),
-        false => {
-            let i18n = i18n();
-            i18n.trs("copy-filetype", &{
-                let mut map = HashMap::new();
-                map.insert("filetype".to_string(), i18n.tr("png").into());
-                map
-            })
-        }
+        true => tr!("copied"),
+        false => tr!("copy-filetype", {"filetype" => tr!("png")}),
     });
 
     let copy_png_icon = create_memo(move |_| match copying_png() {
@@ -475,15 +409,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
     let (copying_jpg, set_copying_jpg) = create_signal(false);
     let copy_jpg_msg = create_memo(move |_| match copying_jpg() {
-        true => i18n().tr("copied"),
-        false => {
-            let i18n = i18n();
-            i18n.trs("copy-filetype", &{
-                let mut map = HashMap::new();
-                map.insert("filetype".to_string(), i18n.tr("jpg").into());
-                map
-            })
-        }
+        true => tr!("copied"),
+        false => tr!("copy-filetype", {"filetype" => tr!("jpg")}),
     });
 
     let copy_jpg_icon = create_memo(move |_| match copying_jpg() {
@@ -494,8 +421,8 @@ pub fn IconDetailsModal() -> impl IntoView {
     let (copying_brand_name, set_copying_brand_name) = create_signal(false);
     let copy_brand_name_msg =
         create_memo(move |_| match copying_brand_name() {
-            true => i18n().tr("copied"),
-            false => i18n().tr("copy-brand-name"),
+            true => tr!("copied"),
+            false => tr!("copy-brand-name"),
         });
 
     let copy_brand_name_icon =

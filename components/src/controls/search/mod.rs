@@ -12,7 +12,7 @@ use crate::Url;
 use fuzzy::{build_searcher, search};
 use js_sys::JsString;
 use leptos::{document, html::Input, wasm_bindgen::JsCast, *};
-use leptos_fluent::i18n;
+use leptos_fluent::tr;
 use types::SimpleIcon;
 use web_sys;
 
@@ -265,7 +265,7 @@ pub fn SearchControl() -> impl IntoView {
     // The onfocus attribute puts the cursor at the end of the input
     view! {
         <div class="control">
-            <label for=Ids::SearchInput.as_str()>{move || i18n().tr("search")}</label>
+            <label for=Ids::SearchInput.as_str()>{move || tr!("search")}</label>
             <div class="search">
                 <input
                     node_ref=search_input_ref
@@ -273,7 +273,7 @@ pub fn SearchControl() -> impl IntoView {
                     type="search"
                     autocomplete="off"
                     autofocus
-                    placeholder=move || i18n().tr("search-by-brand")
+                    placeholder=move || tr!("search-by-brand")
                     value=search
                     onfocus="var value = this.value; this.value = null; this.value = value;"
                     on:input=move |_| {
@@ -292,7 +292,7 @@ pub fn SearchControl() -> impl IntoView {
 
                 <Show when=move || !search().is_empty()>
                     <span
-                        title=move || i18n().tr("clear-search")
+                        title=move || tr!("clear-search")
                         on:click=move |_| {
                             search_input_ref().unwrap().set_value("");
                             fire_on_search_event();

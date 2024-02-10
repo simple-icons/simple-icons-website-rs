@@ -1,7 +1,7 @@
 use crate::header::{nav::button::HeaderMenuButton, HeaderStateSignal};
 use crate::modal::{Modal, ModalOpen, ModalOpenSignal};
 use leptos::*;
-use leptos_fluent::{i18n, Language};
+use leptos_fluent::{i18n, move_tr, Language};
 
 static LANGUAGE_SELECTOR_ICON_SVG_PATH: &str = concat!(
     "m12.87 15.07-2.54-2.51.03-.03A17.52 17.52 0 0 0 14.07 6H17V4h-7V2H8v2",
@@ -50,7 +50,7 @@ pub fn LanguageSelectorButton() -> impl IntoView {
 
     view! {
         <HeaderMenuButton
-            title=Signal::derive(move || i18n().tr("change-language"))
+            title=move_tr!("change-language")
             on:click=move |_| modal_open.set_languages()
             svg_path=LANGUAGE_SELECTOR_ICON_SVG_PATH
             class=Signal::derive(move || match header_state().menu_open {
@@ -69,7 +69,7 @@ pub fn LanguageSelector() -> impl IntoView {
     view! {
         <LanguageSelectorButton/>
         <Modal
-            title=Signal::derive(move || i18n().tr("select-a-language"))
+            title=move_tr!("select-a-language")
             is_open=Signal::derive(move || modal_open.0() == Some(ModalOpen::Languages))
             on_close=Signal::derive(move || modal_open.set_none())
             on_close_focus_search_bar=true

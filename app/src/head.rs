@@ -1,23 +1,18 @@
 use crate::app::TITLE;
 use leptos::*;
-use leptos_fluent::i18n;
+use leptos_fluent::tr;
 use leptos_meta::*;
 use simple_icons_macros::get_number_of_icons;
 use simple_icons_website_config::CONFIG;
-use std::collections::HashMap;
 
 #[component]
 pub fn Head() -> impl IntoView {
     provide_meta_context();
 
-    let i18n = i18n();
-
     let description = Signal::derive(move || {
-        i18n.trs("site-description", &{
-            let mut map = HashMap::new();
-            map.insert("n-icons".to_string(), get_number_of_icons!().into());
-            map.insert("svg".to_string(), i18n.tr("svg").into());
-            map
+        tr!("site-description", {
+            "n-icons" => get_number_of_icons!(),
+            "svg" => tr!("svg"),
         })
     });
     let domain: String = CONFIG.read().unwrap().get_string("domain").unwrap();

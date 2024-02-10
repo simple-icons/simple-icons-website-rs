@@ -1,6 +1,5 @@
 use leptos::*;
-use leptos_fluent::i18n;
-use std::collections::HashMap;
+use leptos_fluent::tr;
 
 #[component]
 pub fn IconIsDeprecatedNotice(
@@ -12,17 +11,15 @@ pub fn IconIsDeprecatedNotice(
     removal_at_version: &'static str,
 ) -> impl IntoView {
     let title = move || {
-        i18n().trs("will-be-removed-at", &{
-            let mut map = HashMap::new();
-            map.insert("icon".to_string(), title().into());
-            map.insert("version".to_string(), removal_at_version.into());
-            map
+        tr!("will-be-removed-at", {
+            "icon" => title(),
+            "version" => removal_at_version,
         })
     };
     view! {
         <a href=pull_request_url class="deprecated" title=title>
             <span></span>
-            <p>{move || i18n().tr("deprecated")}</p>
+            <p>{move || tr!("deprecated")}</p>
         </a>
     }
 }

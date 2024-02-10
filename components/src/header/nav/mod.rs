@@ -12,7 +12,7 @@ use crate::header::{
 };
 use crate::svg::SVGDef;
 use leptos::*;
-use leptos_fluent::i18n;
+use leptos_fluent::move_tr;
 use simple_icons_macros::simple_icon_svg_path;
 
 // UNPKG icon is not available in simple-icons
@@ -35,7 +35,7 @@ pub fn HeaderMenu() -> impl IntoView {
         <nav>
             <ul>
                 <HeaderMenuLink
-                    title=Signal::derive(move || i18n().tr("main-repository"))
+                    title=move_tr!("main-repository")
                     href="https://github.com/simple-icons/simple-icons"
                     svg_path=simple_icon_svg_path!("github")
                 />
@@ -50,27 +50,27 @@ pub fn HeaderMenu() -> impl IntoView {
                     svg_path=simple_icon_svg_path!("packagist")
                 />
                 <HeaderMenuLink
-                    title=Signal::derive(move || i18n().tr("jsdelivr"))
+                    title=move_tr!("jsdelivr")
                     href="https://www.jsdelivr.com/package/npm/simple-icons"
                     svg_path=simple_icon_svg_path!("jsdelivr")
                 />
                 <HeaderMenuLink
-                    title=Signal::derive(move || i18n().tr("unpkg"))
+                    title=move_tr!("unpkg")
                     href="https://unpkg.com/browse/simple-icons/"
                     svg_path=UNPKG_ICON_SVG_PATH
                 />
                 <HeaderMenuLink
-                    title=Signal::derive(move || i18n().tr("discord"))
+                    title=move_tr!("discord")
                     href="https://discord.gg/vUXFa7t5xJ"
                     svg_path=simple_icon_svg_path!("discord")
                 />
                 <HeaderMenuLink
-                    title=Signal::derive(move || i18n().tr("open-collective"))
+                    title=move_tr!("open-collective")
                     href="https://opencollective.com/simple-icons"
                     svg_path=simple_icon_svg_path!("opencollective")
                 />
                 <HeaderMenuLink
-                    title=Signal::derive(move || i18n().tr("legal-disclaimer"))
+                    title=move_tr!("legal-disclaimer")
                     href="https://github.com/simple-icons/simple-icons/blob/master/DISCLAIMER.md"
                     svg_path=LEGAL_DISCLAIMER_SVG_PATH
                 />
@@ -91,12 +91,11 @@ pub fn HeaderMenu() -> impl IntoView {
 #[component]
 pub fn HeaderMenuBurgerButton() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
-    let i18n = i18n();
 
     view! {
         <HeaderMenuButton
             on:click=move |_| header_state.update(|state| state.toggle_menu())
-            title=Signal::derive(move || i18n.tr("open-menu"))
+            title=move_tr!("open-menu")
             svg_path="M1.412 3.53A1.412 1.412 0 0 0 0 4.94a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 4.94a1.412 1.412 0 0 0-1.412-1.412Zm0 7.058A1.412 1.412 0 0 0 0 12a1.412 1.412 0 0 0 1.412 1.412h21.176A1.412 1.412 0 0 0 24 12a1.412 1.412 0 0 0-1.412-1.412Zm0 7.06A1.412 1.412 0 0 0 0 19.057a1.412 1.412 0 0 0 1.412 1.413h21.176A1.412 1.412 0 0 0 24 19.059a1.412 1.412 0 0 0-1.412-1.412Z"
             class=Signal::derive(move || {
                 if header_state().menu_open {
@@ -113,11 +112,10 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
 #[component]
 pub fn HeaderMenuCloseButton() -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
-    let i18n = i18n();
 
     view! {
         <HeaderMenuButton
-            title=Signal::derive(move || i18n.tr("close-menu"))
+            title=move_tr!("close-menu")
             class=Signal::derive(move || {
                 if header_state().menu_open { "block".to_string() } else { "hidden".to_string() }
             })

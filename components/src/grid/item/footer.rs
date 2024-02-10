@@ -9,8 +9,7 @@ use crate::modal::ModalOpenSignal;
 use crate::svg::{SVGDef, SVGIcon};
 use leptos::ev::MouseEvent;
 use leptos::*;
-use leptos_fluent::i18n;
-use std::collections::HashMap;
+use leptos_fluent::{move_tr, tr};
 use types::SimpleIcon;
 use web_sys;
 
@@ -36,18 +35,13 @@ pub fn IconGridItemFooter(
     // Modal open context
     let modal_open = expect_context::<ModalOpenSignal>();
 
-    let view_icon_button_title = move || {
-        i18n().trs("view-icon", &{
-            let mut map = HashMap::new();
-            map.insert("icon".to_string(), icon_localized_title().into());
-            map
-        })
-    };
+    let view_icon_button_title =
+        move || tr!("view-icon", {"icon" => icon_localized_title()});
 
     view! {
         <div>
             <button
-                title=Signal::derive(move || i18n().tr("copy-hex-color"))
+                title=move_tr!("copy-hex-color")
                 class:dark=icon.hex_is_relatively_light
                 style=format!("background: {}", css_hex)
                 on:click=move |ev: MouseEvent| {
@@ -71,11 +65,8 @@ pub fn IconGridItemFooter(
                 <SVGIcon path=&SVGDef::View/>
             </button>
             <button
-                title=Signal::derive(move || i18n().tr("download"))
-                data-error-generating-pdf-msg=Signal::derive(move || {
-                    i18n().tr("error-generating-pdf")
-                })
-
+                title=move_tr!("download")
+                data-error-generating-pdf-msg=move_tr!("error-generating-pdf")
                 on:click=move |_| {
                     if download_type() == DownloadType::SVG {
                         download_svg(icon.slug);
