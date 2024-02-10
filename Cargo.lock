@@ -1398,9 +1398,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-use"
-version = "0.10.1"
+version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "15ed84fe279526a751332fa18524f55003d3ec0b940704b077354c16d0a539e7"
+checksum = "885ab55e844f9dda9f1394bce011b5ff5332e0a1782c165c78d53f3138cbbd38"
 dependencies = [
  "async-trait",
  "cfg-if",
@@ -2402,7 +2402,6 @@ dependencies = [
  "leptos-fluent",
  "leptos-use",
  "leptos_icons",
- "leptos_router",
  "log",
  "rand",
  "simple-icons",

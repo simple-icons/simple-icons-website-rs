@@ -14,7 +14,6 @@ simple-icons-website-macros.workspace = true
 simple-icons-website-config.workspace = true
 simple-icons-website-types.workspace = true
 leptos.workspace = true
-leptos_router.workspace = true
 leptos-use.workspace = true
 leptos-fluent.workspace = true
 log.workspace = true
