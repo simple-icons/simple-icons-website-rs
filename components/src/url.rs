@@ -45,19 +45,14 @@ pub mod params {
         } else {
             params.set(k.as_str(), v)
         }
-
-        let query = params.to_string().as_string().unwrap();
-        let url = match query.len() < 2 {
-            true => url.pathname(),
-            false => format!("{}?{}", url.pathname(), query),
-        };
+        url.set_search(params.to_string().as_string().unwrap().as_str());
         window()
             .history()
             .unwrap()
             .replace_state_with_url(
                 &wasm_bindgen::JsValue::NULL,
                 "",
-                Some(&url),
+                Some(url.to_string().as_string().unwrap().as_str()),
             )
             .map_err(|e| log::error!("Failed to update the URL: {:?}", e))
             .ok();
