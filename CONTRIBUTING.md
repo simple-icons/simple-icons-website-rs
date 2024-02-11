@@ -26,8 +26,7 @@ Is useful to run only certain tests in a browser. For example: `cargo make test 
 
 ## Add translation
 
-- Add a language and identifier to _app/locales/languages.json_.
-- Copy the _en-US/_ folder into _app/locales/{id}_ changing `{id}` with the identifier of the translation.
+- Copy the _app/locales/en-US/_ folder into _app/locales/{id}_ changing `{id}` with the identifier of the translation.
 
 ## Arquitecture
 

@@ -21,7 +21,7 @@ use leptos_use::{
 pub static TITLE: &str = "Simple Icons";
 
 static_loader! {
-    static LOCALES = {
+    static TRANSLATIONS = {
         locales: "./locales",
         fallback_language: "en-US",
         customise: |bundle| bundle.set_use_isolating(false),
@@ -50,8 +50,8 @@ pub fn App() -> impl IntoView {
     ));
 
     leptos_fluent! {{
-        locales: LOCALES,
-        languages: "./locales/languages.json",
+        locales: "./locales",
+        translations: TRANSLATIONS,
         // Synchronize <html lang="..."> attribute with the current language
         // using `leptos::create_effect`
         sync_html_tag_lang: true,
