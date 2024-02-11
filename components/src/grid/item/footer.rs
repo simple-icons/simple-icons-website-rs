@@ -47,7 +47,7 @@ pub fn IconGridItemFooter(
                 on:click=move |ev: MouseEvent| {
                     let target = event_target::<web_sys::HtmlElement>(&ev);
                     let value = target.text_content().unwrap();
-                    spawn_local(copy_setting_copied_transition_in_element(value, target));
+                    copy_setting_copied_transition_in_element(value, target);
                 }
             >
 

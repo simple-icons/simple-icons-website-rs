@@ -17,7 +17,7 @@ pub(crate) fn on_click_copy_image_children_src_content(ev: MouseEvent) {
         .unwrap();
     spawn_local(async move {
         if let Some(svg) = fetch_text(&src).await {
-            copy_setting_copied_transition_in_element(svg, target).await
+            copy_setting_copied_transition_in_element(svg, target)
         }
     });
 }
