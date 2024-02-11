@@ -22,10 +22,7 @@ fn set_copied_class(el: web_sys::HtmlElement) {
 /// to properly show the user that the value has been copied.
 ///
 /// See the `.copy-button-*` classes components in stylesheet.
-pub fn copy_setting_copied_transition_in_element(
-    value: String,
-    el: web_sys::HtmlElement,
-) {
+pub fn copy_and_set_copied_transition(value: String, el: web_sys::HtmlElement) {
     let UseClipboardReturn {
         is_supported, copy, ..
     } = use_clipboard();
@@ -70,7 +67,7 @@ pub async fn copy_canvas_container_as_image(
 pub(crate) fn copy_inner_text_on_click(ev: MouseEvent) {
     let target = event_target::<web_sys::HtmlElement>(&ev);
     let value = target.text_content().unwrap();
-    copy_setting_copied_transition_in_element(value, target);
+    copy_and_set_copied_transition(value, target);
 }
 
 /// Hidden input to copy values to the Clipboard

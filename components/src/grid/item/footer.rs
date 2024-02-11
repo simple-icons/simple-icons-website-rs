@@ -2,7 +2,7 @@ use crate::controls::{
     download::{download_pdf, download_svg, DownloadType, DownloadTypeSignal},
     search::focus_search_bar,
 };
-use crate::copy::copy_setting_copied_transition_in_element;
+use crate::copy::copy_and_set_copied_transition;
 use crate::grid::item::details::fill_icon_details_modal_with_icon;
 use crate::grid::CurrentIconViewSignal;
 use crate::modal::ModalOpenSignal;
@@ -47,7 +47,7 @@ pub fn IconGridItemFooter(
                 on:click=move |ev: MouseEvent| {
                     let target = event_target::<web_sys::HtmlElement>(&ev);
                     let value = target.text_content().unwrap();
-                    copy_setting_copied_transition_in_element(value, target);
+                    copy_and_set_copied_transition(value, target);
                 }
             >
 

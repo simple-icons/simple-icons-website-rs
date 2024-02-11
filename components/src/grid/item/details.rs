@@ -3,9 +3,7 @@ use crate::controls::download::{
     copy_as_image_png, download, download_jpg, download_pdf, download_png,
     download_svg,
 };
-use crate::copy::{
-    copy_inner_text_on_click, copy_setting_copied_transition_in_element,
-};
+use crate::copy::{copy_and_set_copied_transition, copy_inner_text_on_click};
 use crate::fetch::fetch_text;
 use crate::grid::item::icon_preview::on_click_copy_image_children_src_content;
 use crate::grid::item::title::get_icon_localized_title;
@@ -549,7 +547,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                             )
                                             .await
                                         {
-                                            copy_setting_copied_transition_in_element(
+                                            copy_and_set_copied_transition(
                                                 svg,
                                                 document()
                                                     .get_element_by_id(Ids::IconDetailsModal.as_str())
@@ -606,7 +604,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 on:click=move |ev| {
                                     let hex = get_hex_from_modal_container();
                                     set_copying_hex(true);
-                                    copy_setting_copied_transition_in_element(
+                                    copy_and_set_copied_transition(
                                         hex,
                                         ev
                                             .target()
@@ -646,7 +644,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                                 "data:image/svg+xml;base64,{}",
                                                 base64,
                                             );
-                                            copy_setting_copied_transition_in_element(
+                                            copy_and_set_copied_transition(
                                                 base64_svg,
                                                 ev
                                                     .target()
@@ -702,7 +700,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 on:click=move |ev| {
                                     let brand_name = get_brand_name_from_modal_container();
                                     set_copying_brand_name(true);
-                                    copy_setting_copied_transition_in_element(
+                                    copy_and_set_copied_transition(
                                         brand_name,
                                         ev
                                             .target()

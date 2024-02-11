@@ -1,4 +1,4 @@
-use crate::copy::copy_setting_copied_transition_in_element;
+use crate::copy::copy_and_set_copied_transition;
 use leptos::{ev::MouseEvent, *};
 use leptos_fluent::{tr, Language};
 use types::SimpleIcon;
@@ -54,7 +54,7 @@ pub fn IconGridItemTitle(
             tabindex=0
             on:click=move |ev: MouseEvent| {
                 let target = event_target::<web_sys::HtmlElement>(&ev);
-                copy_setting_copied_transition_in_element(slug.to_string(), target);
+                copy_and_set_copied_transition(slug.to_string(), target);
             }
         >
 

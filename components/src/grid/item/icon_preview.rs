@@ -1,4 +1,4 @@
-use crate::copy::copy_setting_copied_transition_in_element;
+use crate::copy::copy_and_set_copied_transition;
 use crate::fetch::fetch_text;
 use leptos::{ev::MouseEvent, wasm_bindgen::JsCast, *};
 use leptos_fluent::tr;
@@ -17,7 +17,7 @@ pub(crate) fn on_click_copy_image_children_src_content(ev: MouseEvent) {
         .unwrap();
     spawn_local(async move {
         if let Some(svg) = fetch_text(&src).await {
-            copy_setting_copied_transition_in_element(svg, target)
+            copy_and_set_copied_transition(svg, target)
         }
     });
 }
