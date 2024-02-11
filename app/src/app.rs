@@ -52,7 +52,6 @@ pub fn App() -> impl IntoView {
     leptos_fluent! {{
         locales: LOCALES,
         languages: "./locales/languages.json",
-        provide_context: true,
         // Synchronize <html lang="..."> attribute with the current language
         // using `leptos::create_effect`
         sync_html_tag_lang: true,
