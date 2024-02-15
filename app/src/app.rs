@@ -11,6 +11,7 @@ use components::Url;
 use fluent_templates::static_loader;
 use leptos::{html::Footer as FooterHtmlElement, *};
 use leptos_fluent::leptos_fluent;
+use leptos_hotkeys::prelude::*;
 use leptos_router::{Route, Router, Routes};
 use leptos_use::{
     use_color_mode_with_options, ColorMode, UseColorModeOptions,
@@ -80,19 +81,21 @@ pub fn App() -> impl IntoView {
 
     view! {
         <Head/>
-        <Header/>
-        <SVGDefsDefinition/>
-        <CopyInput/>
-        <main>
-            <Router>
-                <Routes>
-                    <Route path="/preview" view=Preview/>
-                    <Route path="/deprecations" view=DeprecationsIndex/>
-                    <Route path="/" view=AllIconsIndex/>
-                    <Route path="/*any" view=Error404/>
-                </Routes>
-            </Router>
-        </main>
-        <Footer container_ref=footer_ref/>
+        <HotkeysProvider>
+            <Header/>
+            <SVGDefsDefinition/>
+            <CopyInput/>
+            <main>
+                <Router>
+                    <Routes>
+                        <Route path="/preview" view=Preview/>
+                        <Route path="/deprecations" view=DeprecationsIndex/>
+                        <Route path="/" view=AllIconsIndex/>
+                        <Route path="/*any" view=Error404/>
+                    </Routes>
+                </Router>
+            </main>
+            <Footer container_ref=footer_ref/>
+        </HotkeysProvider>
     }
 }

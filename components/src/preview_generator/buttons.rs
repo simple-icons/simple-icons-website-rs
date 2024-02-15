@@ -2,7 +2,6 @@ use crate::button::Button;
 use crate::controls::download::download;
 use crate::copy::copy_canvas_container_as_image;
 use crate::grid::ICONS;
-use crate::keyboard::load_keyboard_shortcut_ctrl_and_key_on_click_id;
 use crate::preview_generator::{
     canvas::canvas as canvas_container, helpers::is_valid_hex_color,
 };
@@ -10,6 +9,7 @@ use crate::svg::{svg_with_title_path_opt_fill, SVGDef};
 use crate::Ids;
 use leptos::{wasm_bindgen::JsCast, *};
 use leptos_fluent::{move_tr, tr};
+use leptos_hotkeys::prelude::*;
 use simple_icons::sdk;
 
 #[component]
@@ -41,7 +41,9 @@ fn PreviewUploadSVGButton(
     set_path: WriteSignal<String>,
 ) -> impl IntoView {
     let input_id = Ids::PreviewUploadSVGButton.as_str();
-    load_keyboard_shortcut_ctrl_and_key_on_click_id(input_id, "ArrowUp");
+    use_hotkeys!(("ctrl+arrowup") => move |_| {
+        document().get_element_by_id(input_id).unwrap().unchecked_into::<web_sys::HtmlInputElement>().click();
+    });
 
     async fn on_upload_svg_file(
         file: web_sys::File,
@@ -156,7 +158,9 @@ fn PreviewCopyButton() -> impl IntoView {
     );
 
     let button_id = Ids::PreviewCopyButton.as_str();
-    load_keyboard_shortcut_ctrl_and_key_on_click_id(button_id, "c");
+    use_hotkeys!(("ctrl+c") => move |_| {
+        document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
+    });
 
     view! {
         <button
@@ -189,7 +193,9 @@ fn PreviewCopyButton() -> impl IntoView {
 #[component]
 fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
     let button_id = Ids::PreviewSaveButton.as_str();
-    load_keyboard_shortcut_ctrl_and_key_on_click_id(button_id, "s");
+    use_hotkeys!(("ctrl+s") => move |_| {
+        document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
+    });
 
     view! {
         <Button
@@ -212,7 +218,9 @@ fn PreviewDownloadSVGButton(
     path: ReadSignal<String>,
 ) -> impl IntoView {
     let button_id = Ids::PreviewDownloadSVGButton.as_str();
-    load_keyboard_shortcut_ctrl_and_key_on_click_id(button_id, "ArrowDown");
+    use_hotkeys!(("ctrl+arrowdown") => move |_| {
+        document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
+    });
 
     view! {
         <Button
