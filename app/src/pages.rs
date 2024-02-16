@@ -11,7 +11,7 @@ use components::grid::{
     ICONS,
 };
 use components::preview_generator::PreviewGenerator;
-use components::svg::SVGDef;
+use icondata::{BsGrid3x2GapFill, IoWarningSharp, VsPreview};
 use leptos::*;
 use leptos_fluent::move_tr;
 use leptos_router::{use_navigate, use_query_map, NavigateOptions};
@@ -90,7 +90,7 @@ pub fn Preview() -> impl IntoView {
                     class="mx-auto max-h-[40px]"
                     title=move_tr!("icons")
                     on:click=move |_| use_navigate()("/", Default::default())
-                    svg_path=&SVGDef::Grid
+                    icon=BsGrid3x2GapFill
                 />
 
             </div>
@@ -119,7 +119,7 @@ pub fn Error404() -> impl IntoView {
                         class="mx-auto"
                         title=move_tr!("icons")
                         on:click=move |_| use_navigate()("/", Default::default())
-                        svg_path=&SVGDef::Grid
+                        icon=BsGrid3x2GapFill
                     />
                 </li>
 
@@ -128,7 +128,7 @@ pub fn Error404() -> impl IntoView {
                         class="mx-auto"
                         title=move_tr!("deprecations")
                         on:click=move |_| use_navigate()("/deprecations", Default::default())
-                        svg_path=&SVGDef::Warning
+                        icon=IoWarningSharp
                     />
                 </li>
                 <li class="flex p-1">
@@ -136,7 +136,7 @@ pub fn Error404() -> impl IntoView {
                         class="mx-auto"
                         title=move_tr!("preview-generator")
                         on:click=move |_| use_navigate()("/preview", Default::default())
-                        svg_path=&SVGDef::EyeBox
+                        icon=VsPreview
                     />
                 </li>
             </ul>

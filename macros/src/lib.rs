@@ -5,7 +5,7 @@
 use proc_macro::TokenStream;
 use simple_icons::{
     color::{is_relatively_light_icon_hex, sort_hexes},
-    get_simple_icon_svg_content, get_simple_icon_svg_path, get_simple_icons,
+    get_simple_icon_svg_path, get_simple_icons,
     sdk::fetch_deprecated_simple_icons,
 };
 use simple_icons_website_config::CONFIG;
@@ -46,22 +46,6 @@ pub fn get_number_of_deprecated_icons(_: TokenStream) -> TokenStream {
         .to_string()
         .parse()
         .unwrap()
-}
-
-/// Get a string with the SVG path of a simple icon by slug
-#[proc_macro]
-pub fn simple_icon_svg_path(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as LitStr);
-    let svg_path = get_simple_icon_svg_path(input.value().as_str());
-    format!("{:?}", svg_path).parse().unwrap()
-}
-
-/// Get a string with the SVG content of a simple icon by slug
-#[proc_macro]
-pub fn simple_icon_svg_content(input: TokenStream) -> TokenStream {
-    let input = parse_macro_input!(input as LitStr);
-    let svg_content = get_simple_icon_svg_content(input.value().as_str());
-    format!("{:?}", svg_content).parse().unwrap()
 }
 
 /// Get the extensions of Simple Icons from the README file of the npm package

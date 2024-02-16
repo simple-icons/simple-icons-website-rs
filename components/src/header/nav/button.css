@@ -11,5 +11,6 @@ header > nav > ul > li {
     rounded-md cursor-pointer
     fill-custom-button-content-default-color
     hover:bg-custom-button-background-hover-color
+    hover:text-custom-button-content-hover-color
     hover:fill-custom-button-content-hover-color;
 }

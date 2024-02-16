@@ -1,11 +1,7 @@
-//! App footer
-
-use crate::svg::SVGIcon;
+use icondata::SiX;
 use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
 use leptos_fluent::{move_tr, tr};
-use simple_icons_macros::simple_icon_svg_path;
-
-static X_ICON_SVG_PATH: &str = simple_icon_svg_path!("x");
+use leptos_icons::Icon;
 
 /// Footer of the website
 #[component]
@@ -27,7 +23,7 @@ pub fn Footer(
                     " focus:text-[var(--link-color-hover)]",
                 )
 
-                href="https://github.com/simple-icons/simple-icons-website"
+                href="https://github.com/mondeja/simple-icons-website-rs"
             >
                 {move_tr!("made-on")}
             </a>
@@ -88,7 +84,7 @@ pub fn XButton() -> impl IntoView {
             target="_blank"
             href="https://x.com/intent/tweet?url=https://simpleicons.org&text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
         >
-            <SVGIcon fill="white" class="h-4 mr-3" path=X_ICON_SVG_PATH/>
+            <Icon class="text-white h-4 mr-3" icon=SiX/>
             <span>{move_tr!("share-this")}</span>
         </a>
     }

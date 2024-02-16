@@ -129,7 +129,7 @@ fn PreviewUploadSVGButton(
             />
 
             <Button
-                svg_path=&SVGDef::Upload
+                icon=&SVGDef::Upload
                 title=move_tr!("upload-svg")
                 on:click=move |ev| {
                     event_target::<web_sys::HtmlButtonElement>(&ev)
@@ -199,7 +199,7 @@ fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
 
     view! {
         <Button
-            svg_path=&SVGDef::Save
+            icon=&SVGDef::Save
             title=Signal::derive(move || tr!("save-preview"))
             id=button_id
             on:click=move |_| {
@@ -225,7 +225,7 @@ fn PreviewDownloadSVGButton(
     view! {
         <Button
             title=move_tr!("download-filetype", { "filetype" => tr!("svg") })
-            svg_path=&SVGDef::Download
+            icon=&SVGDef::Download
             id=button_id
             on:click=move |_| {
                 let filename = format!("{}.svg", &sdk::title_to_slug(&brand()));

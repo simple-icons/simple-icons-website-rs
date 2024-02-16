@@ -11,16 +11,21 @@ use crate::Url;
 use buttons::PreviewButtons;
 use canvas::update_preview_canvas;
 use helpers::contrast_color_for;
+use icondata::SiSimpleicons;
 use inputs::{BrandInput, ColorInput, PathInput};
+use lazy_static::lazy_static;
 use leptos::*;
 use leptos_use::use_device_pixel_ratio;
 use simple_icons::sdk;
-use simple_icons_macros::{get_number_of_icons, simple_icon_svg_path};
+use simple_icons_macros::get_number_of_icons;
 use types::SimpleIcon;
 
 static DEFAULT_INITIAL_BRAND: &str = "Simple Icons";
 static DEFAULT_INITIAL_COLOR: &str = "111111";
-static DEFAULT_INITIAL_PATH: &str = simple_icon_svg_path!("simpleicons");
+lazy_static! {
+    static ref DEFAULT_INITIAL_PATH: String =
+        sdk::svg_to_path(SiSimpleicons.data);
+}
 
 fn search_brand(value: &str) -> Option<&'static SimpleIcon> {
     let search_result = js_sys::Array::from(&search(value));
@@ -192,7 +197,7 @@ fn PreviewFigure(
 
                     <g transform="translate(3, 142)" style="font-family: Helvetica">
                         <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d=simple_icon_svg_path!("simpleicons") fill=fill_color></path>
+                            <path d=DEFAULT_INITIAL_PATH.to_string() fill=fill_color></path>
                         </svg>
                         <text fill=fill_color x="30" y="7" font-size="12">
                             {format!("{} Free SVG brand icons", get_number_of_icons!())}

@@ -102,11 +102,8 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                     title=download_svg_title
                     active=Signal::derive(move || { download_type() == DownloadType::SVG })
                     on:click=move |_| {
-                        download_type
-                            .update(move |state| {
-                                *state = DownloadType::SVG;
-                                set_download_type_on_localstorage(state);
-                            });
+                        download_type.set(DownloadType::SVG);
+                        set_download_type_on_localstorage(&DownloadType::SVG);
                     }
                 />
 
@@ -115,11 +112,8 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                     title=download_pdf_title
                     active=Signal::derive(move || { download_type() == DownloadType::PDF })
                     on:click=move |_| {
-                        download_type
-                            .update(|state| {
-                                *state = DownloadType::PDF;
-                                set_download_type_on_localstorage(state);
-                            });
+                        download_type.set(DownloadType::PDF);
+                        set_download_type_on_localstorage(&DownloadType::PDF);
                     }
                 />
 

@@ -66,10 +66,3 @@ pub fn get_simple_icon_svg_path(slug: &str) -> String {
         .0;
     icon_path.to_string()
 }
-
-/// Get the SVG content for a simple icon by its slug
-pub fn get_simple_icon_svg_content(slug: &str) -> String {
-    let icon_file_path =
-        format!("node_modules/simple-icons/icons/{}.svg", slug);
-    fs::read_to_string(Path::new(&icon_file_path)).unwrap()
-}

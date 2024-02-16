@@ -2387,6 +2387,7 @@ dependencies = [
  "console_error_panic_hook",
  "console_log",
  "fluent-templates",
+ "icondata",
  "leptos",
  "leptos-fluent",
  "leptos-use",
@@ -2410,6 +2411,7 @@ version = "0.1.0"
 dependencies = [
  "icondata",
  "js-sys",
+ "lazy_static",
  "leptos",
  "leptos-fluent",
  "leptos-use",

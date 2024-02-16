@@ -22,17 +22,11 @@ pub enum SVGDef {
     Upload,
     /// Save icon
     Save,
-    /// Grid icon
-    Grid,
-    /// Eye inside a box icon
-    EyeBox,
     /// Copy icon
     Copy,
     /// Circle arrow icons
     CircleArrowUp,
     CircleArrowDown,
-    /// Warning icon
-    Warning,
 }
 
 impl SVGDef {
@@ -46,12 +40,9 @@ impl SVGDef {
             Self::Cross => Ids::CrossSVGPath.as_str(),
             Self::Upload => Ids::UploadSVGPath.as_str(),
             Self::Save => Ids::SaveSVGPath.as_str(),
-            Self::Grid => Ids::GridSVGPath.as_str(),
-            Self::EyeBox => Ids::EyeBoxSVGPath.as_str(),
             Self::Copy => Ids::CopySVGPath.as_str(),
             Self::CircleArrowUp => Ids::CircleArrowUpSVGPath.as_str(),
             Self::CircleArrowDown => Ids::CircleArrowDownSVGPath.as_str(),
-            Self::Warning => Ids::WarningSVGPath.as_str(),
         }
     }
 
@@ -65,12 +56,9 @@ impl SVGDef {
             Self::Cross => "M12 10.586l5.657-5.657a1 1 0 1 1 1.414 1.414L13.414 12l5.657 5.657a1 1 0 0 1-1.414 1.414L12 13.414l-5.657 5.657a1 1 0 0 1-1.414-1.414L10.586 12 4.93 6.343a1 1 0 0 1 1.414-1.414L12 10.586z",
             Self::Upload => "M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5",
             Self::Save => "M15,9H5V5H15M12,19A3,3 0 0,1 9,16A3,3 0 0,1 12,13A3,3 0 0,1 15,16A3,3 0 0,1 12,19M17,3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V7L17,3Z",
-            Self::Grid => "M14.67,5v6.5H9.33V5H14.67z M15.67,11.5H21V5h-5.33V11.5z M14.67,19v-6.5H9.33V19H14.67z M15.67,12.5V19H21v-6.5H15.67z M8.33,12.5H3V19h5.33V12.5z M8.33,11.5V5H3v6.5H8.33z",
-            Self::EyeBox => "M19,3H5C3.89,3,3,3.9,3,5v14c0,1.1,0.89,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.11,3,19,3z M19,19H5V7h14V19z M13.5,13 c0,0.83-0.67,1.5-1.5,1.5s-1.5-0.67-1.5-1.5c0-0.83,0.67-1.5,1.5-1.5S13.5,12.17,13.5,13z M12,9c-2.73,0-5.06,1.66-6,4 c0.94,2.34,3.27,4,6,4s5.06-1.66,6-4C17.06,10.66,14.73,9,12,9z M12,15.5c-1.38,0-2.5-1.12-2.5-2.5c0-1.38,1.12-2.5,2.5-2.5 c1.38,0,2.5,1.12,2.5,2.5C14.5,14.38,13.38,15.5,12,15.5z",
             Self::Copy => "M18,2H9C7.9,2,7,2.9,7,4v12c0,1.1,0.9,2,2,2h9c1.1,0,2-0.9,2-2V4C20,2.9,19.1,2,18,2z M18,16H9V4h9V16z M3,15v-2h2v2H3z M3,9.5h2v2H3V9.5z M10,20h2v2h-2V20z M3,18.5v-2h2v2H3z M5,22c-1.1,0-2-0.9-2-2h2V22z M8.5,22h-2v-2h2V22z M13.5,22L13.5,22l0-2h2 v0C15.5,21.1,14.6,22,13.5,22z M5,6L5,6l0,2H3v0C3,6.9,3.9,6,5,6z",
             Self::CircleArrowUp => "M12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8s8 3.59 8 8s-3.59 8-8 8m0 2c5.52 0 10-4.48 10-10S17.52 2 12 2S2 6.48 2 12s4.48 10 10 10zm-1-10v3c0 .55.45 1 1 1s1-.45 1-1v-3h1.79c.45 0 .67-.54.35-.85l-2.79-2.79c-.2-.2-.51-.2-.71 0l-2.79 2.79a.5.5 0 0 0 .36.85H11z",
             Self::CircleArrowDown => "M12 4c4.41 0 8 3.59 8 8s-3.59 8-8 8s-8-3.59-8-8s3.59-8 8-8m0-2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm1 10V9c0-.55-.45-1-1-1s-1 .45-1 1v3H9.21c-.45 0-.67.54-.35.85l2.79 2.79c.2.2.51.2.71 0l2.79-2.79a.5.5 0 0 0-.35-.85H13z",
-            Self::Warning => "M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z",
         }
     }
 }
@@ -105,12 +93,9 @@ pub fn SVGDefsDefinition() -> impl IntoView {
                 <path id=SVGDef::Cross.id() d=SVGDef::Cross.d()></path>
                 <path id=SVGDef::Upload.id() d=SVGDef::Upload.d()></path>
                 <path id=SVGDef::Save.id() d=SVGDef::Save.d()></path>
-                <path id=SVGDef::Grid.id() d=SVGDef::Grid.d()></path>
-                <path id=SVGDef::EyeBox.id() d=SVGDef::EyeBox.d()></path>
                 <path id=SVGDef::Copy.id() d=SVGDef::Copy.d()></path>
                 <path id=SVGDef::CircleArrowUp.id() d=SVGDef::CircleArrowUp.d()></path>
                 <path id=SVGDef::CircleArrowDown.id() d=SVGDef::CircleArrowDown.d()></path>
-                <path id=SVGDef::Warning.id() d=SVGDef::Warning.d()></path>
             </defs>
         </svg>
     }
@@ -155,6 +140,32 @@ where
 
             <path d=path.into() fill=fill></path>
         </svg>
+    }
+}
+
+/// Icon or SVG path
+#[derive(PartialEq)]
+pub enum IconOrSvg {
+    Icon(icondata::Icon),
+    SvgPath(&'static str),
+    SvgDef(&'static SVGDef),
+}
+
+impl From<icondata::Icon> for IconOrSvg {
+    fn from(icon: icondata::Icon) -> Self {
+        Self::Icon(icon)
+    }
+}
+
+impl From<&'static str> for IconOrSvg {
+    fn from(svg_path: &'static str) -> Self {
+        Self::SvgPath(svg_path)
+    }
+}
+
+impl From<&'static SVGDef> for IconOrSvg {
+    fn from(svg_def: &'static SVGDef) -> Self {
+        Self::SvgDef(svg_def)
     }
 }
 

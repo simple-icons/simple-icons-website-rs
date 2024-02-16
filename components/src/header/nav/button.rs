@@ -1,6 +1,7 @@
 use crate::header::HeaderStateSignal;
-use crate::svg::SVGIcon;
+use crate::svg::{IconOrSvg, SVGIcon};
 use leptos::*;
+use leptos_icons::Icon;
 
 /// Header menu link
 ///
@@ -13,7 +14,8 @@ pub fn HeaderMenuLink(
     /// URL of the link
     href: &'static str,
     /// SVG path of the icon
-    svg_path: &'static str,
+    #[prop(into)]
+    icon: IconOrSvg,
 ) -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
     let title_fn = create_memo(move |_| title());
@@ -21,13 +23,32 @@ pub fn HeaderMenuLink(
     view! {
         <li
             on:click=move |_| window().location().set_href(href).unwrap()
+            title=title_fn
             class=move || match header_state().menu_open {
                 true => "block",
                 false => "hidden lg:block",
             }
         >
 
-            <SVGIcon path=svg_path role="link" aria_label=title_fn width="36" height="36"/>
+            {match icon {
+                IconOrSvg::Icon(icon) => {
+                    view! { <Icon icon width="36px" height="36px"/> }
+                }
+                value => {
+                    view! {
+                        <SVGIcon
+                            width="36"
+                            height="36"
+                            path=match value {
+                                IconOrSvg::SvgPath(svg_path) => svg_path,
+                                IconOrSvg::SvgDef(svg_def) => svg_def.d(),
+                                _ => unreachable!(),
+                            }
+                        />
+                    }
+                }
+            }}
+
         </li>
     }
 }
@@ -44,11 +65,11 @@ pub fn HeaderMenuButton(
     #[prop(into)]
     title: MaybeSignal<String>,
     /// SVG path of the icon
-    svg_path: &'static str,
+    icon: icondata::Icon,
 ) -> impl IntoView {
     view! {
         <li title=title class=class tabindex=0>
-            <SVGIcon role="button" path=svg_path width="36" height="36"/>
+            <Icon icon width="36px" height="36px"/>
         </li>
     }
 }

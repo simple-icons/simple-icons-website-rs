@@ -1,5 +1,6 @@
-use crate::svg::SVGIcon;
+use crate::svg::{IconOrSvg, SVGIcon};
 use leptos::*;
+use leptos_icons::Icon;
 use leptos_use::use_media_query;
 
 pub(crate) static XS_ICON_SIZE: &str = "19";
@@ -27,11 +28,12 @@ pub fn ControlButton(
 
 /// Control button made from SVG path
 #[component]
-pub fn ControlButtonSVGPath(
+pub fn ControlButtonIcon(
     /// Button title
     title: Signal<String>,
     /// Button icon SVG path
-    svg_path: &'static str,
+    #[prop(into)]
+    icon: IconOrSvg,
     /// The control is active
     #[prop(into)]
     active: MaybeSignal<bool>,
@@ -46,15 +48,30 @@ pub fn ControlButtonSVGPath(
 
     view! {
         <ControlButton title active class>
-            <SVGIcon
-                role="img"
-                aria_hidden=true
-                aria_label=title_fn
-                view_box="0 0 24 24"
-                width=size
-                height=size
-                path=svg_path
-            />
+            {match icon {
+                IconOrSvg::Icon(icon) => {
+                    view! {
+                        <Icon icon width=format!("{}px", size()) height=format!("{}px", size())/>
+                    }
+                }
+                value => {
+                    view! {
+                        <SVGIcon
+                            role="img"
+                            aria_hidden=true
+                            aria_label=title_fn
+                            view_box="0 0 24 24"
+                            width=size
+                            height=size
+                            path=match value {
+                                IconOrSvg::SvgPath(svg_path) => svg_path,
+                                IconOrSvg::SvgDef(svg_def) => svg_def.d(),
+                                _ => unreachable!(),
+                            }
+                        />
+                    }
+                }
+            }}
 
         </ControlButton>
     }
