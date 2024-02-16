@@ -4,7 +4,6 @@
 
 pub enum Ids {
     SearchInput,
-    CopyInput,
     IconDetailsModal,
     PreviewCopyButton,
     PreviewSaveButton,
@@ -27,7 +26,6 @@ impl Ids {
         match self {
             Ids::IconDetailsModal => "icon-details-modal",
             Ids::SearchInput => "search-input",
-            Ids::CopyInput => "copy-input",
             Ids::PreviewCopyButton => "preview-copy-button",
             Ids::PreviewSaveButton => "preview-save-button",
             Ids::PreviewDownloadSVGButton => "preview-download-svg-button",
@@ -46,7 +44,6 @@ impl Ids {
         match self {
             Ids::IconDetailsModal => "i",
             Ids::SearchInput => "f",
-            Ids::CopyInput => "y",
             Ids::PreviewCopyButton => "b",
             Ids::PreviewSaveButton => "j",
             Ids::PreviewDownloadSVGButton => "k",

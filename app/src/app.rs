@@ -1,7 +1,6 @@
 use crate::head::Head;
 use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
 use components::controls::color_scheme::initial_color_scheme;
-use components::copy::CopyInput;
 use components::footer::Footer;
 use components::header::Header;
 use components::modal::provide_modal_open_context;
@@ -84,7 +83,6 @@ pub fn App() -> impl IntoView {
         <HotkeysProvider>
             <Header/>
             <SVGDefsDefinition/>
-            <CopyInput/>
             <main>
                 <Router>
                     <Routes>

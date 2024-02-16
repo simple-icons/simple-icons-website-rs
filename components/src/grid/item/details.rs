@@ -448,14 +448,14 @@ pub fn IconDetailsModal() -> impl IntoView {
                 <div class="cursor-pointer absolute right-[47px] top-[14px] z-50">
                     <span on:click=move |_| set_controls_open(!controls_open.get_untracked())>
                         <Icon
+                            width="27"
+                            height="27"
                             icon=Signal::derive(move || match controls_open() {
                                 true => BiMenuRegular,
                                 false => BiMenuAltRightRegular,
                             })
-
-                            width="27"
-                            height="27"
                         />
+
                     </span>
                     <Show when=controls_open>
                         <Menu

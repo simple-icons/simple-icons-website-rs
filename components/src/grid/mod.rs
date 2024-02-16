@@ -180,7 +180,9 @@ pub fn Grid() -> impl IntoView {
 
         if footer_entry.is_intersecting() {
             if icons_loader().load {
-                icons_grid.update(|grid| grid.load_next_icons(&layout()));
+                icons_grid.update(|grid| {
+                    grid.load_next_icons(&layout.get_untracked())
+                });
             }
         } else if !icons_loader().load {
             icons_loader.update(|state| state.load = true);

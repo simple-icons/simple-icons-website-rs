@@ -1,4 +1,3 @@
-use crate::Ids;
 use leptos::{ev::MouseEvent, *};
 use leptos_use::{use_clipboard, UseClipboardReturn};
 use log;
@@ -68,12 +67,4 @@ pub(crate) fn copy_inner_text_on_click(ev: MouseEvent) {
     let target = event_target::<web_sys::HtmlElement>(&ev);
     let value = target.text_content().unwrap();
     copy_and_set_copied_transition(value, target);
-}
-
-/// Hidden input to copy values to the Clipboard
-///
-/// Used when the browser does not implement the Navigator.Clipboard API
-#[component]
-pub fn CopyInput() -> impl IntoView {
-    view! { <input aria-hidden=true class="hidden" id=Ids::CopyInput.as_str() tabindex=-1/> }
 }
