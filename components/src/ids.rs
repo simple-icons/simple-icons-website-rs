@@ -19,8 +19,6 @@ pub enum Ids {
     UploadSVGPath,
     SaveSVGPath,
     CopySVGPath,
-    CircleArrowUpSVGPath,
-    CircleArrowDownSVGPath,
 }
 
 impl Ids {
@@ -43,8 +41,6 @@ impl Ids {
             Ids::UploadSVGPath => "upload-path",
             Ids::SaveSVGPath => "save-path",
             Ids::CopySVGPath => "copy-path",
-            Ids::CircleArrowUpSVGPath => "circle-arrow-up-path",
-            Ids::CircleArrowDownSVGPath => "circle-arrow-down-path",
         }
         #[cfg(not(debug_assertions))]
         match self {
@@ -64,8 +60,6 @@ impl Ids {
             Ids::UploadSVGPath => "u",
             Ids::SaveSVGPath => "s",
             Ids::CopySVGPath => "p",
-            Ids::CircleArrowUpSVGPath => "a",
-            Ids::CircleArrowDownSVGPath => "z",
         }
     }
 }

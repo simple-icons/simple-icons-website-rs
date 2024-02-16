@@ -1,7 +1,8 @@
 use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
-use crate::svg::{SVGDef, SVGIcon};
+use icondata::{RiArrowDownCircleArrowsLine, RiArrowUpCircleArrowsLine};
 use leptos::*;
 use leptos_fluent::move_tr;
+use leptos_icons::Icon;
 use leptos_use::use_window_scroll;
 
 #[component]
@@ -10,13 +11,13 @@ pub fn ScrollButton(
     #[prop(into)]
     title: MaybeSignal<String>,
     /// The SVG path of the icon
-    svg_path: &'static SVGDef,
+    icon: icondata::Icon,
     /// Additional classes to be added to the button
     class: &'static str,
 ) -> impl IntoView {
     view! {
         <button class=format!("scroll-button {}", class) title=title>
-            <SVGIcon path=svg_path/>
+            <Icon icon width="24px" height="24px"/>
         </button>
     }
 }
@@ -28,14 +29,14 @@ pub fn ScrollToHeaderButton() -> impl IntoView {
     view! {
         <Show when=move || { window_scroll_y() >= 200.0 }>
             <ScrollButton
+                icon=RiArrowUpCircleArrowsLine
                 class="scroll-to-header-button"
                 title=move_tr!("go-to-header")
                 on:click=move |_| {
                     document().query_selector("header").unwrap().unwrap().scroll_into_view()
                 }
-
-                svg_path=&SVGDef::CircleArrowUp
             />
+
         </Show>
     }
 }
@@ -50,6 +51,7 @@ pub fn ScrollToFooterButton() -> impl IntoView {
             icons_loader().load && icons_grid().loaded_icons.len() < icons_grid().icons.len()
         }>
             <ScrollButton
+                icon=RiArrowDownCircleArrowsLine
                 class="scroll-to-footer-button"
                 title=move_tr!("go-to-footer")
                 on:click=move |_| {
@@ -57,9 +59,8 @@ pub fn ScrollToFooterButton() -> impl IntoView {
                     let footer = document().query_selector("footer").unwrap().unwrap();
                     footer.scroll_into_view();
                 }
-
-                svg_path=&SVGDef::CircleArrowDown
             />
+
         </Show>
     }
 }
