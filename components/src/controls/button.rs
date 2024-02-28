@@ -50,9 +50,8 @@ pub fn ControlButtonIcon(
         <ControlButton title active class>
             {match icon {
                 IconOrSvg::Icon(icon) => {
-                    view! {
-                        <Icon icon width=format!("{}px", size()) height=format!("{}px", size())/>
-                    }
+                    let size_px = format!("{}px", size.get_untracked());
+                    view! { <Icon icon width=size_px.clone() height=size_px/> }
                 }
                 value => {
                     view! {

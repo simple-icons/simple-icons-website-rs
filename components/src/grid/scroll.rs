@@ -48,7 +48,8 @@ pub fn ScrollToFooterButton() -> impl IntoView {
 
     view! {
         <Show when=move || {
-            icons_loader().load && icons_grid().loaded_icons.len() < icons_grid().icons.len()
+            let grid = icons_grid();
+            icons_loader().load && grid.loaded_icons.len() < grid.icons.len()
         }>
             <ScrollButton
                 icon=RiArrowDownCircleArrowsLine

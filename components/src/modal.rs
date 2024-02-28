@@ -59,7 +59,7 @@ pub fn Modal(
 ) -> impl IntoView {
     let modal_ref = create_node_ref::<Div>();
     _ = on_click_outside(modal_ref, move |_| {
-        if is_open() {
+        if is_open.get_untracked() {
             on_close();
             if on_close_focus_search_bar {
                 focus_search_bar();

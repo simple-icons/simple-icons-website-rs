@@ -17,7 +17,7 @@ use leptos_fluent::move_tr;
 use leptos_router::{use_navigate, use_query_map, NavigateOptions};
 
 fn index_redirections() {
-    let query_map = use_query_map()();
+    let query_map = use_query_map().get_untracked();
 
     // Trick to redirect to other pages for servers that don't support SPAs
     if let Some(redirection) = query_map.get("r") {

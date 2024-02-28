@@ -179,12 +179,12 @@ pub fn Grid() -> impl IntoView {
         let footer_entry = &entries[0];
 
         if footer_entry.is_intersecting() {
-            if icons_loader().load {
+            if icons_loader.get_untracked().load {
                 icons_grid.update(|grid| {
                     grid.load_next_icons(&layout.get_untracked())
                 });
             }
-        } else if !icons_loader().load {
+        } else if !icons_loader.get_untracked().load {
             icons_loader.update(|state| state.load = true);
         }
     });

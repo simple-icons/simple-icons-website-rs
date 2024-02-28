@@ -43,10 +43,11 @@ pub fn IconsLoader() -> impl IntoView {
             return false;
         }
 
-        let icons_grid = icons_grid_signal();
-        if icons_grid.loaded_icons.len() == icons_grid.icons.len() {
+        let grid = icons_grid_signal();
+        if grid.loaded_icons.len() == grid.icons.len() {
             return false;
         }
+
         // if more icons should be loaded currently, then the loader is hidden
         !loader_state.load
     };
