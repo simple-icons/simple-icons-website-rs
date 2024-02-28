@@ -196,20 +196,12 @@ args = [
 [tasks.format-prettier]
 description = "Format non Rust files in the project with prettier"
 command = "npx"
-args = [
-    "prettier",
-    "--write",
-    ".",
-    "--ignore-path",
-    ".gitignore",
-    "--log-level",
-    "warn"
-]
+args = ["prettier", "--write", ".", "--log-level", "warn"]
 
 [tasks.lint-prettier]
 description = "Check formatting of non Rust files in the project with prettier"
 command = "npx"
-args = ["prettier", "--check", ".", "--ignore-path", ".gitignore"]
+args = ["prettier", "--check", "."]
 
 [tasks.lint-js]
 description = "Lint JS and TS files in the project with ESLint"

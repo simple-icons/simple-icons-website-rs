@@ -97,7 +97,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v20-${{ matrix.command }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v20
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install tooling dependencies
         run: cargo install cargo-make
       - name: Install Node.js dependencies
