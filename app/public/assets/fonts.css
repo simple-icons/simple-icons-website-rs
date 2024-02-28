@@ -1,6 +1,7 @@
-/* prettier-ignore-start */
+/* stylelint-disable */
 
 /* roboto-mono-cyrillic-ext-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -15,6 +16,7 @@
 }
 
 /* roboto-mono-cyrillic-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -27,6 +29,7 @@
 }
 
 /* roboto-mono-greek-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -39,6 +42,7 @@
 }
 
 /* roboto-mono-vietnamese-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -53,6 +57,7 @@
 }
 
 /* roboto-mono-latin-ext-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -66,6 +71,7 @@
 }
 
 /* roboto-mono-latin-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -80,6 +86,7 @@
 }
 
 /* roboto-mono-cyrillic-ext-600-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -94,6 +101,7 @@
 }
 
 /* roboto-mono-cyrillic-600-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -106,6 +114,7 @@
 }
 
 /* roboto-mono-greek-600-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -118,6 +127,7 @@
 }
 
 /* roboto-mono-vietnamese-600-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -132,6 +142,7 @@
 }
 
 /* roboto-mono-latin-ext-600-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -145,6 +156,7 @@
 }
 
 /* roboto-mono-latin-600-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Roboto Mono';
   font-style: normal;
@@ -159,6 +171,7 @@
 }
 
 /* open-sans-cyrillic-ext-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -172,6 +185,7 @@
 }
 
 /* open-sans-cyrillic-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -184,6 +198,7 @@
 }
 
 /* open-sans-greek-ext-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -196,6 +211,7 @@
 }
 
 /* open-sans-greek-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -208,6 +224,7 @@
 }
 
 /* open-sans-hebrew-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -220,6 +237,7 @@
 }
 
 /* open-sans-vietnamese-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -234,6 +252,7 @@
 }
 
 /* open-sans-latin-ext-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -247,6 +266,7 @@
 }
 
 /* open-sans-latin-400-normal */
+/* prettier-ignore */
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -259,5 +279,3 @@
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
     U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
-/* prettier-ignore-end */
