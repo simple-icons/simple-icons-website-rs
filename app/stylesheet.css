@@ -1,3 +1,4 @@
+@import './public/assets/fonts.css';
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
@@ -117,7 +118,7 @@ body.light {
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgdmVyc2lvbj0iMS4wIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNC41NTUgLTMuNzY5KSBzY2FsZSguMTU0NDUpIj48cGF0aCBmaWxsPSIjZmZkNDJhIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMy4xMTEiIGQ9Ik0zMS45NTIgNzkuMDFjLS40MTYuODAxLS45MDcgMS41NTEtLjkwNyAyLjQzMWwuMDA0LjM2OGMwIDEuOSAxLjQ4NyAzLjA0OSAzLjE5NyAzLjA0OWg1NS4yNWMxLjcxIDAgMy4xODMtMS40MjQgMy4xODMtMy4zMjRsLS4wMTgtLjM3YzAtLjg4LS40MzMtMS42NDQtLjkwNy0yLjQzMkw2NC4zOTIgMjkuNjQ4Yy0xLjIxLTEuMzQzLTMuMTctMS4zNDMtNC4zNzggMHoiLz48Y2lyY2xlIGN4PSIyMy45MjEiIGN5PSI3NC40NzUiIHI9IjguMDQyIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9Im1hcmtlcjpub25lIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0OS41NDYgMzMuNzMxKSBzY2FsZSguNTQyMTIpIi8+PHBhdGggZD0iTTYyLjQ4NiA0My44MTdjMS43MTMgMCA0LjM3IDEuMzY1IDQuMzcgMy4wNmwtMS4yNzggMTcuNjE1YzAgMS42OTUtMS4zOCAzLjA2LTMuMDkyIDMuMDYtMS43MTMgMC0zLjA5MS0xLjM2NS0zLjA5MS0zLjA2bC0xLjQ5My0xNy42MTVjMC0xLjY5NSAyLjg3MS0zLjA2IDQuNTg0LTMuMDZ6IiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9Im1hcmtlcjpub25lIi8+PC9nPjwvc3ZnPg==');
   }
 
-  /* Custom scroll bar */
+  /* Custom scroll bars */
   .scroll-bar::-webkit-scrollbar {
     @apply w-3 bg-custom-divider-color
       border-custom-divider-color;

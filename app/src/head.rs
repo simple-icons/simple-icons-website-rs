@@ -32,11 +32,6 @@ pub fn Head() -> impl IntoView {
         />
         <Link rel="license" href="./license.txt"/>
         <Link rel="canonical" href=url/>
-        <Link rel="preconnect" href="https://fonts.gstatic.com"/>
-        <Link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Roboto+Mono:wght@400;600"
-        />
         <MetaOpenGraph description/>
         <MetaX description/>
         <Meta name="msvalidate.01" content="14319924BC1F00DC15EF0EAA29E72404"/>
