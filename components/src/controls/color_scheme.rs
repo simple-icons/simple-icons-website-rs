@@ -1,30 +1,8 @@
 use crate::controls::button::ControlButtonIcon;
-use crate::storage::LocalStorage;
-use crate::Url;
 use icondata::{ChMoon, ChSun, TbSunMoon};
 use leptos::*;
 use leptos_fluent::move_tr;
 use leptos_use::ColorMode;
-
-pub fn initial_color_scheme() -> ColorMode {
-    match Url::params::get(&Url::params::Names::ColorScheme).and_then(|value| {
-        match value.as_ref() {
-            "light" => Some(ColorMode::Light),
-            "dark" => Some(ColorMode::Dark),
-            "system" | "auto" => Some(ColorMode::Auto),
-            _ => None,
-        }
-    }) {
-        Some(color_scheme) => {
-            LocalStorage::set(
-                LocalStorage::Keys::ColorScheme,
-                &color_scheme.to_string(),
-            );
-            color_scheme
-        }
-        None => ColorMode::Auto,
-    }
-}
 
 #[component]
 pub fn ColorSchemeControl() -> impl IntoView {

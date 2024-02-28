@@ -1,6 +1,5 @@
 use crate::head::Head;
 use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
-use components::controls::color_scheme::initial_color_scheme;
 use components::footer::Footer;
 use components::header::Header;
 use components::modal::provide_modal_open_context;
@@ -38,10 +37,13 @@ pub fn App() -> impl IntoView {
     } = use_color_mode_with_options(
         UseColorModeOptions::default()
             .storage_key(LocalStorage::Keys::ColorScheme.as_str())
-            .target(document().body().unwrap())
+            .target("body")
             .attribute("class")
             .emit_auto(true)
-            .initial_value(initial_color_scheme()),
+            .initial_value_from_url_param(
+                Url::params::Names::ColorScheme.as_str(),
+            )
+            .initial_value_from_url_param_to_storage(true),
     );
 
     provide_context::<(Signal<ColorMode>, WriteSignal<ColorMode>)>((
