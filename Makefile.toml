@@ -188,9 +188,9 @@ args = [
     "stylelint",
     "{components,app}/**/*.css",
     "--ignore-path",
-    ".gitignore",
+    ".prettierignore",
     "--config",
-    "./app/.stylelintrc.json"
+    "./.stylelintrc.json"
 ]
 
 [tasks.format-prettier]
