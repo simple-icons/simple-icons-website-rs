@@ -106,6 +106,7 @@ jobs:
         run: |
           npm ci
           npm install -g tsx
+          npx prettier --version
       - name: Build
         run: cargo make build
         env:

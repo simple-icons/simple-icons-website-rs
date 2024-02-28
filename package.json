@@ -34,7 +34,6 @@
     "lightningcss": "1.23.0",
     "postcss": "8.4.33",
     "postcss-import": "16.0.0",
-    "prettier": "3.2.2",
     "simple-icons": "11.6.0",
     "stylelint": "16.1.0",
     "stylelint-config-standard": "36.0.0",
