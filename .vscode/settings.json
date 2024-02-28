@@ -15,6 +15,7 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "css.validate": false,
+  "prettier.resolveGlobalModules": false,
   "[json]": {
     "editor.tabSize": 2,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
