@@ -17,8 +17,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "postinstall": "npm run setup:husky",
-    "setup:husky": "node -e 'process.exit(process.env.CI === undefined ? 1 : 0)' || husky install"
+    "postinstall": "node -e 'process.exit(process.env.CI === undefined ? 1 : 0)' || husky"
   },
   "devDependencies": {
     "@playwright/test": "1.41.0",
@@ -30,7 +29,7 @@
     "esbuild": "0.19.11",
     "eslint": "8.56.0",
     "eslint-config-simple-icons": "0.1.2",
-    "husky": "8.0.3",
+    "husky": "9.0.11",
     "lightningcss": "1.23.0",
     "postcss": "8.4.33",
     "postcss-import": "16.0.0",
