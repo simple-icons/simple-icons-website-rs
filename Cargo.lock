@@ -1367,32 +1367,28 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent"
-version = "0.0.16"
+version = "0.0.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f98c4cf0ca72ef23acc90b81a45b7b45ef7260a331b8fb4b6976d076a7169224"
+checksum = "3cf29114dae057cf10290dc3c8106d527b87842f1838190d9a714d5adfe5c9a5"
 dependencies = [
  "fluent-templates",
  "leptos",
  "leptos-fluent-macros",
  "leptos_router",
  "once_cell",
- "unic-langid-impl",
  "web-sys",
 ]
 
 [[package]]
 name = "leptos-fluent-macros"
-version = "0.0.16"
+version = "0.0.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0c57d6ff4198727d0959f32bde6b6c09e7608f3fb4d3c539096b4db79cd011b7"
+checksum = "d5d0c29d98864a0ba7e0d24e75f0f62c88742a00b048a8c758e0755fbcaef43a"
 dependencies = [
- "once_cell",
  "proc-macro2",
  "quote",
  "serde_json",
  "syn 2.0.48",
- "unic-langid",
- "unic-langid-impl",
  "web-sys",
 ]
 
@@ -2400,7 +2396,6 @@ dependencies = [
  "simple-icons-website-config",
  "simple-icons-website-macros",
  "simple-icons-website-types",
- "unic-langid",
  "wasm-bindgen",
  "web-sys",
 ]

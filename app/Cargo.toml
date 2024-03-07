@@ -15,7 +15,6 @@ leptos_router.workspace = true
 leptos-fluent.workspace = true
 leptos_hotkeys.workspace = true
 icondata.workspace = true
-unic-langid.workspace = true
 fluent-templates.workspace = true
 console_log.workspace = true
 log.workspace = true
