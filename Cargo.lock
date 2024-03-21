@@ -1389,7 +1389,9 @@ dependencies = [
  "fluent-templates",
  "leptos",
  "leptos-fluent-macros",
+ "leptos_router",
  "once_cell",
+ "web-sys",
 ]
 
 [[package]]
@@ -1403,6 +1405,7 @@ dependencies = [
  "quote",
  "serde_json",
  "syn 2.0.53",
+ "web-sys",
 ]
 
 [[package]]
