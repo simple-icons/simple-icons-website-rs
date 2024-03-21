@@ -7,9 +7,12 @@ use components::storage::LocalStorage;
 use components::svg::SVGDefsDefinition;
 use components::Url;
 use fluent_templates::static_loader;
-use leptos::{html::Footer as FooterHtmlElement, *};
+use leptos::{
+    html::{Footer as FooterHtmlElement, Main as MainHtmlElement},
+    *,
+};
 use leptos_fluent::leptos_fluent;
-use leptos_hotkeys::prelude::*;
+use leptos_hotkeys::{provide_hotkeys_context, scopes};
 use leptos_router::{Route, Router, Routes};
 use leptos_use::{
     use_color_mode_with_options, ColorMode, UseColorModeOptions,
@@ -80,22 +83,24 @@ pub fn App() -> impl IntoView {
     // Create a context to store the current opened modal
     provide_modal_open_context();
 
+    // Create a context to store keyboard shortcuts
+    let main_ref = create_node_ref::<MainHtmlElement>();
+    provide_hotkeys_context(main_ref, false, scopes!());
+
     view! {
         <Head/>
-        <HotkeysProvider>
-            <Header/>
-            <SVGDefsDefinition/>
-            <main>
-                <Router>
-                    <Routes>
-                        <Route path="/preview" view=Preview/>
-                        <Route path="/deprecations" view=DeprecationsIndex/>
-                        <Route path="/" view=AllIconsIndex/>
-                        <Route path="/*any" view=Error404/>
-                    </Routes>
-                </Router>
-            </main>
-            <Footer container_ref=footer_ref/>
-        </HotkeysProvider>
+        <Header/>
+        <SVGDefsDefinition/>
+        <main ref_=main_ref>
+            <Router>
+                <Routes>
+                    <Route path="/preview" view=Preview/>
+                    <Route path="/deprecations" view=DeprecationsIndex/>
+                    <Route path="/" view=AllIconsIndex/>
+                    <Route path="/*any" view=Error404/>
+                </Routes>
+            </Router>
+        </main>
+        <Footer container_ref=footer_ref/>
     }
 }
