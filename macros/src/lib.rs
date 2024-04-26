@@ -150,7 +150,7 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
             continue;
         }
 
-        icons_array_code.push_str(&format!(
+        let icon_code = &format!(
             concat!(
                 "::types::SimpleIcon{{",
                 "slug: \"{}\",",
@@ -227,24 +227,68 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                         )
                     },
                     {
-                        &format!(
-                            "loc: {}",
-                            match &aliases.loc {
-                                Some(loc) => format!(
-                                    "Some(&[{}])",
-                                    loc.iter()
-                                        .map(|(lang, title)| {
-                                            format!(
-                                                "(\"{}\", \"{}\")",
-                                                lang, title
-                                            )
-                                        })
-                                        .collect::<Vec<_>>()
-                                        .join(", ")
-                                ),
-                                None => "None".to_string(),
+                        &format!("loc: {}", {
+                            let mut result = "".to_string();
+                            let mut alias_dup_locs: Vec<(String, String)> =
+                                vec![];
+                            if aliases.dup.is_some() {
+                                for alias_dup in aliases.dup.as_ref().unwrap() {
+                                    if alias_dup.loc.is_some() {
+                                        alias_dup_locs.extend(
+                                            alias_dup
+                                                .loc
+                                                .as_ref()
+                                                .unwrap()
+                                                .iter()
+                                                .map(|(lang, title)| {
+                                                    (
+                                                        lang.clone(),
+                                                        title.clone(),
+                                                    )
+                                                }),
+                                        );
+                                    }
+                                }
                             }
-                        )
+
+                            if aliases.loc.is_some()
+                                || !alias_dup_locs.is_empty()
+                            {
+                                result.push_str("Some(&[");
+                                if aliases.loc.is_some() {
+                                    result.push_str(
+                                        &aliases
+                                            .loc
+                                            .as_ref()
+                                            .unwrap()
+                                            .iter()
+                                            .map(|(lang, title)| {
+                                                format!(
+                                                    "(\"{}\", \"{}\")",
+                                                    lang, title
+                                                )
+                                            })
+                                            .collect::<Vec<_>>()
+                                            .join(", "),
+                                    );
+                                }
+                                if !alias_dup_locs.is_empty() {
+                                    if aliases.loc.is_some() {
+                                        result.push_str(", ");
+                                    }
+                                    for (lang, title) in alias_dup_locs {
+                                        result.push_str(&format!(
+                                            "(\"{}\", \"{}\"),",
+                                            lang, title
+                                        ));
+                                    }
+                                }
+                                result.push_str("])");
+                            } else {
+                                result.push_str("None");
+                            }
+                            result
+                        })
                     }
                 ),
             },
@@ -271,7 +315,8 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                 }
                 None => "None".to_string(),
             },
-        ));
+        );
+        icons_array_code.push_str(icon_code)
     }
     icons_array_code.push(']');
 

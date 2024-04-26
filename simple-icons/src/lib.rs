@@ -10,6 +10,7 @@ use std::path::Path;
 
 /// Struct for a Simple Icon
 #[derive(Clone)]
+#[cfg_attr(debug_assertions, derive(Debug))]
 pub struct SimpleIcon {
     pub slug: String,
     pub title: String,

@@ -10,6 +10,7 @@ use std::fs;
 use std::path;
 
 #[derive(DeJson, Clone)]
+#[cfg_attr(debug_assertions, derive(Debug))]
 pub struct SimpleIconDataLicense {
     #[nserde(rename = "type")]
     pub type_: String,
@@ -17,13 +18,16 @@ pub struct SimpleIconDataLicense {
 }
 
 #[derive(DeJson, Clone)]
+#[cfg_attr(debug_assertions, derive(Debug))]
 pub struct SimpleIconDataDuplicate {
     pub title: String,
     pub hex: Option<String>,
     pub guidelines: Option<String>,
+    pub loc: Option<HashMap<String, String>>,
 }
 
 #[derive(DeJson, Clone)]
+#[cfg_attr(debug_assertions, derive(Debug))]
 pub struct SimpleIconDataAliases {
     pub aka: Option<Vec<String>>,
     pub dup: Option<Vec<SimpleIconDataDuplicate>>,
