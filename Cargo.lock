@@ -1492,9 +1492,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_hotkeys"
-version = "0.2.0-alpha.1"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "835d3ee2f75ba43272a98eaed1bbcc970d3a4d37d0c20c40d4f798aca548d568"
+checksum = "445a1904bc48d2e0a3db75c153192fb91e69f3c053503e02971dd391248566a4"
 dependencies = [
  "leptos",
  "wasm-bindgen",
