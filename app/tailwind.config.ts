@@ -68,6 +68,6 @@ export default {
       },
     },
   },
-  darkMode: 'class',
+  darkMode: 'selector',
   plugins: [postcssImportPlugin],
 } satisfies Config;

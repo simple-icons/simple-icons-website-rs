@@ -7,13 +7,6 @@ on:
 permissions:
   contents: write
 
-# This Workflow is triggered through the GitHub API:
-#   curl -X Post \
-#        -H "Authorization: Bearer <token>" \
-#        -d '{"ref":"master"}' \
-#        https://api.github.com/repos/simple-icons/simple-icons-website/actions/workflows/auto-release.yml/dispatches
-# Replacing <token> by a personal access token with scope `public_repo`
-
 jobs:
   auto-release:
     name: Automated release
@@ -76,10 +69,10 @@ jobs:
         run: |
           sed -i 's/"simple-icons": "${{steps.get-releases.outputs.dep}}"/"simple-icons": "${{steps.get-releases.outputs.si}}"/' package.json
           cat package.json | grep '"simple-icons":' -C 2
-          npm install --package-lock-only --ignore-scripts
+          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Install Node.js dependencies
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
-        run: npm ci
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Install Playwright browsers
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
         run: npx playwright install --with-deps

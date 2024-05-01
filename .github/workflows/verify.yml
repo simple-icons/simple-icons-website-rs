@@ -103,9 +103,7 @@ jobs:
       - name: Install tooling dependencies
         run: cargo install cargo-make
       - name: Install Node.js dependencies
-        run: |
-          npm ci
-          npm install -g tsx
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Build
         run: cargo make build
         env:
