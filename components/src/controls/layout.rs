@@ -70,10 +70,7 @@ fn initial_layout() -> Layout {
             set_layout_on_localstorage(&layout);
             layout
         }
-        None => match layout_from_localstorage() {
-            Some(layout) => layout,
-            None => Layout::default(),
-        },
+        None => layout_from_localstorage().unwrap_or_default(),
     }
 }
 

@@ -63,10 +63,7 @@ fn initial_download_type() -> DownloadType {
             set_download_type_on_localstorage(&download_type);
             download_type
         }
-        None => match get_download_type_from_localstorage() {
-            Some(download_type) => download_type,
-            None => DownloadType::default(),
-        },
+        None => get_download_type_from_localstorage().unwrap_or_default(),
     }
 }
 

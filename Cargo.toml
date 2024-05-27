@@ -81,5 +81,5 @@ unicode-normalization = "0.1.23"
 icu_collator = "1.4.0"
 fluent-templates = "0.9.1"
 config = { version = "0.14.0", features = ["json"] }
-snafu = { version = "0.8.2", default_features = false }
+snafu = { version = "0.8.2", default-features = false }
 rand = "0.8.5"

@@ -214,7 +214,7 @@ async fn on_search(
         if value.is_empty() {
             // Reset grid
             icons_grid_signal.update(|grid| {
-                grid.icons = icons.clone();
+                grid.icons.clone_from(&icons);
                 grid.loaded_icons =
                     grid.icons.iter().take(icons_per_page).copied().collect();
             });
