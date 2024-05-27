@@ -71,6 +71,8 @@ pub fn App() -> impl IntoView {
         // Load initial language from `navigator.languages` if not found in
         // local storage
         initial_language_from_navigator: true,
+        // Update the language on local storage when using `I18n.set_language`.
+        set_language_to_localstorage: true,
         // Name of the local storage key to store the language
         localstorage_key: LocalStorage::Keys::Language.as_str(),
     }};

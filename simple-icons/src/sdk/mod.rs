@@ -57,7 +57,7 @@ pub fn svg_to_path(svg: &str) -> String {
         .to_string()
 }
 
-// Convert non-6-digit hex color to 6-digit with the character `#` stripped.
+/// Convert non-6-digit hex color to 6-digit with the character `#` stripped.
 pub fn normalize_color(hex: &str) -> String {
     let color = hex.replace('#', "").to_uppercase();
 

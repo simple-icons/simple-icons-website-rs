@@ -2,26 +2,26 @@ use crate::header::{nav::button::HeaderMenuButton, HeaderStateSignal};
 use crate::modal::{Modal, ModalOpen, ModalOpenSignal};
 use icondata::IoLanguageSharp;
 use leptos::*;
-use leptos_fluent::{i18n, move_tr, Language};
+use leptos_fluent::{expect_i18n, move_tr, Language};
 
 /// Languages list
 #[component]
 pub fn LanguagesList() -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();
-    let current_language = Signal::derive(move || i18n().language.get());
+    let i18n = expect_i18n();
 
     view! {
         <ul class="language-selector">
             <For
-                each=move || i18n().languages
-                key=move |lang| lang.id.to_string()
+                each=move || i18n.languages
+                key=move |lang| i18n.language_key(lang)
                 children=move |lang: &&Language| {
                     view! {
                         <li
-                            class=move || if *lang == current_language() { "hidden" } else { "" }
+                            class=move || if i18n.is_active_language(lang) { "hidden" } else { "" }
                             on:click=move |_| {
                                 modal_open.set_none();
-                                i18n().set_language_with_localstorage(lang);
+                                i18n.set_language(lang);
                             }
                         >
 

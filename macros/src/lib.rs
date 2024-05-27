@@ -2,6 +2,8 @@
 //!
 //! These macros are used to generate code at compile time.
 
+use core::iter::Skip;
+use core::str::Split;
 use proc_macro::TokenStream;
 use simple_icons::{
     color::{is_relatively_light_icon_hex, sort_hexes},
@@ -57,14 +59,23 @@ pub fn get_simple_icons_3rd_party_extensions(_: TokenStream) -> TokenStream {
 
     let mut extensions_array_code = "&[".to_string();
 
-    let extensions_table_lines = readme_file_content
-        .split_once("## Third-Party Extensions")
-        .unwrap()
-        .1
-        .lines()
-        .skip(4);
+    let table_lines = |section_name: &str| -> Skip<Split<&str>> {
+        readme_file_content
+            .split_once(section_name)
+            .unwrap()
+            .1
+            .split("|\n\n")
+            .next()
+            .unwrap()
+            .split("|\n|")
+            .skip(2)
+    };
+    let tables_lines = table_lines("Third-Party Extensions")
+        .chain(table_lines("Third-Party Libraries"));
 
-    for line in extensions_table_lines {
+    let mut extensions_tuples: Vec<(String, String, String, String, String)> =
+        vec![];
+    for line in tables_lines {
         if line.trim().is_empty() {
             break;
         }
@@ -72,7 +83,7 @@ pub fn get_simple_icons_3rd_party_extensions(_: TokenStream) -> TokenStream {
         let name = line.split_once('[').unwrap().1.split_once("](").unwrap().0;
         let url = line.split_once("](").unwrap().1.split_once(')').unwrap().0;
 
-        let author_part = line.splitn(3, '|').nth(2).unwrap();
+        let author_part = line.split_once('|').unwrap().1;
         let author_name = author_part
             .split_once('[')
             .unwrap()
@@ -101,6 +112,19 @@ pub fn get_simple_icons_3rd_party_extensions(_: TokenStream) -> TokenStream {
             .unwrap()
             .0;
 
+        extensions_tuples.push((
+            name.to_string(),
+            url.to_string(),
+            author_name.to_string(),
+            author_url.to_string(),
+            get_simple_icon_svg_path(icon_slug).to_string(),
+        ));
+    }
+
+    extensions_tuples
+        .sort_by(|(name1, _, _, _, _), (name2, _, _, _, _)| name1.cmp(name2));
+
+    for (name, url, author_name, author_url, svg_path) in extensions_tuples {
         extensions_array_code.push_str(&format!(
             concat!(
                 "::types::ThirdPartyExtension{{",
@@ -111,11 +135,7 @@ pub fn get_simple_icons_3rd_party_extensions(_: TokenStream) -> TokenStream {
                 "icon_slug: \"{}\",",
                 "}},"
             ),
-            name,
-            url,
-            author_name,
-            author_url,
-            get_simple_icon_svg_path(icon_slug)
+            name, url, author_name, author_url, svg_path
         ));
     }
     extensions_array_code.push(']');

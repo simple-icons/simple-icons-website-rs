@@ -129,16 +129,16 @@ fn PreviewFigure(
                     y="0"
                 ></rect>
                 <svg viewBox="0 0 24 24" width="24" height="24" x="18" y="20">
-                    <path d=move || path() fill=fill_color></path>
+                    <path d=path fill=fill_color></path>
                 </svg>
                 <svg viewBox="0 0 24 24" width="80" height="80" x="70" y="20">
-                    <path d=move || path() fill=fill_color></path>
+                    <path d=path fill=fill_color></path>
                 </svg>
                 <svg viewBox="0 0 24 24" width="138" height="138" x="174" y="20">
-                    <path d=move || path() fill=fill_color></path>
+                    <path d=path fill=fill_color></path>
                 </svg>
                 <svg viewBox="0 0 24 24" width="375" height="375" x="350" y="20">
-                    <path d=move || path() fill=fill_color></path>
+                    <path d=path fill=fill_color></path>
                 </svg>
 
                 <g transform="translate(21,235)" style="font-family: Helvetica">

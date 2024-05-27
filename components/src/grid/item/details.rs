@@ -16,7 +16,7 @@ use icondata::{
     TbJpg, TbPdf, TbPng, TbSvg, VsSymbolNamespace,
 };
 use leptos::{html::Ul, wasm_bindgen::JsCast, *};
-use leptos_fluent::{i18n, move_tr, tr};
+use leptos_fluent::{expect_i18n, move_tr, tr};
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
 use types::SimpleIcon;
@@ -63,7 +63,7 @@ fn get_hex_from_modal_container() -> String {
 }
 
 pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
-    let language = i18n().language.get();
+    let language = expect_i18n().language.get();
     let icon_localized_title = get_icon_localized_title(icon, language);
 
     let modal_body = document()
