@@ -1282,24 +1282,24 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent"
-version = "0.0.25"
+version = "0.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75af07b96cd1988c49175ac4685b789ecc188cb4805dde4169e0f3c94129a847"
+checksum = "f623727749bb93b2a467a4910ac39c902b3d5dee5cbdd46efed4a86af52c35bb"
 dependencies = [
  "cfg-if",
  "fluent-templates",
  "leptos",
  "leptos-fluent-macros",
- "leptos_router",
  "once_cell",
+ "wasm-bindgen",
  "web-sys",
 ]
 
 [[package]]
 name = "leptos-fluent-macros"
-version = "0.0.25"
+version = "0.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fb4e2cc3ccbaadfc5a102c84c038464920f5291fea385716dfe4ec03d50ea0c9"
+checksum = "4a8a99e779df15f97bbf65c87186e94424c7c5c95ae083f30e975b0ea03ed257"
 dependencies = [
  "cfg-if",
  "proc-macro2",
@@ -1394,9 +1394,9 @@ dependencies = [
 
 [[package]]
 name = "leptos_hotkeys"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "445a1904bc48d2e0a3db75c153192fb91e69f3c053503e02971dd391248566a4"
+checksum = "a9d0c36031f25c49baa0bed5f220af44587e17842a031c98379c3d43e9f699b9"
 dependencies = [
  "leptos",
  "wasm-bindgen",

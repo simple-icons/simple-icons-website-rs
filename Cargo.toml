@@ -32,8 +32,8 @@ leptos_router = { version = "0.6.9", default-features = false, features = [
     "nightly"
 ] }
 leptos-use = "0.10.5"
-leptos-fluent = "0.0.25"
-leptos_hotkeys = "0.2.0"
+leptos-fluent = "0.0.26"
+leptos_hotkeys = "0.2.1"
 leptos_icons = "0.3.0"
 icondata = "0.3.0"
 console_log = "1.0.0"
