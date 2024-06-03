@@ -57,8 +57,6 @@ args = [
     "../config",
     "--ignore",
     "./public/assets/js",
-    "--ignore",
-    "./locales",
 ]
 cwd = "./app"
 

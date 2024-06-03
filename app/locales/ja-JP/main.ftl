@@ -88,3 +88,5 @@ copied = コピーしました
 copy-brand-name = ブランド名をコピー
 copy-as-base64-jpg = Base64 JPG としてコピー
 copy-as-base64-png = Base64 PNG としてコピー
+page-not-found = ページが見つかりません
+maybe-youre-looking-for = もしかしたら探しているかもしれません...
