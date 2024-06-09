@@ -32,7 +32,7 @@ leptos_router = { version = "0.6.9", default-features = false, features = [
     "nightly"
 ] }
 leptos-use = "0.10.5"
-leptos-fluent = "0.0.32"
+leptos-fluent = "0.0.34"
 leptos_hotkeys = "0.2.1"
 leptos_icons = "0.3.0"
 icondata = "0.3.0"

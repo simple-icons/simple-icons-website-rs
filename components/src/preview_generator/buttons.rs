@@ -112,13 +112,15 @@ fn PreviewUploadSVGButton(
         }
     }
 
+    // File input hiding needs `max-w-0` and/or `invisible` on Safari:
+
     view! {
         <form class="inline-block">
             <input
                 type="file"
                 name="upload-svg"
                 accept=".svg"
-                class="absolute w-0 h-0 -z-index-1"
+                class="fixed right-full bottom-full max-w-0 max-h-0 w-0 h-0 overflow-hidden -z-10 invisible"
                 id=input_id
                 on:change=move |ev| {
                     let input = event_target::<web_sys::HtmlInputElement>(&ev);

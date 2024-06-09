@@ -1292,9 +1292,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent"
-version = "0.0.32"
+version = "0.0.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d78022b4b0ac39783ee061bf059705363b4fb8698dada9d38deb18994fb40e81"
+checksum = "b517eba145ce71f029b94e8a25df6b8f726220dd83a2b073f6b69ab74eb16574"
 dependencies = [
  "fluent-templates",
  "leptos",
@@ -1305,9 +1305,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent-macros"
-version = "0.0.32"
+version = "0.0.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bdca228ffa0d2a433d3637624ed77b6e2dc073aa24b219dab0951ac64b0bcd8b"
+checksum = "0f603ca1f598fe4e58b4f02f337579b6d294bd4c9a03a5ce467f6a47d25878d2"
 dependencies = [
  "fluent-syntax",
  "fluent-templates",
