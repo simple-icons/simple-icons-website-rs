@@ -93,8 +93,8 @@ pub fn SVGDefsDefinition() -> impl IntoView {
 }
 
 #[component]
-pub fn SVGIcon<P>(
-    path: P,
+pub fn SVGIcon(
+    path: impl Into<&'static str>,
     #[prop(optional, into)] aria_label: Option<MaybeSignal<String>>,
     #[prop(optional)] class: &'static str,
     #[prop(optional)] fill: &'static str,
@@ -107,10 +107,7 @@ pub fn SVGIcon<P>(
     >,
     #[prop(optional, default = "img")] role: &'static str,
     #[prop(optional, default = true)] aria_hidden: bool,
-) -> impl IntoView
-where
-    P: Into<&'static str>,
-{
+) -> impl IntoView {
     view! {
         <svg
             class=class
