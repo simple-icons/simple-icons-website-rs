@@ -90,3 +90,5 @@ copied = 复制
 copy-brand-name = 复制品牌名称
 copy-as-base64-jpg = 以 Base64 JPG 格式复制
 copy-as-base64-png = 以 Base64 PNG 格式复制
+extensions = 扩展
+libraries = 图书馆

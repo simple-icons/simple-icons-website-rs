@@ -90,3 +90,5 @@ copied = Copied
 copy-brand-name = Copy brand name
 copy-as-base64-jpg = Copy as base64 JPG
 copy-as-base64-png = Copy as base64 PNG
+extensions = Extensions
+libraries = Libraries

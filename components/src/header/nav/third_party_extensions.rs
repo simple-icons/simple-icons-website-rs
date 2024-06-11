@@ -5,11 +5,15 @@ use crate::svg::SVGIcon;
 use icondata::FaPuzzlePieceSolid;
 use leptos::*;
 use leptos_fluent::move_tr;
-use simple_icons_macros::get_simple_icons_3rd_party_extensions;
+use simple_icons_macros::{
+    get_simple_icons_3rd_party_extensions, get_simple_icons_3rd_party_libraries,
+};
 use types::ThirdPartyExtension;
 
 static THIRD_PARTY_EXTENSIONS: &[ThirdPartyExtension] =
     get_simple_icons_3rd_party_extensions!();
+static THIRD_PARTY_LIBRARIES: &[ThirdPartyExtension] =
+    get_simple_icons_3rd_party_libraries!();
 
 #[component]
 fn ThirdPartyExtensionsTableRow(
@@ -32,14 +36,15 @@ fn ThirdPartyExtensionsTableRow(
     }
 }
 
-/// Third party extensions table
 #[component]
-fn ThirdPartyExtensionsTable() -> impl IntoView {
+fn ThirdPartyExtensionsOrLibrariesTable(
+    items: &'static [ThirdPartyExtension],
+) -> impl IntoView {
     view! {
         <table class="third-party-extensions">
             <tbody>
                 <For
-                    each=move || THIRD_PARTY_EXTENSIONS.iter()
+                    each=move || items.iter()
                     key=move |extension| extension.name
                     children=move |extension| {
                         view! { <ThirdPartyExtensionsTableRow extension=extension/> }
@@ -49,6 +54,11 @@ fn ThirdPartyExtensionsTable() -> impl IntoView {
             </tbody>
         </table>
     }
+}
+
+#[component]
+fn ThirdPartyExtensionsTableTitle(title: Signal<String>) -> impl IntoView {
+    view! { <h3 class="ml-4 pb-1 font-bold">{title}</h3> }
 }
 
 /// Third party extensions button
@@ -87,7 +97,11 @@ pub fn ThirdPartyExtensions() -> impl IntoView {
             on_close=Signal::derive(move || modal_open.set_none())
             on_close_focus_search_bar=true
         >
-            <ThirdPartyExtensionsTable/>
+            <ThirdPartyExtensionsTableTitle title=move_tr!("extensions")/>
+            <ThirdPartyExtensionsOrLibrariesTable items=THIRD_PARTY_EXTENSIONS/>
+            <br/>
+            <ThirdPartyExtensionsTableTitle title=move_tr!("libraries")/>
+            <ThirdPartyExtensionsOrLibrariesTable items=THIRD_PARTY_LIBRARIES/>
         </Modal>
     }
 }

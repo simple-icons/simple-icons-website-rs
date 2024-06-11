@@ -90,3 +90,5 @@ copied = Скопійовано
 copy-brand-name = Копіювати назву бренду
 copy-as-base64-jpg = Копіювати як base64 JPG
 copy-as-base64-png = Копіювати як base64 PNG
+extensions = Розширення
+libraries = Бібліотеки
