@@ -44,7 +44,7 @@ fn ThirdPartyExtensionsOrLibrariesTable(
         <table class="third-party-extensions">
             <tbody>
                 <For
-                    each=move || items.iter()
+                    each=move || items
                     key=move |extension| extension.name
                     children=move |extension| {
                         view! { <ThirdPartyExtensionsTableRow extension=extension/> }
