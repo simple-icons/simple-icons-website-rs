@@ -1292,9 +1292,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent"
-version = "0.0.34"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b517eba145ce71f029b94e8a25df6b8f726220dd83a2b073f6b69ab74eb16574"
+checksum = "901b4b55b4be8cf8f3636a1b343a1cd4d8059730eedb85cac55b247f0240c62a"
 dependencies = [
  "fluent-templates",
  "leptos",
@@ -1305,9 +1305,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent-macros"
-version = "0.0.34"
+version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f603ca1f598fe4e58b4f02f337579b6d294bd4c9a03a5ce467f6a47d25878d2"
+checksum = "071593e5f616f70b2068c4e1fe20b518021c09063745f080c68340f6471b0587"
 dependencies = [
  "fluent-syntax",
  "fluent-templates",
@@ -1315,7 +1315,7 @@ dependencies = [
  "pathdiff",
  "proc-macro2",
  "quote",
- "serde_json",
+ "serde",
  "syn",
  "walkdir",
 ]
@@ -1605,9 +1605,9 @@ dependencies = [
 
 [[package]]
 name = "memchr"
-version = "2.7.2"
+version = "2.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6c8640c5d730cb13ebd907d8d04b52f55ac9a2eec55b440c8892f40d56c76c1d"
+checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
 
 [[package]]
 name = "minimal-lexical"
@@ -1944,9 +1944,9 @@ dependencies = [
 
 [[package]]
 name = "redox_syscall"
-version = "0.5.1"
+version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "469052894dcb553421e483e4209ee581a45100d31b4018de03e5a7ad86374a7e"
+checksum = "c82cf8cff14456045f55ec4241383baeff27af886adb72ffb2162f99911de0fd"
 dependencies = [
  "bitflags",
 ]
@@ -2677,9 +2677,9 @@ checksum = "f962df74c8c05a667b5ee8bcf162993134c104e96440b663c8daa176dc772d8c"
 
 [[package]]
 name = "url"
-version = "2.5.0"
+version = "2.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "31e6302e3bb753d46e83516cae55ae196fc0c309407cf11ab35cc51a4c2a4633"
+checksum = "22784dbdf76fdde8af1aeda5622b546b422b6fc585325248a2bf9f5e41e94d6c"
 dependencies = [
  "form_urlencoded",
  "idna",

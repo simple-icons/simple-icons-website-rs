@@ -30,13 +30,14 @@ leptos_router = { version = "0.6.12", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos-use = "0.10.10"
-leptos-fluent = "0.0.34"
+leptos-use = "0.10"
+leptos-fluent = { version = "0.1", default-features = false }
+fluent-templates = "0.9"
 leptos_hotkeys = "0.2.1"
-leptos_icons = "0.3.1"
-icondata = "0.3.1"
+leptos_icons = "0.3"
+icondata = "0.3"
 console_log = "1"
-log = "0.4.21"
+log = "0.4"
 console_error_panic_hook = "0.1.7"
 wasm-bindgen = "0.2.92"
 web-sys = { version = "0.3.69", default-features = false, features = [
@@ -75,10 +76,9 @@ syn = "2.0.66"
 colorsys = "0.6.7"
 serde_json = "1.0.117"
 nanoserde = "0.1.37"
-svg-path-cst = "0.1.0"
+svg-path-cst = "0.1"
 unicode-normalization = "0.1.23"
 icu_collator = "1.5.0"
-fluent-templates = "0.9"
 config = { version = "0.14.0", features = ["json"] }
 snafu = { version = "0.8.3", default-features = false }
 rand = "0.8.5"
