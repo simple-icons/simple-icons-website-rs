@@ -9,7 +9,7 @@ fn render_language(lang: &'static Language) -> impl IntoView {
 
     view! {
         <li
-            class=move || if lang.is_active() { "hidden" } else { "" }
+            class:hidden=lang.is_active()
             on:click=move |_| {
                 modal_open.set_none();
                 lang.activate();
