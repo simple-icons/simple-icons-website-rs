@@ -92,3 +92,4 @@ copy-as-base64-jpg = Base64 JPG로 복사
 copy-as-base64-png = Base64 PNG로 복사
 extensions = 확장
 libraries = 라이브러리
+copy-icon-modal-url = 아이콘 모달 URL 복사

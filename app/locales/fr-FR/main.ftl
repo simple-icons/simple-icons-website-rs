@@ -92,3 +92,4 @@ copy-as-base64-jpg = Copier en tant que JPG Base64
 copy-as-base64-png = Copier en tant que PNG Base64
 extensions = Extensions
 libraries = Bibliothèques
+copy-icon-modal-url = Copier l'URL du modal de l'icône

@@ -57,7 +57,7 @@ pub fn App() -> impl IntoView {
     leptos_fluent! {{
         locales: "./locales",
         translations: [TRANSLATIONS],
-        check_translations: "../{app,components}/**/*.rs",
+        check_translations: "../{app,components}/src/**/*.rs",
         // Synchronize <html lang="..."> attribute with the current language
         // using `leptos::create_effect`
         sync_html_tag_lang: true,

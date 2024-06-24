@@ -92,3 +92,4 @@ page-not-found = ページが見つかりません
 maybe-youre-looking-for = もしかしたら探しているかもしれません...
 extensions = 拡張機能
 libraries = ライブラリ
+copy-icon-modal-url = アイコン モーダル URL をコピー

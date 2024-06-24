@@ -12,8 +12,9 @@ use crate::menu::{Menu, MenuItem};
 use crate::modal::{Modal, ModalOpenSignal};
 use crate::Ids;
 use icondata::{
-    BiCheckRegular, BiMenuAltRightRegular, BiMenuRegular, BsCode, IoColorWand,
-    TbJpg, TbPdf, TbPng, TbSvg, VsSymbolNamespace,
+    BiCheckRegular, BiMenuAltRightRegular, BiMenuRegular, BsCode,
+    BsWindowFullscreen, IoColorWand, TbJpg, TbPdf, TbPng, TbSvg,
+    VsSymbolNamespace,
 };
 use leptos::{html::Ul, wasm_bindgen::JsCast, *};
 use leptos_fluent::{expect_i18n, move_tr, tr};
@@ -429,6 +430,24 @@ pub fn IconDetailsModal() -> impl IntoView {
             false => VsSymbolNamespace,
         });
 
+    let (copying_icon_modal_url, set_copying_icon_modal_url) =
+        create_signal(false);
+    let copy_icon_modal_url_msg = create_memo(move |_| {
+        if copying_icon_modal_url() {
+            tr!("copied")
+        } else {
+            tr!("copy-icon-modal-url")
+        }
+    });
+
+    let copy_icon_modal_url_icon = create_memo(move |_| {
+        if copying_icon_modal_url() {
+            BiCheckRegular
+        } else {
+            BsWindowFullscreen
+        }
+    });
+
     view! {
         <Modal
             title_is_copyable=true
@@ -710,6 +729,40 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     );
                                     set_timeout(
                                         move || set_copying_brand_name(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=copy_icon_modal_url_msg
+                                icon=copy_icon_modal_url_icon
+                                on:click=move |ev| {
+                                    if copying_icon_modal_url.get_untracked() {
+                                        return;
+                                    }
+                                    set_copying_icon_modal_url(true);
+                                    let current_url = window().location().href().unwrap();
+                                    let current_url_split = current_url
+                                        .split("/")
+                                        .collect::<Vec<&str>>();
+                                    let url = format!(
+                                        "{}//{}/?modal=icon&q={}",
+                                        current_url_split[0],
+                                        current_url_split[2],
+                                        get_slug_from_modal_container(),
+                                    );
+                                    copy_and_set_copied_transition(
+                                        url,
+                                        ev
+                                            .target()
+                                            .unwrap()
+                                            .dyn_into::<web_sys::HtmlElement>()
+                                            .unwrap(),
+                                    );
+                                    set_timeout(
+                                        move || set_copying_icon_modal_url(false),
                                         std::time::Duration::from_secs(1),
                                     );
                                 }

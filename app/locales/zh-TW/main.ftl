@@ -92,3 +92,4 @@ copy-as-base64-jpg = 以 Base64 JPG 格式複製
 copy-as-base64-png = 以 Base64 PNG 格式複製
 extensions = 擴展
 libraries = 圖書館
+copy-icon-modal-url = 复制图标模态 URL

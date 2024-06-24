@@ -92,3 +92,4 @@ copy-as-base64-jpg = Копіювати як base64 JPG
 copy-as-base64-png = Копіювати як base64 PNG
 extensions = Розширення
 libraries = Бібліотеки
+copy-icon-modal-url = Копіювати URL модального вікна значка
