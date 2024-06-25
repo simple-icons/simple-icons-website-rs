@@ -58,24 +58,16 @@ pub fn App() -> impl IntoView {
         locales: "./locales",
         translations: [TRANSLATIONS],
         check_translations: "../{app,components}/src/**/*.rs",
-        // Synchronize <html lang="..."> attribute with the current language
-        // using `leptos::create_effect`
         sync_html_tag_lang: true,
-        // Parameter name to managing the language in the URL
+        sync_html_tag_dir: true,
         url_param: Url::params::Names::Language.as_str(),
-        // Load initial language from the URL
         initial_language_from_url_param: true,
-        // Save initial language from the URL to the local storage
         initial_language_from_url_param_to_localstorage: true,
-        // Name of the local storage key to store the language
         localstorage_key: LocalStorage::Keys::Language.as_str(),
-        // Load initial language from local storage if not found in URL param
         initial_language_from_localstorage: true,
-        // Update the language on local storage when using `I18n.set_language`.
         set_language_to_localstorage: true,
-        // Load initial language from `navigator.languages` if not found in
-        // local storage
         initial_language_from_navigator: true,
+        initial_language_from_navigator_to_localstorage: true,
     }};
 
     // Create a context to store a node reference to the footer
