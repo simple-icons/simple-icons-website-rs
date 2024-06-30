@@ -57,6 +57,7 @@ pub fn App() -> impl IntoView {
     leptos_fluent! {{
         locales: "./locales",
         translations: [TRANSLATIONS],
+        #[cfg(debug_assertions)]
         check_translations: "../{app,components}/src/**/*.rs",
         sync_html_tag_lang: true,
         sync_html_tag_dir: true,
