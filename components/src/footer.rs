@@ -11,10 +11,10 @@ pub fn Footer(
 ) -> impl IntoView {
     view! {
         <footer node_ref=container_ref>
-            <ReportProblems/>
+            <ReportProblems />
             <div class="flex flex-col md:flex-row justify-between">
-                <About/>
-                <XButton/>
+                <About />
+                <XButton />
             </div>
             <a
                 class=concat!(
@@ -84,7 +84,7 @@ pub fn XButton() -> impl IntoView {
             target="_blank"
             href="https://x.com/intent/tweet?url=https://simpleicons.org&text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
         >
-            <Icon class="text-white h-4 mr-3" icon=SiX/>
+            <Icon class="text-white h-4 mr-3" icon=SiX />
             <span>{move_tr!("share-this")}</span>
         </a>
     }

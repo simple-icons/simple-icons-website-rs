@@ -84,19 +84,19 @@ pub fn App() -> impl IntoView {
     provide_hotkeys_context(main_ref, false, scopes!());
 
     view! {
-        <Head/>
-        <Header/>
-        <SVGDefsDefinition/>
+        <Head />
+        <Header />
+        <SVGDefsDefinition />
         <main ref_=main_ref>
             <Router>
                 <Routes>
-                    <Route path="/preview" view=Preview/>
-                    <Route path="/deprecations" view=DeprecationsIndex/>
-                    <Route path="/" view=AllIconsIndex/>
-                    <Route path="/*any" view=Error404/>
+                    <Route path="/preview" view=Preview />
+                    <Route path="/deprecations" view=DeprecationsIndex />
+                    <Route path="/" view=AllIconsIndex />
+                    <Route path="/*any" view=Error404 />
                 </Routes>
             </Router>
         </main>
-        <Footer container_ref=footer_ref/>
+        <Footer container_ref=footer_ref />
     }
 }

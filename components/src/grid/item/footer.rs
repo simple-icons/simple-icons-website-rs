@@ -62,7 +62,7 @@ pub fn IconGridItemFooter(
                 }
             >
 
-                <SVGIcon path=&SVGDef::View/>
+                <SVGIcon path=&SVGDef::View />
             </button>
             <button
                 title=move_tr!("download")
@@ -77,7 +77,7 @@ pub fn IconGridItemFooter(
                 }
             >
 
-                <SVGIcon path=&SVGDef::DownloadThin/>
+                <SVGIcon path=&SVGDef::DownloadThin />
             </button>
         </div>
     }

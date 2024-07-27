@@ -33,7 +33,7 @@ fn ModalHeader(
                 {title}
             </h2>
             <button type="button" title=move || tr!("close") on:click=move |_| on_close()>
-                <SVGIcon path=&SVGDef::Cross/>
+                <SVGIcon path=&SVGDef::Cross />
             </button>
         </div>
     }

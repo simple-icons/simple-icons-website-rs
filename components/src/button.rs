@@ -14,7 +14,7 @@ pub fn Button(
         <button title=title class=format!("button {}", class) id=id type="button" tabindex=0>
             {match icon {
                 IconOrSvg::Icon(icon) => {
-                    view! { <Icon icon width="24px" height="24px"/> }
+                    view! { <Icon icon width="24px" height="24px" /> }
                 }
                 ref value => {
                     if icon == IconOrSvg::SvgDef(&SVGDef::Null) {

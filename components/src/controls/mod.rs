@@ -43,7 +43,7 @@ pub fn Controls() -> impl IntoView {
                 }
                 class
             }>
-                <SearchControl/>
+                <SearchControl />
             </div>
             <div class=move || {
                 let mut class = "controls-group".to_string();
@@ -54,10 +54,10 @@ pub fn Controls() -> impl IntoView {
                 }
                 class
             }>
-                <OrderControl/>
-                <ColorSchemeControl/>
-                <DownloadFileTypeControl/>
-                <LayoutControl/>
+                <OrderControl />
+                <ColorSchemeControl />
+                <DownloadFileTypeControl />
+                <LayoutControl />
             </div>
             <div class=move || {
                 let mut class = "relative lg:hidden".to_string();
@@ -66,7 +66,7 @@ pub fn Controls() -> impl IntoView {
                 }
                 class
             }>
-                <ControlsToggler/>
+                <ControlsToggler />
             </div>
         </menu>
     }

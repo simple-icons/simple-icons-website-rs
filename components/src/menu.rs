@@ -33,14 +33,13 @@ pub fn MenuItem(
                 Some(icon) => {
                     view! {
                         <span class="min-w-[24px] min-h-[24px]">
-                            <Icon width="24px" height="24px" icon/>
+                            <Icon width="24px" height="24px" icon />
                         </span>
                     }
                         .into_view()
                 }
                 None => Fragment::new(vec![]).into_view(),
-            }}
-            {text}
+            }} {text}
             {match children {
                 Some(child) => child().into_view(),
                 None => Fragment::new(vec![]).into_view(),

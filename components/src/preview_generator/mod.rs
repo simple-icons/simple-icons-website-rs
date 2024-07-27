@@ -90,14 +90,14 @@ pub fn PreviewGenerator() -> impl IntoView {
     view! {
         <div class="preview">
             <div>
-                <BrandInput brand set_brand set_color/>
-                <ColorInput color set_color/>
+                <BrandInput brand set_brand set_color />
+                <ColorInput color set_color />
             </div>
-            <PathInput path set_path/>
+            <PathInput path set_path />
 
-            <PreviewFigure brand color path/>
-            <PreviewBadges color path/>
-            <PreviewButtons brand path set_brand set_color set_path/>
+            <PreviewFigure brand color path />
+            <PreviewBadges color path />
+            <PreviewButtons brand path set_brand set_color set_path />
         </div>
     }
 }
@@ -225,14 +225,14 @@ fn PreviewBadges(
 
     view! {
         <div class="preview-badges">
-            <PreviewBadge color svg=white_svg style="flat"/>
-            <PreviewBadge color svg=white_svg style="plastic"/>
-            <PreviewBadge color svg=white_svg style="for-the-badge"/>
-            <PreviewBadge color svg=color_svg style="social"/>
-            <PreviewBadge color svg=color_svg style="flat"/>
-            <PreviewBadge color svg=color_svg style="plastic"/>
-            <PreviewBadge color svg=color_svg style="for-the-badge"/>
-            <PreviewBadge color svg=color_svg style="social" text_color="4183c4"/>
+            <PreviewBadge color svg=white_svg style="flat" />
+            <PreviewBadge color svg=white_svg style="plastic" />
+            <PreviewBadge color svg=white_svg style="for-the-badge" />
+            <PreviewBadge color svg=color_svg style="social" />
+            <PreviewBadge color svg=color_svg style="flat" />
+            <PreviewBadge color svg=color_svg style="plastic" />
+            <PreviewBadge color svg=color_svg style="for-the-badge" />
+            <PreviewBadge color svg=color_svg style="social" text_color="4183c4" />
         </div>
     }
 }
@@ -306,7 +306,7 @@ fn PreviewBadge(
 
     view! {
         <div>
-            <img src=move || badge_url(&color(), &svg(), style) on:load=on_load/>
+            <img src=move || badge_url(&color(), &svg(), style) on:load=on_load />
         </div>
     }
 }

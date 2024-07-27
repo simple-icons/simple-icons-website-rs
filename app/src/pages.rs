@@ -54,8 +54,8 @@ pub fn Index() -> impl IntoView {
     );
 
     view! {
-        <Controls/>
-        <Grid/>
+        <Controls />
+        <Grid />
     }
 }
 
@@ -65,7 +65,7 @@ pub fn AllIconsIndex() -> impl IntoView {
         ICONS.iter().collect(),
     ));
 
-    view! { <Index/> }
+    view! { <Index /> }
 }
 
 #[component]
@@ -73,14 +73,14 @@ pub fn DeprecationsIndex() -> impl IntoView {
     provide_context::<IconsIndexSignal>(IconsIndexSignal(
         DEPRECATED_ICONS.iter().collect(),
     ));
-    view! { <Index/> }
+    view! { <Index /> }
 }
 
 #[component]
 pub fn Preview() -> impl IntoView {
     view! {
         <menu class="page-padding-x -mt-4 lg:bg-transparent flex flex-row lg:flex-col">
-            <ColorSchemeControl/>
+            <ColorSchemeControl />
             <div class=concat!(
                 "flex items-center relative left-3 lg:-left-0.5",
                 " max-w-auto lg:max-w-[114px]",
@@ -96,7 +96,7 @@ pub fn Preview() -> impl IntoView {
             </div>
         </menu>
         <div class="page-padding-x flex justify-center">
-            <PreviewGenerator/>
+            <PreviewGenerator />
         </div>
     }
 }
@@ -105,12 +105,12 @@ pub fn Preview() -> impl IntoView {
 pub fn Error404() -> impl IntoView {
     view! {
         <menu class="page-padding-x -mt-4 bg-transparent">
-            <ColorSchemeControl/>
+            <ColorSchemeControl />
         </menu>
         <div class="page-padding-x -mt-2 sm:-mt-[52px] flex flex-col items-center justify-center h-full">
             <h1 class="text-8xl font-bold">{"404"}</h1>
             <p class="text-2xl font-bold">{move_tr!("page-not-found")}</p>
-            <hr class="w-1/2 my-4 border-t-[var(--divider-color)]"/>
+            <hr class="w-1/2 my-4 border-t-[var(--divider-color)]" />
             <p class="text-lg font-bold font-sans pt-2">{move_tr!("maybe-youre-looking-for")}</p>
             <ul class="flex flex-col sm:flex-row py-5">
 

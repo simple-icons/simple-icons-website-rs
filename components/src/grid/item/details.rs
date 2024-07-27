@@ -259,7 +259,7 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
 fn IconDetailsModalPreview() -> impl IntoView {
     view! {
         <button on:click=on_click_copy_image_children_src_content>
-            <img/>
+            <img />
         </button>
     }
 }
@@ -461,8 +461,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
             <div class="icon-details-modal" id=Ids::IconDetailsModal.as_str()>
                 <div>
-                    <IconDetailsModalPreview/>
-                    <IconDetailsModalInformation/>
+                    <IconDetailsModalPreview />
+                    <IconDetailsModalInformation />
                 </div>
                 <div class="cursor-pointer absolute right-[47px] top-[14px] z-50">
                     <span on:click=move |_| set_controls_open(!controls_open.get_untracked())>

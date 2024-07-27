@@ -149,7 +149,7 @@ pub fn Icons() -> impl IntoView {
             each=move || icons_grid().loaded_icons
             key=move |icon| icon.slug
             children=move |icon: &'static SimpleIcon| {
-                view! { <IconGridItem icon=icon/> }
+                view! { <IconGridItem icon=icon /> }
             }
         />
     }
@@ -198,11 +198,11 @@ pub fn Grid() -> impl IntoView {
     });
 
     view! {
-        <IconDetailsModal/>
+        <IconDetailsModal />
         <ul node_ref=icons_list_ref class:layout-compact=move || layout() == Layout::Compact>
-            <Icons/>
+            <Icons />
         </ul>
-        <IconsLoader/>
-        <ScrollButtons/>
+        <IconsLoader />
+        <ScrollButtons />
     }
 }

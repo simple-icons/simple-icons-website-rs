@@ -287,7 +287,7 @@ fn LintError(
             <span>{message}</span>
             <div>
                 <Show when=move || range.is_some()>
-                    <ShowLintErrorButton start=range.unwrap().0 end=range.unwrap().1 input_ref/>
+                    <ShowLintErrorButton start=range.unwrap().0 end=range.unwrap().1 input_ref />
                 </Show>
                 <Show when=move || fixer.is_some()>
                     <FixLintErrorButton
@@ -393,7 +393,7 @@ fn BrandSuggestions(
                 each=brand_suggestions
                 key=move |icon| icon.slug
                 children=move |icon: &'static SimpleIcon| {
-                    view! { <BrandSuggestion icon=icon set_brand=set_brand set_color=set_color/> }
+                    view! { <BrandSuggestion icon=icon set_brand=set_brand set_color=set_color /> }
                 }
             />
 
@@ -423,7 +423,7 @@ fn BrandSuggestions(
                     each=more_brand_suggestions
                     key=move |icon| icon.slug
                     children=move |icon| {
-                        view! { <BrandSuggestion icon set_brand set_color/> }
+                        view! { <BrandSuggestion icon set_brand set_color /> }
                     }
                 />
 
@@ -457,7 +457,7 @@ fn BrandSuggestion(
             });
         }>
             <a>
-                <img src=format!("./icons/{}.svg", icon.slug) width="24px" height="24px"/>
+                <img src=format!("./icons/{}.svg", icon.slug) width="24px" height="24px" />
                 <span>{icon.title}</span>
             </a>
         </li>

@@ -17,7 +17,7 @@ pub fn ScrollButton(
 ) -> impl IntoView {
     view! {
         <button class=format!("scroll-button {}", class) title=title>
-            <Icon icon width="24px" height="24px"/>
+            <Icon icon width="24px" height="24px" />
         </button>
     }
 }
@@ -69,7 +69,7 @@ pub fn ScrollToFooterButton() -> impl IntoView {
 #[component]
 pub fn ScrollButtons() -> impl IntoView {
     view! {
-        <ScrollToHeaderButton/>
-        <ScrollToFooterButton/>
+        <ScrollToHeaderButton />
+        <ScrollToFooterButton />
     }
 }

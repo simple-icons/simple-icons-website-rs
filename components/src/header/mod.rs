@@ -33,9 +33,9 @@ pub fn Header() -> impl IntoView {
     view! {
         <header>
             <Show when=move || !header_state().menu_open>
-                <HeaderTitle/>
+                <HeaderTitle />
             </Show>
-            <HeaderMenu/>
+            <HeaderMenu />
         </header>
     }
 }

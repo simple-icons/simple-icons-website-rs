@@ -26,7 +26,7 @@ pub fn IconGridItem(icon: &'static SimpleIcon) -> impl IntoView {
 
     view! {
         <li>
-            <IconGridItemPreview slug=icon.slug title=icon_localized_title/>
+            <IconGridItemPreview slug=icon.slug title=icon_localized_title />
             <IconGridItemLinks
                 guidelines_url=icon.guidelines
                 license_url=icon.license_url
@@ -45,8 +45,8 @@ pub fn IconGridItem(icon: &'static SimpleIcon) -> impl IntoView {
                     }
                 })}
 
-            <IconGridItemTitle brand_name=icon_localized_title slug=icon.slug/>
-            <IconGridItemFooter icon=icon icon_localized_title=icon_localized_title/>
+            <IconGridItemTitle brand_name=icon_localized_title slug=icon.slug />
+            <IconGridItemFooter icon=icon icon_localized_title=icon_localized_title />
         </li>
     }
 }

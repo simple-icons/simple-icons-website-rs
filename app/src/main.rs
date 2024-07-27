@@ -22,5 +22,5 @@ pub fn main() {
     document().get_element_by_id("loader").unwrap().remove();
     document().body().unwrap().remove_attribute("style").ok();
 
-    mount_to_body(|| view! { <App/> });
+    mount_to_body(|| view! { <App /> });
 }

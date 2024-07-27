@@ -23,7 +23,7 @@ fn ThirdPartyExtensionsTableRow(
         <tr>
             <td>
                 <a href=extension.url target="_blank">
-                    <SVGIcon fill="currentColor" path=extension.icon_slug/>
+                    <SVGIcon fill="currentColor" path=extension.icon_slug />
                     <span>{extension.name}</span>
                 </a>
             </td>
@@ -47,7 +47,7 @@ fn ThirdPartyExtensionsOrLibrariesTable(
                     each=move || items
                     key=move |extension| extension.name
                     children=move |extension| {
-                        view! { <ThirdPartyExtensionsTableRow extension=extension/> }
+                        view! { <ThirdPartyExtensionsTableRow extension=extension /> }
                     }
                 />
 
@@ -90,18 +90,18 @@ pub fn ThirdPartyExtensions() -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();
 
     view! {
-        <ThirdPartyExtensionsButton/>
+        <ThirdPartyExtensionsButton />
         <Modal
             title=move_tr!("third-party-extensions")
             is_open=Signal::derive(move || modal_open.0() == Some(ModalOpen::Extensions))
             on_close=Signal::derive(move || modal_open.set_none())
             on_close_focus_search_bar=true
         >
-            <ThirdPartyExtensionsTableTitle title=move_tr!("extensions")/>
-            <ThirdPartyExtensionsOrLibrariesTable items=THIRD_PARTY_EXTENSIONS/>
-            <br/>
-            <ThirdPartyExtensionsTableTitle title=move_tr!("libraries")/>
-            <ThirdPartyExtensionsOrLibrariesTable items=THIRD_PARTY_LIBRARIES/>
+            <ThirdPartyExtensionsTableTitle title=move_tr!("extensions") />
+            <ThirdPartyExtensionsOrLibrariesTable items=THIRD_PARTY_EXTENSIONS />
+            <br />
+            <ThirdPartyExtensionsTableTitle title=move_tr!("libraries") />
+            <ThirdPartyExtensionsOrLibrariesTable items=THIRD_PARTY_LIBRARIES />
         </Modal>
     }
 }

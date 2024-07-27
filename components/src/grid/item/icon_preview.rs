@@ -37,7 +37,7 @@ pub fn IconGridItemPreview(
     let alt = move || tr!("subject-icon", {"icon" => title()});
     view! {
         <button title=title on:click=on_click_copy_image_children_src_content>
-            <img src=format!("/icons/{}.svg", slug) alt=alt width=56 height=56/>
+            <img src=format!("/icons/{}.svg", slug) alt=alt width=56 height=56 />
         </button>
     }
 }

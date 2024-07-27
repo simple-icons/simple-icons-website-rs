@@ -23,12 +23,12 @@ pub fn PreviewButtons(
     view! {
         <div class="preview-buttons">
             <div>
-                <PreviewUploadSVGButton set_brand=set_brand set_color=set_color set_path=set_path/>
+                <PreviewUploadSVGButton set_brand=set_brand set_color=set_color set_path=set_path />
             </div>
             <div class="float-right">
-                <PreviewCopyButton/>
-                <PreviewSaveButton brand=brand/>
-                <PreviewDownloadSVGButton brand=brand path=path/>
+                <PreviewCopyButton />
+                <PreviewSaveButton brand=brand />
+                <PreviewDownloadSVGButton brand=brand path=path />
             </div>
         </div>
     }

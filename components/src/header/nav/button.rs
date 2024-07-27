@@ -32,7 +32,7 @@ pub fn HeaderMenuLink(
 
             {match icon {
                 IconOrSvg::Icon(icon) => {
-                    view! { <Icon icon width="36px" height="36px"/> }
+                    view! { <Icon icon width="36px" height="36px" /> }
                 }
                 value => {
                     view! {
@@ -69,7 +69,7 @@ pub fn HeaderMenuButton(
 ) -> impl IntoView {
     view! {
         <li title=title class=class tabindex=0>
-            <Icon icon width="36px" height="36px"/>
+            <Icon icon width="36px" height="36px" />
         </li>
     }
 }

@@ -66,12 +66,12 @@ pub fn HeaderMenu() -> impl IntoView {
                     href="https://github.com/simple-icons/simple-icons/blob/master/DISCLAIMER.md"
                     icon=LEGAL_DISCLAIMER_SVG_PATH
                 />
-                <ThirdPartyExtensions/>
-                <LanguageSelector/>
+                <ThirdPartyExtensions />
+                <LanguageSelector />
             </ul>
             <ul>
-                <HeaderMenuBurgerButton/>
-                <HeaderMenuCloseButton/>
+                <HeaderMenuBurgerButton />
+                <HeaderMenuCloseButton />
             </ul>
         </nav>
     }

@@ -59,14 +59,14 @@ pub fn LanguageSelector() -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();
 
     view! {
-        <LanguageSelectorButton/>
+        <LanguageSelectorButton />
         <Modal
             title=move_tr!("select-a-language")
             is_open=Signal::derive(move || modal_open.0() == Some(ModalOpen::Languages))
             on_close=Signal::derive(move || modal_open.set_none())
             on_close_focus_search_bar=true
         >
-            <LanguagesList/>
+            <LanguagesList />
         </Modal>
     }
 }
