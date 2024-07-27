@@ -18,15 +18,15 @@ simple-icons-website-macros = { path = "./macros" }
 simple-icons-website-config = { path = "./config" }
 simple-icons-website-types = { path = "./types" }
 simple-icons-website-components = { path = "./components" }
-leptos = { version = "0.6.12", default-features = false, features = [
+leptos = { version = "0.6.13", default-features = false, features = [
     "csr",
     "nightly",
 ] }
-leptos_meta = { version = "0.6.12", default-features = false, features = [
+leptos_meta = { version = "0.6.13", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos_router = { version = "0.6.12", default-features = false, features = [
+leptos_router = { version = "0.6.13", default-features = false, features = [
     "csr",
     "nightly"
 ] }
