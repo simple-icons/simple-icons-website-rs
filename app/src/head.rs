@@ -2,8 +2,8 @@ use crate::app::TITLE;
 use leptos::*;
 use leptos_fluent::tr;
 use leptos_meta::*;
-use simple_icons_macros::get_number_of_icons;
 use simple_icons_website_config::CONFIG;
+use simple_icons_website_macros::get_number_of_icons;
 
 #[component]
 pub fn Head() -> impl IntoView {

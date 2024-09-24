@@ -50,12 +50,6 @@
   // VSBrowser configuration
   "vs-browser.url": "http://127.0.0.1:8080",
 
-  // Rust Analyzer configuration
-  // Clipboard API of wasm_bindgen needs unstable API
-  // https://docs.rs/web-sys/latest/web_sys/struct.Navigator.html#method.clipboard
-  "rust-analyzer.server.extraEnv": {
-    "RUSTFLAGS": "--cfg=web_sys_unstable_apis"
-  },
   "rust-analyzer.showUnlinkedFileNotification": false,
 
   // RunOnSave extension configuration
@@ -66,6 +60,11 @@
         "match": "\\.rs",
         "isAsync": true,
         "cmd": "leptosfmt ${file}"
+      },
+      {
+        "match": "\\.rs",
+        "isAsync": true,
+        "cmd": "rustfmt ${file}"
       }
     ]
   }

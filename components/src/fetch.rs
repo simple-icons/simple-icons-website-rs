@@ -7,9 +7,9 @@ use {leptos::window, wasm_bindgen::JsCast};
 /// The SVG values of the icons are cached in the browser because are retrieved
 /// when are loaded through the `img` tag.
 pub(crate) async fn fetch_text(url: &str) -> Option<String> {
-    let mut req_opts = web_sys::RequestInit::new();
-    req_opts.cache(web_sys::RequestCache::ForceCache);
-    req_opts.method("GET");
+    let req_opts = web_sys::RequestInit::new();
+    req_opts.set_cache(web_sys::RequestCache::ForceCache);
+    req_opts.set_method("GET");
 
     let request =
         web_sys::Request::new_with_str_and_init(url, &req_opts).unwrap();
@@ -33,7 +33,7 @@ pub(crate) async fn fetch_text(url: &str) -> Option<String> {
             Some(value)
         }
         false => {
-            log::error!(
+            leptos::logging::error!(
                 "Failed to fetch {}. Check your network connection",
                 url
             );

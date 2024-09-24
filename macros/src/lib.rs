@@ -106,7 +106,7 @@ fn get_simple_icons_3rd_party_extensions_libraries_impl(
 
         extensions_array_code.push_str(&format!(
             concat!(
-                "::types::ThirdPartyExtension{{",
+                "::simple_icons_website_types::ThirdPartyExtension{{",
                 "name: \"{}\",",
                 "url: \"{}\",",
                 "author_name: \"{}\",",
@@ -171,7 +171,7 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
 
         let icon_code = &format!(
             concat!(
-                "::types::SimpleIcon{{",
+                "::simple_icons_website_types::SimpleIcon{{",
                 "slug: \"{}\",",
                 "title: \"{}\",",
                 "hex: \"{}\",",
@@ -211,7 +211,7 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
             match &icon.aliases {
                 None => "None".to_string(),
                 Some(aliases) => format!(
-                    "Some(&::types::SimpleIconAliases {{{}, {}, {}}})",
+                    "Some(&::simple_icons_website_types::SimpleIconAliases {{{}, {}, {}}})",
                     {
                         &format!(
                             "aka: {}",
@@ -318,7 +318,7 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                     format!(
                         concat!(
                             "Some(",
-                            "&::types::IconDeprecation{{",
+                            "&::simple_icons_website_types::IconDeprecation{{",
                             "removal_at_version: \"{}\",",
                             "milestone_number: {},",
                             "milestone_due_on: \"{}\",",

@@ -9,9 +9,9 @@ use leptos::*;
 use leptos_fluent::move_tr;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
+use simple_icons_website_types::SimpleIcon;
 use std::fmt;
 use std::str::FromStr;
-use types::SimpleIcon;
 
 #[derive(Default, Copy, Clone, PartialEq)]
 pub enum OrderModeVariant {

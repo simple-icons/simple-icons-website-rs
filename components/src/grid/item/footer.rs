@@ -10,7 +10,7 @@ use crate::svg::{SVGDef, SVGIcon};
 use leptos::ev::MouseEvent;
 use leptos::*;
 use leptos_fluent::{move_tr, tr};
-use types::SimpleIcon;
+use simple_icons_website_types::SimpleIcon;
 use web_sys;
 
 /// Icon grid item footer

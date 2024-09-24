@@ -1,6 +1,5 @@
 use leptos::{ev::MouseEvent, *};
 use leptos_use::{use_clipboard, UseClipboardReturn};
-use log;
 use wasm_bindgen::{closure::Closure, prelude::*, JsCast};
 use web_sys;
 
@@ -27,7 +26,7 @@ pub fn copy_and_set_copied_transition(value: String, el: web_sys::HtmlElement) {
     } = use_clipboard();
 
     if !is_supported() {
-        log::error!("Clipboard API not supported by the browser");
+        leptos::logging::error!("Clipboard API not supported by the browser");
         return;
     }
 
@@ -45,18 +44,7 @@ pub async fn copy_canvas_container_as_image(
 ) {
     let closure: Closure<dyn FnMut(web_sys::Blob)> =
         Closure::new(move |blob: web_sys::Blob| {
-            match window().navigator().clipboard() {
-                Some(_navigator_clipboard) => {
-                    #[cfg(debug_assertions)]
-                    log::debug!(
-                    "Copying item to clipboard using Navigator.Clipboard API",
-                );
-                    copy_blob_as_image_with_navigator_clipboard(&blob);
-                }
-                None => ::log::error!(
-                    "Navigator.Clipboard API required to copy PNG images"
-                ),
-            }
+            copy_blob_as_image_with_navigator_clipboard(&blob);
         });
     container.to_blob(closure.as_ref().unchecked_ref()).unwrap();
     closure.forget();

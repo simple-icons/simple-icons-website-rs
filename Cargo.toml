@@ -18,23 +18,23 @@ simple-icons-website-macros = { path = "./macros" }
 simple-icons-website-config = { path = "./config" }
 simple-icons-website-types = { path = "./types" }
 simple-icons-website-components = { path = "./components" }
-leptos = { version = "0.6.13", default-features = false, features = [
+leptos = { version = "0.6.15", default-features = false, features = [
     "csr",
     "nightly",
 ] }
-leptos_meta = { version = "0.6.13", default-features = false, features = [
+leptos_meta = { version = "0.6.15", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos_router = { version = "0.6.13", default-features = false, features = [
+leptos_router = { version = "0.6.15", default-features = false, features = [
     "csr",
     "nightly"
 ] }
-leptos-use = "0.10"
+leptos-use = "0.13"
 leptos-fluent = { version = "0.1", default-features = false, features = [
     "nightly"
 ] }
-fluent-templates = "0.9"
+fluent-templates = "0.11"
 leptos_hotkeys = "0.2.1"
 leptos_icons = "0.3"
 icondata = { version = "0.4", default-features = false, features = [
@@ -49,8 +49,6 @@ icondata = { version = "0.4", default-features = false, features = [
     "bootstrap-icons",
     "vs-code-icons",
 ] }
-console_log = "1"
-log = "0.4"
 console_error_panic_hook = "0.1"
 wasm-bindgen = "0.2.92"
 web-sys = { version = "0.3", default-features = false, features = [

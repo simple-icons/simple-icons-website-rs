@@ -1,4 +1,4 @@
-use simple_icons_macros::js_library_version;
+use simple_icons_website_macros::js_library_version;
 use web_sys;
 use {leptos::document, wasm_bindgen::prelude::*};
 

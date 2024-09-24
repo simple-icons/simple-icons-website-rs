@@ -14,8 +14,8 @@ use leptos::{
 use leptos_fluent::{move_tr, tr};
 use leptos_use::{on_click_outside, use_device_pixel_ratio};
 use simple_icons::{sdk, sdk::lint::errors::PathLintError};
+use simple_icons_website_types::SimpleIcon;
 use svg_path_cst::svg_path_cst;
-use types::SimpleIcon;
 use wasm_bindgen::JsCast;
 
 #[component]

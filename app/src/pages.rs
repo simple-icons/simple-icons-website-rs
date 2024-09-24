@@ -31,7 +31,7 @@ fn index_redirections() {
 
         let url = format!("{}{}", redirection, new_parms.to_query_string());
         #[cfg(debug_assertions)]
-        ::log::debug!("Redirecting to {}", url);
+        ::leptos::logging::log!("Redirecting to {}", url);
         use_navigate()(&url, navigate_opts);
     }
 }

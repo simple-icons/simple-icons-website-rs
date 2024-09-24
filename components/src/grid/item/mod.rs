@@ -12,8 +12,8 @@ use icon_preview::IconGridItemPreview;
 use leptos::*;
 use leptos_fluent::expect_i18n;
 use links::IconGridItemLinks;
+use simple_icons_website_types::SimpleIcon;
 use title::IconGridItemTitle;
-use types::SimpleIcon;
 
 /// Icon grid item
 ///

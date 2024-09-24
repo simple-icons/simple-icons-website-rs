@@ -8,7 +8,6 @@ edition.workspace = true
 simple-icons-website-components.workspace = true
 simple-icons-website-macros.workspace = true
 simple-icons-website-config.workspace = true
-simple-icons-website-types.workspace = true
 leptos.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
@@ -16,10 +15,11 @@ leptos-fluent.workspace = true
 leptos_hotkeys.workspace = true
 icondata.workspace = true
 fluent-templates.workspace = true
-console_log.workspace = true
-log.workspace = true
 console_error_panic_hook.workspace = true
-wasm-bindgen.workspace = true
-web-sys.workspace = true
 serde_json.workspace = true
 leptos-use.workspace = true
+
+[package.metadata.cargo-machete]
+# Renamed in [lib] as "components".
+# This would be probably be seen as a bug in `cargo machete`.
+ignored = ["simple-icons-website-components"]

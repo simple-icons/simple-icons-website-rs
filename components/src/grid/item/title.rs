@@ -1,7 +1,7 @@
 use crate::copy::copy_and_set_copied_transition;
 use leptos::{ev::MouseEvent, *};
 use leptos_fluent::{tr, Language};
-use types::SimpleIcon;
+use simple_icons_website_types::SimpleIcon;
 use web_sys;
 
 pub fn get_icon_localized_title(

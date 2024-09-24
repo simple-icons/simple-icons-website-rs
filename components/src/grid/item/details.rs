@@ -20,7 +20,7 @@ use leptos::{html::Ul, wasm_bindgen::JsCast, *};
 use leptos_fluent::{expect_i18n, move_tr, tr};
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
-use types::SimpleIcon;
+use simple_icons_website_types::SimpleIcon;
 use web_sys;
 
 fn get_brand_name_from_modal_container() -> String {

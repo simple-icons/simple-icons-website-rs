@@ -54,7 +54,9 @@ pub mod params {
                 "",
                 Some(&url.to_string().as_string().unwrap()),
             )
-            .map_err(|e| log::error!("Failed to update the URL: {:?}", e))
+            .map_err(|e| {
+                leptos::logging::error!("Failed to update the URL: {:?}", e)
+            })
             .ok();
     }
 

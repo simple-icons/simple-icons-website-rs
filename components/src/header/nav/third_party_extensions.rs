@@ -5,10 +5,10 @@ use crate::svg::SVGIcon;
 use icondata::FaPuzzlePieceSolid;
 use leptos::*;
 use leptos_fluent::move_tr;
-use simple_icons_macros::{
+use simple_icons_website_macros::{
     get_simple_icons_3rd_party_extensions, get_simple_icons_3rd_party_libraries,
 };
-use types::ThirdPartyExtension;
+use simple_icons_website_types::ThirdPartyExtension;
 
 static THIRD_PARTY_EXTENSIONS: &[ThirdPartyExtension] =
     get_simple_icons_3rd_party_extensions!();

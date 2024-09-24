@@ -19,7 +19,6 @@ leptos-fluent.workspace = true
 leptos_hotkeys.workspace = true
 leptos_icons.workspace = true
 icondata.workspace = true
-log.workspace = true
 web-sys.workspace = true
 js-sys.workspace = true
 wasm-bindgen.workspace = true

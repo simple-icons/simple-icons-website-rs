@@ -17,8 +17,8 @@ use lazy_static::lazy_static;
 use leptos::*;
 use leptos_use::use_device_pixel_ratio;
 use simple_icons::sdk;
-use simple_icons_macros::get_number_of_icons;
-use types::SimpleIcon;
+use simple_icons_website_macros::get_number_of_icons;
+use simple_icons_website_types::SimpleIcon;
 
 static DEFAULT_INITIAL_BRAND: &str = "Simple Icons";
 static DEFAULT_INITIAL_COLOR: &str = "111111";

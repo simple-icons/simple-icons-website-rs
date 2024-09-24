@@ -107,7 +107,10 @@ fn PreviewUploadSVGButton(
                 }
             }
             Err(err) => {
-                ::log::error!("Error reading uploaded SVG file: {:?}", err)
+                ::leptos::logging::error!(
+                    "Error reading uploaded SVG file: {:?}",
+                    err
+                )
             }
         }
     }
@@ -150,14 +153,6 @@ fn PreviewUploadSVGButton(
 #[component]
 fn PreviewCopyButton() -> impl IntoView {
     let (copied, set_copied) = create_signal(false);
-    let class = format!(
-        "button {}",
-        if window().navigator().clipboard().is_none() {
-            "hidden"
-        } else {
-            ""
-        }
-    );
 
     let button_id = Ids::PreviewCopyButton.as_str();
     use_hotkeys!(("controlleft+keyc,controlright+keyc") => move |_| {
@@ -166,7 +161,7 @@ fn PreviewCopyButton() -> impl IntoView {
 
     view! {
         <button
-            class=class
+            class="button"
             id=button_id
             on:click=move |_| {
                 let canvas = canvas_container();

@@ -12,10 +12,8 @@ pub(crate) mod pages;
 
 use crate::app::App;
 use leptos::{document, mount_to_body, view};
-use log::Level;
 
 pub fn main() {
-    _ = console_log::init_with_level(Level::Debug);
     console_error_panic_hook::set_once();
 
     // Remove #loader and body background

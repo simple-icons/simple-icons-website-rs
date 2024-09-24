@@ -13,7 +13,7 @@ use fuzzy::{build_searcher, search};
 use js_sys::JsString;
 use leptos::{document, html::Input, wasm_bindgen::JsCast, *};
 use leptos_fluent::tr;
-use types::SimpleIcon;
+use simple_icons_website_types::SimpleIcon;
 use web_sys;
 
 #[derive(Copy, Clone)]
