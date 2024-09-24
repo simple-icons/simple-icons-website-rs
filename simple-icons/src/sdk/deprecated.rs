@@ -4,7 +4,7 @@ use std::fs;
 use std::path::Path;
 
 /// Deprecated icons for next versions of Simple Icons
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct IconDeprecation {
     pub slug: String,
     pub removal_at_version: String,
