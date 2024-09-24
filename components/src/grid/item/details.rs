@@ -534,21 +534,20 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     let slug = get_slug_from_modal_container();
                                     let hex = get_hex_from_modal_container();
                                     spawn_local(async move {
-                                        if let Some(svg) = fetch_text(
-                                                &format!("/icons/{}.svg", slug),
-                                            )
+                                        let svg = fetch_text(&format!("/icons/{}.svg", &slug))
                                             .await
-                                        {
-                                            let colored_icon_svg = svg
-                                                .replacen("<svg", &format!("<svg fill=\"{}\"", hex), 1);
-                                            download(
-                                                &format!("{}-color.svg", slug),
-                                                &format!(
-                                                    "data:image/svg+xml;utf8,{}",
-                                                    js_sys::encode_uri_component(&colored_icon_svg),
-                                                ),
-                                            );
-                                        }
+                                            .unwrap_or_else(|| {
+                                                panic!("Error fetching SVG /icons/{}.svg", &slug)
+                                            });
+                                        let colored_icon_svg = svg
+                                            .replacen("<svg", &format!("<svg fill=\"{}\"", hex), 1);
+                                        download(
+                                            &format!("{}-color.svg", slug),
+                                            &format!(
+                                                "data:image/svg+xml;utf8,{}",
+                                                js_sys::encode_uri_component(&colored_icon_svg),
+                                            ),
+                                        );
                                     });
                                 }
                             />

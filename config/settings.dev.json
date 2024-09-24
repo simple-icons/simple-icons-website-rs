@@ -2,6 +2,6 @@
   "icons_per_page_comfortable": 30,
   "icons_per_page_compact": 60,
   "domain": "127.0.0.1:8080",
-  "deprecated_icons_file_name": "simple-icons-deprecated.txt",
+  "deprecated_icons_file_name": "simple-icons-deprecated.json",
   "max_icons": null
 }

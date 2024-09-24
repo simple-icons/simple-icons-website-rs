@@ -4,13 +4,27 @@ use std::fs;
 use std::path::Path;
 
 /// Deprecated icons for next versions of Simple Icons
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct IconDeprecation {
     pub slug: String,
     pub removal_at_version: String,
     pub milestone_number: u64,
     pub milestone_due_on: String,
     pub pull_request_number: u64,
+}
+
+/// Implements `PartialEq` for `IconDeprecation`.
+///
+/// Sometimes the simple-icons maintainers make a mistake where they open
+/// a second pull request to remove an icon which was previously opened,
+/// creating a duplicate entry in the list of deprecated icons that only
+/// can be seen as a duplicate by their slug.
+///
+/// See https://github.com/simple-icons/simple-icons/pull/11844
+impl PartialEq for IconDeprecation {
+    fn eq(&self, other: &Self) -> bool {
+        self.slug == other.slug
+    }
 }
 
 /**
@@ -102,7 +116,10 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
                     milestone_due_on: milestone_due_on.to_string(),
                     pull_request_number,
                 };
-                deprecated_icons.push(deprecated_icon);
+
+                if !deprecated_icons.contains(&deprecated_icon) {
+                    deprecated_icons.push(deprecated_icon);
+                }
             }
         }
     }
