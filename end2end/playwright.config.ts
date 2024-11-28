@@ -41,7 +41,7 @@ const config: PlaywrightTestConfig = {
   },
   /* Run web server with `serve` before running tests. */
   webServer: {
-    command: 'cd ../app/dist && serve -l 8081',
+    command: 'cd ../app/dist && serve --no-clipboard -l 8081',
     url: 'http://0.0.0.0:8081',
     timeout: 10 * 1000,
   },
