@@ -16,7 +16,7 @@
 - `cargo make format`: Format files. If you are using VSCode they should be formatted on save.
 - `cargo make lint`: Check formatting of files.
 - `cargo make build`: Build the website for production.
-- `cargo make serve`: Build the website for production and serve it with [anywhere](https://www.npmjs.com/package/anywhere).
+- `cargo make serve`: Build the website for production and serve it with [serve](https://www.npmjs.com/package/serve).
 - `cargo make doc`: Build and open documentation.
 - `cargo make watch-css`: Watch the CSS files with [TailwindCSS](https://tailwindcss.com/).
 

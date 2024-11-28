@@ -127,10 +127,10 @@ command = "npx"
 args = ["tsx", "scripts/minify-css.ts"]
 
 [tasks.serve-for-prod]
-description = "Serve the app with anywhere"
+description = "Serve the app with serve"
 command = "npx"
-args = ["anywhere", "-d", "dist"]
-cwd = "./app"
+args = ["serve", "--no-clipboard", "-l", "8000"]
+cwd = "./app/dist"
 
 [tasks.serve]
 description = "Build for production and serve"

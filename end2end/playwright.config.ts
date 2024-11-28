@@ -39,9 +39,9 @@ const config: PlaywrightTestConfig = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
-  /* Run web server with anywhere before running tests. */
+  /* Run web server with `serve` before running tests. */
   webServer: {
-    command: 'anywhere -d ../app/dist -p 8081 -s',
+    command: 'cd ../app/dist && serve -l 8081 -s',
     url: 'http://0.0.0.0:8081',
     timeout: 10 * 1000,
   },
