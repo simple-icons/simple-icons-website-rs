@@ -41,7 +41,7 @@
   }
 
   .preview-figure canvas {
-    @apply absolute top-[127px] left-[33px] opacity-0;
+    @apply absolute top-[127px] left-[33px] opacity-0 font-sans;
   }
 
   .preview-badges {
