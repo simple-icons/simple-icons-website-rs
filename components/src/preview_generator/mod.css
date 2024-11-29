@@ -37,11 +37,16 @@
   }
 
   .preview-figure {
-    @apply rounded-xl mt-1 font-sans;
+    @apply rounded-xl mt-1;
+  }
+
+  .preview-figure,
+  .preview-figure text {
+    @apply font-sans;
   }
 
   .preview-figure canvas {
-    @apply absolute top-[127px] left-[33px] opacity-0 font-sans;
+    @apply absolute top-[127px] left-[33px] opacity-0;
   }
 
   .preview-badges {
