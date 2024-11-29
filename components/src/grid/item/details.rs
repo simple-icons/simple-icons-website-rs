@@ -222,7 +222,7 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
             {
                 "icon" => icon_localized_title,
                 "version" => format!(
-                    "<a href=\"{}\">v{}</a>",
+                    "<a href=\"{}\" target=\"_blank\">v{}</a>",
                     deprecation.get_milestone_url(),
                     deprecation.removal_at_version,
                 ),
@@ -236,7 +236,7 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
                     .as_string()
                     .unwrap(),
                 "pr" => format!(
-                    "<a href=\"{}\">#{}</a>",
+                    "<a href=\"{}\" target=\"_blank\">#{}</a>",
                     deprecation.get_pull_request_url(),
                     deprecation.pull_request_number,
                 ),

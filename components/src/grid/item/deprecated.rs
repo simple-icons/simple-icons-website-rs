@@ -17,7 +17,7 @@ pub fn IconIsDeprecatedNotice(
         })
     };
     view! {
-        <a href=pull_request_url class="deprecated" title=title>
+        <a href=pull_request_url class="deprecated" title=title target="_blank">
             <span></span>
             <p>{move || tr!("deprecated")}</p>
         </a>

@@ -82,18 +82,18 @@ pub fn Preview() -> impl IntoView {
         <menu class="page-padding-x -mt-4 lg:bg-transparent flex flex-row lg:flex-col">
             <ColorSchemeControl />
             <div class=concat!(
-                "flex flex-col space-y-3 relative left-3 lg:-left-0.5",
+                "flex lg:flex-col items-center lg:space-y-3",
+                " relative left-4 lg:left-0 mt-2 sm:mt-7",
                 " max-w-auto lg:max-w-[114px]",
-                " mt-0 md:mt-[29px] lg:mt-5",
             )>
                 <Button
-                    class="mx-auto max-h-[40px]"
+                    class="mx-auto max-h-[40px] ml-0 lg:ml-1"
                     title=move_tr!("icons")
                     on:click=move |_| use_navigate()("/", Default::default())
                     icon=BsGrid3x2GapFill
                 />
                 <Button
-                    class="mx-auto max-h-[40px]"
+                    class="mx-auto max-h-[40px] ml-2 lg:-ml-1.5"
                     title=move_tr!("deprecations")
                     on:click=move |_| use_navigate()("/deprecations", Default::default())
                     icon=IoWarningSharp
