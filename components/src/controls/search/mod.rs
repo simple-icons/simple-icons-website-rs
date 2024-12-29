@@ -11,7 +11,12 @@ use crate::Ids;
 use crate::Url;
 use fuzzy::{build_searcher, search};
 use js_sys::JsString;
-use leptos::{document, html::Input, wasm_bindgen::JsCast, *};
+use leptos::{
+    html::Input,
+    prelude::{document, *},
+    task::spawn_local,
+    wasm_bindgen::JsCast,
+};
 use leptos_fluent::tr;
 use simple_icons_website_types::SimpleIcon;
 use web_sys;
@@ -36,7 +41,7 @@ pub fn focus_search_bar() {
 
 pub fn provide_search_context(icons: Vec<&'static SimpleIcon>) -> String {
     let initial_search_value = initial_search_value(icons);
-    provide_context(SearchValueSignal(create_rw_signal(
+    provide_context(SearchValueSignal(RwSignal::new(
         initial_search_value.clone(),
     )));
 
@@ -255,7 +260,7 @@ pub fn SearchControl() -> impl IntoView {
     let layout = expect_context::<LayoutSignal>().0;
     let icons = expect_context::<IconsIndexSignal>().0;
 
-    let search_input_ref = create_node_ref::<Input>();
+    let search_input_ref = NodeRef::new();
     // Focus on load. Fallback for Safari, see:
     // https://caniuse.com/?search=autofocus
     search_input_ref.on_load(|input| {

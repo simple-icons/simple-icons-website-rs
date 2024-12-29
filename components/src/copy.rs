@@ -1,4 +1,4 @@
-use leptos::{ev::MouseEvent, *};
+use leptos::{ev::MouseEvent, prelude::*};
 use leptos_use::{use_clipboard, UseClipboardReturn};
 use wasm_bindgen::{closure::Closure, prelude::*, JsCast};
 use web_sys;

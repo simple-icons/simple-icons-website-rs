@@ -10,7 +10,10 @@ use crate::modal::ModalOpen;
 use crate::Url;
 use icons_loader::{IconsLoader, IconsLoaderSignal};
 use item::{details::IconDetailsModal, IconGridItem};
-use leptos::{html::Footer, NodeRef, *};
+use leptos::{
+    html::Footer,
+    prelude::{NodeRef, *},
+};
 use leptos_use::use_intersection_observer;
 use scroll::ScrollButtons;
 use simple_icons_website_macros::{
@@ -85,15 +88,13 @@ pub fn provide_icons_grid_contexts(
     initial_layout: &Layout,
     icons: Vec<&'static SimpleIcon>,
 ) {
-    provide_context(IconsGridSignal(create_rw_signal(IconsGrid::new(
+    provide_context(IconsGridSignal(RwSignal::new(IconsGrid::new(
         initial_search_value,
         &initial_order_mode.current,
         initial_layout,
         icons,
     ))));
-    provide_context(IconsLoaderSignal(
-        create_rw_signal(IconsLoader::default()),
-    ));
+    provide_context(IconsLoaderSignal(RwSignal::new(IconsLoader::default())));
 }
 
 fn initial_icons_from_search_value_order_mode_and_layout(
@@ -168,7 +169,7 @@ pub fn Grid() -> impl IntoView {
     let layout = expect_context::<LayoutSignal>().0;
 
     // Provide the context for the current icon details view
-    provide_context(CurrentIconViewSignal(create_rw_signal(None)));
+    provide_context(CurrentIconViewSignal(RwSignal::new(None)));
 
     let icons_grid = expect_context::<IconsGridSignal>().0;
     let icons_loader: RwSignal<IconsLoader> =
@@ -189,7 +190,7 @@ pub fn Grid() -> impl IntoView {
         }
     });
 
-    let icons_list_ref = create_node_ref();
+    let icons_list_ref = NodeRef::new();
     icons_list_ref.on_load(move |_| {
         let modal_param = Url::params::get(&Url::params::Names::Modal);
         if modal_param == Some(ModalOpen::Icon.to_string()) {

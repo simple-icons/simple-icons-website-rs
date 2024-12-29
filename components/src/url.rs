@@ -6,7 +6,7 @@
 
 /// Single source of thruth for the URL params state
 pub mod params {
-    use leptos::window;
+    use leptos::prelude::window;
 
     /// Enum to ensure that the params names are unique
     pub enum Names {

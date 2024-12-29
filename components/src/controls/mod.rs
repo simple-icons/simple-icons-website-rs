@@ -12,7 +12,7 @@ use button::XS_ICON_SIZE;
 use color_scheme::ColorSchemeControl;
 use download::DownloadFileTypeControl;
 use layout::LayoutControl;
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::tr;
 use leptos_use::use_media_query;
 use order::OrderControl;
@@ -31,7 +31,7 @@ struct ControlsStateSignal(RwSignal<ControlsState>);
 
 #[component]
 pub fn Controls() -> impl IntoView {
-    let controls_state = create_rw_signal(ControlsState::default());
+    let controls_state = RwSignal::new(ControlsState::default());
     provide_context(ControlsStateSignal(controls_state));
 
     view! {
@@ -82,7 +82,7 @@ pub fn ControlsToggler() -> impl IntoView {
 
     let is_xs_screen = use_media_query("(max-width: 475px)");
     let size =
-        create_memo(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
+        Memo::new(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
 
     view! {
         <div class="control">

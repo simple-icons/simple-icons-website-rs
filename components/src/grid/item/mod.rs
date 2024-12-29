@@ -9,7 +9,7 @@ use crate::grid::item::title::get_icon_localized_title;
 use deprecated::IconIsDeprecatedNotice;
 use footer::IconGridItemFooter;
 use icon_preview::IconGridItemPreview;
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::expect_i18n;
 use links::IconGridItemLinks;
 use simple_icons_website_types::SimpleIcon;
@@ -20,7 +20,7 @@ use title::IconGridItemTitle;
 /// Each icon displayed in the icons grid
 #[component]
 pub fn IconGridItem(icon: &'static SimpleIcon) -> impl IntoView {
-    let icon_localized_title = create_memo(move |_| {
+    let icon_localized_title = Memo::new(move |_| {
         get_icon_localized_title(icon, expect_i18n().language.get())
     });
 

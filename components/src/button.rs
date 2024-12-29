@@ -1,5 +1,5 @@
 use crate::svg::{IconOrSvg, SVGDef, SVGIcon};
-use leptos::*;
+use leptos::prelude::*;
 use leptos_icons::Icon;
 
 #[component]
@@ -14,7 +14,7 @@ pub fn Button(
         <button title=title class=format!("button {}", class) id=id type="button" tabindex=0>
             {match icon {
                 IconOrSvg::Icon(icon) => {
-                    view! { <Icon icon width="24px" height="24px" /> }
+                    view! { <Icon icon width="24px" height="24px" /> }.into_any()
                 }
                 ref value => {
                     if icon == IconOrSvg::SvgDef(&SVGDef::Null) {
@@ -31,11 +31,11 @@ pub fn Button(
                                 _ => unreachable!(),
                             }
                         />
-                    }
+                    }.into_any()
                 }
             }}
 
             {title}
         </button>
-    }.into_view()
+    }
 }

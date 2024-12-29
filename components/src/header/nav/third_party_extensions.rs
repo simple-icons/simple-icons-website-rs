@@ -3,7 +3,7 @@ use crate::modal::Modal;
 use crate::modal::{ModalOpen, ModalOpenSignal};
 use crate::svg::SVGIcon;
 use icondata::FaPuzzlePieceSolid;
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use simple_icons_website_macros::{
     get_simple_icons_3rd_party_extensions, get_simple_icons_3rd_party_libraries,

@@ -7,7 +7,7 @@ use crate::preview_generator::{
 };
 use crate::svg::{svg_with_title_path_opt_fill, SVGDef};
 use crate::Ids;
-use leptos::{wasm_bindgen::JsCast, *};
+use leptos::{prelude::*, task::spawn_local, wasm_bindgen::JsCast};
 use leptos_fluent::{move_tr, tr};
 use leptos_hotkeys::use_hotkeys;
 use simple_icons::sdk;
@@ -152,7 +152,7 @@ fn PreviewUploadSVGButton(
 
 #[component]
 fn PreviewCopyButton() -> impl IntoView {
-    let (copied, set_copied) = create_signal(false);
+    let (copied, set_copied) = signal(false);
 
     let button_id = Ids::PreviewCopyButton.as_str();
     use_hotkeys!(("controlleft+keyc,controlright+keyc") => move |_| {

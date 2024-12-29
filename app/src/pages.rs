@@ -12,7 +12,7 @@ use components::grid::{
 };
 use components::preview_generator::PreviewGenerator;
 use icondata::{BsGrid3x2GapFill, IoWarningSharp, VsPreview};
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use leptos_router::{use_navigate, use_query_map, NavigateOptions};
 

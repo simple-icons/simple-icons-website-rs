@@ -1,6 +1,7 @@
+use leptos::prelude::document;
 use simple_icons_website_macros::js_library_version;
+use wasm_bindgen::prelude::*;
 use web_sys;
-use {leptos::document, wasm_bindgen::prelude::*};
 
 #[wasm_bindgen(module = "/src/controls/download/pdf.js")]
 extern "C" {

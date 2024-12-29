@@ -1,9 +1,9 @@
-use leptos::{html::Ul, *};
+use leptos::{html::Ul, prelude::*};
 use leptos_icons::Icon;
 
 #[component]
 pub fn Menu(
-    #[prop(optional, into)] class: MaybeSignal<String>,
+    #[prop(optional, into)] class: Signal<String>,
     children: Children,
     #[prop(optional)] ref_: NodeRef<Ul>,
 ) -> impl IntoView {
@@ -16,9 +16,9 @@ pub fn Menu(
 
 #[component]
 pub fn MenuItem(
-    #[prop(optional, into)] class: MaybeSignal<String>,
-    #[prop(optional, into)] text: MaybeSignal<String>,
-    #[prop(optional, into)] icon: Option<MaybeSignal<icondata::Icon>>,
+    #[prop(optional, into)] class: Signal<String>,
+    #[prop(optional, into)] text: Signal<String>,
+    #[prop(optional, into)] icon: Option<Signal<icondata::Icon>>,
     #[prop(optional)] children: Option<Children>,
 ) -> impl IntoView {
     view! {

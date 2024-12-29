@@ -1,5 +1,8 @@
 use icondata::SiX;
-use leptos::{html::Footer as FooterHtmlElement, NodeRef, *};
+use leptos::{
+    html::Footer as FooterHtmlElement,
+    prelude::{NodeRef, *},
+};
 use leptos_fluent::{move_tr, tr};
 use leptos_icons::Icon;
 

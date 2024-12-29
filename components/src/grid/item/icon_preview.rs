@@ -1,6 +1,8 @@
 use crate::copy::copy_and_set_copied_transition;
 use crate::fetch::fetch_text;
-use leptos::{ev::MouseEvent, wasm_bindgen::JsCast, *};
+use leptos::{
+    ev::MouseEvent, prelude::*, task::spawn_local, wasm_bindgen::JsCast,
+};
 use leptos_fluent::tr;
 use web_sys;
 

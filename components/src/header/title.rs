@@ -1,4 +1,4 @@
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::tr;
 use simple_icons_website_macros::get_number_of_icons;
 

@@ -2,7 +2,7 @@ use crate::controls::button::ControlButtonIcon;
 use crate::storage::LocalStorage;
 use crate::Url;
 use icondata::{LuGrid2x2, LuGrid3x3};
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use simple_icons_website_config::CONFIG;
 use std::fmt;
@@ -58,7 +58,7 @@ pub struct LayoutSignal(pub RwSignal<Layout>);
 
 pub fn provide_layout_context() -> Layout {
     let layout = initial_layout();
-    provide_context(LayoutSignal(create_rw_signal(layout)));
+    provide_context(LayoutSignal(RwSignal::new(layout)));
     layout
 }
 

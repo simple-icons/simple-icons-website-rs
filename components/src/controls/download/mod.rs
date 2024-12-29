@@ -9,7 +9,7 @@ pub use image::{
     copy_as_base64_jpg, copy_as_base64_png, copy_as_image_jpg,
     copy_as_image_png, download_jpg, download_png,
 };
-use leptos::{document, *};
+use leptos::prelude::{document, *};
 use leptos_fluent::{move_tr, tr};
 pub use pdf::download_pdf;
 use std::fmt;
@@ -47,9 +47,7 @@ impl fmt::Display for DownloadType {
 }
 
 pub fn provide_download_type_context() {
-    provide_context(DownloadTypeSignal(create_rw_signal(
-        initial_download_type(),
-    )));
+    provide_context(DownloadTypeSignal(RwSignal::new(initial_download_type())));
 }
 
 #[derive(Copy, Clone)]

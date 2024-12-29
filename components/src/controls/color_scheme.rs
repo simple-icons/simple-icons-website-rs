@@ -1,6 +1,6 @@
 use crate::controls::button::ControlButtonIcon;
 use icondata::{ChMoon, ChSun, TbSunMoon};
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use leptos_use::ColorMode;
 

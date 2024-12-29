@@ -16,7 +16,7 @@ use icondata::{
     BsWindowFullscreen, IoColorWand, TbJpg, TbPdf, TbPng, TbSvg,
     VsSymbolNamespace,
 };
-use leptos::{html::Ul, wasm_bindgen::JsCast, *};
+use leptos::{html::Ul, prelude::*, task::spawn_local, wasm_bindgen::JsCast};
 use leptos_fluent::{expect_i18n, move_tr, tr};
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
@@ -284,8 +284,8 @@ pub fn IconDetailsModal() -> impl IntoView {
     let current_icon_view = expect_context::<CurrentIconViewSignal>().0;
     let modal_open = expect_context::<ModalOpenSignal>();
 
-    let (controls_open, set_controls_open) = create_signal(false);
-    let menu_ref = create_node_ref::<Ul>();
+    let (controls_open, set_controls_open) = signal(false);
+    let menu_ref = NodeRef::new();
     _ = on_click_outside(menu_ref, move |_| {
         if controls_open.get_untracked() {
             set_controls_open(false);
@@ -294,9 +294,8 @@ pub fn IconDetailsModal() -> impl IntoView {
 
     let modal_is_open = Signal::derive(move || current_icon_view().is_some());
 
-    let (copying_as_base64_svg, set_copying_as_base64_svg) =
-        create_signal(false);
-    let copy_as_base64_svg_icon = create_memo(move |_| {
+    let (copying_as_base64_svg, set_copying_as_base64_svg) = signal(false);
+    let copy_as_base64_svg_icon = Memo::new(move |_| {
         if copying_as_base64_svg() {
             BiCheckRegular
         } else {
@@ -304,7 +303,7 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let copy_as_base64_svg_text = create_memo(move |_| {
+    let copy_as_base64_svg_text = Memo::new(move |_| {
         if copying_as_base64_svg() {
             tr!("copied")
         } else {
@@ -312,9 +311,8 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let (copying_as_base64_jpg, set_copying_as_base64_jpg) =
-        create_signal(false);
-    let copy_as_base64_jpg_icon = create_memo(move |_| {
+    let (copying_as_base64_jpg, set_copying_as_base64_jpg) = signal(false);
+    let copy_as_base64_jpg_icon = Memo::new(move |_| {
         if copying_as_base64_jpg() {
             BiCheckRegular
         } else {
@@ -322,7 +320,7 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let copy_as_base64_jpg_text = create_memo(move |_| {
+    let copy_as_base64_jpg_text = Memo::new(move |_| {
         if copying_as_base64_jpg() {
             tr!("copied")
         } else {
@@ -330,9 +328,8 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let (copying_as_base64_png, set_copying_as_base64_png) =
-        create_signal(false);
-    let copy_as_base64_png_icon = create_memo(move |_| {
+    let (copying_as_base64_png, set_copying_as_base64_png) = signal(false);
+    let copy_as_base64_png_icon = Memo::new(move |_| {
         if copying_as_base64_png() {
             BiCheckRegular
         } else {
@@ -340,7 +337,7 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let copy_as_base64_png_text = create_memo(move |_| {
+    let copy_as_base64_png_text = Memo::new(move |_| {
         if copying_as_base64_png() {
             tr!("copied")
         } else {
@@ -348,8 +345,8 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let (copying_hex, set_copying_hex) = create_signal(false);
-    let copy_hex_msg = create_memo(move |_| {
+    let (copying_hex, set_copying_hex) = signal(false);
+    let copy_hex_msg = Memo::new(move |_| {
         if copying_hex() {
             tr!("copied")
         } else {
@@ -357,7 +354,7 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let copy_hex_icon = create_memo(move |_| {
+    let copy_hex_icon = Memo::new(move |_| {
         if copying_hex() {
             BiCheckRegular
         } else {
@@ -384,55 +381,52 @@ pub fn IconDetailsModal() -> impl IntoView {
     let download_png_msg =
         move_tr!("download-filetype", {"filetype" => tr!("png")});
 
-    let (copying_svg, set_copying_svg) = create_signal(false);
-    let copy_svg_msg = create_memo(move |_| match copying_svg() {
+    let (copying_svg, set_copying_svg) = signal(false);
+    let copy_svg_msg = Memo::new(move |_| match copying_svg() {
         true => tr!("copied"),
         false => tr!("copy-filetype", {"filetype" => tr!("svg")}),
     });
 
-    let copy_svg_icon = create_memo(move |_| match copying_svg() {
+    let copy_svg_icon = Memo::new(move |_| match copying_svg() {
         true => BiCheckRegular,
         false => TbSvg,
     });
 
-    let (copying_png, set_copying_png) = create_signal(false);
-    let copy_png_msg = create_memo(move |_| match copying_png() {
+    let (copying_png, set_copying_png) = signal(false);
+    let copy_png_msg = Memo::new(move |_| match copying_png() {
         true => tr!("copied"),
         false => tr!("copy-filetype", {"filetype" => tr!("png")}),
     });
 
-    let copy_png_icon = create_memo(move |_| match copying_png() {
+    let copy_png_icon = Memo::new(move |_| match copying_png() {
         true => BiCheckRegular,
         false => TbPng,
     });
 
-    let (copying_jpg, set_copying_jpg) = create_signal(false);
-    let copy_jpg_msg = create_memo(move |_| match copying_jpg() {
+    let (copying_jpg, set_copying_jpg) = signal(false);
+    let copy_jpg_msg = Memo::new(move |_| match copying_jpg() {
         true => tr!("copied"),
         false => tr!("copy-filetype", {"filetype" => tr!("jpg")}),
     });
 
-    let copy_jpg_icon = create_memo(move |_| match copying_jpg() {
+    let copy_jpg_icon = Memo::new(move |_| match copying_jpg() {
         true => BiCheckRegular,
         false => TbJpg,
     });
 
-    let (copying_brand_name, set_copying_brand_name) = create_signal(false);
-    let copy_brand_name_msg =
-        create_memo(move |_| match copying_brand_name() {
-            true => tr!("copied"),
-            false => tr!("copy-brand-name"),
-        });
+    let (copying_brand_name, set_copying_brand_name) = signal(false);
+    let copy_brand_name_msg = Memo::new(move |_| match copying_brand_name() {
+        true => tr!("copied"),
+        false => tr!("copy-brand-name"),
+    });
 
-    let copy_brand_name_icon =
-        create_memo(move |_| match copying_brand_name() {
-            true => BiCheckRegular,
-            false => VsSymbolNamespace,
-        });
+    let copy_brand_name_icon = Memo::new(move |_| match copying_brand_name() {
+        true => BiCheckRegular,
+        false => VsSymbolNamespace,
+    });
 
-    let (copying_icon_modal_url, set_copying_icon_modal_url) =
-        create_signal(false);
-    let copy_icon_modal_url_msg = create_memo(move |_| {
+    let (copying_icon_modal_url, set_copying_icon_modal_url) = signal(false);
+    let copy_icon_modal_url_msg = Memo::new(move |_| {
         if copying_icon_modal_url() {
             tr!("copied")
         } else {
@@ -440,7 +434,7 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let copy_icon_modal_url_icon = create_memo(move |_| {
+    let copy_icon_modal_url_icon = Memo::new(move |_| {
         if copying_icon_modal_url() {
             BiCheckRegular
         } else {

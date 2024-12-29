@@ -1,5 +1,5 @@
 use crate::Ids;
-use leptos::*;
+use leptos::prelude::*;
 use std::fmt;
 
 /// SVG definitions
@@ -95,16 +95,17 @@ pub fn SVGDefsDefinition() -> impl IntoView {
 #[component]
 pub fn SVGIcon(
     path: impl Into<&'static str>,
-    #[prop(optional, into)] aria_label: Option<MaybeSignal<String>>,
+    #[prop(optional, into)] aria_label: Option<Signal<String>>,
     #[prop(optional)] class: &'static str,
     #[prop(optional)] fill: &'static str,
-    #[prop(optional, into, default = MaybeSignal::Static("24"))]
-    width: MaybeSignal<&'static str>,
-    #[prop(optional, into, default = MaybeSignal::Static("24"))]
-    height: MaybeSignal<&'static str>,
-    #[prop(optional, into, default = MaybeSignal::Static("".into()))] view_box: MaybeSignal<
-        String,
+    #[prop(optional, into, default = Signal::Static("24"))] width: Signal<
+        &'static str,
     >,
+    #[prop(optional, into, default = Signal::Static("24"))] height: Signal<
+        &'static str,
+    >,
+    #[prop(optional, into, default = Signal::Static("".into()))]
+    view_box: Signal<String>,
     #[prop(optional, default = "img")] role: &'static str,
     #[prop(optional, default = true)] aria_hidden: bool,
 ) -> impl IntoView {

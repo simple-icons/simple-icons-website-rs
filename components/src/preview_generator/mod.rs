@@ -14,7 +14,7 @@ use helpers::contrast_color_for;
 use icondata::SiSimpleicons;
 use inputs::{BrandInput, ColorInput, PathInput};
 use lazy_static::lazy_static;
-use leptos::*;
+use leptos::{prelude::*, task::spawn_local};
 use leptos_use::use_device_pixel_ratio;
 use simple_icons::sdk;
 use simple_icons_website_macros::get_number_of_icons;
@@ -71,9 +71,9 @@ fn initial_icon() -> (String, String, String, Option<&'static SimpleIcon>) {
 #[component]
 pub fn PreviewGenerator() -> impl IntoView {
     let (initial_brand, initial_color, initial_path, icon) = initial_icon();
-    let (brand, set_brand) = create_signal(initial_brand);
-    let (color, set_color) = create_signal(initial_color);
-    let (path, set_path) = create_signal(initial_path);
+    let (brand, set_brand) = signal(initial_brand);
+    let (color, set_color) = signal(initial_color);
+    let (path, set_path) = signal(initial_path);
     if path.get_untracked().is_empty() {
         spawn_local(async move {
             if let Some(svg) =
@@ -85,7 +85,7 @@ pub fn PreviewGenerator() -> impl IntoView {
     }
 
     let pixel_ratio = use_device_pixel_ratio();
-    create_effect(move |_| update_preview_canvas(pixel_ratio()));
+    Effect::new(move |_| update_preview_canvas(pixel_ratio()));
 
     view! {
         <div class="preview">
@@ -108,7 +108,7 @@ fn PreviewFigure(
     color: ReadSignal<String>,
     path: ReadSignal<String>,
 ) -> impl IntoView {
-    let fill_color = create_memo(move |_| contrast_color_for(&color()));
+    let fill_color = Memo::new(move |_| contrast_color_for(&color()));
 
     view! {
         <figure class="preview-figure">
@@ -219,9 +219,9 @@ fn PreviewBadges(
     path: ReadSignal<String>,
 ) -> impl IntoView {
     let white_svg =
-        create_memo(move |_| svg_with_path_opt_fill(&path(), Some("FFF")));
+        Memo::new(move |_| svg_with_path_opt_fill(&path(), Some("FFF")));
     let color_svg =
-        create_memo(move |_| svg_with_path_opt_fill(&path(), Some(&color())));
+        Memo::new(move |_| svg_with_path_opt_fill(&path(), Some(&color())));
 
     view! {
         <div class="preview-badges">

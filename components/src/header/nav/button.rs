@@ -1,6 +1,6 @@
 use crate::header::HeaderStateSignal;
 use crate::svg::{IconOrSvg, SVGIcon};
-use leptos::*;
+use leptos::prelude::*;
 use leptos_icons::Icon;
 
 /// Header menu link
@@ -10,7 +10,7 @@ use leptos_icons::Icon;
 pub fn HeaderMenuLink(
     /// Title of the link
     #[prop(into)]
-    title: MaybeSignal<String>,
+    title: Signal<String>,
     /// URL of the link
     href: &'static str,
     /// SVG path of the icon
@@ -18,7 +18,7 @@ pub fn HeaderMenuLink(
     icon: IconOrSvg,
 ) -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
-    let title_fn = create_memo(move |_| title());
+    let title_fn = Memo::new(move |_| title());
 
     view! {
         <li
@@ -60,10 +60,10 @@ pub fn HeaderMenuLink(
 pub fn HeaderMenuButton(
     /// Additional classes to add to the button
     #[prop(into, optional)]
-    class: MaybeSignal<String>,
+    class: Signal<String>,
     /// Title of the button
     #[prop(into)]
-    title: MaybeSignal<String>,
+    title: Signal<String>,
     /// SVG path of the icon
     icon: icondata::Icon,
 ) -> impl IntoView {

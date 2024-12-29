@@ -3,7 +3,7 @@ use crate::copy::copy_inner_text_on_click;
 use crate::svg::{SVGDef, SVGIcon};
 use crate::Url;
 use core::fmt;
-use leptos::{ev::MouseEvent, html::Div, *};
+use leptos::{ev::MouseEvent, html::Div, prelude::*};
 use leptos_fluent::tr;
 use leptos_use::on_click_outside;
 use std::str::FromStr;
@@ -11,7 +11,7 @@ use std::str::FromStr;
 #[component]
 fn ModalHeader(
     /// Title of the modal
-    title: MaybeSignal<String>,
+    title: Signal<String>,
     /// Indicates whether the title is copyable
     #[prop(optional)]
     title_is_copyable: bool,
@@ -44,7 +44,7 @@ pub fn Modal(
     children: ChildrenFn,
     /// Title of the modal
     #[prop(optional, into)]
-    title: MaybeSignal<String>,
+    title: Signal<String>,
     /// Indicates whether the title is copyable
     #[prop(optional)]
     title_is_copyable: bool,
@@ -57,7 +57,7 @@ pub fn Modal(
     #[prop(optional)]
     on_close_focus_search_bar: bool,
 ) -> impl IntoView {
-    let modal_ref = create_node_ref::<Div>();
+    let modal_ref = NodeRef::new();
     _ = on_click_outside(modal_ref, move |_| {
         if is_open.get_untracked() {
             on_close();
@@ -160,7 +160,7 @@ impl ModalOpenSignal {
 }
 
 pub fn provide_modal_open_context() {
-    provide_context(ModalOpenSignal(create_rw_signal(
+    provide_context(ModalOpenSignal(RwSignal::new(
         Url::params::get(&Url::params::Names::Modal)
             .and_then(|value| value.parse().ok()),
     )));

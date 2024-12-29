@@ -18,26 +18,20 @@ simple-icons-website-macros = { path = "./macros" }
 simple-icons-website-config = { path = "./config" }
 simple-icons-website-types = { path = "./types" }
 simple-icons-website-components = { path = "./components" }
-leptos = { version = "0.6.15", default-features = false, features = [
+leptos = { version = "0.7", default-features = false, features = [
     "csr",
     "nightly",
 ] }
-leptos_meta = { version = "0.6.15", default-features = false, features = [
-    "csr",
-    "nightly"
-] }
-leptos_router = { version = "0.6.15", default-features = false, features = [
-    "csr",
-    "nightly"
-] }
+leptos_meta = "0.7"
+leptos_router = "0.7"
 leptos-use = "0.13"
-leptos-fluent = { version = "0.1", default-features = false, features = [
+leptos-fluent = { path = "../leptos-fluent/leptos-fluent", features = [
     "nightly"
 ] }
 fluent-templates = "0.11"
-leptos_hotkeys = "0.2.1"
-leptos_icons = "0.3"
-icondata = { version = "0.4", default-features = false, features = [
+leptos_hotkeys = { git = "https://github.com/phillipbaird/leptos-hotkeys.git", branch = "leptos_0.7" }
+leptos_icons = "0.4"
+icondata = { version = "0.5", default-features = false, features = [
     "simple-icons",
     "charm",
     "tabler-icons",
@@ -50,7 +44,7 @@ icondata = { version = "0.4", default-features = false, features = [
     "vs-code-icons",
 ] }
 console_error_panic_hook = "0.1"
-wasm-bindgen = "0.2.92"
+wasm-bindgen = "0.2.96"
 web-sys = { version = "0.3", default-features = false, features = [
     "Blob",
     "DomTokenList",

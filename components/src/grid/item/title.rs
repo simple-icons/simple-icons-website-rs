@@ -1,5 +1,5 @@
 use crate::copy::copy_and_set_copied_transition;
-use leptos::{ev::MouseEvent, *};
+use leptos::{ev::MouseEvent, prelude::*};
 use leptos_fluent::{tr, Language};
 use simple_icons_website_types::SimpleIcon;
 use web_sys;

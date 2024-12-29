@@ -8,7 +8,7 @@ use crate::grid::CurrentIconViewSignal;
 use crate::modal::ModalOpenSignal;
 use crate::svg::{SVGDef, SVGIcon};
 use leptos::ev::MouseEvent;
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::{move_tr, tr};
 use simple_icons_website_types::SimpleIcon;
 use web_sys;

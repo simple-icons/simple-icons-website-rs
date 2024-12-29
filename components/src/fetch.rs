@@ -1,4 +1,5 @@
-use {leptos::window, wasm_bindgen::JsCast};
+use leptos::prelude::window;
+use wasm_bindgen::JsCast;
 
 /// Fetch a resource forcing the retrieval from the cache
 ///

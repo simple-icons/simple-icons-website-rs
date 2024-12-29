@@ -1,5 +1,5 @@
 use crate::app::TITLE;
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::tr;
 use leptos_meta::*;
 use simple_icons_website_config::CONFIG;

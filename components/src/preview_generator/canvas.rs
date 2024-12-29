@@ -1,7 +1,7 @@
 use js_sys::Math;
 use leptos::{
+    prelude::*,
     wasm_bindgen::{closure::Closure, JsCast},
-    *,
 };
 
 pub(crate) static WIDTH: u32 = 740;
@@ -78,7 +78,7 @@ pub(crate) fn create_badge_image_for_canvas(
 
 macro_rules! draw_badge_impl {
     ($badge_index:literal, $x:literal, $y:literal$(,)?) => {{
-        let badge_img_src = ::leptos::document()
+        let badge_img_src = ::leptos::prelude::document()
             .get_elements_by_class_name("preview-badges")
             .item(0)
             .unwrap()

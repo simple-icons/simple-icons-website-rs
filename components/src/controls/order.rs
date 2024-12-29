@@ -5,7 +5,7 @@ use crate::controls::search::{
 };
 use crate::grid::{IconsGrid, IconsGridSignal, IconsIndexSignal};
 use crate::storage::LocalStorage;
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
@@ -33,7 +33,7 @@ pub struct OrderMode {
 pub fn provide_order_mode_context(initial_search_value: &str) -> OrderMode {
     let initial_order_mode =
         get_order_mode_from_localstorage_and_search_value(initial_search_value);
-    provide_context(OrderModeSignal(create_rw_signal(initial_order_mode)));
+    provide_context(OrderModeSignal(RwSignal::new(initial_order_mode)));
     initial_order_mode
 }
 
@@ -164,9 +164,9 @@ pub fn OrderControl() -> impl IntoView {
     let icons_grid = expect_context::<IconsGridSignal>().0;
     let search_signal = expect_context::<SearchValueSignal>().0;
     let layout_signal = expect_context::<LayoutSignal>().0;
-    let icons = store_value(expect_context::<IconsIndexSignal>().0);
+    let icons = StoredValue::new(expect_context::<IconsIndexSignal>().0);
 
-    create_effect(move |_| match order_mode.get_untracked().current {
+    Effect::new(move |_| match order_mode.get_untracked().current {
         OrderModeVariant::Random => set_order_mode(
             &OrderModeVariant::Random,
             &order_mode,

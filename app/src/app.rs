@@ -9,7 +9,7 @@ use components::Url;
 use fluent_templates::static_loader;
 use leptos::{
     html::{Footer as FooterHtmlElement, Main as MainHtmlElement},
-    *,
+    prelude::*,
 };
 use leptos_fluent::leptos_fluent;
 use leptos_hotkeys::{provide_hotkeys_context, scopes};
@@ -73,14 +73,14 @@ pub fn App() -> impl IntoView {
 
     // Create a context to store a node reference to the footer
     // to use it in other components of pages
-    let footer_ref = create_node_ref::<FooterHtmlElement>();
+    let footer_ref = NodeRef::new();
     provide_context::<NodeRef<FooterHtmlElement>>(footer_ref);
 
     // Create a context to store the current opened modal
     provide_modal_open_context();
 
     // Create a context to store keyboard shortcuts
-    let main_ref = create_node_ref::<MainHtmlElement>();
+    let main_ref = NodeRef::new();
     provide_hotkeys_context(main_ref, false, scopes!());
 
     view! {

@@ -11,7 +11,7 @@ pub(crate) mod head;
 pub(crate) mod pages;
 
 use crate::app::App;
-use leptos::{document, mount_to_body, view};
+use leptos::{mount_to_body, prelude::document, view};
 
 pub fn main() {
     console_error_panic_hook::set_once();

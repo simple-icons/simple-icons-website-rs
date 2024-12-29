@@ -1,5 +1,5 @@
 use crate::svg::{IconOrSvg, SVGIcon};
-use leptos::*;
+use leptos::prelude::*;
 use leptos_icons::Icon;
 use leptos_use::use_media_query;
 
@@ -14,7 +14,7 @@ pub fn ControlButton(
     children: Children,
     /// The control is active
     #[prop(into)]
-    active: MaybeSignal<bool>,
+    active: Signal<bool>,
     /// Optional classes
     #[prop(optional)]
     class: &'static str,
@@ -36,15 +36,15 @@ pub fn ControlButtonIcon(
     icon: IconOrSvg,
     /// The control is active
     #[prop(into)]
-    active: MaybeSignal<bool>,
+    active: Signal<bool>,
     /// Optional classes
     #[prop(optional)]
     class: &'static str,
 ) -> impl IntoView {
-    let title_fn = create_memo(move |_| title());
+    let title_fn = Memo::new(move |_| title());
     let is_xs_screen = use_media_query("(max-width: 475px)");
     let size =
-        create_memo(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
+        Memo::new(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
 
     view! {
         <ControlButton title active class>

@@ -1,6 +1,6 @@
 use crate::grid::{icons_loader::IconsLoaderSignal, IconsGridSignal};
 use icondata::{RiArrowDownCircleArrowsLine, RiArrowUpCircleArrowsLine};
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use leptos_icons::Icon;
 use leptos_use::use_window_scroll;
@@ -9,7 +9,7 @@ use leptos_use::use_window_scroll;
 pub fn ScrollButton(
     /// The title of the button
     #[prop(into)]
-    title: MaybeSignal<String>,
+    title: Signal<String>,
     /// The SVG path of the icon
     icon: icondata::Icon,
     /// Additional classes to be added to the button

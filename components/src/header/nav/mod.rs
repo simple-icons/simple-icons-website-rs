@@ -9,7 +9,7 @@ use icondata::{
     SiOpencollective, SiPackagist,
 };
 use language_selector::LanguageSelector;
-use leptos::*;
+use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use third_party_extensions::ThirdPartyExtensions;
 
