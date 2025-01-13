@@ -39,32 +39,32 @@ jobs:
             command: test
             browser: chrome
             project: chrome-desktop
-            runs-on: ubuntu-latest
+            runs-on: ubuntu-22.04
           - name: MsEdge Desktop
             command: test
             browser: msedge
             project: msedge-desktop
-            runs-on: ubuntu-latest
+            runs-on: ubuntu-22.04
           - name: Firefox Desktop
             command: test
             browser: firefox
             project: firefox-desktop
-            runs-on: ubuntu-latest
+            runs-on: ubuntu-22.04
           - name: Safari Desktop
             command: test
             browser: webkit
             project: webkit-desktop
-            runs-on: ubuntu-latest
+            runs-on: ubuntu-22.04
           - name: Chromium Mobile
             command: test
             browser: chromium
             project: chromium-mobile
-            runs-on: ubuntu-latest
+            runs-on: ubuntu-22.04
           - name: Chromium Mobile Landscape
             command: test
             browser: chromium
             project: chromium-mobile-landscape
-            runs-on: ubuntu-latest
+            runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
