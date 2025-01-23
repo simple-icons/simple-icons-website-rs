@@ -5,10 +5,10 @@ use leptos_icons::Icon;
 pub fn Menu(
     #[prop(optional, into)] class: Signal<String>,
     children: Children,
-    #[prop(optional)] ref_: NodeRef<Ul>,
+    node_ref: NodeRef<Ul>,
 ) -> impl IntoView {
     view! {
-        <ul ref_=ref_ class=move || format!("rounded-sm p-1 z-50 {}", class())>
+        <ul node_ref=node_ref class=move || format!("rounded-sm p-1 z-50 {}", class())>
             {children()}
         </ul>
     }
@@ -36,13 +36,13 @@ pub fn MenuItem(
                             <Icon width="24px" height="24px" icon />
                         </span>
                     }
-                        .into_view()
+                        .into_any()
                 }
-                None => Fragment::new(vec![]).into_view(),
+                None => view!().into_any(),
             }} {text}
             {match children {
-                Some(child) => child().into_view(),
-                None => Fragment::new(vec![]).into_view(),
+                Some(child) => child().into_any(),
+                None => view!().into_any(),
             }}
 
         </li>

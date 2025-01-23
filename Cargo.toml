@@ -24,13 +24,11 @@ leptos = { version = "0.7", default-features = false, features = [
 ] }
 leptos_meta = "0.7"
 leptos_router = "0.7"
-leptos-use = "0.13"
-leptos-fluent = { path = "../leptos-fluent/leptos-fluent", features = [
-    "nightly"
-] }
-fluent-templates = "0.11"
-leptos_hotkeys = { git = "https://github.com/phillipbaird/leptos-hotkeys.git", branch = "leptos_0.7" }
-leptos_icons = "0.4"
+leptos-use = "0.15"
+leptos-fluent = { version = "0.2.3", features = ["nightly"] }
+fluent-templates = "0.13"
+#leptos_hotkeys = { git = "https://github.com/phillipbaird/leptos-hotkeys.git", branch = "leptos_0.7" }
+leptos_icons = "0.5"
 icondata = { version = "0.5", default-features = false, features = [
     "simple-icons",
     "charm",

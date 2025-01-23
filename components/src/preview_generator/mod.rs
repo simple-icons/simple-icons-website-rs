@@ -174,14 +174,14 @@ fn PreviewFigure(
                                     {title_2}
                                 </text>
                             }
-                                .into_view()
+                                .into_any()
                         } else {
                             view! {
                                 <text fill=fill_color font-size="25">
                                     {preview_title}
                                 </text>
                             }
-                                .into_view()
+                                .into_any()
                         }
                     }}
 

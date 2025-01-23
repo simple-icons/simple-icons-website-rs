@@ -164,7 +164,7 @@ pub fn OrderControl() -> impl IntoView {
     let icons_grid = expect_context::<IconsGridSignal>().0;
     let search_signal = expect_context::<SearchValueSignal>().0;
     let layout_signal = expect_context::<LayoutSignal>().0;
-    let icons = StoredValue::new(expect_context::<IconsIndexSignal>().0);
+    let icons = move || expect_context::<IconsIndexSignal>().0;
 
     Effect::new(move |_| match order_mode.get_untracked().current {
         OrderModeVariant::Random => set_order_mode(
@@ -236,7 +236,7 @@ pub fn OrderControl() -> impl IntoView {
                 />
 
                 {move || match search_signal().is_empty() {
-                    true => Fragment::new(vec![]).into_view(),
+                    true => view!().into_any(),
                     false => {
                         view! {
                             <ControlButtonIcon
@@ -256,6 +256,7 @@ pub fn OrderControl() -> impl IntoView {
                                 )
                             />
                         }
+                            .into_any()
                     }
                 }}
 

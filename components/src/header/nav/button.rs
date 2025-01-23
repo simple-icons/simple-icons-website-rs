@@ -32,7 +32,7 @@ pub fn HeaderMenuLink(
 
             {match icon {
                 IconOrSvg::Icon(icon) => {
-                    view! { <Icon icon width="36px" height="36px" /> }
+                    view! { <Icon icon width="36px" height="36px" /> }.into_any()
                 }
                 value => {
                     view! {
@@ -46,6 +46,7 @@ pub fn HeaderMenuLink(
                             }
                         />
                     }
+                        .into_any()
                 }
             }}
 

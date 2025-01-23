@@ -16,8 +16,8 @@ use icondata::{
     BsWindowFullscreen, IoColorWand, TbJpg, TbPdf, TbPng, TbSvg,
     VsSymbolNamespace,
 };
-use leptos::{html::Ul, prelude::*, task::spawn_local, wasm_bindgen::JsCast};
-use leptos_fluent::{expect_i18n, move_tr, tr};
+use leptos::{prelude::*, task::spawn_local, wasm_bindgen::JsCast};
+use leptos_fluent::{move_tr, tr, I18n};
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
 use simple_icons_website_types::SimpleIcon;
@@ -63,8 +63,11 @@ fn get_hex_from_modal_container() -> String {
         .inner_text()
 }
 
-pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
-    let language = expect_i18n().language.get();
+pub fn fill_icon_details_modal_with_icon(
+    i18n: I18n,
+    icon: &'static SimpleIcon,
+) {
+    let language = i18n.language.get();
     let icon_localized_title = get_icon_localized_title(icon, language);
 
     let modal_body = document()
@@ -96,7 +99,7 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
     modal_slug
         .set_attribute(
             "title",
-            &tr!("copy-icon-slug", {
+            &tr!(i18n, "copy-icon-slug", {
                 "icon" => icon_localized_title,
                 "slug" => icon.slug,
             }),
@@ -142,7 +145,7 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
     modal_preview_button
         .set_attribute(
             "title",
-            &tr!("copy-icon-svg", {
+            &tr!(i18n, "copy-icon-svg", {
                 "icon" => icon_localized_title,
             }),
         )
@@ -218,6 +221,7 @@ pub fn fill_icon_details_modal_with_icon(icon: &'static SimpleIcon) {
 
     if let Some(deprecation) = icon.deprecation {
         modal_deprecation_paragraph.set_inner_html(&tr!(
+            i18n,
             "will-be-removed-at-extended",
             {
                 "icon" => icon_localized_title,
@@ -472,7 +476,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                     </span>
                     <Show when=controls_open>
                         <Menu
-                            ref_=menu_ref
+                            node_ref=menu_ref
                             class=concat!(
                                 "absolute top-8 right-1 text-sm",
                                 " border-custom-divider-color bg-slate-300 dark:bg-gray-700",

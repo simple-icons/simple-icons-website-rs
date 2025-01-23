@@ -98,13 +98,13 @@ pub fn SVGIcon(
     #[prop(optional, into)] aria_label: Option<Signal<String>>,
     #[prop(optional)] class: &'static str,
     #[prop(optional)] fill: &'static str,
-    #[prop(optional, into, default = Signal::Static("24"))] width: Signal<
+    #[prop(optional, into, default = Signal::derive(|| "24"))] width: Signal<
         &'static str,
     >,
-    #[prop(optional, into, default = Signal::Static("24"))] height: Signal<
+    #[prop(optional, into, default = Signal::derive(|| "24"))] height: Signal<
         &'static str,
     >,
-    #[prop(optional, into, default = Signal::Static("".into()))]
+    #[prop(optional, into, default = Signal::derive(|| "".into()))]
     view_box: Signal<String>,
     #[prop(optional, default = "img")] role: &'static str,
     #[prop(optional, default = true)] aria_hidden: bool,

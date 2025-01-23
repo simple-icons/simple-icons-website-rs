@@ -3,7 +3,7 @@ use crate::copy::copy_inner_text_on_click;
 use crate::svg::{SVGDef, SVGIcon};
 use crate::Url;
 use core::fmt;
-use leptos::{ev::MouseEvent, html::Div, prelude::*};
+use leptos::{ev::MouseEvent, prelude::*};
 use leptos_fluent::tr;
 use leptos_use::on_click_outside;
 use std::str::FromStr;
@@ -82,7 +82,7 @@ pub fn Modal(
             }
             cls
         }>
-            <div ref_=modal_ref class="modal">
+            <div node_ref=modal_ref class="modal">
                 <ModalHeader
                     title
                     title_is_copyable=title_is_copyable

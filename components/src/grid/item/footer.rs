@@ -9,7 +9,7 @@ use crate::modal::ModalOpenSignal;
 use crate::svg::{SVGDef, SVGIcon};
 use leptos::ev::MouseEvent;
 use leptos::prelude::*;
-use leptos_fluent::{move_tr, tr};
+use leptos_fluent::{expect_i18n, move_tr, tr};
 use simple_icons_website_types::SimpleIcon;
 use web_sys;
 
@@ -38,6 +38,8 @@ pub fn IconGridItemFooter(
     let view_icon_button_title =
         move || tr!("view-icon", {"icon" => icon_localized_title()});
 
+    let i18n = expect_i18n();
+
     view! {
         <div>
             <button
@@ -51,12 +53,12 @@ pub fn IconGridItemFooter(
                 }
             >
 
-                {css_hex}
+                {css_hex.clone()}
             </button>
             <button
                 title=view_icon_button_title
                 on:click=move |_| {
-                    fill_icon_details_modal_with_icon(icon);
+                    fill_icon_details_modal_with_icon(i18n, icon);
                     current_icon_view.update(|state| *state = Some(icon));
                     modal_open.set_icon();
                 }

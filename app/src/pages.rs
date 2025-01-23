@@ -1,5 +1,4 @@
 //! Application pages
-use components::button::Button;
 use components::controls::color_scheme::ColorSchemeControl;
 use components::controls::download::provide_download_type_context;
 use components::controls::layout::provide_layout_context;
@@ -14,7 +13,12 @@ use components::preview_generator::PreviewGenerator;
 use icondata::{BsGrid3x2GapFill, IoWarningSharp, VsPreview};
 use leptos::prelude::*;
 use leptos_fluent::move_tr;
-use leptos_router::{use_navigate, use_query_map, NavigateOptions};
+use leptos_icons::Icon;
+use leptos_router::{
+    components::A,
+    hooks::{use_navigate, use_query_map},
+    NavigateOptions,
+};
 
 fn index_redirections() {
     let query_map = use_query_map().get_untracked();
@@ -86,18 +90,14 @@ pub fn Preview() -> impl IntoView {
                 " relative left-4 lg:left-0 mt-2 sm:mt-7",
                 " max-w-auto lg:max-w-[114px]",
             )>
-                <Button
-                    class="mx-auto max-h-[40px] ml-0 lg:ml-1"
-                    title=move_tr!("icons")
-                    on:click=move |_| use_navigate()("/", Default::default())
-                    icon=BsGrid3x2GapFill
-                />
-                <Button
-                    class="mx-auto max-h-[40px] ml-2 lg:-ml-1.5"
-                    title=move_tr!("deprecations")
-                    on:click=move |_| use_navigate()("/deprecations", Default::default())
-                    icon=IoWarningSharp
-                />
+                <A attr:class="button mx-auto max-h-[40px] ml-0 lg:ml-1" href="/">
+                    <Icon icon=BsGrid3x2GapFill width="24px" height="24px" />
+                    {move_tr!("icons")}
+                </A>
+                <A attr:class="button mx-auto max-h-[40px] ml-2 lg:-ml-1.5" href="/deprecations">
+                    <Icon icon=IoWarningSharp width="24px" height="24px" />
+                    {move_tr!("deprecations")}
+                </A>
             </div>
         </menu>
         <div class="page-padding-x flex justify-center">
@@ -120,29 +120,23 @@ pub fn Error404() -> impl IntoView {
             <ul class="flex flex-col sm:flex-row py-5">
 
                 <li class="flex p-1">
-                    <Button
-                        class="mx-auto"
-                        title=move_tr!("icons")
-                        on:click=move |_| use_navigate()("/", Default::default())
-                        icon=BsGrid3x2GapFill
-                    />
+                    <A attr:class="button mx-auto" href="/">
+                        <Icon icon=BsGrid3x2GapFill width="24px" height="24px" />
+                        {move_tr!("icons")}
+                    </A>
                 </li>
 
                 <li class="flex p-1">
-                    <Button
-                        class="mx-auto"
-                        title=move_tr!("deprecations")
-                        on:click=move |_| use_navigate()("/deprecations", Default::default())
-                        icon=IoWarningSharp
-                    />
+                    <A attr:class="button mx-auto" href="/deprecations">
+                        <Icon icon=IoWarningSharp width="24px" height="24px" />
+                        {move_tr!("deprecations")}
+                    </A>
                 </li>
                 <li class="flex p-1">
-                    <Button
-                        class="mx-auto"
-                        title=move_tr!("preview-generator")
-                        on:click=move |_| use_navigate()("/preview", Default::default())
-                        icon=VsPreview
-                    />
+                    <A attr:class="button mx-auto" href="/preview">
+                        <Icon icon=VsPreview width="24px" height="24px" />
+                        {move_tr!("preview-generator")}
+                    </A>
                 </li>
             </ul>
         </div>

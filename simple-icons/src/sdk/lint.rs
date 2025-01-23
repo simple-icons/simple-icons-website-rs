@@ -107,7 +107,8 @@ pub mod errors {
 type Path = String;
 type Range = (u32, u32);
 pub type LintErrorFix = (Path, Range);
-pub type LintErrorFixer = &'static dyn Fn(&str, Range) -> LintErrorFix;
+pub type LintErrorFixer =
+    &'static (dyn Fn(&str, Range) -> LintErrorFix + std::marker::Sync);
 pub type LintError =
     (errors::PathLintError, Option<Range>, Option<LintErrorFixer>);
 

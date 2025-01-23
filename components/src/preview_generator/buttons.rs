@@ -1,15 +1,14 @@
-use crate::button::Button;
 use crate::controls::download::download;
 use crate::copy::copy_canvas_container_as_image;
 use crate::grid::ICONS;
 use crate::preview_generator::{
     canvas::canvas as canvas_container, helpers::is_valid_hex_color,
 };
-use crate::svg::{svg_with_title_path_opt_fill, SVGDef};
+use crate::svg::{svg_with_title_path_opt_fill, SVGDef, SVGIcon};
 use crate::Ids;
 use leptos::{prelude::*, task::spawn_local, wasm_bindgen::JsCast};
 use leptos_fluent::{move_tr, tr};
-use leptos_hotkeys::use_hotkeys;
+//use leptos_hotkeys::use_hotkeys;
 use simple_icons::sdk;
 
 #[component]
@@ -41,9 +40,12 @@ fn PreviewUploadSVGButton(
     set_path: WriteSignal<String>,
 ) -> impl IntoView {
     let input_id = Ids::PreviewUploadSVGButton.as_str();
+    /*
+    // TODO: re-enable hotkeys
     use_hotkeys!(("controlleft+arrowup,controlright+arrowup") => move |_| {
         document().get_element_by_id(input_id).unwrap().unchecked_into::<web_sys::HtmlInputElement>().click();
     });
+    */
 
     async fn on_upload_svg_file(
         file: web_sys::File,
@@ -133,9 +135,11 @@ fn PreviewUploadSVGButton(
                 }
             />
 
-            <Button
-                icon=&SVGDef::Upload
+            <button
                 title=move_tr!("upload-svg")
+                class="button"
+                type="button"
+                tabindex=0
                 on:click=move |ev| {
                     event_target::<web_sys::HtmlButtonElement>(&ev)
                         .previous_element_sibling()
@@ -144,8 +148,10 @@ fn PreviewUploadSVGButton(
                         .unwrap()
                         .click();
                 }
-            />
-
+            >
+                <SVGIcon width="24" height="24" aria_hidden=true path=SVGDef::Upload.d() />
+                {move_tr!("upload-svg")}
+            </button>
         </form>
     }
 }
@@ -155,13 +161,17 @@ fn PreviewCopyButton() -> impl IntoView {
     let (copied, set_copied) = signal(false);
 
     let button_id = Ids::PreviewCopyButton.as_str();
+    /*
+    // TODO: re-enable hotkeys
     use_hotkeys!(("controlleft+keyc,controlright+keyc") => move |_| {
         document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
     });
+    */
 
     view! {
         <button
             class="button"
+            type="button"
             id=button_id
             on:click=move |_| {
                 let canvas = canvas_container();
@@ -190,22 +200,30 @@ fn PreviewCopyButton() -> impl IntoView {
 #[component]
 fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
     let button_id = Ids::PreviewSaveButton.as_str();
+    /*
+    // TODO: re-enable hotkeys
     use_hotkeys!(("controlleft+keys,controlright+keys") => move |_| {
         document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
     });
+    */
 
     view! {
-        <Button
-            icon=&SVGDef::Save
-            title=Signal::derive(move || tr!("save-preview"))
+        <button
+            title=move || tr!("save-preview")
+            class="button"
+            type="button"
             id=button_id
+            tabindex=0
             on:click=move |_| {
                 let canvas = canvas_container();
                 let filename = format!("{}.png", &sdk::title_to_slug(&brand()));
                 let url = canvas.to_data_url().unwrap();
                 download(&filename, &url);
             }
-        />
+        >
+            <SVGIcon width="24" height="24" aria_hidden=true path=SVGDef::Save.d() />
+            {move || tr!("save-preview")}
+        </button>
     }
 }
 
@@ -215,15 +233,21 @@ fn PreviewDownloadSVGButton(
     path: ReadSignal<String>,
 ) -> impl IntoView {
     let button_id = Ids::PreviewDownloadSVGButton.as_str();
+
+    /*
+    // TODO: re-enable hotkeys
     use_hotkeys!(("controlleft+arrowdown,controlright+arrodown") => move |_| {
         document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
     });
+    */
 
     view! {
-        <Button
+        <button
             title=move_tr!("download-filetype", { "filetype" => tr!("svg") })
-            icon=&SVGDef::Download
+            class="button"
             id=button_id
+            type="button"
+            tabindex=0
             on:click=move |_| {
                 let filename = format!("{}.svg", &sdk::title_to_slug(&brand()));
                 let url = format!(
@@ -234,6 +258,9 @@ fn PreviewDownloadSVGButton(
                 );
                 download(&filename, &url);
             }
-        />
+        >
+            <SVGIcon width="24" height="24" aria_hidden=true path=SVGDef::Download.d() />
+            {move_tr!("download-filetype", { "filetype" => tr!("svg") })}
+        </button>
     }
 }

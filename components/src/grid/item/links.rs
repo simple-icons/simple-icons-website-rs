@@ -28,7 +28,8 @@ pub fn IconGridItemLinks(
                                 >
                                     {brand_guidelines}
                                 </a>
-                            },
+                            }
+                                .into_any(),
                         );
                 }
                 if license_type.is_some() || license_url.is_some() {
@@ -63,7 +64,8 @@ pub fn IconGridItemLinks(
                                 >
                                     {title}
                                 </a>
-                            },
+                            }
+                                .into_any(),
                         );
                 }
                 links
