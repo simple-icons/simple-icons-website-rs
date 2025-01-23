@@ -45,12 +45,7 @@ pub struct SimpleIconData {
     pub aliases: Option<SimpleIconDataAliases>,
 }
 
-#[derive(DeJson)]
-pub struct SimpleIconsData {
-    pub icons: Vec<SimpleIconData>,
-}
-
-pub fn get_simple_icons_data() -> SimpleIconsData {
+pub fn get_simple_icons_data() -> Vec<SimpleIconData> {
     let icons_data_file =
         path::Path::new("node_modules/simple-icons/_data/simple-icons.json");
     let icons_data_raw = fs::read_to_string(icons_data_file)

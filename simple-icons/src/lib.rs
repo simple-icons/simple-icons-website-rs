@@ -25,9 +25,9 @@ pub struct SimpleIcon {
 pub fn get_simple_icons(max_icons: Option<usize>) -> Vec<SimpleIcon> {
     let simple_icons_data = get_simple_icons_data();
     let mut simple_icons: Vec<SimpleIcon> =
-        Vec::with_capacity(simple_icons_data.icons.len());
+        Vec::with_capacity(simple_icons_data.len());
 
-    for icon_data in simple_icons_data.icons {
+    for icon_data in simple_icons_data {
         let icon = SimpleIcon {
             slug: match icon_data.slug {
                 Some(slug) => slug,
