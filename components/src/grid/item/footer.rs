@@ -1,5 +1,5 @@
 use crate::controls::{
-    download::{download_pdf, download_svg, DownloadType, DownloadTypeSignal},
+    download::{download_png, download_svg, DownloadType, DownloadTypeSignal},
     search::focus_search_bar,
 };
 use crate::copy::copy_and_set_copied_transition;
@@ -73,7 +73,7 @@ pub fn IconGridItemFooter(
                     if download_type() == DownloadType::SVG {
                         download_svg(icon.slug);
                     } else {
-                        download_pdf(icon.slug);
+                        download_png(icon.slug);
                     }
                     focus_search_bar();
                 }
