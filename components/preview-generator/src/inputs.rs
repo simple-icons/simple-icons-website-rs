@@ -1,11 +1,9 @@
-use crate::controls::search::fuzzy::search;
-use crate::event::dispatch_input_event_on_input;
-use crate::fetch::fetch_text;
-use crate::grid::ICONS;
-use crate::js_libs::svg::svg_path_bbox;
-use crate::preview_generator::{
-    canvas::update_preview_canvas, helpers::is_valid_hex_color,
-};
+use crate::{canvas::update_preview_canvas, helpers::is_valid_hex_color};
+use components::controls::search::fuzzy::search;
+use components::event::dispatch_input_event_on_input;
+use components::fetch::fetch_text;
+use components::grid::ICONS;
+use components::js_libs::svg::svg_path_bbox;
 use leptos::{html::Input, prelude::*, task::spawn_local};
 use leptos_fluent::{move_tr, tr};
 use leptos_use::{on_click_outside, use_device_pixel_ratio};

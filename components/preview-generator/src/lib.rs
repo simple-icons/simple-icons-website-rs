@@ -1,15 +1,15 @@
 mod buttons;
 mod canvas;
-pub(crate) mod helpers;
+mod helpers;
 mod inputs;
 
-use crate::controls::search::fuzzy::search;
-use crate::fetch::fetch_text;
-use crate::grid::ICONS;
-use crate::svg::svg_with_path_opt_fill;
-use crate::Url;
 use buttons::PreviewButtons;
 use canvas::update_preview_canvas;
+use components::controls::search::fuzzy::search;
+use components::fetch::fetch_text;
+use components::grid::ICONS;
+use components::svg::svg_with_path_opt_fill;
+use components::Url;
 use helpers::contrast_color_for;
 use icondata::SiSimpleicons;
 use inputs::{BrandInput, ColorInput, PathInput};

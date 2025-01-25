@@ -1,11 +1,9 @@
-use crate::controls::download::download;
-use crate::copy::copy_canvas_container_as_image;
-use crate::grid::ICONS;
-use crate::preview_generator::{
-    canvas::canvas as canvas_container, helpers::is_valid_hex_color,
-};
-use crate::svg::{svg_with_title_path_opt_fill, SVGDef, SVGIcon};
-use crate::Ids;
+use crate::{canvas::canvas as canvas_container, helpers::is_valid_hex_color};
+use components::controls::download::download;
+use components::copy::copy_canvas_container_as_image;
+use components::grid::ICONS;
+use components::svg::{svg_with_title_path_opt_fill, SVGDef, SVGIcon};
+use components::Ids;
 use leptos::{prelude::*, task::spawn_local, wasm_bindgen::JsCast};
 use leptos_fluent::{move_tr, tr};
 use leptos_hotkeys::use_hotkeys;

@@ -92,7 +92,7 @@ macro_rules! draw_badge_impl {
             .unwrap()
             .src();
 
-        $crate::preview_generator::canvas::create_badge_image_for_canvas(
+        $crate::canvas::create_badge_image_for_canvas(
             $badge_index,
             &badge_img_src,
             $x as f64,

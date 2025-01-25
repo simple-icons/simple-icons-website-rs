@@ -9,7 +9,6 @@ use components::grid::{
     provide_icons_grid_contexts, Grid, IconsIndexSignal, DEPRECATED_ICONS,
     ICONS,
 };
-use components::preview_generator::PreviewGenerator;
 use icondata::{BsGrid3x2GapFill, IoWarningSharp, VsPreview};
 use leptos::prelude::*;
 use leptos_fluent::move_tr;
@@ -19,6 +18,7 @@ use leptos_router::{
     hooks::{use_navigate, use_query_map},
     NavigateOptions,
 };
+use preview_generator::PreviewGenerator;
 
 fn index_redirections() {
     let query_map = use_query_map().get_untracked();

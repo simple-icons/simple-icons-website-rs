@@ -2333,6 +2333,7 @@ dependencies = [
  "simple-icons-website-components",
  "simple-icons-website-config",
  "simple-icons-website-macros",
+ "simple-icons-website-preview-generator",
 ]
 
 [[package]]
@@ -2341,18 +2342,14 @@ version = "0.1.0"
 dependencies = [
  "icondata",
  "js-sys",
- "lazy_static",
  "leptos",
  "leptos-fluent",
  "leptos-use",
- "leptos_hotkeys",
  "leptos_icons",
  "rand",
- "simple-icons",
  "simple-icons-website-config",
  "simple-icons-website-macros",
  "simple-icons-website-types",
- "svg-path-cst",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
@@ -2375,6 +2372,27 @@ dependencies = [
  "simple-icons-website-config",
  "simple-icons-website-types",
  "syn",
+]
+
+[[package]]
+name = "simple-icons-website-preview-generator"
+version = "0.1.0"
+dependencies = [
+ "icondata",
+ "js-sys",
+ "lazy_static",
+ "leptos",
+ "leptos-fluent",
+ "leptos-use",
+ "leptos_hotkeys",
+ "simple-icons",
+ "simple-icons-website-components",
+ "simple-icons-website-macros",
+ "simple-icons-website-types",
+ "svg-path-cst",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]

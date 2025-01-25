@@ -37,7 +37,7 @@ fn I18n(children: Children) -> impl IntoView {
         locales: "./locales",
         translations: [TRANSLATIONS],
         #[cfg(debug_assertions)]
-        check_translations: "../{app,components}/src/**/*.rs",
+        check_translations: "../{app,components}/**/*.rs",
         sync_html_tag_lang: true,
         sync_html_tag_dir: true,
         url_param: Url::params::Names::Language.as_str(),

@@ -32,7 +32,7 @@ const parseRootCssVariables = (): Array<string> => {
 
 export default {
   content: {
-    files: ['index.html', '../{app,components}/src/**/*.{css,rs}'],
+    files: ['index.html', '../{app,components}/**/*.{css,rs}'],
   },
   theme: {
     extend: {
