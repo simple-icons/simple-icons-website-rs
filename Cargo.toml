@@ -27,6 +27,7 @@ leptos_router = "0.7"
 leptos-use = "0.15"
 leptos-fluent = { version = "0.2", features = ["nightly"] }
 fluent-templates = "0.13"
+# TODO: release leptos-hotkeys v0.3
 leptos_hotkeys = { git = "https://github.com/mondeja/leptos-hotkeys.git", branch = "relax-deps" }
 leptos_icons = "0.5"
 icondata = { version = "0.5", default-features = false, features = [
