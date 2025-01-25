@@ -1453,7 +1453,7 @@ dependencies = [
 [[package]]
 name = "leptos_hotkeys"
 version = "0.3.0"
-source = "git+https://github.com/mondeja/leptos-hotkeys.git?branch=relax-deps#0767fc7414b93a7acf4b8e1ee049544afe0bc5fa"
+source = "git+https://github.com/gaucho-labs/leptos-hotkeys.git?branch=leptos-0.7#e5026bea938da19e8c8aea2866b987f5df03a2c1"
 dependencies = [
  "leptos",
  "send_wrapper",
