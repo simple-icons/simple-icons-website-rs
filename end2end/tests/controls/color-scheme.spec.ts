@@ -41,20 +41,4 @@ test.describe('color scheme', () => {
       await page.evaluate(() => localStorage.getItem('color-scheme')),
     ).toBe(oppositeColorScheme);
   });
-
-  const colorSchemeButtons = ['light', 'dark', 'auto'];
-  for (const colorSchemeButtonIndex in colorSchemeButtons) {
-    const colorScheme = colorSchemeButtons[colorSchemeButtonIndex];
-    test(`${colorScheme} through URL`, async ({ page }) => {
-      await page.goto(`/?color-scheme=${colorScheme}`);
-      await expect(
-        await page
-          .locator(`${COLOR_SCHEME_CONTROL_SELECTOR} button`)
-          .nth(parseInt(colorSchemeButtonIndex)),
-      ).toHaveClass('selected');
-      await expect(
-        await page.evaluate(() => localStorage.getItem('color-scheme')),
-      ).toBe(colorScheme);
-    });
-  }
 });

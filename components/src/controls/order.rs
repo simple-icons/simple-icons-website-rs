@@ -164,7 +164,7 @@ pub fn OrderControl() -> impl IntoView {
     let icons_grid = expect_context::<IconsGridSignal>().0;
     let search_signal = expect_context::<SearchValueSignal>().0;
     let layout_signal = expect_context::<LayoutSignal>().0;
-    let icons = move || expect_context::<IconsIndexSignal>().0;
+    let icons = StoredValue::new(expect_context::<IconsIndexSignal>().0);
 
     Effect::new(move |_| match order_mode.get_untracked().current {
         OrderModeVariant::Random => set_order_mode(
@@ -173,7 +173,7 @@ pub fn OrderControl() -> impl IntoView {
             &icons_grid,
             Some(&layout_signal()),
             true,
-            icons(),
+            icons.read_value().to_vec(),
         ),
         OrderModeVariant::Color => set_order_mode(
             &OrderModeVariant::Color,
@@ -181,7 +181,7 @@ pub fn OrderControl() -> impl IntoView {
             &icons_grid,
             Some(&layout_signal()),
             true,
-            icons(),
+            icons.read_value().to_vec(),
         ),
         _ => {}
     });
@@ -197,14 +197,16 @@ pub fn OrderControl() -> impl IntoView {
                         order_mode().current == OrderModeVariant::Alphabetic
                     })
 
-                    on:click=move |_| set_order_mode(
-                        &OrderModeVariant::Alphabetic,
-                        &order_mode,
-                        &icons_grid,
-                        Some(&layout_signal()),
-                        true,
-                        icons(),
-                    )
+                    on:click=move |_| {
+                        set_order_mode(
+                            &OrderModeVariant::Alphabetic,
+                            &order_mode,
+                            &icons_grid,
+                            Some(&layout_signal()),
+                            true,
+                            icons.read_value().to_vec(),
+                        )
+                    }
                 />
 
                 <ControlButtonIcon
@@ -217,7 +219,7 @@ pub fn OrderControl() -> impl IntoView {
                         &icons_grid,
                         Some(&layout_signal()),
                         true,
-                        icons(),
+                        icons.read_value().to_vec(),
                     )
                 />
 
@@ -231,7 +233,7 @@ pub fn OrderControl() -> impl IntoView {
                         &icons_grid,
                         Some(&layout_signal()),
                         true,
-                        icons(),
+                        icons.read_value().to_vec(),
                     )
                 />
 
@@ -252,7 +254,7 @@ pub fn OrderControl() -> impl IntoView {
                                     &icons_grid,
                                     Some(&layout_signal()),
                                     true,
-                                    icons(),
+                                    icons.read_value().to_vec(),
                                 )
                             />
                         }

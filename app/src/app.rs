@@ -60,6 +60,8 @@ pub fn App() -> impl IntoView {
         ..
     } = use_color_mode_with_options(
         UseColorModeOptions::default()
+            .storage_enabled(true)
+            .storage(leptos_use::storage::StorageType::Local)
             .storage_key(LocalStorage::Keys::ColorScheme.as_str())
             .target("body")
             .attribute("class")
