@@ -10,7 +10,6 @@ use crate::storage::LocalStorage;
 use crate::Ids;
 use crate::Url;
 use fuzzy::{build_searcher, search};
-use js_sys::JsString;
 use leptos::{
     prelude::{document, *},
     task::spawn_local,
@@ -99,7 +98,7 @@ fn init_searcher(icons: Vec<&'static SimpleIcon>) {
     for (icon_candidates, icon_order_alpha) in &icons_candidates_ids {
         let candidates_array = js_sys::Array::new();
         for icon_title in icon_candidates {
-            candidates_array.push(&JsString::from(*icon_title).into());
+            candidates_array.push(&js_sys::JsString::from(*icon_title).into());
         }
 
         let icon_title_id_array = js_sys::Array::of2(

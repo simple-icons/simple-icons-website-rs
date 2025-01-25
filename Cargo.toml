@@ -42,7 +42,7 @@ icondata = { version = "0.5", default-features = false, features = [
     "vs-code-icons",
 ] }
 console_error_panic_hook = "0.1"
-wasm-bindgen = "0.2.96"
+wasm-bindgen = "0.2"
 web-sys = { version = "0.3", default-features = false, features = [
     "Blob",
     "DomTokenList",

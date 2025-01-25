@@ -1,4 +1,3 @@
-use js_sys::Math;
 use leptos::{
     prelude::*,
     wasm_bindgen::{closure::Closure, JsCast},
@@ -117,7 +116,7 @@ fn update_badges_in_canvas() {
 
 /// Function triggered to update the canvas with the current SVG
 pub fn update_preview_canvas(pixel_ratio: f64) {
-    let ratio = Math::max(pixel_ratio, 1.0);
+    let ratio = js_sys::Math::max(pixel_ratio, 1.0);
 
     let container = document()
         .get_elements_by_class_name("preview-figure")
@@ -141,13 +140,13 @@ pub fn update_preview_canvas(pixel_ratio: f64) {
     canvas
         .set_attribute(
             "width",
-            &format!("{}", Math::floor(WIDTH as f64 * ratio)),
+            &format!("{}", js_sys::Math::floor(WIDTH as f64 * ratio)),
         )
         .unwrap();
     canvas
         .set_attribute(
             "height",
-            &format!("{}", Math::floor(HEIGHT as f64 * ratio)),
+            &format!("{}", js_sys::Math::floor(HEIGHT as f64 * ratio)),
         )
         .unwrap();
     canvas
