@@ -3,7 +3,9 @@ use crate::controls::download::{
     copy_as_image_png, download, download_jpg, download_pdf, download_png,
     download_svg,
 };
-use crate::copy::{copy_and_set_copied_transition, copy_inner_text_on_click};
+use crate::copy::{
+    copy_and_set_copied_transition, copy_inner_text_on_click, copy_text,
+};
 use crate::fetch::fetch_text;
 use crate::grid::item::icon_preview::on_click_copy_image_children_src_content;
 use crate::grid::item::title::get_icon_localized_title;
@@ -396,6 +398,23 @@ pub fn IconDetailsModal() -> impl IntoView {
         false => TbSvg,
     });
 
+    let (copying_svg_path, set_copying_svg_path) = signal(false);
+    let copy_svg_path_msg = Memo::new(move |_| {
+        if copying_svg_path() {
+            tr!("copied")
+        } else {
+            tr!("copy-icon-svg-path")
+        }
+    });
+
+    let copy_svg_path_icon = Memo::new(move |_| {
+        if copying_svg_path() {
+            BiCheckRegular
+        } else {
+            BsCode
+        }
+    });
+
     let (copying_png, set_copying_png) = signal(false);
     let copy_png_msg = Memo::new(move |_| match copying_png() {
         true => tr!("copied"),
@@ -610,6 +629,39 @@ pub fn IconDetailsModal() -> impl IntoView {
                                         move || set_copying_jpg(false),
                                         std::time::Duration::from_secs(1),
                                     );
+                                }
+                            />
+
+                            <MenuItem
+                                class=controls_menu_item_class()
+                                text=copy_svg_path_msg
+                                icon=copy_svg_path_icon
+                                on:click=move |_| {
+                                    let slug = get_slug_from_modal_container();
+                                    set_copying_svg_path(true);
+                                    spawn_local(async move {
+                                        if let Some(svg) = fetch_text(
+                                                &format!("/icons/{}.svg", slug),
+                                            )
+                                            .await
+                                        {
+                                            let path = svg
+                                                .split("<path d=\"")
+                                                .collect::<Vec<&str>>()
+                                                .get(1)
+                                                .unwrap()
+                                                .split('"')
+                                                .collect::<Vec<&str>>()
+                                                .first()
+                                                .unwrap()
+                                                .to_string();
+                                            copy_text(&path);
+                                            set_timeout(
+                                                move || set_copying_svg_path(false),
+                                                std::time::Duration::from_secs(1),
+                                            );
+                                        }
+                                    });
                                 }
                             />
 

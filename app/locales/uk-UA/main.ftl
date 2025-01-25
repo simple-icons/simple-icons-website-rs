@@ -91,3 +91,4 @@ copy-brand-name = Копіювати назву бренду
 extensions = Розширення
 libraries = Бібліотеки
 copy-icon-modal-url = Копіювати URL модального вікна значка
+copy-icon-svg-path = Копіювати шлях SVG значка

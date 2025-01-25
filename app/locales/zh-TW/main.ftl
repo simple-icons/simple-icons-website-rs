@@ -91,3 +91,4 @@ copy-brand-name = 复制品牌名称
 extensions = 擴展
 libraries = 圖書館
 copy-icon-modal-url = 复制图标模态 URL
+copy-icon-svg-path = 复制图标 SVG 路径

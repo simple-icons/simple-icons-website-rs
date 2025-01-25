@@ -26,7 +26,8 @@
   },
   "[html]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.foldingStrategy": "indentation"
   },
   "[typescript]": {
     "editor.tabSize": 2,
@@ -43,9 +44,11 @@
   "tailwindCSS.emmetCompletions": true,
   "tailwindCSS.lint.cssConflict": "error",
   "tailwindCSS.lint.recommendedVariantOrder": "error",
+  "tailwindCSS.validate": true,
 
-  // TODO: Stylelint VSCode extension just don't work
-  // https://github.com/stylelint/vscode-stylelint/issues/366
+  // Stylelint configuration
+  "stylelint.config": {},
+  "stylelint.configFile": ".stylelintrc.json",
 
   // VSBrowser configuration
   "vs-browser.url": "http://127.0.0.1:8080",
