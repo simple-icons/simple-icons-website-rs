@@ -121,11 +121,11 @@ export const selectors = {
       items: gridItemsSelector,
       item: {
         /* Get selector for first item in the grid */
-        first: buildGridItemSelectors(getGridItemByNthChild(1)),
+        first: buildGridItemSelectors(`${gridItemsSelector}:first-of-type`),
         /* Get selector for a random grid item */
         any: buildGridItemSelectors(
           getGridItemByNthChild(
-            Math.floor(Math.random() * (N_ICONS_PER_PAGE - 1 + 1) + 1),
+            Math.floor(Math.random() * N_ICONS_PER_PAGE + 1),
           ),
         ),
       },
