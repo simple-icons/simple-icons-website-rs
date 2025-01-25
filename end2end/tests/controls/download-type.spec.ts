@@ -45,7 +45,7 @@ test.describe('download type', () => {
     await expect(fileContent).toBe(expectedFileContent);
   });
 
-  test('download PDF', async ({ page }) => {
+  test('download PNG', async ({ page }) => {
     await page.goto('/');
 
     if (!screenWidthIsAtLeast('lg', page)) {
@@ -65,11 +65,11 @@ test.describe('download type', () => {
     await gridItemDownloadButton.click();
     const download = await downloadPromise;
     const filename = download.suggestedFilename();
-    await expect(filename).toMatch(/[^.]+\.pdf/);
+    await expect(filename).toMatch(/[^.]+\.png/);
     await saveDownload(download, `download-control-${filename}`);
   });
 
-  const downloadTypeButtons = ['svg', 'pdf'];
+  const downloadTypeButtons = ['svg', 'png'];
   for (const downloadTypeButtonIndex in downloadTypeButtons) {
     const downloadType = downloadTypeButtons[downloadTypeButtonIndex];
     test(`change to ${downloadType.toUpperCase()} through URL`, async ({
