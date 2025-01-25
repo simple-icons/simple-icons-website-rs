@@ -81,19 +81,13 @@ fn set_download_type_on_localstorage(download_type: &DownloadType) {
 pub fn DownloadFileTypeControl() -> impl IntoView {
     let download_type = expect_context::<DownloadTypeSignal>().0;
 
-    let download_svg_title =
-        move_tr!("download-filetype", {"filetype" => tr!("svg")});
-    let download_png_title = move_tr!("download-filetype", {
-        "filetype" => tr!("png"),
-    });
-
     view! {
         <div class="control">
             <label>{move || tr!("download")}</label>
             <div class="flex flex-row">
                 <ControlButtonText
                     text=move_tr!("svg")
-                    title=download_svg_title
+                    title=move_tr!("download-filetype", {"filetype" => tr!("svg") })
                     active=Signal::derive(move || { download_type() == DownloadType::SVG })
                     on:click=move |_| {
                         download_type.set(DownloadType::SVG);
@@ -103,7 +97,7 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
 
                 <ControlButtonText
                     text=move_tr!("png")
-                    title=download_png_title
+                    title=move_tr!("download-filetype", { "filetype" => tr!("png") })
                     active=Signal::derive(move || { download_type() == DownloadType::PNG })
                     on:click=move |_| {
                         download_type.set(DownloadType::PNG);
