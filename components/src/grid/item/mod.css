@@ -6,10 +6,68 @@
 @import './footer.css';
 
 /* Grid item */
-main > ul > li {
+main > ul > li,
+#carbonads {
   @apply flex flex-col space-y-2
     rounded-md border-spacing-0 border-collapse
     overflow-hidden
     bg-custom-grid-item-background-color
     shadow-[0_0_3px_0_var(--shadows-color)];
+}
+
+/* Carbon ads */
+#carbonads {
+  align-items: center;
+  background-color: var(--color-background);
+  box-shadow: none;
+  grid-column: -3 / -1;
+  grid-row: span 2;
+  text-align: center;
+}
+
+@media (width <= 1280px) {
+  .layout-compact #carbonads {
+    grid-column: -3 / -1;
+  }
+
+  .layout-comfortable #carbonads {
+    grid-column: -2 / -1;
+  }
+}
+
+@media (width <= 600px) {
+  #carbonads {
+    padding-top: 0;
+  }
+}
+
+#carbonads a {
+  color: var(--text-default-color);
+}
+
+.carbon-wrap {
+  place-content: center space-between;
+  display: flex;
+  flex-direction: column;
+}
+
+.carbon-img {
+  display: block;
+  padding: 1rem 1rem 0.5rem;
+}
+
+.carbon-text {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin: 0 auto;
+  max-width: 15rem;
+}
+
+.carbon-poweredby {
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+  opacity: 0.5;
+  text-transform: uppercase;
 }

@@ -8,6 +8,7 @@ use crate::controls::order::{sort_icons, OrderMode, OrderModeVariant};
 use crate::controls::search::search_icons_and_returns_first_page;
 use crate::modal::ModalOpen;
 use crate::Url;
+use ad::CarbonAdsAdGridItem;
 use icons_loader::{IconsLoader, IconsLoaderSignal};
 use item::{details::IconDetailsModal, IconGridItem};
 use leptos::{
@@ -201,6 +202,7 @@ pub fn Grid() -> impl IntoView {
     view! {
         <IconDetailsModal />
         <ul node_ref=icons_list_ref class:layout-compact=move || layout() == Layout::Compact>
+            <CarbonAdsAdGridItem />
             <Icons />
         </ul>
         <IconsLoader />
