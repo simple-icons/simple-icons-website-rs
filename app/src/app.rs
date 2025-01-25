@@ -9,7 +9,7 @@ use components::Url;
 use fluent_templates::static_loader;
 use leptos::{html::Footer as FooterHtmlElement, prelude::*};
 use leptos_fluent::leptos_fluent;
-//use leptos_hotkeys::{provide_hotkeys_context, scopes};
+use leptos_hotkeys::{provide_hotkeys_context, scopes};
 use leptos_router::{
     components::{Route, Router, Routes},
     StaticSegment,
@@ -85,10 +85,9 @@ pub fn App() -> impl IntoView {
 
     // Create a context to store keyboard shortcuts
     let main_ref = NodeRef::new();
-    /*
-    // TODO: re-enable hotkeys
+
+    // Provide context for keyboard shortcuts
     provide_hotkeys_context(main_ref, false, scopes!());
-    */
 
     view! {
         <I18n>

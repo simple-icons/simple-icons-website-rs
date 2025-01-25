@@ -1451,6 +1451,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "leptos_hotkeys"
+version = "0.3.0"
+source = "git+https://github.com/mondeja/leptos-hotkeys.git?branch=relax-deps#0767fc7414b93a7acf4b8e1ee049544afe0bc5fa"
+dependencies = [
+ "leptos",
+ "send_wrapper",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
 name = "leptos_icons"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2314,6 +2325,7 @@ dependencies = [
  "leptos",
  "leptos-fluent",
  "leptos-use",
+ "leptos_hotkeys",
  "leptos_icons",
  "leptos_meta",
  "leptos_router",
@@ -2333,6 +2345,7 @@ dependencies = [
  "leptos",
  "leptos-fluent",
  "leptos-use",
+ "leptos_hotkeys",
  "leptos_icons",
  "rand",
  "simple-icons",

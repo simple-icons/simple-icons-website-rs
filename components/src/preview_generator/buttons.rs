@@ -8,7 +8,7 @@ use crate::svg::{svg_with_title_path_opt_fill, SVGDef, SVGIcon};
 use crate::Ids;
 use leptos::{prelude::*, task::spawn_local, wasm_bindgen::JsCast};
 use leptos_fluent::{move_tr, tr};
-//use leptos_hotkeys::use_hotkeys;
+use leptos_hotkeys::use_hotkeys;
 use simple_icons::sdk;
 
 #[component]
@@ -40,12 +40,10 @@ fn PreviewUploadSVGButton(
     set_path: WriteSignal<String>,
 ) -> impl IntoView {
     let input_id = Ids::PreviewUploadSVGButton.as_str();
-    /*
-    // TODO: re-enable hotkeys
+
     use_hotkeys!(("controlleft+arrowup,controlright+arrowup") => move |_| {
         document().get_element_by_id(input_id).unwrap().unchecked_into::<web_sys::HtmlInputElement>().click();
     });
-    */
 
     async fn on_upload_svg_file(
         file: web_sys::File,
@@ -161,12 +159,10 @@ fn PreviewCopyButton() -> impl IntoView {
     let (copied, set_copied) = signal(false);
 
     let button_id = Ids::PreviewCopyButton.as_str();
-    /*
-    // TODO: re-enable hotkeys
+
     use_hotkeys!(("controlleft+keyc,controlright+keyc") => move |_| {
         document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
     });
-    */
 
     view! {
         <button
@@ -200,12 +196,10 @@ fn PreviewCopyButton() -> impl IntoView {
 #[component]
 fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
     let button_id = Ids::PreviewSaveButton.as_str();
-    /*
-    // TODO: re-enable hotkeys
+
     use_hotkeys!(("controlleft+keys,controlright+keys") => move |_| {
         document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
     });
-    */
 
     view! {
         <button
@@ -234,12 +228,9 @@ fn PreviewDownloadSVGButton(
 ) -> impl IntoView {
     let button_id = Ids::PreviewDownloadSVGButton.as_str();
 
-    /*
-    // TODO: re-enable hotkeys
     use_hotkeys!(("controlleft+arrowdown,controlright+arrodown") => move |_| {
         document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
     });
-    */
 
     view! {
         <button
