@@ -311,7 +311,7 @@ pub fn IconDetailsModal() -> impl IntoView {
         if copying_as_base64_svg() {
             tr!("copied")
         } else {
-            tr!("copy-as-base64-svg")
+            tr!("copy-as-base64", { "filetype" => tr!("svg") })
         }
     });
 
@@ -328,7 +328,7 @@ pub fn IconDetailsModal() -> impl IntoView {
         if copying_as_base64_jpg() {
             tr!("copied")
         } else {
-            tr!("copy-as-base64-jpg")
+            tr!("copy-as-base64", { "filetype" => tr!("jpg") })
         }
     });
 
@@ -345,7 +345,7 @@ pub fn IconDetailsModal() -> impl IntoView {
         if copying_as_base64_png() {
             tr!("copied")
         } else {
-            tr!("copy-as-base64-png")
+            tr!("copy-as-base64", { "filetype" => tr!("png") })
         }
     });
 
