@@ -26,7 +26,7 @@ pub fn Footer(
                     " focus:text-[var(--link-color-hover)]",
                 )
 
-                href="https://github.com/mondeja/simple-icons-website-rs"
+                href="https://github.com/simple-icons/simple-icons-website-rs"
             >
                 {move_tr!("made-on")}
             </a>

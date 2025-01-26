@@ -95,5 +95,5 @@ jobs:
           git add .
           git commit -m "Update simple-icons to v${{ steps.get-releases.outputs.si }}"
           git remote remove origin
-          git remote add origin https://${{secrets.RELEASE_TOKEN}}@github.com/mondeja/simple-icons-website-rs.git
+          git remote add origin https://${{secrets.RELEASE_TOKEN}}@github.com/simple-icons/simple-icons-website-rs.git
           git push origin master

@@ -8,6 +8,7 @@ pub fn CarbonAdsAdGridItem() -> impl IntoView {
     view! {
         <style>r#".layout-compact #carbonads { grid-row: -3/-1; padding-top: 15%; }"#</style>
         <script
+            id="_carbonads_js"
             async
             src="//cdn.carbonads.com/carbon.js?serve=CKYIPK7M&placement=simpleiconsorg"
             type="text/javascript"
