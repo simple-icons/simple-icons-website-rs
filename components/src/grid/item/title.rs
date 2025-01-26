@@ -54,7 +54,7 @@ pub fn IconGridItemTitle(
             tabindex=0
             on:click=move |ev: MouseEvent| {
                 let target = event_target::<web_sys::HtmlElement>(&ev);
-                copy_and_set_copied_transition(slug.to_string(), target);
+                copy_and_set_copied_transition(slug, target);
             }
         >
 

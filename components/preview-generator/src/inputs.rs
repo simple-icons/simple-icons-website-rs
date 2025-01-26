@@ -3,12 +3,12 @@ use components::controls::search::fuzzy::search;
 use components::event::dispatch_input_event_on_input;
 use components::fetch::fetch_text;
 use components::grid::ICONS;
-use components::js_libs::svg::svg_path_bbox;
 use leptos::{html::Input, prelude::*, task::spawn_local};
 use leptos_fluent::{move_tr, tr};
 use leptos_use::{on_click_outside, use_device_pixel_ratio};
 use simple_icons::{sdk, sdk::lint::errors::PathLintError};
 use simple_icons_website_types::SimpleIcon;
+use svg_path_bbox::svg_path_bbox;
 use svg_path_cst::svg_path_cst;
 use wasm_bindgen::JsCast;
 
@@ -85,8 +85,8 @@ pub fn PathInput(
             }
         };
 
-        let (path_bbox, path_bbox_error) = svg_path_bbox(path);
-        if let Some(err) = path_bbox_error {
+        let maybe_path_bbox = svg_path_bbox(path);
+        if let Err(err) = maybe_path_bbox {
             new_lint_errors.push((
                 PathLintError::ViewboxSyntaxError { message: err },
                 None,
@@ -95,6 +95,7 @@ pub fn PathInput(
             set_path_lint_errors(new_lint_errors);
             return;
         }
+        let path_bbox = maybe_path_bbox.unwrap();
 
         new_lint_errors.extend(sdk::lint::lint_path_segments(&path_segments));
         new_lint_errors.extend(sdk::lint::lint_path_bbox(&path_bbox));
@@ -446,15 +447,18 @@ fn BrandSuggestion(
             set_brand(icon.title.to_string());
             set_color(icon.hex.to_string());
             spawn_local(async move {
-                if let Some(svg) = fetch_text(&format!("/icons/{}.svg", icon.slug)).await {
-                    let path_input = document()
-                        .get_element_by_id("preview-path")
-                        .unwrap()
-                        .dyn_into::<web_sys::HtmlInputElement>()
-                        .unwrap();
-                    path_input.set_value(&sdk::svg_to_path(&svg));
-                    dispatch_input_event_on_input(&path_input);
-                    update_preview_canvas(pixel_ratio.get_untracked());
+                match fetch_text(&format!("/icons/{}.svg", icon.slug)).await {
+                    Ok(svg) => {
+                        let path_input = document()
+                            .get_element_by_id("preview-path")
+                            .unwrap()
+                            .dyn_into::<web_sys::HtmlInputElement>()
+                            .unwrap();
+                        path_input.set_value(&sdk::svg_to_path(&svg));
+                        dispatch_input_event_on_input(&path_input);
+                        update_preview_canvas(pixel_ratio.get_untracked());
+                    }
+                    Err(err) => leptos::logging::error!("{}", err),
                 }
             });
         }>

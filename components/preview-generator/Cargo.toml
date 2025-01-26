@@ -6,13 +6,14 @@ edition.workspace = true
 
 [lib]
 crate-type = ["cdylib", "rlib"]
-name = "preview_generator"
+name = "simple_icons_website_preview_generator"
 
 [dependencies]
 simple-icons.workspace = true
 simple-icons-website-components.workspace = true
 simple-icons-website-macros.workspace = true
 simple-icons-website-types.workspace = true
+svg-path-bbox.workspace = true
 leptos.workspace = true
 leptos-use.workspace = true
 leptos-fluent.workspace = true

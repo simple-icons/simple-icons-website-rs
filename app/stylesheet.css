@@ -4,6 +4,7 @@
 @import 'tailwindcss/utilities';
 @import './../components/src/lib.css';
 @import './../components/preview-generator/src/lib.css';
+@import './../components/footer/src/lib.css';
 
 :root {
   --dark-contrast-color: rgb(34 34 34);

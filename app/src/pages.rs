@@ -18,7 +18,7 @@ use leptos_router::{
     hooks::{use_navigate, use_query_map},
     NavigateOptions,
 };
-use preview_generator::PreviewGenerator;
+use simple_icons_website_preview_generator::PreviewGenerator;
 
 fn index_redirections() {
     let query_map = use_query_map().get_untracked();

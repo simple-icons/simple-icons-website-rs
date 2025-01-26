@@ -4,13 +4,13 @@ use crate::controls::download::{
     download_svg,
 };
 use crate::copy::{
-    copy_and_set_copied_transition, copy_inner_text_on_click, copy_text,
+    copy_and_set_copied_transition,
+    copy_child_img_src_content_from_mouse_event, copy_inner_text_on_click,
+    copy_text,
 };
 use crate::fetch::fetch_text;
-use crate::grid::item::icon_preview::on_click_copy_image_children_src_content;
 use crate::grid::item::title::get_icon_localized_title;
 use crate::grid::CurrentIconViewSignal;
-use crate::menu::{Menu, MenuItem};
 use crate::modal::{Modal, ModalOpenSignal};
 use crate::Ids;
 use icondata::{
@@ -22,6 +22,7 @@ use leptos::{prelude::*, task::spawn_local, wasm_bindgen::JsCast};
 use leptos_fluent::{move_tr, tr, I18n};
 use leptos_icons::Icon;
 use leptos_use::on_click_outside;
+use simple_icons_website_menu::{Menu, MenuItem};
 use simple_icons_website_types::SimpleIcon;
 use web_sys;
 
@@ -271,7 +272,7 @@ pub fn fill_icon_details_modal_with_icon(
 #[component]
 fn IconDetailsModalPreview() -> impl IntoView {
     view! {
-        <button on:click=on_click_copy_image_children_src_content>
+        <button on:click=copy_child_img_src_content_from_mouse_event>
             <img />
         </button>
     }
@@ -558,20 +559,20 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     let slug = get_slug_from_modal_container();
                                     let hex = get_hex_from_modal_container();
                                     spawn_local(async move {
-                                        let svg = fetch_text(&format!("/icons/{}.svg", &slug))
-                                            .await
-                                            .unwrap_or_else(|| {
-                                                panic!("Error fetching SVG /icons/{}.svg", &slug)
-                                            });
-                                        let colored_icon_svg = svg
-                                            .replacen("<svg", &format!("<svg fill=\"{}\"", hex), 1);
-                                        download(
-                                            &format!("{}-color.svg", slug),
-                                            &format!(
-                                                "data:image/svg+xml;utf8,{}",
-                                                js_sys::encode_uri_component(&colored_icon_svg),
-                                            ),
-                                        );
+                                        match fetch_text(&format!("/icons/{}.svg", &slug)).await {
+                                            Ok(svg) => {
+                                                let colored_icon_svg = svg
+                                                    .replacen("<svg", &format!("<svg fill=\"{}\"", hex), 1);
+                                                download(
+                                                    &format!("{}-color.svg", slug),
+                                                    &format!(
+                                                        "data:image/svg+xml;utf8,{}",
+                                                        js_sys::encode_uri_component(&colored_icon_svg),
+                                                    ),
+                                                );
+                                            }
+                                            Err(err) => leptos::logging::error!("{}", err),
+                                        }
                                     });
                                 }
                             />
@@ -584,22 +585,21 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     let slug = get_slug_from_modal_container();
                                     set_copying_svg(true);
                                     spawn_local(async move {
-                                        if let Some(svg) = fetch_text(
-                                                &format!("/icons/{}.svg", slug),
-                                            )
-                                            .await
-                                        {
-                                            copy_and_set_copied_transition(
-                                                svg,
-                                                document()
-                                                    .get_element_by_id(Ids::IconDetailsModal.as_str())
-                                                    .unwrap()
-                                                    .get_elements_by_tag_name("button")
-                                                    .item(0)
-                                                    .unwrap()
-                                                    .dyn_into::<web_sys::HtmlElement>()
-                                                    .unwrap(),
-                                            );
+                                        match fetch_text(&format!("/icons/{}.svg", slug)).await {
+                                            Ok(svg) => {
+                                                copy_and_set_copied_transition(
+                                                    &svg,
+                                                    document()
+                                                        .get_element_by_id(Ids::IconDetailsModal.as_str())
+                                                        .unwrap()
+                                                        .get_elements_by_tag_name("button")
+                                                        .item(0)
+                                                        .unwrap()
+                                                        .dyn_into::<web_sys::HtmlElement>()
+                                                        .unwrap(),
+                                                )
+                                            }
+                                            Err(err) => leptos::logging::error!("{}", err),
                                         }
                                     });
                                     set_timeout(
@@ -647,26 +647,25 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     let slug = get_slug_from_modal_container();
                                     set_copying_svg_path(true);
                                     spawn_local(async move {
-                                        if let Some(svg) = fetch_text(
-                                                &format!("/icons/{}.svg", slug),
-                                            )
-                                            .await
-                                        {
-                                            let path = svg
-                                                .split("<path d=\"")
-                                                .collect::<Vec<&str>>()
-                                                .get(1)
-                                                .unwrap()
-                                                .split('"')
-                                                .collect::<Vec<&str>>()
-                                                .first()
-                                                .unwrap()
-                                                .to_string();
-                                            copy_text(&path);
-                                            set_timeout(
-                                                move || set_copying_svg_path(false),
-                                                std::time::Duration::from_secs(1),
-                                            );
+                                        match fetch_text(&format!("/icons/{}.svg", slug)).await {
+                                            Ok(svg) => {
+                                                let path = svg
+                                                    .split("<path d=\"")
+                                                    .collect::<Vec<&str>>()
+                                                    .get(1)
+                                                    .unwrap()
+                                                    .split('"')
+                                                    .collect::<Vec<&str>>()
+                                                    .first()
+                                                    .unwrap()
+                                                    .to_string();
+                                                copy_text(&path);
+                                                set_timeout(
+                                                    move || set_copying_svg_path(false),
+                                                    std::time::Duration::from_secs(1),
+                                                );
+                                            }
+                                            Err(err) => leptos::logging::error!("{}", err),
                                         }
                                     });
                                 }
@@ -680,7 +679,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     let hex = get_hex_from_modal_container();
                                     set_copying_hex(true);
                                     copy_and_set_copied_transition(
-                                        hex,
+                                        &hex,
                                         ev
                                             .target()
                                             .unwrap()
@@ -709,24 +708,23 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     );
                                     let slug = get_slug_from_modal_container();
                                     spawn_local(async move {
-                                        if let Some(svg) = fetch_text(
-                                                &format!("/icons/{}.svg", slug),
-                                            )
-                                            .await
-                                        {
-                                            let base64 = window().btoa(&svg).unwrap();
-                                            let base64_svg = format!(
-                                                "data:image/svg+xml;base64,{}",
-                                                base64,
-                                            );
-                                            copy_and_set_copied_transition(
-                                                base64_svg,
-                                                ev
-                                                    .target()
-                                                    .unwrap()
-                                                    .dyn_into::<web_sys::HtmlElement>()
-                                                    .unwrap(),
-                                            );
+                                        match fetch_text(&format!("/icons/{}.svg", slug)).await {
+                                            Ok(svg) => {
+                                                let base64 = window().btoa(&svg).unwrap();
+                                                let base64_svg = format!(
+                                                    "data:image/svg+xml;base64,{}",
+                                                    base64,
+                                                );
+                                                copy_and_set_copied_transition(
+                                                    &base64_svg,
+                                                    ev
+                                                        .target()
+                                                        .unwrap()
+                                                        .dyn_into::<web_sys::HtmlElement>()
+                                                        .unwrap(),
+                                                );
+                                            }
+                                            Err(err) => leptos::logging::error!("{}", err),
                                         }
                                     });
                                 }
@@ -776,7 +774,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     let brand_name = get_brand_name_from_modal_container();
                                     set_copying_brand_name(true);
                                     copy_and_set_copied_transition(
-                                        brand_name,
+                                        &brand_name,
                                         ev
                                             .target()
                                             .unwrap()
@@ -810,7 +808,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                         get_slug_from_modal_container(),
                                     );
                                     copy_and_set_copied_transition(
-                                        url,
+                                        &url,
                                         ev
                                             .target()
                                             .unwrap()

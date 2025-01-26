@@ -1,0 +1,13 @@
+[package]
+name = "svg-path-bbox"
+description = "Rust bindings for the svg-path-bbox JavaScript library"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "svg_path_bbox"
+
+[dependencies]
+js-sys.workspace = true
+wasm-bindgen.workspace = true

@@ -1,8 +1,4 @@
 //! URL utilities working with Leptos
-//!
-//! Currently, there is not a way to reactively maintain the state
-//! of the URL of the page, so we need to hand craft some convenient
-//! utilities
 
 /// Single source of thruth for the URL params state
 pub mod params {

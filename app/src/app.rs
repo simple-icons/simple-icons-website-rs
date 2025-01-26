@@ -1,6 +1,5 @@
 use crate::head::Head;
 use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
-use components::footer::Footer;
 use components::header::Header;
 use components::modal::provide_modal_open_context;
 use components::storage::LocalStorage;
@@ -18,6 +17,7 @@ use leptos_use::{
     use_color_mode_with_options, ColorMode, UseColorModeOptions,
     UseColorModeReturn,
 };
+use simple_icons_website_footer::Footer;
 
 /// Title of the page
 pub static TITLE: &str = "Simple Icons";

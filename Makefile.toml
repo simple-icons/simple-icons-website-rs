@@ -222,7 +222,7 @@ appendfile ${jslibs} "<script type=\"module\" src=\"/js/fast-fuzzy-${fast_fuzzy.
 # svg-path-bbox
 packagejson = readfile node_modules/svg-path-bbox/package.json
 svg_path_bbox = json_parse ${packagejson}
-exec npx esbuild ./components/src/js_libs/svg-path-bbox.js --bundle --outfile=./app/public/assets/js/svg-path-bbox-${svg_path_bbox.version}.js --minify
+exec npx esbuild ./libs/svg-path-bbox/src/svg-path-bbox.js --bundle --outfile=./app/public/assets/js/svg-path-bbox-${svg_path_bbox.version}.js --minify
 appendfile ${jslibs} "<script type=\"module\" src=\"/js/svg-path-bbox-${svg_path_bbox.version}.js\" defer></script>"
 
 # pdfkit

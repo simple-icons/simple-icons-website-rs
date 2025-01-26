@@ -76,10 +76,13 @@ pub fn PreviewGenerator() -> impl IntoView {
     let (path, set_path) = signal(initial_path);
     if path.get_untracked().is_empty() {
         spawn_local(async move {
-            if let Some(svg) =
-                fetch_text(&format!("/icons/{}.svg", icon.unwrap().slug)).await
+            match fetch_text(&format!("/icons/{}.svg", icon.unwrap().slug))
+                .await
             {
-                set_path(sdk::svg_to_path(&svg));
+                Ok(svg) => set_path(sdk::svg_to_path(&svg)),
+                Err(err) => {
+                    leptos::logging::error!("Failed to fetch SVG: {:?}", err)
+                }
             }
         });
     }
@@ -277,7 +280,13 @@ fn PreviewBadge(
                     &svg.get_untracked(),
                     style,
                 );
-                let badge_svg = fetch_text(&url).await.unwrap();
+                let badge_svg = match fetch_text(&url).await {
+                    Ok(svg) => svg,
+                    Err(err) => {
+                        leptos::logging::error!("{}", err);
+                        "".to_string()
+                    }
+                };
                 let styled_badge_svg = badge_svg.replace(
                     "id=\"rlink\"",
                     &format!("id=\"rlink\" fill=\"#{}\"", &text_color.unwrap()),

@@ -1,28 +1,6 @@
-use crate::copy::copy_and_set_copied_transition;
-use crate::fetch::fetch_text;
-use leptos::{
-    ev::MouseEvent, prelude::*, task::spawn_local, wasm_bindgen::JsCast,
-};
+use crate::copy::copy_child_img_src_content_from_mouse_event;
+use leptos::prelude::*;
 use leptos_fluent::tr;
-use web_sys;
-
-/// Copy image children source content to clipboard
-pub(crate) fn on_click_copy_image_children_src_content(ev: MouseEvent) {
-    let target = event_target::<web_sys::HtmlElement>(&ev);
-    let src = target
-        .children()
-        .item(0)
-        .unwrap()
-        .dyn_into::<web_sys::HtmlImageElement>()
-        .unwrap()
-        .get_attribute("src")
-        .unwrap();
-    spawn_local(async move {
-        if let Some(svg) = fetch_text(&src).await {
-            copy_and_set_copied_transition(svg, target)
-        }
-    });
-}
 
 /// Icon grid item preview
 ///
@@ -38,7 +16,7 @@ pub fn IconGridItemPreview(
     let title = move || tr!("copy-icon-svg", {"icon" => title()});
     let alt = move || tr!("subject-icon", {"icon" => title()});
     view! {
-        <button title=title on:click=on_click_copy_image_children_src_content>
+        <button title=title on:click=copy_child_img_src_content_from_mouse_event>
             <img src=format!("/icons/{}.svg", slug) alt=alt width=56 height=56 />
         </button>
     }

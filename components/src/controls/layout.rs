@@ -1,4 +1,4 @@
-use crate::controls::button::ControlButtonIcon;
+use super::button::ControlButtonIcon;
 use crate::storage::LocalStorage;
 use crate::Url;
 use icondata::{LuGrid2x2, LuGrid3x3};

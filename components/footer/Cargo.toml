@@ -1,0 +1,15 @@
+[package]
+name = "simple-icons-website-footer"
+description = "Footer component for the Simple Icons website"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "simple_icons_website_footer"
+
+[dependencies]
+leptos.workspace = true
+leptos_icons.workspace = true
+icondata.workspace = true
+leptos-fluent.workspace = true

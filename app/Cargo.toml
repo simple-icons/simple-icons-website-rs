@@ -8,6 +8,7 @@ edition.workspace = true
 simple-icons-website-components.workspace = true
 simple-icons-website-macros.workspace = true
 simple-icons-website-preview-generator.workspace = true
+simple-icons-website-footer.workspace = true
 leptos.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
