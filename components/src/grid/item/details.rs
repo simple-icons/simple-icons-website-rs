@@ -222,6 +222,13 @@ pub fn fill_icon_details_modal_with_icon(
         .unwrap();
 
     if let Some(deprecation) = icon.deprecation {
+        let date_options = js_sys::Object::new();
+        js_sys::Reflect::set(&date_options, &"year".into(), &"numeric".into())
+            .unwrap();
+        js_sys::Reflect::set(&date_options, &"month".into(), &"2-digit".into())
+            .unwrap();
+        js_sys::Reflect::set(&date_options, &"day".into(), &"2-digit".into())
+            .unwrap();
         modal_deprecation_paragraph.set_inner_html(&tr!(
             i18n,
             "will-be-removed-at-extended",
@@ -237,7 +244,7 @@ pub fn fill_icon_details_modal_with_icon(
                     ))
                     .to_locale_date_string(
                         &language.id.to_string(),
-                        &wasm_bindgen::JsValue::from(js_sys::Object::new()),
+                        &wasm_bindgen::JsValue::from(&date_options),
                     )
                     .as_string()
                     .unwrap(),
