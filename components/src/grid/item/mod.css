@@ -45,6 +45,10 @@ main > ul > li,
   color: var(--text-default-color);
 }
 
+#carbonads a img {
+  margin: 0 auto;
+}
+
 .carbon-wrap {
   place-content: center space-between;
   display: flex;
