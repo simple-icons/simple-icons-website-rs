@@ -78,7 +78,7 @@ jobs:
           targets: wasm32-unknown-unknown
           profile: ${{ matrix.command == 'test' && 'minimal' || 'default' }}
       - name: Cache Rust dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
@@ -89,12 +89,12 @@ jobs:
             ~/.cargo/.crates2.json
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.command }}-${{ steps.toolchain.outputs.channel }}
-      - name: Use Node.js v20
+      - name: Use Node.js v22
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
       - name: Cache Node.js dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v20

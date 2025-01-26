@@ -138,16 +138,7 @@ args = ["fmt", "--all"]
 description = "Run clippy"
 install_crate = "clippy"
 command = "cargo"
-args = [
-    "clippy",
-    "--",
-    "-D",
-    "warnings",
-    "-D",
-    "clippy::print_stdout",
-    "-A",
-    "clippy::unused_unit"
-]
+args = ["clippy", "--", "-D", "warnings", "-D", "clippy::print_stdout"]
 
 [tasks.lint-rust]
 description = "Lint Rust code"

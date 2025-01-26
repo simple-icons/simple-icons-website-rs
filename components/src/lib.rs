@@ -1,6 +1,5 @@
 #![feature(trait_alias)]
 #![feature(stmt_expr_attributes)]
-#![feature(async_closure)]
 
 pub mod controls;
 pub mod copy;

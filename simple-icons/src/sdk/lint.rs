@@ -115,7 +115,7 @@ pub type LintError =
 pub type PathViewBox = (f64, f64, f64, f64);
 
 fn get_number_of_decimals(number: f64) -> u32 {
-    number.to_string().split('.').last().unwrap().len() as u32
+    number.to_string().split('.').next_back().unwrap().len() as u32
 }
 
 fn round_decimal(number: f64, decimals: u32) -> f64 {

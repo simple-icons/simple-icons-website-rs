@@ -38,10 +38,12 @@ pub fn MenuItem(
                     }
                         .into_any()
                 }
+                #[allow(clippy::unit_arg, clippy::unused_unit)]
                 None => view!().into_any(),
             }} {text}
             {match children {
                 Some(child) => child().into_any(),
+                #[allow(clippy::unit_arg, clippy::unused_unit)]
                 None => view!().into_any(),
             }}
 

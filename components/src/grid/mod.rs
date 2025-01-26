@@ -24,8 +24,8 @@ use simple_icons_website_macros::{
 use simple_icons_website_types::SimpleIcon;
 use wasm_bindgen::JsCast;
 
-pub const ICONS: [SimpleIcon; get_number_of_icons!()] = icons_array!();
-pub const DEPRECATED_ICONS: [SimpleIcon; get_number_of_deprecated_icons!()] =
+pub static ICONS: [SimpleIcon; get_number_of_icons!()] = icons_array!();
+pub static DEPRECATED_ICONS: [SimpleIcon; get_number_of_deprecated_icons!()] =
     deprecated_icons_array!();
 
 /// Icons rendered in a page

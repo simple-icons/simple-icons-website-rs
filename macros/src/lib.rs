@@ -84,7 +84,7 @@ fn get_simple_icons_3rd_party_extensions_libraries_impl(
             .unwrap()
             .0
             .split('/')
-            .last()
+            .next_back()
             .unwrap()
             .split_once(".svg")
             .unwrap()
