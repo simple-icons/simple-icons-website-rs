@@ -73,16 +73,14 @@ pub fn PreviewGenerator() -> impl IntoView {
     let (initial_brand, initial_color, initial_path, icon) = initial_icon();
     let (brand, set_brand) = signal(initial_brand);
     let (color, set_color) = signal(initial_color);
-    let (path, set_path) = signal(initial_path);
+    let (path, set_path) = signal(initial_path.clone());
     if path.get_untracked().is_empty() {
         spawn_local(async move {
             match fetch_text(&format!("/icons/{}.svg", icon.unwrap().slug))
                 .await
             {
                 Ok(svg) => set_path(sdk::svg_to_path(&svg)),
-                Err(err) => {
-                    leptos::logging::error!("Failed to fetch SVG: {:?}", err)
-                }
+                Err(_) => set_path(initial_path.clone()),
             }
         });
     }
