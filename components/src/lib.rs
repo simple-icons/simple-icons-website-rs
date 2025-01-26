@@ -3,7 +3,6 @@
 
 pub mod controls;
 pub mod copy;
-pub mod event;
 pub mod fetch;
 pub mod grid;
 pub mod header;

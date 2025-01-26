@@ -1,6 +1,5 @@
 use crate::{canvas::update_preview_canvas, helpers::is_valid_hex_color};
 use components::controls::search::fuzzy::search;
-use components::event::dispatch_input_event_on_input;
 use components::fetch::fetch_text;
 use components::grid::ICONS;
 use leptos::{html::Input, prelude::*, task::spawn_local};
@@ -11,6 +10,7 @@ use simple_icons_website_types::SimpleIcon;
 use svg_path_bbox::svg_path_bbox;
 use svg_path_cst::svg_path_cst;
 use wasm_bindgen::JsCast;
+use web_sys_simple_events::dispatch_input_event_on_input;
 
 #[component]
 pub fn ColorInput(

@@ -4,7 +4,6 @@ use crate::controls::layout::LayoutSignal;
 use crate::controls::order::{
     set_order_mode, OrderMode, OrderModeSignal, OrderModeVariant,
 };
-use crate::event::dispatch_input_event_on_input;
 use crate::grid::{IconsGrid, IconsGridSignal, IconsIndexSignal, ICONS};
 use crate::storage::LocalStorage;
 use crate::Ids;
@@ -18,6 +17,7 @@ use leptos::{
 use leptos_fluent::tr;
 use simple_icons_website_types::SimpleIcon;
 use web_sys::HtmlInputElement;
+use web_sys_simple_events::dispatch_input_event_on_input;
 
 #[derive(Copy, Clone)]
 pub struct SearchValueSignal(pub RwSignal<String>);

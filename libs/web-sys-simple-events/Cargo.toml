@@ -1,0 +1,12 @@
+[package]
+name = "web-sys-simple-events"
+description = "Library to easily manage events on containers with web-sys"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "web_sys_simple_events"
+
+[dependencies]
+web-sys.workspace = true

@@ -12,6 +12,7 @@ name = "components"
 simple-icons-website-macros.workspace = true
 simple-icons-website-types.workspace = true
 simple-icons-website-menu.workspace = true
+web-sys-simple-events.workspace = true
 leptos.workspace = true
 leptos-use.workspace = true
 leptos-fluent.workspace = true

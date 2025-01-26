@@ -2098,6 +2098,7 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
+ "web-sys-simple-events",
 ]
 
 [[package]]
@@ -2149,6 +2150,7 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
+ "web-sys-simple-events",
 ]
 
 [[package]]
@@ -2694,6 +2696,13 @@ checksum = "33b6dd2ef9186f1f2072e409e99cd22a975331a6b3591b12c764e0e55c60d5d2"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "web-sys-simple-events"
+version = "0.1.0"
+dependencies = [
+ "web-sys",
 ]
 
 [[package]]
