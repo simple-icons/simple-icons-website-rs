@@ -11,6 +11,7 @@ members = [
     "components/svg-icon",
     "components/url",
     "libs/svg-path-bbox",
+    "libs/web-sys-simple-copy",
     "libs/web-sys-simple-events",
     "libs/web-sys-simple-fetch",
     "macros",
@@ -43,6 +44,7 @@ simple-icons-website-svg-defs = { path = "./components/svg-defs" }
 simple-icons-website-svg-icon = { path = "./components/svg-icon" }
 simple-icons-website-url = { path = "./components/url" }
 svg-path-bbox = { path = "./libs/svg-path-bbox" }
+web-sys-simple-copy = { path = "./libs/web-sys-simple-copy" }
 web-sys-simple-events = { path = "./libs/web-sys-simple-events" }
 web-sys-simple-fetch = { path = "./libs/web-sys-simple-fetch" }
 leptos = { version = "0.7", default-features = false, features = [

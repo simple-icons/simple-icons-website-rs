@@ -17,6 +17,7 @@ simple-icons-website-svg-defs.workspace = true
 simple-icons-website-svg-icon.workspace = true
 simple-icons-website-url.workspace = true
 svg-path-bbox.workspace = true
+web-sys-simple-copy.workspace = true
 web-sys-simple-events.workspace = true
 web-sys-simple-fetch.workspace = true
 leptos.workspace = true

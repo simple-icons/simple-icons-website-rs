@@ -4,12 +4,12 @@ use leptos_fluent::{move_tr, tr};
 use leptos_hotkeys::use_hotkeys;
 use simple_icons::sdk;
 use simple_icons_website_components::{
-    controls::download::download, copy::copy_canvas_container_as_image,
-    grid::ICONS,
+    controls::download::download, grid::ICONS,
 };
 use simple_icons_website_ids::Ids;
 use simple_icons_website_svg_defs::SVGDef;
 use simple_icons_website_svg_icon::{svg_with_title_path_opt_fill, SVGIcon};
+use web_sys_simple_copy::copy_canvas_container_as_image;
 
 #[component]
 pub fn PreviewButtons(

@@ -4,8 +4,7 @@ use crate::controls::download::{
     download_svg,
 };
 use crate::copy::{
-    copy_and_set_copied_transition,
-    copy_child_img_src_content_from_mouse_event, copy_inner_text_on_click,
+    copy_and_set_copied_transition, copy_child_img_src_content_from_mouse_event,
 };
 use crate::grid::item::title::get_icon_localized_title;
 use crate::grid::CurrentIconViewSignal;
@@ -16,7 +15,9 @@ use icondata::{
     BsWindowFullscreen, IoColorWand, TbJpg, TbPdf, TbPng, TbSvg,
     VsSymbolNamespace,
 };
-use leptos::{prelude::*, task::spawn_local, wasm_bindgen::JsCast};
+use leptos::{
+    ev::MouseEvent, prelude::*, task::spawn_local, wasm_bindgen::JsCast,
+};
 use leptos_fluent::{move_tr, tr, I18n};
 use leptos_icons::Icon;
 use leptos_use::{on_click_outside, use_clipboard, UseClipboardReturn};
@@ -279,10 +280,15 @@ fn IconDetailsModalPreview() -> impl IntoView {
 /// Details modal icon information
 #[component]
 fn IconDetailsModalInformation() -> impl IntoView {
+    let on_click = |ev: MouseEvent| {
+        let target = event_target::<web_sys::HtmlElement>(&ev);
+        let value = target.text_content().unwrap();
+        copy_and_set_copied_transition(&value, target);
+    };
     view! {
         <div>
-            <h3 on:click=copy_inner_text_on_click></h3>
-            <button on:click=copy_inner_text_on_click title=move || tr!("copy-hex-color")></button>
+            <h3 on:click=on_click></h3>
+            <button on:click=on_click title=move || tr!("copy-hex-color")></button>
             <a target="_blank">{move || tr!("brand-guidelines")}</a>
             <a target="_blank" title=move || tr!("license")></a>
             <p></p>

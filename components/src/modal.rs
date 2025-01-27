@@ -1,5 +1,5 @@
 use crate::controls::search::focus_search_bar;
-use crate::copy::copy_inner_text_on_click;
+use crate::copy::copy_and_set_copied_transition;
 use leptos::{ev::MouseEvent, prelude::*};
 use leptos_fluent::tr;
 use leptos_use::on_click_outside;
@@ -25,7 +25,9 @@ fn ModalHeader(
                 class:copyable=move || title_is_copyable
                 on:click=move |ev: MouseEvent| {
                     if title_is_copyable {
-                        copy_inner_text_on_click(ev);
+                        let target = event_target::<web_sys::HtmlElement>(&ev);
+                        let value = target.text_content().unwrap();
+                        copy_and_set_copied_transition(&value, target);
                     }
                 }
             >

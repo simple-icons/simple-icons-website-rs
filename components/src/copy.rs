@@ -1,6 +1,6 @@
 use leptos::{ev::MouseEvent, prelude::*, task::spawn_local};
 use leptos_use::{use_clipboard, UseClipboardReturn};
-use wasm_bindgen::{closure::Closure, prelude::*, JsCast};
+use wasm_bindgen::JsCast;
 use web_sys_simple_fetch::fetch_text;
 
 fn set_copied_class(el: web_sys::HtmlElement) {
@@ -32,30 +32,6 @@ pub fn copy_and_set_copied_transition(value: &str, el: web_sys::HtmlElement) {
 
     copy(value);
     set_copied_class(el);
-}
-
-// TODO: Rewrite with Rust
-#[wasm_bindgen(module = "/src/copy.js")]
-extern "C" {
-    pub fn copy_blob_as_image_with_navigator_clipboard(blob: &web_sys::Blob);
-}
-
-pub async fn copy_canvas_container_as_image(
-    container: web_sys::HtmlCanvasElement,
-) {
-    let closure: Closure<dyn FnMut(web_sys::Blob)> =
-        Closure::new(move |blob: web_sys::Blob| {
-            copy_blob_as_image_with_navigator_clipboard(&blob);
-        });
-    container.to_blob(closure.as_ref().unchecked_ref()).unwrap();
-    closure.forget();
-}
-
-/// Copy the inner text of the event target to the clipboard
-pub(crate) fn copy_inner_text_on_click(ev: MouseEvent) {
-    let target = event_target::<web_sys::HtmlElement>(&ev);
-    let value = target.text_content().unwrap();
-    copy_and_set_copied_transition(&value, target);
 }
 
 /// Copy image children source content to clipboard

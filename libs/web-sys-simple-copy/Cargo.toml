@@ -1,0 +1,13 @@
+[package]
+name = "web-sys-simple-copy"
+description = "Library to easily perform complex clipboard operations with web-sys"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+web-sys = { workspace = true, features = ["Clipboard", "ClipboardItem"] }
+wasm-bindgen.workspace = true
+js-sys.workspace = true
