@@ -362,22 +362,24 @@ pub fn BrandInput(
                 }
             />
 
-            <Show when=move || show_brand_suggestions() && !brand_suggestions().is_empty()>
-                <BrandSuggestions
-                    show_more_brand_suggestions
-                    brand_suggestions
-                    more_brand_suggestions
-                    set_brand
-                    set_color
-                    set_show_more_brand_suggestions
-                />
-            </Show>
+            <BrandSuggestions
+                show=Signal::derive(move || {
+                    show_brand_suggestions() && !brand_suggestions().is_empty()
+                })
+                show_more_brand_suggestions
+                brand_suggestions
+                more_brand_suggestions
+                set_brand
+                set_color
+                set_show_more_brand_suggestions
+            />
         </div>
     }
 }
 
 #[component]
 fn BrandSuggestions(
+    show: Signal<bool>,
     show_more_brand_suggestions: ReadSignal<bool>,
     brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
     more_brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
@@ -388,8 +390,9 @@ fn BrandSuggestions(
     view! {
         <ul class=move || {
             format!(
-                "preview-brand-suggestions{}",
+                "preview-brand-suggestions{}{}",
                 if show_more_brand_suggestions() { " overflow-y-scroll" } else { "" },
+                if show() { "" } else { " hidden" },
             )
         }>
 
@@ -442,7 +445,6 @@ fn BrandSuggestion(
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
-    let pixel_ratio = use_device_pixel_ratio();
     view! {
         <li on:click=move |_| {
             set_brand(icon.title.to_string());
@@ -453,20 +455,19 @@ fn BrandSuggestion(
                         let path_input = document()
                             .get_element_by_id("preview-path")
                             .unwrap()
-                            .dyn_into::<web_sys::HtmlInputElement>()
-                            .unwrap();
-                        path_input.set_value(&sdk::svg_to_path(&svg));
+                            .unchecked_into::<web_sys::HtmlInputElement>();
+                        let path = sdk::svg_to_path(&svg);
+                        path_input.set_value(&path);
                         dispatch_input_event_on_input(&path_input);
-                        update_preview_canvas(pixel_ratio.get_untracked());
                     }
                     Err(err) => leptos::logging::error!("{}", err),
                 }
             });
         }>
-            <a>
+            <span>
                 <img src=format!("./icons/{}.svg", icon.slug) width="24px" height="24px" />
                 <span>{icon.title}</span>
-            </a>
+            </span>
         </li>
     }
 }
