@@ -7,9 +7,9 @@ import {
 } from '../helpers.ts';
 
 const DESCRIPTIONS = {
-  'en-US': `${N_ICONS} free SVG icons for popular brands`,
-  'es-ES': `${N_ICONS} iconos SVG gratis para marcas populares`,
-  'fr-FR': `${N_ICONS} icônes gratuites SVG pour les marques populaires`,
+  'en-US': `${N_ICONS} SVG icons for popular brands`,
+  'es-ES': `${N_ICONS} iconos SVG para marcas populares`,
+  'fr-FR': `${N_ICONS} icônes SVG pour les marques populaires`,
 };
 
 test.describe('language selector', () => {

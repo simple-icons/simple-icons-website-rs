@@ -202,7 +202,7 @@ fn PreviewFigure(
                             <path d=DEFAULT_INITIAL_PATH.to_string() fill=fill_color></path>
                         </svg>
                         <text fill=fill_color x="30" y="7" font-size="12">
-                            {format!("{} Free SVG brand icons", get_number_of_icons!())}
+                            {format!("{} SVG brand icons", get_number_of_icons!())}
                         </text>
                         <text fill=fill_color x="30" y="25" font-size="12">
                             available at simpleicons.org
