@@ -1,4 +1,4 @@
-site-description = { $n-icons } бесплатных иконок { $svg } для популярных брендов
+site-description = { $n-icons } иконок { $svg } для популярных брендов
 close = Закрывать
 theme = Тема
 light-color-scheme = Светлая цветовая гамма

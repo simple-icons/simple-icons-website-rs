@@ -1,4 +1,4 @@
-site-description = { $n-icons } iconos { $svg } gratis para marcas populares
+site-description = { $n-icons } iconos { $svg } para marcas populares
 close = Cerrar
 theme = Tema
 light-color-scheme = Tema claro

@@ -1,4 +1,4 @@
-site-description = 流行品牌的 { $n-icons } 免费 { $svg } 图标
+site-description = 流行品牌的 { $n-icons } { $svg } 图标
 close = 关闭
 theme = 主题
 light-color-scheme = 淺色方案
