@@ -278,11 +278,6 @@ description = "Create sitemap.xml asset"
 command = "npx"
 args = ["tsx", "scripts/create-sitemap.ts"]
 
-[tasks.create-cname]
-description = "Create CNAME"
-command = "npx"
-args = ["tsx", "scripts/create-cname.ts"]
-
 [tasks.run-pre-build-scripts]
 description = "Run pre-build scripts"
 run_task = { name = [
@@ -290,5 +285,4 @@ run_task = { name = [
     "copy-fonts",
     "fetch-deprecated-icons",
     "create-sitemap",
-    "create-cname",
 ], parallel = true }

@@ -9,7 +9,6 @@ playwright/.cache/
 .env
 app/public/assets/stylesheet.css
 app/public/assets/sitemap.xml
-app/public/assets/CNAME
 app/public/assets/js/
 app/public/assets/fonts/
 app/public/js-libs.html

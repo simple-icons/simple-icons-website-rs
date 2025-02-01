@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import process from 'node:process';
 
 const sitemapAssetPath = 'app/public/assets/sitemap.xml';
 const sitemapAssetExists = await fs
@@ -6,7 +7,7 @@ const sitemapAssetExists = await fs
   .then(() => true)
   .catch(() => false);
 if (sitemapAssetExists) {
-  await fs.unlink(sitemapAssetPath);
+  process.exit(0);
 }
 
 const protocol = 'https';
