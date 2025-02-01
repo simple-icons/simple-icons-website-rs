@@ -403,7 +403,14 @@ fn BrandSuggestions(
                 each=brand_suggestions
                 key=move |icon| icon.slug
                 children=move |icon: &'static SimpleIcon| {
-                    view! { <BrandSuggestion icon=icon set_brand=set_brand set_color=set_color /> }
+                    view! {
+                        <BrandSuggestion
+                            icon=icon
+                            set_brand=set_brand
+                            set_color=set_color
+                            hidden=Signal::derive(|| false)
+                        />
+                    }
                 }
             />
 
@@ -428,16 +435,20 @@ fn BrandSuggestions(
                     <span>+</span>
                 </li>
             </Show>
-            <Show when=show_more_brand_suggestions>
-                <For
-                    each=more_brand_suggestions
-                    key=move |icon| icon.slug
-                    children=move |icon| {
-                        view! { <BrandSuggestion icon set_brand set_color /> }
+            <For
+                each=more_brand_suggestions
+                key=move |icon| icon.slug
+                children=move |icon| {
+                    view! {
+                        <BrandSuggestion
+                            icon
+                            set_brand
+                            set_color
+                            hidden=Signal::derive(move || !show_more_brand_suggestions())
+                        />
                     }
-                />
-
-            </Show>
+                }
+            />
         </ul>
     }
 }
@@ -447,26 +458,30 @@ fn BrandSuggestion(
     icon: &'static SimpleIcon,
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
+    hidden: Signal<bool>,
 ) -> impl IntoView {
     view! {
-        <li on:click=move |_| {
-            set_brand(icon.title.to_string());
-            set_color(icon.hex.to_string());
-            spawn_local(async move {
-                match fetch_text(&format!("/icons/{}.svg", icon.slug)).await {
-                    Ok(svg) => {
-                        let path_input = document()
-                            .get_element_by_id("preview-path")
-                            .unwrap()
-                            .unchecked_into::<web_sys::HtmlInputElement>();
-                        let path = sdk::svg_to_path(&svg);
-                        path_input.set_value(&path);
-                        dispatch_input_event_on_input(&path_input);
+        <li
+            class:hidden=hidden
+            on:click=move |_| {
+                set_brand(icon.title.to_string());
+                set_color(icon.hex.to_string());
+                spawn_local(async move {
+                    match fetch_text(&format!("/icons/{}.svg", icon.slug)).await {
+                        Ok(svg) => {
+                            let path_input = document()
+                                .get_element_by_id("preview-path")
+                                .unwrap()
+                                .unchecked_into::<web_sys::HtmlInputElement>();
+                            let path = sdk::svg_to_path(&svg);
+                            path_input.set_value(&path);
+                            dispatch_input_event_on_input(&path_input);
+                        }
+                        Err(err) => leptos::logging::error!("{}", err),
                     }
-                    Err(err) => leptos::logging::error!("{}", err),
-                }
-            });
-        }>
+                });
+            }
+        >
             <span>
                 <img src=format!("./icons/{}.svg", icon.slug) width="24px" height="24px" />
                 <span>{icon.title}</span>
