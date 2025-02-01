@@ -6,12 +6,10 @@ mod inputs;
 use buttons::PreviewButtons;
 use canvas::update_preview_canvas;
 use helpers::contrast_color_for;
-use icondata::SiSimpleicons;
 use inputs::{BrandInput, ColorInput, PathInput};
-use lazy_static::lazy_static;
 use leptos::{prelude::*, task::spawn_local};
 use leptos_use::use_device_pixel_ratio;
-use simple_icons_macros::get_number_of_icons;
+use simple_icons_macros::{get_number_of_icons, get_simple_icon_svg_path};
 use simple_icons_sdk as sdk;
 use simple_icons_website_components::{
     controls::search::fuzzy::search, grid::ICONS,
@@ -23,10 +21,7 @@ use web_sys_simple_fetch::fetch_text;
 
 static DEFAULT_INITIAL_BRAND: &str = "Simple Icons";
 static DEFAULT_INITIAL_COLOR: &str = "111111";
-lazy_static! {
-    // TODO: use a macro to get the path from the SVG
-    static ref DEFAULT_INITIAL_PATH: String = sdk::svg_to_path(SiSimpleicons.data);
-}
+static DEFAULT_INITIAL_PATH: &str = get_simple_icon_svg_path!("simpleicons");
 
 fn search_brand(value: &str) -> Option<&'static SimpleIcon> {
     let search_result = js_sys::Array::from(&search(value));

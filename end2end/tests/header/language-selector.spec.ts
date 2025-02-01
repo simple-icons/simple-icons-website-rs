@@ -13,10 +13,6 @@ const DESCRIPTIONS = {
 };
 
 test.describe('language selector', () => {
-  // TODO: there is way to set navigator.languages in Playwright?
-  // Not a priority but it could be great. This would be better handled
-  // if we can separate the i18n system into a leptos-i18n crate to test
-  // it there
   test.describe('navigator.language', () => {
     test.use({ locale: 'es-ES' });
 
@@ -63,7 +59,6 @@ test.describe('language selector', () => {
       await expect(languageSelector).toBeHidden();
 
       if (screenWidthIsAtLeast('lg', page)) {
-        // TODO: fix mobile
         await expect(page.locator(selectors.header.description)).toHaveText(
           DESCRIPTIONS['es-ES'],
         );

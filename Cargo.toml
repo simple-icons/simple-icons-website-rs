@@ -106,7 +106,6 @@ web-sys = { version = "0.3", default-features = false, features = [
 ] }
 js-sys = "0.3"
 wasm-bindgen-futures = "0.4"
-lazy_static = "1.4"
 syn = "2"
 colorsys = "0.6"
 serde_json = "1"

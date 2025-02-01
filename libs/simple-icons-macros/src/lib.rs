@@ -5,7 +5,9 @@
 use proc_macro::TokenStream;
 use simple_icons::{
     color::{is_relatively_light_icon_hex, sort_hexes},
-    fetch_deprecated_simple_icons, get_simple_icon_svg_path, get_simple_icons,
+    fetch_deprecated_simple_icons,
+    get_simple_icon_svg_path as get_simple_icon_svg_path_impl,
+    get_simple_icons,
 };
 use std::fs;
 use std::path::Path;
@@ -103,7 +105,7 @@ fn get_simple_icons_3rd_party_extensions_libraries_impl(
             url,
             author_name,
             author_url,
-            get_simple_icon_svg_path(icon_slug),
+            get_simple_icon_svg_path_impl(icon_slug),
         ));
     }
 
@@ -346,4 +348,13 @@ pub fn js_library_version(input: TokenStream) -> TokenStream {
         serde_json::from_str(package_json_content.as_str()).unwrap();
     let version = package_json["version"].as_str().unwrap();
     format!("\"{}\"", version).parse().unwrap()
+}
+
+/// Get an icon path from its slug
+#[proc_macro]
+pub fn get_simple_icon_svg_path(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as LitStr);
+    let icon_slug = input.value();
+    let path = get_simple_icon_svg_path_impl(&icon_slug);
+    format!("\"{}\"", path).parse().unwrap()
 }
