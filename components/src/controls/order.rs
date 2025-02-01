@@ -100,9 +100,10 @@ fn get_order_mode_from_localstorage_and_search_value(
 ) -> OrderMode {
     let maybe_order_mode = get_order_mode_from_localstorage();
     if !search_value.is_empty() {
-        let mut order_mode = maybe_order_mode.unwrap();
-        order_mode.current = OrderModeVariant::SearchMatch;
-        return order_mode;
+        if let Some(mut order_mode) = maybe_order_mode {
+            order_mode.current = OrderModeVariant::SearchMatch;
+            return order_mode;
+        }
     }
     maybe_order_mode.unwrap_or_default()
 }
