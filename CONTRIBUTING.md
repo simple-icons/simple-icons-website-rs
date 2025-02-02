@@ -26,6 +26,7 @@ Is useful to run only certain tests in a browser. For example: `cargo make test 
 ## Add translation
 
 - Copy the _app/locales/en-US/_ folder into _app/locales/{id}_ changing `{id}` with the identifier of the translation.
+- Translate the messages in the new file.
 
 ## Arquitecture
 
@@ -39,17 +40,11 @@ Is useful to run only certain tests in a browser. For example: `cargo make test 
 ### Rust crates
 
 - **_app/_**: Main package with the app entrypoint. It provides the logic where the top level components are composed and handles global states.
-- **_components/_**: Components library. It provides the components used in the website.
-- **_macros/_**: It provides compile time macros used in the website to statically generate the data provided by the simple-icons npm package.
-- **_simple-icons/_**: Simple Icons Rust library. It is a Rust API to the the simple-icons npm package.
+- **_components/_**: Components libraries. Provide the components used in the website.
+- **_libs/_**: Libraries used in the website, like simple-icons NPM package bindings or macros for compile time code generation.
 
 ### Where to look
 
 - End to end tests are located in _end2end/tests/_. They are written with [Playwright](https://playwright.dev/). Configuration is located at _end2end/playwright.config.ts_.
 - The main stylesheet is located at _app/stylesheet.css_ other assets are located at _app/assets/_. Hopefully you don't need to change this style due to the class-based approach of TailwindCSS framework. Configuration is located at _app/tailwind.config.ts_.
 - The initial HTML is located at _app/index.html_. It is used by Trunk to generate the distributed HTML. Most frontend assets are located at _app/public/_.
-
-### Compatibility
-
-- Currently tied to Node.js >= 18 to ensure that the `fetch` API is included in the standard library.
-- Using the nighly Rust toolchain to ensure some nightly Rust features like trait aliases and async closures for the _components/_ crate.
