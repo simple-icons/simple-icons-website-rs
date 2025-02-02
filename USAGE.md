@@ -19,7 +19,7 @@ Grid with all brand icons.
 
 | Option          | Description                                                                                                                     | Default                                 | Example              |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | -------------------- |
-| `download-type` | The type of download to set by controls. This affect to the download button of icon cards. Possible values are `svg` and `pdf`. | The download type is `svg` by default.  | `?download-type=pdf` |
+| `download-type` | The type of download to set by controls. This affect to the download button of icon cards. Possible values are `svg` and `png`. | The download type is `svg` by default.  | `?download-type=png` |
 | `layout`        | Icons grid layout to use. Possible values are `comfortable` and `compact`.                                                      | The layout is `comfortable` by default. | `?layout=compact`    |
 
 [Unicode language identifier]: https://unicode.org/reports/tr35/tr35.html#Unicode_language_identifier
