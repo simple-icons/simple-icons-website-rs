@@ -36,8 +36,7 @@ fn get_brand_name_from_modal_container() -> String {
         .get_elements_by_tag_name("h2")
         .item(0)
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap()
+        .unchecked_into::<web_sys::HtmlElement>()
         .inner_text()
 }
 
@@ -48,8 +47,7 @@ fn get_slug_from_modal_container() -> String {
         .get_elements_by_tag_name("h3")
         .item(0)
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap()
+        .unchecked_into::<web_sys::HtmlElement>()
         .inner_text()
 }
 
@@ -60,8 +58,7 @@ fn get_hex_from_modal_container() -> String {
         .get_elements_by_tag_name("button")
         .item(1)
         .unwrap()
-        .dyn_into::<web_sys::HtmlButtonElement>()
-        .unwrap()
+        .unchecked_into::<web_sys::HtmlButtonElement>()
         .inner_text()
 }
 
@@ -75,8 +72,7 @@ pub fn fill_icon_details_modal_with_icon(
     let modal_body = document()
         .get_element_by_id(Ids::IconDetailsModal.as_str())
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlElement>();
 
     // Set the modal title
     let modal_header = modal_body
@@ -86,8 +82,7 @@ pub fn fill_icon_details_modal_with_icon(
         .unwrap()
         .first_element_child()
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlElement>();
     modal_header.set_inner_text(icon_localized_title);
 
     // Set the slug
@@ -95,92 +90,71 @@ pub fn fill_icon_details_modal_with_icon(
         .get_elements_by_tag_name("h3")
         .item(0)
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlElement>();
     modal_slug.set_inner_text(icon.slug);
-    modal_slug
-        .set_attribute(
-            "title",
-            &tr!(i18n, "copy-icon-slug", {
-                "icon" => icon_localized_title,
-                "slug" => icon.slug,
-            }),
-        )
-        .unwrap();
+    _ = modal_slug.set_attribute(
+        "title",
+        &tr!(i18n, "copy-icon-slug", {
+            "icon" => icon_localized_title,
+            "slug" => icon.slug,
+        }),
+    );
 
     // Set the copy hex color button
     let modal_hex_color_button = modal_body
         .query_selector(":first-child > :last-child > button")
         .unwrap()
         .unwrap()
-        .dyn_into::<web_sys::HtmlButtonElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlButtonElement>();
     modal_hex_color_button.set_inner_text(&format!("#{}", icon.hex));
-    modal_hex_color_button
-        .set_attribute(
-            "style",
-            &format!(
-                "background-color:#{};color:var(--{}-contrast-color);",
-                icon.hex,
-                match icon.hex_is_relatively_light {
-                    true => "dark",
-                    false => "light",
-                }
-            ),
-        )
-        .unwrap();
-    modal_hex_color_button
-        .class_list()
-        .add_1(match icon.hex_is_relatively_light {
+    _ = modal_hex_color_button.set_attribute(
+        "style",
+        &format!(
+            "background-color:#{};color:var(--{}-contrast-color);",
+            icon.hex,
+            match icon.hex_is_relatively_light {
+                true => "dark",
+                false => "light",
+            }
+        ),
+    );
+    _ = modal_hex_color_button.class_list().add_1(
+        match icon.hex_is_relatively_light {
             true => "copy-button-black",
             false => "copy-button-white",
-        })
-        .unwrap();
+        },
+    );
 
     // Set preview image container src and button title
     let modal_preview_button = modal_body
         .query_selector(":first-child > :first-child > button")
         .unwrap()
         .unwrap()
-        .dyn_into::<web_sys::HtmlButtonElement>()
-        .unwrap();
-    modal_preview_button
-        .set_attribute(
-            "title",
-            &tr!(i18n, "copy-icon-svg", {
-                "icon" => icon_localized_title,
-            }),
-        )
-        .unwrap();
-    modal_preview_button
+        .unchecked_into::<web_sys::HtmlButtonElement>();
+    _ = modal_preview_button.set_attribute(
+        "title",
+        &tr!(i18n, "copy-icon-svg", {
+            "icon" => icon_localized_title,
+        }),
+    );
+    _ = modal_preview_button
         .children()
         .item(0)
         .unwrap()
-        .dyn_into::<web_sys::HtmlImageElement>()
-        .unwrap()
-        .set_attribute("src", &format!("/icons/{}.svg", icon.slug))
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlImageElement>()
+        .set_attribute("src", &format!("/icons/{}.svg", icon.slug));
 
     // Set the brand guidelines link
     let modal_brand_guidelines_link = modal_body
         .get_elements_by_tag_name("a")
         .item(0)
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlElement>();
     if let Some(guidelines) = icon.guidelines {
-        modal_brand_guidelines_link
-            .set_attribute("href", guidelines)
-            .unwrap();
-        modal_brand_guidelines_link
-            .class_list()
-            .remove_1("hidden")
-            .unwrap();
+        _ = modal_brand_guidelines_link.set_attribute("href", guidelines);
+        _ = modal_brand_guidelines_link.class_list().remove_1("hidden");
     } else {
-        modal_brand_guidelines_link
-            .class_list()
-            .add_1("hidden")
-            .unwrap();
+        _ = modal_brand_guidelines_link.class_list().add_1("hidden");
     }
 
     // Set the license
@@ -188,29 +162,23 @@ pub fn fill_icon_details_modal_with_icon(
         .get_elements_by_tag_name("a")
         .item(1)
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlElement>();
     if icon.license_url.is_some() || icon.license_type.is_some() {
-        modal_license_link.class_list().remove_1("hidden").unwrap();
+        _ = modal_license_link.class_list().remove_1("hidden");
     } else {
-        modal_license_link.class_list().add_1("hidden").unwrap();
+        _ = modal_license_link.class_list().add_1("hidden");
     }
     if let Some(license_url) = icon.license_url {
-        modal_license_link
-            .set_attribute("href", license_url)
-            .unwrap();
+        _ = modal_license_link.set_attribute("href", license_url);
     }
     if let Some(license_type) = icon.license_type {
         modal_license_link.set_inner_text(license_type);
-        modal_license_link
-            .set_attribute(
-                "href",
-                &format!("https://spdx.org/licenses/{}", license_type),
-            )
-            .unwrap();
-    } else {
-        let title = modal_license_link.get_attribute("title").unwrap();
-        modal_license_link.set_inner_text(&title);
+        _ = modal_license_link.set_attribute(
+            "href",
+            &format!("https://spdx.org/licenses/{}", license_type),
+        );
+    } else if let Some(ref title) = modal_license_link.get_attribute("title") {
+        modal_license_link.set_inner_text(title);
     }
 
     // Set the deprecation information
@@ -218,8 +186,7 @@ pub fn fill_icon_details_modal_with_icon(
         .get_elements_by_tag_name("p")
         .item(0)
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlElement>();
 
     if let Some(deprecation) = icon.deprecation {
         let date_options = js_sys::Object::new();
@@ -255,15 +222,9 @@ pub fn fill_icon_details_modal_with_icon(
                 ),
             },
         ));
-        modal_deprecation_paragraph
-            .class_list()
-            .remove_1("hidden")
-            .unwrap();
+        _ = modal_deprecation_paragraph.class_list().remove_1("hidden");
     } else {
-        modal_deprecation_paragraph
-            .class_list()
-            .add_1("hidden")
-            .unwrap();
+        _ = modal_deprecation_paragraph.class_list().add_1("hidden");
     }
 }
 
@@ -599,8 +560,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                                         .get_elements_by_tag_name("button")
                                                         .item(0)
                                                         .unwrap()
-                                                        .dyn_into::<web_sys::HtmlElement>()
-                                                        .unwrap(),
+                                                        .unchecked_into::<web_sys::HtmlElement>(),
                                                 )
                                             }
                                             Err(err) => leptos::logging::error!("{}", err),
@@ -694,8 +654,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                         ev
                                             .target()
                                             .unwrap()
-                                            .dyn_into::<web_sys::HtmlElement>()
-                                            .unwrap(),
+                                            .unchecked_into::<web_sys::HtmlElement>(),
                                     );
                                     set_timeout(
                                         move || set_copying_hex(false),
@@ -731,8 +690,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                                     ev
                                                         .target()
                                                         .unwrap()
-                                                        .dyn_into::<web_sys::HtmlElement>()
-                                                        .unwrap(),
+                                                        .unchecked_into::<web_sys::HtmlElement>(),
                                                 );
                                             }
                                             Err(err) => leptos::logging::error!("{}", err),
@@ -789,8 +747,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                         ev
                                             .target()
                                             .unwrap()
-                                            .dyn_into::<web_sys::HtmlElement>()
-                                            .unwrap(),
+                                            .unchecked_into::<web_sys::HtmlElement>(),
                                     );
                                     set_timeout(
                                         move || set_copying_brand_name(false),
@@ -823,8 +780,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                         ev
                                             .target()
                                             .unwrap()
-                                            .dyn_into::<web_sys::HtmlElement>()
-                                            .unwrap(),
+                                            .unchecked_into::<web_sys::HtmlElement>(),
                                     );
                                     set_timeout(
                                         move || set_copying_icon_modal_url(false),

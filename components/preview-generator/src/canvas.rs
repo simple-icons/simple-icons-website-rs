@@ -11,8 +11,7 @@ pub fn canvas() -> web_sys::HtmlCanvasElement {
         .query_selector(".preview-figure canvas")
         .unwrap()
         .unwrap()
-        .dyn_into::<web_sys::HtmlCanvasElement>()
-        .unwrap()
+        .unchecked_into::<web_sys::HtmlCanvasElement>()
 }
 
 fn canvas_ctx(
@@ -22,8 +21,7 @@ fn canvas_ctx(
         .get_context("2d")
         .unwrap()
         .unwrap()
-        .dyn_into::<web_sys::CanvasRenderingContext2d>()
-        .unwrap()
+        .unchecked_into::<web_sys::CanvasRenderingContext2d>()
 }
 
 pub(crate) fn create_badge_image_for_canvas(
@@ -35,15 +33,12 @@ pub(crate) fn create_badge_image_for_canvas(
     let badge_img_for_canvas = document()
         .create_element("img")
         .unwrap()
-        .dyn_into::<web_sys::HtmlImageElement>()
-        .unwrap();
-    badge_img_for_canvas.class_list().add_1("hidden").unwrap();
-    badge_img_for_canvas
-        .set_attribute(
-            "id",
-            &format!("preview-badge-image-for-canvas-{}", &badge_index),
-        )
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlImageElement>();
+    _ = badge_img_for_canvas.class_list().add_1("hidden");
+    _ = badge_img_for_canvas.set_attribute(
+        "id",
+        &format!("preview-badge-image-for-canvas-{}", &badge_index),
+    );
     badge_img_for_canvas.set_cross_origin(Some("anonymous"));
 
     document()
@@ -59,8 +54,7 @@ pub(crate) fn create_badge_image_for_canvas(
                 &badge_index
             ))
             .unwrap()
-            .dyn_into::<web_sys::HtmlImageElement>()
-            .unwrap();
+            .unchecked_into::<web_sys::HtmlImageElement>();
 
         let ctx = canvas_ctx(&canvas());
         ctx.draw_image_with_html_image_element(&img, x, 420.0 + y)
@@ -84,12 +78,10 @@ macro_rules! draw_badge_impl {
             .children()
             .item($badge_index)
             .unwrap()
-            .dyn_into::<web_sys::HtmlElement>()
-            .unwrap()
+            .unchecked_into::<web_sys::HtmlElement>()
             .first_element_child()
             .unwrap()
-            .dyn_into::<web_sys::HtmlImageElement>()
-            .unwrap()
+            .unchecked_into::<web_sys::HtmlImageElement>()
             .src();
 
         $crate::canvas::create_badge_image_for_canvas(
@@ -129,14 +121,12 @@ pub fn update_preview_canvas(pixel_ratio: f64) {
         .get_elements_by_class_name("preview-figure")
         .item(0)
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlElement>();
     let canvas = figure
         .get_elements_by_tag_name("canvas")
         .item(0)
         .unwrap()
-        .dyn_into::<web_sys::HtmlCanvasElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlCanvasElement>();
     canvas
         .set_attribute(
             "width",
@@ -167,8 +157,7 @@ pub fn update_preview_canvas(pixel_ratio: f64) {
     let preview_card_img = document()
         .create_element("img")
         .unwrap()
-        .dyn_into::<web_sys::HtmlImageElement>()
-        .unwrap();
+        .unchecked_into::<web_sys::HtmlImageElement>();
     preview_card_img.class_list().add_1("hidden").unwrap();
     preview_card_img
         .set_attribute("id", "preview-card-image-for-canvas")
@@ -185,8 +174,7 @@ pub fn update_preview_canvas(pixel_ratio: f64) {
         let preview_card_img = document()
             .get_element_by_id("preview-card-image-for-canvas")
             .unwrap()
-            .dyn_into::<web_sys::HtmlImageElement>()
-            .unwrap();
+            .unchecked_into::<web_sys::HtmlImageElement>();
         ctx.draw_image_with_html_image_element(&preview_card_img, 0.0, 0.0)
             .unwrap();
         document()

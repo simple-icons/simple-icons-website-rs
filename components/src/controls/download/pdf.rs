@@ -17,8 +17,7 @@ pub fn download_pdf(slug: &str) {
         .query_selector("[data-error-generating-pdf-msg]")
         .unwrap()
         .unwrap()
-        .dyn_into::<web_sys::HtmlButtonElement>()
-        .unwrap()
+        .unchecked_into::<web_sys::HtmlButtonElement>()
         .get_attribute("data-error-generating-pdf-msg")
         .unwrap();
 

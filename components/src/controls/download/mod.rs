@@ -113,10 +113,9 @@ pub fn download(filename: &str, href: &str) {
     let link = document()
         .create_element("a")
         .unwrap()
-        .dyn_into::<web_sys::HtmlElement>()
-        .unwrap();
-    link.set_attribute("class", "hidden").unwrap();
-    link.set_attribute("download", filename).unwrap();
-    link.set_attribute("href", href).unwrap();
+        .unchecked_into::<web_sys::HtmlElement>();
+    _ = link.set_attribute("class", "hidden");
+    _ = link.set_attribute("download", filename);
+    _ = link.set_attribute("href", href);
     link.click();
 }

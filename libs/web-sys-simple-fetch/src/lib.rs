@@ -19,8 +19,7 @@ pub async fn fetch_text(url: &str) -> Result<String, String> {
     )
     .await
     .unwrap()
-    .dyn_into::<web_sys::Response>()
-    .unwrap();
+    .unchecked_into::<web_sys::Response>();
 
     match response.ok() {
         true => {

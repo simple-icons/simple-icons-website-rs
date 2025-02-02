@@ -423,12 +423,9 @@ fn BrandSuggestions(
                     title=move || tr!("load-more-icons")
                     on:click=move |_| {
                         set_show_more_brand_suggestions(true);
-                        let input = document()
-                            .get_element_by_id("preview-brand")
-                            .unwrap()
-                            .dyn_into::<web_sys::HtmlInputElement>()
-                            .unwrap();
-                        _ = input.focus();
+                        if let Some(input) = document().get_element_by_id("preview-brand") {
+                            _ = input.unchecked_into::<web_sys::HtmlInputElement>().focus();
+                        }
                     }
                 >
 

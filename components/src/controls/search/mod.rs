@@ -26,8 +26,7 @@ pub fn get_search_input() -> HtmlInputElement {
     document()
         .get_element_by_id(Ids::SearchInput.as_str())
         .unwrap()
-        .dyn_into::<HtmlInputElement>()
-        .unwrap()
+        .unchecked_into::<HtmlInputElement>()
 }
 
 /// Set the focus on the search bar

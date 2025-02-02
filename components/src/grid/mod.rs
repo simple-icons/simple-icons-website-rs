@@ -127,7 +127,7 @@ fn wait_for_first_grid_item_and_open_details(attempt: u32) {
         )
         .unwrap()
     {
-        el.dyn_into::<web_sys::HtmlElement>().unwrap().click();
+        el.unchecked_into::<web_sys::HtmlElement>().click();
     } else if attempt < 2000 {
         set_timeout(
             move || wait_for_first_grid_item_and_open_details(attempt + 1),
