@@ -70,7 +70,6 @@ pub fn AllIconsIndex() -> impl IntoView {
     provide_context::<IconsIndexSignal>(IconsIndexSignal(
         ICONS.iter().collect(),
     ));
-
     view! { <Index /> }
 }
 
@@ -120,14 +119,12 @@ pub fn Error404() -> impl IntoView {
             <hr class="w-1/2 my-4 border-t-[var(--divider-color)]" />
             <p class="text-lg font-bold font-sans pt-2">{move_tr!("maybe-youre-looking-for")}</p>
             <ul class="flex flex-col sm:flex-row py-5">
-
                 <li class="flex p-1">
                     <A attr:class="button mx-auto" href="/">
                         <Icon icon=BsGrid3x2GapFill width="24px" height="24px" />
                         {move_tr!("icons")}
                     </A>
                 </li>
-
                 <li class="flex p-1">
                     <A attr:class="button mx-auto" href="/deprecations">
                         <Icon icon=IoWarningSharp width="24px" height="24px" />

@@ -32,7 +32,7 @@ run_task = { name = ["run-pre-build-scripts", "serve-and-watch-css"] }
 
 [tasks.serve-and-watch-css]
 description = "Run the app and watch CSS on development"
-run_task = { name = ["serve-for-dev", "watch-css"], parallel = true }
+run_task = { name = ["serve-for-dev"], parallel = true }
 
 [tasks.serve-for-dev]
 description = "Serve the app on development"

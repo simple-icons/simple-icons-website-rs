@@ -125,7 +125,7 @@ fn wait_for_first_grid_item_and_open_details(attempt: u32) {
         .query_selector(
             "main > ul > :first-child > :last-child > :nth-child(2)",
         )
-        .unwrap()
+        .unwrap_or(None)
     {
         el.unchecked_into::<web_sys::HtmlElement>().click();
     } else if attempt < 2000 {
@@ -150,7 +150,7 @@ pub fn Icons() -> impl IntoView {
             each=move || icons_grid().loaded_icons
             key=move |icon| icon.slug
             children=move |icon: &'static SimpleIcon| {
-                view! { <IconGridItem icon=icon /> }
+                view! { <IconGridItem icon /> }
             }
         />
     }

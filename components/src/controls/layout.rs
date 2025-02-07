@@ -1,4 +1,5 @@
 use super::button::ControlButtonIcon;
+use crate::grid::icons_loader::{IconsLoader, IconsLoaderSignal};
 use icondata::{LuGrid2x2, LuGrid3x3};
 use leptos::prelude::*;
 use leptos_fluent::move_tr;
@@ -83,6 +84,45 @@ fn set_layout(layout: Layout, layout_signal: &RwSignal<Layout>) {
 pub fn LayoutControl() -> impl IntoView {
     let layout = expect_context::<LayoutSignal>().0;
 
+    let icons_loader: RwSignal<IconsLoader> =
+        expect_context::<IconsLoaderSignal>().0;
+
+    let activate_compact_layout = move || {
+        set_layout(Layout::Compact, &layout);
+
+        // load more icons if needed, see:
+        // https://github.com/simple-icons/simple-icons-website-rs/issues/290
+        if icons_loader.get_untracked().load {
+            let page_height = document()
+                .query_selector("body")
+                .unwrap()
+                .unwrap()
+                .client_height() as f64;
+            let scroll_y = window().scroll_y().unwrap_or_default();
+            let window_height = window()
+                .inner_height()
+                .unwrap_or_default()
+                .as_f64()
+                .unwrap_or_default();
+            let footer = document().query_selector("footer").unwrap().unwrap();
+            let footer_height = footer.client_height() as f64;
+
+            let separation = 800.0;
+            let mut cutoff = page_height;
+            if footer_height < cutoff {
+                cutoff -= footer_height;
+            }
+            if cutoff > separation {
+                cutoff -= separation;
+            }
+
+            if scroll_y + window_height >= cutoff {
+                footer.scroll_into_view();
+                icons_loader.update(|state| state.load = false);
+            }
+        }
+    };
+
     view! {
         <div class="control">
             <label>{move_tr!("layout")}</label>
@@ -91,13 +131,21 @@ pub fn LayoutControl() -> impl IntoView {
                     title=move_tr!("comfortable")
                     icon=LuGrid2x2
                     active=Signal::derive(move || layout() == Layout::Comfortable)
-                    on:click=move |_| set_layout(Layout::Comfortable, &layout)
+                    on:click=move |_| {
+                        if layout.get_untracked() != Layout::Comfortable {
+                            set_layout(Layout::Comfortable, &layout);
+                        }
+                    }
                 />
                 <ControlButtonIcon
                     title=move_tr!("compact")
                     icon=LuGrid3x3
                     active=Signal::derive(move || layout() == Layout::Compact)
-                    on:click=move |_| set_layout(Layout::Compact, &layout)
+                    on:click=move |_| {
+                        if layout.get_untracked() != Layout::Compact {
+                            activate_compact_layout();
+                        }
+                    }
                 />
             </div>
         </div>
