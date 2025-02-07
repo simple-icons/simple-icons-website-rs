@@ -25,6 +25,11 @@ main > ul > li,
   text-align: center;
 }
 
+.layout-compact #carbonads {
+  grid-row: -3/-1;
+  padding-top: 15%;
+}
+
 @media (width <= 1280px) {
   .layout-compact #carbonads {
     grid-column: -3 / -1;

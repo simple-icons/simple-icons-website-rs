@@ -22,7 +22,7 @@ use simple_icons_website_components::{
 };
 use simple_icons_website_preview_generator::PreviewGenerator;
 
-fn index_redirections() {
+fn index_redirections() -> bool {
     let query_map = use_query_map().get_untracked();
 
     // Trick to redirect to other pages for servers that don't support SPAs
@@ -39,12 +39,21 @@ fn index_redirections() {
         #[cfg(debug_assertions)]
         ::leptos::logging::log!("Redirecting to {}", url);
         use_navigate()(&url, navigate_opts);
+
+        return true;
     }
+
+    false
 }
 
 #[component]
-pub fn Index() -> impl IntoView {
-    index_redirections();
+pub fn Index() -> AnyView {
+    let redirected = index_redirections();
+
+    if redirected {
+        #[allow(clippy::unit_arg, clippy::unused_unit)]
+        return view!().into_any();
+    }
 
     let icons = expect_context::<IconsIndexSignal>().0;
     let initial_search_value = provide_search_context(icons.clone());
@@ -63,6 +72,7 @@ pub fn Index() -> impl IntoView {
         <Controls />
         <Grid />
     }
+    .into_any()
 }
 
 #[component]

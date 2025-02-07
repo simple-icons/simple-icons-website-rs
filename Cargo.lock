@@ -2139,6 +2139,7 @@ dependencies = [
  "leptos-fluent",
  "leptos-use",
  "leptos_icons",
+ "leptos_meta",
  "rand",
  "simple-icons-macros",
  "simple-icons-website-ids",

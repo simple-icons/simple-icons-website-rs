@@ -1,4 +1,5 @@
 use leptos::prelude::*;
+use leptos_meta::Link;
 
 /// Carbon ads add grid item
 ///
@@ -6,7 +7,7 @@ use leptos::prelude::*;
 #[component]
 pub fn CarbonAdsAdGridItem() -> impl IntoView {
     view! {
-        <style>r#".layout-compact #carbonads { grid-row: -3/-1; padding-top: 15%; }"#</style>
+        <Link rel="preconnect" href="https://cdn.carbonads.com" />
         <script
             id="_carbonads_js"
             async

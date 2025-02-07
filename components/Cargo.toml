@@ -19,6 +19,7 @@ simple-icons-website-url.workspace = true
 web-sys-simple-events.workspace = true
 web-sys-simple-fetch.workspace = true
 leptos.workspace = true
+leptos_meta.workspace = true
 leptos-use.workspace = true
 leptos-fluent.workspace = true
 leptos_icons.workspace = true
