@@ -239,7 +239,6 @@ appendfile ${jslibs} "<script type=\"module\" src=\"/js/svg-path-bbox-${svg_path
 
 # badge-maker
 packagejson = readfile node_modules/badge-maker/package.json
-echo BEFORE badge-maker json_parse
 badge_maker = json_parse ${packagejson}
 #   badge-maker needs to be built with external fs and util, see https://github.com/badges/shields/issues/9728
 echo BEFORE badge-maker comment-lines

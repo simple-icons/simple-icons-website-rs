@@ -6,6 +6,15 @@ if (!filePath.endsWith('.js')) {
   process.stderr.write('File must be a JavaScript file\n');
   process.exit(1);
 }
+if (
+  !(await fs
+    .access(filePath)
+    .then(() => true)
+    .catch(() => false))
+) {
+  process.stderr.write(`File "${filePath}" does not exist\n`);
+  process.exit(1);
+}
 const linesToComment = process.argv.slice(3);
 
 const content = await fs.readFile(filePath, 'utf8');
