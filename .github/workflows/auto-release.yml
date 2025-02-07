@@ -78,7 +78,9 @@ jobs:
         run: npx playwright install chrome --with-deps
       - name: Install tooling dependencies
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
-        run: cargo install cargo-make
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-make,trunk,cargo-machete
       - name: Build
         if: steps.get-releases.outputs.dep != steps.get-releases.outputs.si
         run: cargo make build

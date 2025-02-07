@@ -29,4 +29,3 @@ for (const line of lines) {
 }
 
 await fs.writeFile(filePath, newContent);
-process.stdout.write(`Commented ${linesToComment.length} lines\n`);
