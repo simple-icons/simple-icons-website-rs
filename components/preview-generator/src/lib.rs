@@ -259,7 +259,6 @@ fn PreviewBadge(
                 window().btoa(svg_).unwrap()
             ),
         );
-        ::leptos::logging::log!("{}", badge_svg);
 
         format!(
             "data:image/svg+xml;base64,{}",
