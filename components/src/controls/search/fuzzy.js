@@ -1,11 +1,11 @@
-let SEARCHER = null;
+window.SEARCHER = null;
 
 export function build_searcher(candidates) {
-  SEARCHER = new window.Searcher(candidates, {
+  window.SEARCHER = new window.Searcher(candidates, {
     keySelector: (item) => item[0],
   });
 }
 
 export function search(query) {
-  return SEARCHER.search(query);
+  return window.SEARCHER.search(query);
 }

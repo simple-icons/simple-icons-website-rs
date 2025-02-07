@@ -1,0 +1,8 @@
+[package]
+name = "badge-maker"
+description = "Bindings for badge-maker npm package"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+wasm-bindgen.workspace = true

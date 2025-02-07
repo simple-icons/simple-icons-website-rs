@@ -102,6 +102,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ace50bade8e6234aa140d9a2f552bbee1db4d353f69b8217bc503490fc1a9f26"
 
 [[package]]
+name = "badge-maker"
+version = "0.1.0"
+dependencies = [
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "base64"
 version = "0.22.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2182,6 +2189,7 @@ dependencies = [
 name = "simple-icons-website-preview-generator"
 version = "0.1.0"
 dependencies = [
+ "badge-maker",
  "js-sys",
  "leptos",
  "leptos-fluent",

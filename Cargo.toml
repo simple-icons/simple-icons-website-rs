@@ -13,6 +13,7 @@ members = [
     "libs/simple-icons",
     "libs/simple-icons-macros",
     "libs/simple-icons-sdk",
+    "libs/badge-maker",
     "libs/svg-path-bbox",
     "libs/types",
     "libs/web-sys-simple-copy",
@@ -46,6 +47,7 @@ simple-icons-website-svg-defs = { path = "./components/svg-defs" }
 simple-icons-website-svg-icon = { path = "./components/svg-icon" }
 simple-icons-website-url = { path = "./components/url" }
 svg-path-bbox = { path = "./libs/svg-path-bbox" }
+badge-maker = { path = "./libs/badge-maker" }
 web-sys-simple-copy = { path = "./libs/web-sys-simple-copy" }
 web-sys-simple-events = { path = "./libs/web-sys-simple-events" }
 web-sys-simple-fetch = { path = "./libs/web-sys-simple-fetch" }

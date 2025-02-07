@@ -83,7 +83,7 @@ pub fn fire_on_search_event() {
     dispatch_input_event_on_input(&input);
 }
 
-fn init_searcher(icons: Vec<&'static SimpleIcon>) {
+pub fn init_searcher(icons: Vec<&'static SimpleIcon>) {
     let icons_candidates_ids = icons
         .iter()
         .map(|icon| {

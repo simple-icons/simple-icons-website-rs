@@ -3,6 +3,7 @@ mod canvas;
 mod helpers;
 mod inputs;
 
+use badge_maker::make_badge;
 use buttons::PreviewButtons;
 use canvas::update_preview_canvas;
 use helpers::contrast_color_for;
@@ -244,19 +245,25 @@ fn PreviewBadge(
     let pixel_ratio = use_device_pixel_ratio();
 
     /// Get the URL of a badge
-    fn badge_url(color_: &str, svg: &str, style: &str) -> String {
-        format!(
-            concat!(
-                "https://img.shields.io/badge/{}-preview-{}.svg",
-                "?style={}&logo=data:image/svg%2bxml;base64,{}",
-            ),
-            match style {
+    fn badge_url(color_: &str, svg_: &str, style_: &str) -> String {
+        let badge_svg = make_badge(
+            match style_ {
                 "social" => "",
-                _ => "simple%20icons",
+                _ => "simple icons",
             },
+            "preview",
             color_,
-            style,
-            window().btoa(svg).unwrap(),
+            style_,
+            &format!(
+                "data:image/svg+xml;base64,{}",
+                window().btoa(svg_).unwrap()
+            ),
+        );
+        ::leptos::logging::log!("{}", badge_svg);
+
+        format!(
+            "data:image/svg+xml;base64,{}",
+            window().btoa(&badge_svg).unwrap()
         )
     }
 
@@ -264,7 +271,7 @@ fn PreviewBadge(
         let target = event_target::<web_sys::HtmlInputElement>(&ev);
 
         if target.get_attribute("reloaded") == Some("true".into()) {
-            target.set_attribute("reloaded", "false").unwrap();
+            _ = target.set_attribute("reloaded", "false");
             return;
         }
         if text_color.is_some() {

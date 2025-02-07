@@ -12,8 +12,10 @@ use simple_icons_website_components::{
     controls::{
         color_scheme::ColorSchemeControl,
         download::provide_download_type_context,
-        layout::provide_layout_context, order::provide_order_mode_context,
-        search::provide_search_context, Controls,
+        layout::provide_layout_context,
+        order::provide_order_mode_context,
+        search::{init_searcher, provide_search_context},
+        Controls,
     },
     grid::{
         provide_icons_grid_contexts, Grid, IconsIndexSignal, DEPRECATED_ICONS,
@@ -93,6 +95,8 @@ pub fn DeprecationsIndex() -> impl IntoView {
 
 #[component]
 pub fn Preview() -> impl IntoView {
+    init_searcher(ICONS.iter().collect());
+
     view! {
         <menu class="page-padding-x -mt-4 lg:bg-transparent flex flex-row lg:flex-col">
             <ColorSchemeControl />
