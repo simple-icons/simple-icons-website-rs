@@ -28,6 +28,11 @@ jobs:
     needs: get-releases
     if: needs.get-releases.outputs.dep != needs.get-releases.outputs.si
     steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -93,12 +98,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run `cargo make test`
         run: cargo make test --project=chrome-desktop
-      - name: Push updates
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git add .
-          git commit -m "Update simple-icons to v${{ steps.get-releases.outputs.si }}"
-          git remote remove origin
-          git remote add origin https://${{secrets.RELEASE_TOKEN}}@github.com/simple-icons/simple-icons-website-rs.git
-          git push origin master
+      - name: Commit updates
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update simple-icons to ${{ steps.get-releases.outputs.si }}
+          commit_user_name: 'simple-icons[bot]'
+          commit_user_email: 'simple-icons[bot]@users.noreply.github.com'
+          commit_author: 'simple-icons[bot] <simple-icons[bot]@users.noreply.github.com>'

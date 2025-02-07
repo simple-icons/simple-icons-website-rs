@@ -126,6 +126,15 @@ jobs:
         run: npx playwright test --list ${{ steps.args.outputs.arguments }}
       - name: Run `cargo make ${{ matrix.command }}`
         run: cargo make ${{ matrix.command }} ${{ steps.args.outputs.arguments }}
+      - uses: actions/create-github-app-token@v1
+        if: |
+          matrix.command == 'test' &&
+          matrix.project == 'chrome-desktop' &&
+          github.ref == 'refs/heads/master'
+        id: app-token
+        with:
+          app-id: ${{ vars.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
       - name: Publish website
         if: |
           matrix.command == 'test' &&
@@ -133,9 +142,10 @@ jobs:
           github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          token: ${{ steps.app-token.outputs.token }}
           branch: gh-pages
           folder: app/dist
           single-commit: true
           clean-exclude: CNAME
-          git-config-name: github-actions[bot]
-          git-config-email: github-actions[bot]@users.noreply.github.com
+          git-config-name: simple-icons[bot]
+          git-config-email: simple-icons[bot]@users.noreply.github.com
