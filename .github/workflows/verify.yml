@@ -101,7 +101,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install tooling dependencies
-        run: cargo install cargo-make
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-make
       - name: Install Node.js dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Build
