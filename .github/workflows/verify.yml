@@ -106,15 +106,6 @@ jobs:
           tool: cargo-make,trunk,cargo-machete
       - name: Install Node.js dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Debug CI
-        run: |
-          ls -la
-          echo "_________________________________"
-          ls node_modules
-          echo "_________________________________"
-          ls node_modules/char-width-table-consumer
-          echo "_________________________________"
-          ls node_modules/char-width-table-consumer/src
       - name: Build
         run: cargo make build
         env:
