@@ -1,6 +1,9 @@
 import fs from 'node:fs/promises';
 import process from 'node:process';
 
+process.stdout.write('Commenting lines...\n');
+process.stdout.write(`Args: ${process.argv}`);
+
 const filePath = process.argv[2];
 if (!filePath.endsWith('.js')) {
   process.stderr.write('File must be a JavaScript file\n');
@@ -29,3 +32,4 @@ for (const line of lines) {
 }
 
 await fs.writeFile(filePath, newContent);
+process.stdout.write(`Commented ${linesToComment.length} lines\n`);
