@@ -15,7 +15,7 @@ pub fn Footer(
     view! {
         <footer node_ref=container_ref>
             <ReportProblems />
-            <div class="flex flex-col md:flex-row justify-between -mt-[41px]">
+            <div class="flex flex-col md:flex-row justify-between lg:-mt-[41px]">
                 <About />
                 <div class="flex flex-col space-y-2">
                     <FacebookButton />
