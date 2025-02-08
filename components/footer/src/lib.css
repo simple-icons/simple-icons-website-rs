@@ -5,19 +5,38 @@ footer {
 
 @layer components {
   .footer-about {
-    @apply flex flex-col flex-grow text-center md:text-left;
+    @apply flex flex-col flex-grow text-center justify-center md:text-left;
   }
 
   .footer-about a {
     @apply text-link;
   }
 
-  .x-button {
-    @apply flex flex-row items-center h-0 my-auto align-middle
+  .social-button {
+    @apply flex flex-row items-center h-0 my-auto
       text-white rounded-md px-3 py-5
-      bg-[#000] hover:bg-[rgba(12,12,12,.8)] focus:bg-[#000]
-      focus:hover:bg-[rgba(12,12,12,.8)]
-      whitespace-nowrap mx-auto md:mx-4 lg:mx-12 mt-4 md:mt-auto
-      text-center;
+      whitespace-nowrap mx-auto md:mx-4 lg:mx-12 mt-4 md:mt-auto;
+  }
+
+  .social-button > span {
+    @apply min-w-[205px] text-center;
+  }
+
+  /* X button */
+  .x-button {
+    @apply bg-[#000] hover:bg-[rgba(12,12,12,.8)] focus:bg-[#000]
+      focus:hover:bg-[rgba(12,12,12,.8)];
+  }
+
+  /* Facebook button */
+  .facebook-button {
+    @apply bg-[#0866FF] hover:bg-[#3b81f2] focus:bg-[#1b66df]
+      focus:hover:bg-[#1b66df];
+  }
+
+  /* Mastodon button */
+  .mastodon-button {
+    @apply bg-[#6364FF] hover:bg-[#6c6cfc] focus:bg-[#5c5cfe]
+      focus:hover:bg-[#5f5ffc];
   }
 }

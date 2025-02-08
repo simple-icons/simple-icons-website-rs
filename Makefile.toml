@@ -27,12 +27,8 @@ args = ["install"]
 alias = "dev"
 
 [tasks.dev]
-description = "Run the app and watch CSS on development"
-run_task = { name = ["run-pre-build-scripts", "serve-and-watch-css"] }
-
-[tasks.serve-and-watch-css]
-description = "Run the app and watch CSS on development"
-run_task = { name = ["serve-for-dev"], parallel = true }
+description = "Build and run the app on development"
+run_task = { name = ["run-pre-build-scripts", "serve-for-dev"] }
 
 [tasks.serve-for-dev]
 description = "Serve the app on development"
@@ -51,6 +47,20 @@ args = [
 ]
 cwd = "./app"
 
+[tasks.watch-css]
+description = "Build CSS with Tailwind on development"
+command = "npx"
+args = [
+    "tailwindcss",
+    "--input",
+    "./stylesheet.css",
+    "--output",
+    "./public/assets/stylesheet.css",
+    "--watch",
+    "--no-minify",
+]
+cwd = "./app"
+
 [tasks.format]
 clear = true
 description = "Format files"
@@ -66,20 +76,6 @@ description = "Run tests"
 command = "npx"
 args = ["playwright", "test", "--trace", "on", "${@}"]
 cwd = "./end2end"
-
-[tasks.watch-css]
-description = "Build CSS with Tailwind on development"
-command = "npx"
-args = [
-    "tailwindcss",
-    "--input",
-    "./stylesheet.css",
-    "--output",
-    "./public/assets/stylesheet.css",
-    "--watch",
-    "--no-minify",
-]
-cwd = "."
 
 [tasks.build]
 clear = true

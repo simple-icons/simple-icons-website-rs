@@ -1,4 +1,4 @@
-use icondata::SiX;
+use icondata::{SiFacebook, SiMastodon, SiX};
 use leptos::{
     html::Footer as FooterHtmlElement,
     prelude::{NodeRef, *},
@@ -15,9 +15,13 @@ pub fn Footer(
     view! {
         <footer node_ref=container_ref>
             <ReportProblems />
-            <div class="flex flex-col md:flex-row justify-between">
+            <div class="flex flex-col md:flex-row justify-between -mt-[41px]">
                 <About />
-                <XButton />
+                <div class="flex flex-col space-y-2">
+                    <FacebookButton />
+                    <XButton />
+                    <MastodonButton />
+                </div>
             </div>
             <a
                 class=concat!(
@@ -58,7 +62,7 @@ fn ReportLink(
 }
 
 #[component]
-pub fn ReportProblems() -> impl IntoView {
+fn ReportProblems() -> impl IntoView {
     view! {
         <div class="flex flex-col py-8">
             <p>
@@ -78,23 +82,64 @@ pub fn ReportProblems() -> impl IntoView {
 }
 
 #[component]
-pub fn XButton() -> impl IntoView {
+fn SocialButton(
+    href: &'static str,
+    icon: icondata::Icon,
+    text: Signal<String>,
+    class: &'static str,
+) -> impl IntoView {
     view! {
         <a
-            class="x-button"
+            href=href
+            class=format!("social-button {class}")
             rel="noopener"
             role="button"
             target="_blank"
-            href="https://x.com/intent/tweet?url=https://simpleicons.org&text=Simple%20Icons%3A%20free%20SVG%20icons%20for%20popular%20brands."
         >
-            <Icon attr:class="text-white h-4 mr-3" icon=SiX />
-            <span>{move_tr!("share-this")}</span>
+            <Icon icon attr:class="text-white h-4 mr-3" />
+            <span>{text}</span>
         </a>
     }
 }
 
 #[component]
-pub fn About() -> impl IntoView {
+fn XButton() -> impl IntoView {
+    view! {
+        <SocialButton
+            href="https://x.com/intent/tweet?url=https://simpleicons.org&text=Simple%20Icons%3A%20SVG%20icons%20for%20popular%20brands."
+            icon=SiX
+            text=move_tr!("share-this-on", { "platform" => "X" })
+            class="x-button"
+        />
+    }
+}
+
+#[component]
+fn FacebookButton() -> impl IntoView {
+    view! {
+        <SocialButton
+            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsimpleicons.org"
+            icon=SiFacebook
+            text=move_tr!("share-this-on", { "platform" => "Facebook" })
+            class="facebook-button"
+        />
+    }
+}
+
+#[component]
+fn MastodonButton() -> impl IntoView {
+    view! {
+        <SocialButton
+            href="https://mastodonshare.com/?text=Simple%20Icons%3A%20SVG%20icons%20for%20popular%20brands.&url=https%3A%2F%2Fsimpleicons.org"
+            icon=SiMastodon
+            text=move_tr!("share-this-on", { "platform" => "Mastodon" })
+            class="mastodon-button"
+        />
+    }
+}
+
+#[component]
+fn About() -> impl IntoView {
     let maintained_by_html = move || {
         tr!("maintained-by", {
             "license" => format!(

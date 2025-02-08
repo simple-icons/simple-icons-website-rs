@@ -11,10 +11,10 @@
 
 ## Commands
 
-- `cargo make`: Build WASM and serve. With `watch-css`, recommended for development.
+- `cargo make`: Build WASM and serve. With `watch-css`, recommended for development. After it, you can use `cd app && trunk serve` to serve.
 - `cargo make watch-css`: Watch the CSS files with [TailwindCSS](https://tailwindcss.com/).
 - `cargo make test`: Build app for production and run tests with [Playwright](https://playwright.dev/).
-- `cargo make format`: Format files. If you are using VSCode they should be formatted on save.
+- `cargo make format`: Format files.
 - `cargo make lint`: Check formatting of files.
 - `cargo make build`: Build the website for production.
 - `cargo make serve`: Build the website for production and serve it with [serve](https://www.npmjs.com/package/serve).
