@@ -5,14 +5,11 @@ use crate::controls::order::{
     set_order_mode, OrderMode, OrderModeSignal, OrderModeVariant,
 };
 use crate::grid::{IconsGrid, IconsGridSignal, IconsIndexSignal, ICONS};
-use crate::Ids;
 use fuzzy::{build_searcher, search};
-use leptos::{
-    prelude::{document, *},
-    task::spawn_local,
-    wasm_bindgen::JsCast,
-};
+use leptos::{prelude::*, task::spawn_local};
 use leptos_fluent::tr;
+use simple_icons_website_ids::Ids;
+use simple_icons_website_search::get_search_input;
 use simple_icons_website_storage::LocalStorage;
 use simple_icons_website_types::SimpleIcon;
 use simple_icons_website_url as Url;
@@ -21,20 +18,6 @@ use web_sys_simple_events::dispatch_input_event_on_input;
 
 #[derive(Copy, Clone)]
 pub struct SearchValueSignal(pub RwSignal<String>);
-
-pub fn get_search_input() -> HtmlInputElement {
-    document()
-        .get_element_by_id(Ids::SearchInput.as_str())
-        .unwrap()
-        .unchecked_into::<HtmlInputElement>()
-}
-
-/// Set the focus on the search bar
-pub fn focus_search_bar() {
-    let input = get_search_input();
-    _ = input.blur();
-    _ = input.focus();
-}
 
 pub fn provide_search_context(icons: Vec<&'static SimpleIcon>) -> String {
     let initial_search_value = initial_search_value(icons);

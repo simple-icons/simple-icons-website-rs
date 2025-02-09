@@ -3,13 +3,8 @@ use crate::controls::download::{
     copy_as_image_jpg, copy_as_image_png, download, download_jpg, download_pdf,
     download_png, download_svg,
 };
-use crate::copy::{
-    copy_and_set_copied_transition, copy_child_img_src_content_from_mouse_event,
-};
 use crate::grid::item::title::get_icon_localized_title;
 use crate::grid::CurrentIconViewSignal;
-use crate::modal::{Modal, ModalOpenSignal};
-use crate::Ids;
 use icondata::{
     BiCheckRegular, BiMenuAltRightRegular, BiMenuRegular, BsCode,
     BsWindowFullscreen, IoColorWand, TbJpg, TbPdf, TbPng, TbSvg,
@@ -21,7 +16,12 @@ use leptos::{
 use leptos_fluent::{move_tr, tr, I18n};
 use leptos_icons::Icon;
 use leptos_use::{on_click_outside, use_clipboard, UseClipboardReturn};
+use simple_icons_website_copy::{
+    copy_and_set_copied_transition, copy_child_img_src_content_from_mouse_event,
+};
+use simple_icons_website_ids::Ids;
 use simple_icons_website_menu::{Menu, MenuItem};
+use simple_icons_website_modal::{Modal, ModalOpenSignal};
 use simple_icons_website_types::SimpleIcon;
 use web_sys_simple_fetch::fetch_text;
 

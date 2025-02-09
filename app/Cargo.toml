@@ -9,6 +9,7 @@ simple-icons-website-components.workspace = true
 simple-icons-macros.workspace = true
 simple-icons-website-preview-generator.workspace = true
 simple-icons-website-footer.workspace = true
+simple-icons-website-modal.workspace = true
 simple-icons-website-storage.workspace = true
 simple-icons-website-svg-defs.workspace = true
 simple-icons-website-url.workspace = true

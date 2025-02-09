@@ -1,8 +1,8 @@
-use crate::controls::search::focus_search_bar;
-use crate::copy::copy_and_set_copied_transition;
 use leptos::{ev::MouseEvent, prelude::*};
 use leptos_fluent::tr;
 use leptos_use::on_click_outside;
+use simple_icons_website_copy::copy_and_set_copied_transition;
+use simple_icons_website_search::focus_search_bar;
 use simple_icons_website_svg_defs::SVGDef;
 use simple_icons_website_svg_icon::SVGIcon;
 use simple_icons_website_url as Url;

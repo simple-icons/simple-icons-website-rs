@@ -6,6 +6,9 @@ members = [
     "components/menu",
     "components/footer",
     "components/ids",
+    "components/modal",
+    "components/copy",
+    "components/search",
     "components/storage",
     "components/svg-defs",
     "components/svg-icon",
@@ -42,6 +45,9 @@ simple-icons-website-preview-generator = { path = "./components/preview-generato
 simple-icons-website-footer = { path = "./components/footer" }
 simple-icons-website-menu = { path = "./components/menu" }
 simple-icons-website-ids = { path = "./components/ids" }
+simple-icons-website-modal = { path = "./components/modal" }
+simple-icons-website-copy = { path = "./components/copy" }
+simple-icons-website-search = { path = "./components/search" }
 simple-icons-website-storage = { path = "./components/storage" }
 simple-icons-website-svg-defs = { path = "./components/svg-defs" }
 simple-icons-website-svg-icon = { path = "./components/svg-icon" }

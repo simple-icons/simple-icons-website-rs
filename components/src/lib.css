@@ -6,12 +6,3 @@
 
 /* Grid */
 @import './grid/mod.css';
-
-/* Buttons */
-@import './button.css';
-
-/* Copy buttons */
-@import './copy.css';
-
-/* Modal */
-@import './modal.css';

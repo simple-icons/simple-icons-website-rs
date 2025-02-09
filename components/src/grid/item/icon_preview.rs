@@ -1,6 +1,6 @@
-use crate::copy::copy_child_img_src_content_from_mouse_event;
 use leptos::prelude::*;
 use leptos_fluent::tr;
+use simple_icons_website_copy::copy_child_img_src_content_from_mouse_event;
 
 /// Icon grid item preview
 ///

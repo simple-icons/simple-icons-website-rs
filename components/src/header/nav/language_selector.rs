@@ -1,8 +1,8 @@
 use crate::header::{nav::button::HeaderMenuButton, HeaderStateSignal};
-use crate::modal::{Modal, ModalOpen, ModalOpenSignal};
 use icondata::IoLanguageSharp;
 use leptos::prelude::*;
 use leptos_fluent::{expect_i18n, move_tr, Language};
+use simple_icons_website_modal::{Modal, ModalOpen, ModalOpenSignal};
 
 fn render_language(lang: &'static Language) -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();

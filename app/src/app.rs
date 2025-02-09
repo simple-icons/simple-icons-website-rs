@@ -12,10 +12,9 @@ use leptos_use::{
     use_color_mode_with_options, ColorMode, UseColorModeOptions,
     UseColorModeReturn,
 };
-use simple_icons_website_components::{
-    header::Header, modal::provide_modal_open_context,
-};
+use simple_icons_website_components::header::Header;
 use simple_icons_website_footer::Footer;
+use simple_icons_website_modal::provide_modal_open_context;
 use simple_icons_website_storage::LocalStorage;
 use simple_icons_website_svg_defs::SVGDefsDefinition;
 use simple_icons_website_url as Url;

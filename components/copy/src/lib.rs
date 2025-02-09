@@ -35,7 +35,7 @@ pub fn copy_and_set_copied_transition(value: &str, el: web_sys::HtmlElement) {
 }
 
 /// Copy image children source content to clipboard
-pub(crate) fn copy_child_img_src_content_from_mouse_event(ev: MouseEvent) {
+pub fn copy_child_img_src_content_from_mouse_event(ev: MouseEvent) {
     let target = event_target::<web_sys::HtmlElement>(&ev);
     if let Some(src) = target
         .children()

@@ -6,7 +6,6 @@ mod scroll;
 use crate::controls::layout::{Layout, LayoutSignal};
 use crate::controls::order::{sort_icons, OrderMode, OrderModeVariant};
 use crate::controls::search::search_icons_and_returns_first_page;
-use crate::modal::ModalOpen;
 use ad::CarbonAdsAdGridItem;
 use icons_loader::{IconsLoader, IconsLoaderSignal};
 use item::{details::IconDetailsModal, IconGridItem};
@@ -20,6 +19,7 @@ use simple_icons_macros::{
     deprecated_icons_array, get_number_of_deprecated_icons,
     get_number_of_icons, icons_array,
 };
+use simple_icons_website_modal::ModalOpen;
 use simple_icons_website_types::SimpleIcon;
 use simple_icons_website_url as Url;
 use wasm_bindgen::JsCast;

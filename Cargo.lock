@@ -2130,6 +2130,7 @@ dependencies = [
  "simple-icons-macros",
  "simple-icons-website-components",
  "simple-icons-website-footer",
+ "simple-icons-website-modal",
  "simple-icons-website-preview-generator",
  "simple-icons-website-storage",
  "simple-icons-website-svg-defs",
@@ -2149,8 +2150,11 @@ dependencies = [
  "leptos_meta",
  "rand",
  "simple-icons-macros",
+ "simple-icons-website-copy",
  "simple-icons-website-ids",
  "simple-icons-website-menu",
+ "simple-icons-website-modal",
+ "simple-icons-website-search",
  "simple-icons-website-storage",
  "simple-icons-website-svg-defs",
  "simple-icons-website-svg-icon",
@@ -2159,6 +2163,17 @@ dependencies = [
  "wasm-bindgen",
  "web-sys",
  "web-sys-simple-events",
+ "web-sys-simple-fetch",
+]
+
+[[package]]
+name = "simple-icons-website-copy"
+version = "0.1.0"
+dependencies = [
+ "leptos",
+ "leptos-use",
+ "wasm-bindgen",
+ "web-sys",
  "web-sys-simple-fetch",
 ]
 
@@ -2183,6 +2198,21 @@ dependencies = [
  "icondata",
  "leptos",
  "leptos_icons",
+]
+
+[[package]]
+name = "simple-icons-website-modal"
+version = "0.1.0"
+dependencies = [
+ "leptos",
+ "leptos-fluent",
+ "leptos-use",
+ "simple-icons-website-copy",
+ "simple-icons-website-search",
+ "simple-icons-website-svg-defs",
+ "simple-icons-website-svg-icon",
+ "simple-icons-website-url",
+ "web-sys",
 ]
 
 [[package]]
@@ -2212,6 +2242,16 @@ dependencies = [
  "web-sys-simple-copy",
  "web-sys-simple-events",
  "web-sys-simple-fetch",
+]
+
+[[package]]
+name = "simple-icons-website-search"
+version = "0.1.0"
+dependencies = [
+ "leptos",
+ "simple-icons-website-ids",
+ "wasm-bindgen",
+ "web-sys",
 ]
 
 [[package]]

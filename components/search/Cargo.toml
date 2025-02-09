@@ -1,0 +1,14 @@
+[package]
+name = "simple-icons-website-search"
+description = "Search utilities for the Simple Icons website"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+simple-icons-website-ids.workspace = true
+web-sys.workspace = true
+leptos.workspace = true
+wasm-bindgen.workspace = true

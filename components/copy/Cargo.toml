@@ -1,0 +1,15 @@
+[package]
+name = "simple-icons-website-copy"
+description = "Copying utilities for the Simple Icons website"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+leptos.workspace = true
+leptos-use.workspace = true
+wasm-bindgen.workspace = true
+web-sys-simple-fetch.workspace = true
+web-sys.workspace = true

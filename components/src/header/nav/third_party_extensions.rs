@@ -1,12 +1,11 @@
 use crate::header::{nav::button::HeaderMenuButton, HeaderStateSignal};
-use crate::modal::Modal;
-use crate::modal::{ModalOpen, ModalOpenSignal};
 use icondata::FaPuzzlePieceSolid;
 use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use simple_icons_macros::{
     get_simple_icons_3rd_party_extensions, get_simple_icons_3rd_party_libraries,
 };
+use simple_icons_website_modal::{Modal, ModalOpen, ModalOpenSignal};
 use simple_icons_website_svg_icon::SVGIcon;
 use simple_icons_website_types::ThirdPartyExtension;
 
