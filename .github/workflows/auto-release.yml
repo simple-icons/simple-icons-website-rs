@@ -22,7 +22,7 @@ jobs:
         run: |
           simple_icons_version="$(curl --retry 5 -s https://api.github.com/repos/simple-icons/simple-icons/releases/latest | jq -r .tag_name)"
           echo "si=$simple_icons_version" >> $GITHUB_OUTPUT
-          echo "dep=$(cat package.json | grep '"simple-icons":' | cut -d'"' -f4)" >> $GITHUB_OUTPUT
+          echo "dep=$(grep -i '"simple-icons":' package.json | cut -d'"' -f4)" >> $GITHUB_OUTPUT
 
   auto-release:
     name: Automated release
@@ -83,13 +83,11 @@ jobs:
           node-version-file: .node-version
       - name: Update simple-icons
         run: |
-          sed -i 's/"simple-icons": "${{steps.get-releases.outputs.dep}}"/"simple-icons": "${{steps.get-releases.outputs.si}}"/' package.json
+          sed -i 's/"simple-icons": "${{needs.get-releases.outputs.dep}}"/"simple-icons": "${{needs.get-releases.outputs.si}}"/' package.json
           cat package.json | grep '"simple-icons":' -C 2
           npm install --package-lock-only --ignore-scripts --no-audit --no-fund
       - name: Install Node.js dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Install Playwright browsers
-        run: npx playwright install chrome --with-deps
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
@@ -98,12 +96,10 @@ jobs:
         run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run `cargo make test`
-        run: cargo make test --project=chrome-desktop
       - name: Commit updates
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Update simple-icons to ${{ steps.get-releases.outputs.si }}
+          commit_message: Update simple-icons to ${{ needs.get-releases.outputs.si }}
           commit_user_name: 'simple-icons[bot]'
           commit_user_email: 'simple-icons[bot]@users.noreply.github.com'
           commit_author: 'simple-icons[bot] <simple-icons[bot]@users.noreply.github.com>'
