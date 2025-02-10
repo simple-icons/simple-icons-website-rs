@@ -5,6 +5,7 @@ use leptos::{
 };
 use leptos_fluent::{move_tr, tr};
 use leptos_icons::Icon;
+use simple_icons_macros::get_simple_icon_svg_path;
 
 /// Footer of the website
 #[component]
@@ -15,12 +16,16 @@ pub fn Footer(
     view! {
         <footer node_ref=container_ref>
             <ReportProblems />
-            <div class="flex flex-col md:flex-row justify-between lg:-mt-[41px]">
+            <div class="flex flex-col md:flex-row justify-between">
                 <About />
-                <div class="flex flex-col space-y-2">
-                    <FacebookButton />
-                    <XButton />
-                    <MastodonButton />
+                <div class="flex flex-col space-y-4">
+                    <p class="text-center">{move_tr!("share-this")}</p>
+                    <div class="flex justify-between">
+                        <FacebookButton />
+                        <XButton />
+                        <MastodonButton />
+                        <BlueskyButton />
+                    </div>
                 </div>
             </div>
             <a
@@ -85,19 +90,19 @@ fn ReportProblems() -> impl IntoView {
 fn SocialButton(
     href: &'static str,
     icon: icondata::Icon,
-    text: Signal<String>,
     class: &'static str,
+    title: &'static str,
 ) -> impl IntoView {
     view! {
         <a
             href=href
+            title=title
             class=format!("social-button {class}")
             rel="noopener"
             role="button"
             target="_blank"
         >
-            <Icon icon attr:class="text-white h-4 mr-3" />
-            <span>{text}</span>
+            <Icon icon width="23px" height="23px" />
         </a>
     }
 }
@@ -108,8 +113,8 @@ fn XButton() -> impl IntoView {
         <SocialButton
             href="https://x.com/intent/tweet?url=https://simpleicons.org&text=Simple%20Icons%3A%20SVG%20icons%20for%20popular%20brands."
             icon=SiX
-            text=move_tr!("share-this-on", { "platform" => "X" })
             class="x-button"
+            title="X"
         />
     }
 }
@@ -120,8 +125,8 @@ fn FacebookButton() -> impl IntoView {
         <SocialButton
             href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsimpleicons.org"
             icon=SiFacebook
-            text=move_tr!("share-this-on", { "platform" => "Facebook" })
             class="facebook-button"
+            title="Facebook"
         />
     }
 }
@@ -132,9 +137,28 @@ fn MastodonButton() -> impl IntoView {
         <SocialButton
             href="https://mastodonshare.com/?text=Simple%20Icons%3A%20SVG%20icons%20for%20popular%20brands.&url=https%3A%2F%2Fsimpleicons.org"
             icon=SiMastodon
-            text=move_tr!("share-this-on", { "platform" => "Mastodon" })
             class="mastodon-button"
+            title="Mastodon"
         />
+    }
+}
+
+#[component]
+fn BlueskyButton() -> impl IntoView {
+    // TODO: Bluesky not in `icondata` because the version of Simple Icons used is too old
+    view! {
+        <a
+            href="https://bsky.app/intent/compose?text=Simple%20Icons%3A%20SVG%20icons%20for%20popular%20brands%20at%20https%3A%2F%2Fsimpleicons.org"
+            title="Bluesky"
+            class="social-button bluesky-button"
+            rel="noopener"
+            role="button"
+            target="_blank"
+        >
+            <svg width="23px" height="23px">
+                <path d=get_simple_icon_svg_path!("bluesky") />
+            </svg>
+        </a>
     }
 }
 

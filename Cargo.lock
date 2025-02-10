@@ -2224,6 +2224,7 @@ dependencies = [
  "leptos",
  "leptos-fluent",
  "leptos_icons",
+ "simple-icons-macros",
 ]
 
 [[package]]
