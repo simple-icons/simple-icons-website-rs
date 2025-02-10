@@ -20,7 +20,7 @@ pub fn Footer(
                 <About />
                 <div class="flex flex-col mt-8 space-y-2 md:mt-auto">
                     <p class="text-center">{move_tr!("share-this")}</p>
-                    <div class="flex justify-center md:justify-between">
+                    <div class="flex justify-center md:justify-between space-x-2 md:space-x-0">
                         <FacebookButton />
                         <XButton />
                         <MastodonButton />
