@@ -13,7 +13,7 @@ footer {
   }
 
   .social-button {
-    @apply h-0;
+    @apply h-[23px];
   }
 
   /* X button */

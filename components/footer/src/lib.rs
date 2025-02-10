@@ -18,9 +18,9 @@ pub fn Footer(
             <ReportProblems />
             <div class="flex flex-col md:flex-row justify-between">
                 <About />
-                <div class="flex flex-col space-y-4">
+                <div class="flex flex-col mt-8 space-y-2 md:mt-auto">
                     <p class="text-center">{move_tr!("share-this")}</p>
-                    <div class="flex justify-between">
+                    <div class="flex justify-center md:justify-between">
                         <FacebookButton />
                         <XButton />
                         <MastodonButton />
@@ -30,7 +30,7 @@ pub fn Footer(
             </div>
             <a
                 class=concat!(
-                    "w-full text-center mt-6 hover:underline focus:underline",
+                    "w-full mt-9 text-center hover:underline focus:underline",
                     " text-[var(--link-color)] hover:text-[var(--link-color-hover)]",
                     " focus:text-[var(--link-color-hover)]",
                 )
