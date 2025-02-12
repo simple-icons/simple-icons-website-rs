@@ -25,7 +25,7 @@
     "@typescript-eslint/eslint-plugin": "6.19.0",
     "@typescript-eslint/parser": "6.19.0",
     "autoprefixer": "10.4.20",
-    "esbuild": "0.24.2",
+    "esbuild": "0.25.0",
     "eslint": "8.56.0",
     "eslint-config-simple-icons": "0.1.2",
     "husky": "9.1.7",
