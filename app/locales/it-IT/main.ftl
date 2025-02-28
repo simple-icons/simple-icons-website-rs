@@ -44,6 +44,7 @@ deprecated = Deprecato
 deprecations = Deprecati
 will-be-removed-at = { $icon } verrà rimosso nella v{ $version }
 will-be-removed-at-extended = { $icon } verrà rimosso nella { $version } circa { $date } (vedi { $pr })
+will-be-renamed-at-extended = { $icon } verrà rinominato nella { $version } circa { $date } (vedi { $pr })
 scalable-vector-graphic = Grafica vettoriale scalabile
 third-party-extensions = Estensioni di terze parti
 main-repository = Deposito principale

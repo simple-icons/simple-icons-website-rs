@@ -199,32 +199,53 @@ pub fn fill_icon_details_modal_with_icon(
             .unwrap();
         js_sys::Reflect::set(&date_options, &"day".into(), &"2-digit".into())
             .unwrap();
-        modal_deprecation_paragraph.set_inner_html(&tr!(
-            i18n,
-            "will-be-removed-at-extended",
-            {
-                "icon" => icon_localized_title,
-                "version" => format!(
-                    "<a href=\"{}\" target=\"_blank\">v{}</a>",
-                    deprecation.get_milestone_url(),
-                    deprecation.removal_at_version,
-                ),
-                "date" => js_sys::Date::new(&wasm_bindgen::JsValue::from(
-                        deprecation.milestone_due_on,
-                    ))
-                    .to_locale_date_string(
-                        &language.id.to_string(),
-                        &wasm_bindgen::JsValue::from(&date_options),
-                    )
-                    .as_string()
-                    .unwrap(),
-                "pr" => format!(
-                    "<a href=\"{}\" target=\"_blank\">#{}</a>",
-                    deprecation.get_pull_request_url(),
-                    deprecation.pull_request_number,
-                ),
-            },
-        ));
+
+        // TODO: refactor this improving leptos-fluent
+        let version = format!(
+            "<a href=\"{}\" target=\"_blank\">v{}</a>",
+            deprecation.get_milestone_url(),
+            deprecation.at_version,
+        );
+        let date = js_sys::Date::new(&wasm_bindgen::JsValue::from(
+            deprecation.milestone_due_on,
+        ))
+        .to_locale_date_string(
+            &language.id.to_string(),
+            &wasm_bindgen::JsValue::from(&date_options),
+        )
+        .as_string()
+        .unwrap();
+        let pr = format!(
+            "<a href=\"{}\" target=\"_blank\">#{}</a>",
+            deprecation.get_pull_request_url(),
+            deprecation.pull_request_number,
+        );
+        let modal_deprecation_paragraph_html = if deprecation.renamed {
+            tr!(
+                i18n,
+                "will-be-renamed-at-extended",
+                {
+                    "icon" => icon_localized_title,
+                    "version" => version,
+                    "date" => date,
+                    "pr" => pr,
+                },
+            )
+        } else {
+            tr!(
+                i18n,
+                "will-be-removed-at-extended",
+                {
+                    "icon" => icon_localized_title,
+                    "version" => version,
+                    "date" => date,
+                    "pr" => pr,
+                },
+            )
+        };
+
+        modal_deprecation_paragraph
+            .set_inner_html(&modal_deprecation_paragraph_html);
         _ = modal_deprecation_paragraph.class_list().remove_1("hidden");
     } else {
         _ = modal_deprecation_paragraph.class_list().add_1("hidden");

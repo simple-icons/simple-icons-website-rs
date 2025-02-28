@@ -1,10 +1,11 @@
 /// Static deprecation data for a simple icon
 #[derive(Clone)]
 pub struct IconDeprecation {
-    pub removal_at_version: &'static str,
+    pub at_version: &'static str,
     pub milestone_number: u64,
     pub milestone_due_on: &'static str,
     pub pull_request_number: u64,
+    pub renamed: bool,
 }
 
 impl IconDeprecation {

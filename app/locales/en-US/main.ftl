@@ -44,6 +44,7 @@ deprecated = Deprecated
 deprecations = Deprecations
 will-be-removed-at = { $icon } will be removed at v{ $version }
 will-be-removed-at-extended = { $icon } will be removed at { $version } about { $date } (see { $pr })
+will-be-renamed-at-extended = { $icon } will be renamed at { $version } about { $date } (see { $pr })
 scalable-vector-graphic = Scalable Vector Graphic
 third-party-extensions = Third party extensions
 main-repository = Main Repository

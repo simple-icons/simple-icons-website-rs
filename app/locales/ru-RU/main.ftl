@@ -44,6 +44,7 @@ deprecated = Устаревший
 deprecations = Устаревания
 will-be-removed-at = { $icon } будет удален в версии v{ $version }
 will-be-removed-at-extended = { $icon } будет удален в { $version } около { $date } (см. { $pr })
+will-be-renamed-at-extended = { $icon } будет переименован в { $version } около { $date } (см. { $pr })
 scalable-vector-graphic = Масштабируемая векторная графика
 third-party-extensions = Расширения третьих лиц
 main-repository = Основной репозиторий

@@ -44,6 +44,7 @@ deprecated = 已過時
 deprecations = 已過時
 will-be-removed-at = { $icon } 將在 { $version }
 will-be-removed-at-extended = { $icon } 將在 { $version } 關於 { $date }（參見{ $pr }）處刪除
+will-be-renamed-at-extended = { $icon } 將在 { $version } 關於 { $date }（參見{ $pr }）處重命名
 scalable-vector-graphic = 可縮放矢量圖形
 third-party-extensions = 第三方擴展
 main-repository = 主存儲庫

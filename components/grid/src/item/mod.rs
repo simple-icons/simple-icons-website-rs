@@ -40,7 +40,7 @@ pub fn IconGridItem(icon: &'static SimpleIcon) -> impl IntoView {
                         <IconIsDeprecatedNotice
                             title=icon_localized_title
                             pull_request_url=deprecation.get_pull_request_url()
-                            removal_at_version=deprecation.removal_at_version
+                            at_version=deprecation.at_version
                         />
                     }
                 })}

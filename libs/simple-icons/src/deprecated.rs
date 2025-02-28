@@ -3,13 +3,15 @@ use std::fs;
 use std::path::Path;
 
 /// Deprecated icons for next versions of Simple Icons
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct IconDeprecation {
     pub slug: String,
-    pub removal_at_version: String,
+    pub at_version: String,
     pub milestone_number: u64,
     pub milestone_due_on: String,
     pub pull_request_number: u64,
+    /// If new_slug is Some, the icon was renamed
+    pub new_slug: Option<String>,
 }
 
 /// Implements `PartialEq` for `IconDeprecation`.
@@ -63,7 +65,7 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
 
     for milestone_data in milestones_data.iter() {
         let title = milestone_data.get("title").unwrap().as_str().unwrap();
-        let removal_at_version = title.replace('v', "");
+        let at_version = title.replace('v', "");
         let milestone_number =
             milestone_data.get("number").unwrap().as_u64().unwrap();
         let milestone_due_on =
@@ -87,29 +89,72 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
                 .unwrap()
                 .as_array()
                 .unwrap();
-            for file_data in files_data.iter() {
-                let change_type =
-                    file_data.get("node").unwrap().get("changeType").unwrap();
-                if change_type != "DELETED" {
-                    continue;
-                }
 
+            let mut new_slug: Option<String> = None;
+            let mut contains_deleted_icon = false;
+            let mut contains_added_icon = false;
+            for file_data in files_data.iter() {
                 let path = file_data
                     .get("node")
                     .unwrap()
                     .get("path")
                     .unwrap()
                     .as_str()
-                    .unwrap();
+                    .unwrap_or_default();
+                if !path.starts_with("icons/") || !path.ends_with(".svg") {
+                    continue;
+                }
+
+                let change_type =
+                    file_data.get("node").unwrap().get("changeType").unwrap();
+                if change_type == "DELETED" {
+                    contains_deleted_icon = true;
+                } else if change_type == "ADDED" {
+                    contains_added_icon = true;
+                    new_slug =
+                        Some(path.replace("icons/", "").replace(".svg", ""));
+                }
+            }
+
+            for file_data in files_data.iter() {
+                let path = file_data
+                    .get("node")
+                    .unwrap()
+                    .get("path")
+                    .unwrap()
+                    .as_str()
+                    .unwrap_or_default();
+                if !path.starts_with("icons/") || !path.ends_with(".svg") {
+                    continue;
+                }
+
+                let change_type =
+                    file_data.get("node").unwrap().get("changeType").unwrap();
+                if change_type == "ADDED"
+                    && contains_added_icon
+                    && contains_deleted_icon
+                {
+                    continue;
+                }
+
+                if change_type != "DELETED" {
+                    continue;
+                }
+
                 let slug =
                     path.to_string().replace("icons/", "").replace(".svg", "");
 
                 let deprecated_icon = IconDeprecation {
                     slug,
-                    removal_at_version: removal_at_version.to_string(),
+                    at_version: at_version.to_string(),
                     milestone_number,
                     milestone_due_on: milestone_due_on.to_string(),
                     pull_request_number,
+                    new_slug: if contains_deleted_icon && contains_added_icon {
+                        new_slug.clone()
+                    } else {
+                        None
+                    },
                 };
 
                 if !deprecated_icons.contains(&deprecated_icon) {

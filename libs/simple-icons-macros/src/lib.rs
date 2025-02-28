@@ -320,17 +320,19 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                         concat!(
                             "Some(",
                             "&::simple_icons_website_types::IconDeprecation{{",
-                            "removal_at_version: \"{}\",",
+                            "at_version: \"{}\",",
                             "milestone_number: {},",
                             "milestone_due_on: \"{}\",",
                             "pull_request_number: {},",
+                            "renamed: {}",
                             "}}",
                             ")",
                         ),
-                        icon.removal_at_version,
+                        icon.at_version,
                         icon.milestone_number,
                         icon.milestone_due_on,
                         icon.pull_request_number,
+                        icon.new_slug.is_some(),
                     )
                 }
                 None => "None".to_string(),

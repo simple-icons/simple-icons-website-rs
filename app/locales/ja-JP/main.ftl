@@ -44,6 +44,7 @@ deprecated = 廃止されました
 deprecations = 廃止
 will-be-removed-at = { $icon } は { $version } で削除されます
 will-be-removed-at-extended = { $icon } は { $version } で削除されます { $date } (参照 { $pr })
+will-be-renamed-at-extended = { $icon } は { $version } で名前が変更されます { $date } (参照 { $pr })
 scalable-vector-graphic = スケーラブルなベクター グラフィック
 third-party-extensions = サードパーティの拡張機能
 main-repository = メインリポジトリ
