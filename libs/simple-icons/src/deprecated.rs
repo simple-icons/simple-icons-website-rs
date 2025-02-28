@@ -92,7 +92,6 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
 
             let mut new_slug: Option<String> = None;
             let mut contains_deleted_icon = false;
-            let mut contains_added_icon = false;
             for file_data in files_data.iter() {
                 let path = file_data
                     .get("node")
@@ -110,7 +109,6 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
                 if change_type == "DELETED" {
                     contains_deleted_icon = true;
                 } else if change_type == "ADDED" {
-                    contains_added_icon = true;
                     new_slug =
                         Some(path.replace("icons/", "").replace(".svg", ""));
                 }
@@ -131,8 +129,8 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
                 let change_type =
                     file_data.get("node").unwrap().get("changeType").unwrap();
                 if change_type == "ADDED"
-                    && contains_added_icon
                     && contains_deleted_icon
+                    && new_slug.is_some()
                 {
                     continue;
                 }
@@ -150,7 +148,7 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
                     milestone_number,
                     milestone_due_on: milestone_due_on.to_string(),
                     pull_request_number,
-                    new_slug: if contains_deleted_icon && contains_added_icon {
+                    new_slug: if contains_deleted_icon && new_slug.is_some() {
                         new_slug.clone()
                     } else {
                         None
