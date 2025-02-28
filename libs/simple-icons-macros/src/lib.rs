@@ -197,7 +197,7 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
             match &icon.aliases {
                 None => "None".to_string(),
                 Some(aliases) => format!(
-                    "Some(&::simple_icons_website_types::SimpleIconAliases {{{}, {}, {}}})",
+                    "Some(&::simple_icons_website_types::SimpleIconAliases {{{}, {}, {}, {}}})",
                     {
                         &format!(
                             "aka: {}",
@@ -294,7 +294,22 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                             }
                             result
                         })
-                    }
+                    },
+                    {
+                        &format!(
+                            "old: {}",
+                            match &aliases.old {
+                                Some(old) => format!(
+                                    "Some(&[{}])",
+                                    old.iter()
+                                        .map(|old| format!("\"{}\"", old))
+                                        .collect::<Vec<_>>()
+                                        .join(", ")
+                                ),
+                                None => "None".to_string(),
+                            }
+                        )
+                    },
                 ),
             },
             i,

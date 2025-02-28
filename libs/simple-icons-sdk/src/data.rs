@@ -32,6 +32,7 @@ pub struct SimpleIconDataAliases {
     pub aka: Option<Vec<String>>,
     pub dup: Option<Vec<SimpleIconDataDuplicate>>,
     pub loc: Option<HashMap<String, String>>,
+    pub old: Option<Vec<String>>,
 }
 
 #[derive(DeJson)]

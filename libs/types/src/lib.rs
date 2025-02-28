@@ -9,6 +9,7 @@ pub struct SimpleIconAliases {
     pub aka: Option<&'static [&'static str]>,
     pub dup: Option<&'static [&'static str]>,
     pub loc: Option<&'static [(&'static str, &'static str)]>,
+    pub old: Option<&'static [&'static str]>,
 }
 
 /// Static Simple Icon
@@ -40,6 +41,9 @@ impl SimpleIcon {
             }
             if let Some(loc) = aliases_.loc {
                 aliases.extend(loc.iter().map(|(_, v)| *v));
+            }
+            if let Some(old) = aliases_.old {
+                aliases.extend_from_slice(old);
             }
         }
         aliases
