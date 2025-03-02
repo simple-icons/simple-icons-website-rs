@@ -5,7 +5,7 @@ use leptos_icons::Icon;
 pub fn Menu(
     #[prop(optional, into)] class: Signal<String>,
     children: Children,
-    node_ref: NodeRef<Ul>,
+    #[prop(optional, into)] node_ref: NodeRef<Ul>,
 ) -> impl IntoView {
     view! {
         <ul node_ref=node_ref class=move || format!("rounded-sm p-1 z-50 {}", class())>
@@ -16,7 +16,7 @@ pub fn Menu(
 
 #[component]
 pub fn MenuItem(
-    #[prop(optional, into)] class: Signal<String>,
+    class: &'static str,
     #[prop(optional, into)] text: Signal<String>,
     #[prop(optional, into)] icon: Option<Signal<icondata::Icon>>,
     #[prop(optional)] children: Option<Children>,
@@ -27,7 +27,7 @@ pub fn MenuItem(
                 "flex flex-row gap-x-2 px-3 py-1.5 cursor-pointer rounded-sm",
                 " whitespace-nowrap my-auto {}",
             ),
-            class(),
+            class,
         )>
             {match icon {
                 Some(icon) => {

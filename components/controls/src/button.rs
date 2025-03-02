@@ -43,6 +43,9 @@ pub fn ControlButtonIcon(
 ) -> impl IntoView {
     let title_fn = Memo::new(move |_| title());
     let is_xs_screen = use_media_query("(max-width: 475px)");
+
+    // TODO: leptos-icons should be able to accept `'static str` and `String`
+    //       as `width` and `height` properties using `Cow` or something similar
     let size =
         Memo::new(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
 
@@ -50,8 +53,14 @@ pub fn ControlButtonIcon(
         <ControlButton title active class>
             {match icon {
                 IconOrSvg::Icon(icon) => {
-                    let size_px = format!("{}px", size.get_untracked());
-                    view! { <Icon icon width=size_px.clone() height=size_px /> }.into_any()
+                    view! {
+                        <Icon
+                            icon
+                            width=Signal::derive(move || size().to_string())
+                            height=Signal::derive(move || size().to_string())
+                        />
+                    }
+                        .into_any()
                 }
                 value => {
                     view! {

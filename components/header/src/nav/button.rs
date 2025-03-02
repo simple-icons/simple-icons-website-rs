@@ -59,9 +59,6 @@ pub fn HeaderMenuLink(
 /// Each button of the header menu that is not a link
 #[component]
 pub fn HeaderMenuButton(
-    /// Additional classes to add to the button
-    #[prop(into, optional)]
-    class: Signal<String>,
     /// Title of the button
     #[prop(into)]
     title: Signal<String>,
@@ -69,7 +66,7 @@ pub fn HeaderMenuButton(
     icon: icondata::Icon,
 ) -> impl IntoView {
     view! {
-        <li title=title class=class tabindex=0>
+        <li title=title tabindex=0>
             <Icon icon width="36px" height="36px" />
         </li>
     }

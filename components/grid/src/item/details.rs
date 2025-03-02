@@ -69,7 +69,7 @@ pub fn fill_icon_details_modal_with_icon(
     // the user clicks on the download pdf button
     add_pdfkit_scripts();
 
-    let language = i18n.language.get();
+    let language = (i18n.language)();
     let icon_localized_title = get_icon_localized_title(icon, language);
 
     let modal_body = document()
@@ -365,14 +365,6 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let controls_menu_item_class = move || {
-        concat!(
-            "my-auto dark:bg-gray-700 bg-slate-300 text-sm",
-            " hover:bg-slate-200 dark:hover:bg-slate-600 z-50"
-        )
-        .to_string()
-    };
-
     let download_svg_msg =
         move_tr!("download-filetype", {"filetype" => tr!("svg")});
     let download_colored_svg_msg =
@@ -478,8 +470,13 @@ pub fn IconDetailsModal() -> impl IntoView {
                     <IconDetailsModalPreview />
                     <IconDetailsModalInformation />
                 </div>
-                <div class="cursor-pointer absolute right-[47px] top-[14px] z-50">
-                    <span on:click=move |_| set_controls_open(!controls_open.get_untracked())>
+                <div node_ref=menu_ref class="cursor-pointer absolute right-[47px] top-[14px] z-50">
+                    <span on:click=move |_| {
+                        set_controls_open
+                            .update(|state| {
+                                *state = !*state;
+                            })
+                    }>
                         <Icon
                             width="27"
                             height="27"
@@ -487,21 +484,18 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 true => BiMenuRegular,
                                 false => BiMenuAltRightRegular,
                             })
+                            attr:class="pointer-events-none"
                         />
 
                     </span>
                     <Show when=controls_open>
-                        <Menu
-                            node_ref=menu_ref
-                            class=concat!(
-                                "absolute top-8 right-1 text-sm",
-                                " border-custom-divider-color bg-slate-300 dark:bg-gray-700",
-                                " max-h-[330px] scroll-bar overflow-y-auto",
-                            )
-                        >
+                        <Menu class=concat!(
+                            "absolute top-8 right-1 text-sm",
+                            " border-custom-divider-color bg-slate-300 dark:bg-gray-700",
+                            " max-h-[330px] scroll-bar overflow-y-auto",
+                        )>
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=download_svg_msg
                                 icon=Signal::derive(move || TbSvg)
                                 on:click=move |_| {
@@ -510,8 +504,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=download_pdf_msg
                                 icon=Signal::derive(move || TbPdf)
                                 on:click=move |_| {
@@ -520,8 +513,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=download_png_msg
                                 icon=Signal::derive(move || TbPng)
                                 on:click=move |_| {
@@ -530,8 +522,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=download_jpg_msg
                                 icon=Signal::derive(move || TbJpg)
                                 on:click=move |_| {
@@ -540,8 +531,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=download_colored_svg_msg
                                 icon=Signal::derive(move || TbSvg)
                                 on:click=move |_| {
@@ -566,8 +556,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_svg_msg
                                 icon=copy_svg_icon
                                 on:click=move |_| {
@@ -597,8 +586,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_png_msg
                                 icon=copy_png_icon
                                 on:click=move |_| {
@@ -612,8 +600,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_jpg_msg
                                 icon=copy_jpg_icon
                                 on:click=move |_| {
@@ -627,8 +614,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_svg_path_msg
                                 icon=copy_svg_path_icon
                                 on:click=move |_| {
@@ -666,8 +652,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_hex_msg
                                 icon=copy_hex_icon
                                 on:click=move |ev| {
@@ -687,8 +672,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_as_base64_svg_text
                                 icon=copy_as_base64_svg_icon
                                 on:click=move |ev| {
@@ -723,8 +707,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_as_base64_jpg_text
                                 icon=copy_as_base64_jpg_icon
                                 on:click=move |_| {
@@ -741,8 +724,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_as_base64_png_text
                                 icon=copy_as_base64_png_icon
                                 on:click=move |_| {
@@ -759,8 +741,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_brand_name_msg
                                 icon=copy_brand_name_icon
                                 on:click=move |ev| {
@@ -780,8 +761,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <MenuItem
-                                class=controls_menu_item_class()
+                            <DetailsMenuItem
                                 text=copy_icon_modal_url_msg
                                 icon=copy_icon_modal_url_icon
                                 on:click=move |ev| {
@@ -812,11 +792,23 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     );
                                 }
                             />
-
                         </Menu>
                     </Show>
                 </div>
             </div>
         </Modal>
     }
+}
+
+#[component]
+fn DetailsMenuItem(
+    #[prop(into)] text: Signal<String>,
+    #[prop(into)] icon: Signal<icondata::Icon>,
+) -> impl IntoView {
+    let class = concat!(
+        "my-auto dark:bg-gray-700 bg-slate-300 text-sm",
+        " hover:bg-slate-200 dark:hover:bg-slate-600 z-50"
+    );
+
+    view! { <MenuItem class text icon /> }
 }

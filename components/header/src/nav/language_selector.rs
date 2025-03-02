@@ -45,10 +45,7 @@ pub fn LanguageSelectorButton() -> impl IntoView {
             title=move_tr!("change-language")
             on:click=move |_| modal_open.set_languages()
             icon=IoLanguageSharp
-            class=Signal::derive(move || match header_state().menu_open {
-                true => "block".to_string(),
-                false => "hidden lg:block".to_string(),
-            })
+            attr:class=move || if header_state().menu_open { "block" } else { "hidden lg:block" }
         />
     }
 }

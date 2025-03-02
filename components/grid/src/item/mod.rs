@@ -21,7 +21,7 @@ use title::IconGridItemTitle;
 #[component]
 pub fn IconGridItem(icon: &'static SimpleIcon) -> impl IntoView {
     let icon_localized_title = Memo::new(move |_| {
-        get_icon_localized_title(icon, expect_i18n().language.get())
+        get_icon_localized_title(icon, (expect_i18n().language)())
     });
 
     view! {
