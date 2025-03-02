@@ -1,0 +1,10 @@
+[package]
+name = "simple-icons-website-i18n"
+description = "Simple Icons website i18n machinery"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+leptos-fluent.workspace = true
+fluent-templates.workspace = true
+leptos.workspace = true

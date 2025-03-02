@@ -2136,7 +2136,6 @@ name = "simple-icons-website"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
- "fluent-templates",
  "icondata",
  "leptos",
  "leptos-fluent",
@@ -2153,6 +2152,7 @@ dependencies = [
  "simple-icons-website-grid-constants",
  "simple-icons-website-grid-types",
  "simple-icons-website-header",
+ "simple-icons-website-i18n",
  "simple-icons-website-modal",
  "simple-icons-website-preview-generator",
  "simple-icons-website-storage",
@@ -2310,6 +2310,15 @@ dependencies = [
  "simple-icons-website-modal",
  "simple-icons-website-svg-icon",
  "simple-icons-website-types",
+]
+
+[[package]]
+name = "simple-icons-website-i18n"
+version = "0.1.0"
+dependencies = [
+ "fluent-templates",
+ "leptos",
+ "leptos-fluent",
 ]
 
 [[package]]

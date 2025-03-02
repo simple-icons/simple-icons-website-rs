@@ -6,7 +6,7 @@ export const download_image = async (slug, format, onload) => {
   const svg = await res.text();
 
   const svgBlob = new Blob([svg], {
-    type: 'image/svg+xml;charset=utf-8',
+    type: 'image/svg+xml;charset=ascii',
   });
 
   const DOMURL = window.URL || window.webkitURL || window;

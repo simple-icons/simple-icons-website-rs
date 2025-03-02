@@ -1,8 +1,6 @@
 use crate::head::Head;
 use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
-use fluent_templates::static_loader;
 use leptos::{html::Footer as FooterHtmlElement, prelude::*};
-use leptos_fluent::leptos_fluent;
 use leptos_hotkeys::{provide_hotkeys_context, scopes};
 use leptos_router::{
     components::{Route, Router, Routes},
@@ -14,6 +12,7 @@ use leptos_use::{
 };
 use simple_icons_website_footer::Footer;
 use simple_icons_website_header::Header;
+use simple_icons_website_i18n::I18n;
 use simple_icons_website_modal::provide_modal_open_context;
 use simple_icons_website_storage::LocalStorage;
 use simple_icons_website_svg_defs::SVGDefsDefinition;
@@ -21,35 +20,6 @@ use simple_icons_website_url as Url;
 
 /// Title of the page
 pub static TITLE: &str = "Simple Icons";
-
-static_loader! {
-    static TRANSLATIONS = {
-        locales: "./locales",
-        fallback_language: "en-US",
-        customise: |bundle| bundle.set_use_isolating(false),
-    };
-}
-
-#[component]
-fn I18n(children: Children) -> impl IntoView {
-    leptos_fluent! {
-        children: children(),
-        locales: "./locales",
-        translations: [TRANSLATIONS],
-        #[cfg(debug_assertions)]
-        check_translations: "../{app,components}/**/*.rs",
-        sync_html_tag_lang: true,
-        sync_html_tag_dir: true,
-        url_param: Url::params::Names::Language.as_str(),
-        initial_language_from_url_param: true,
-        initial_language_from_url_param_to_localstorage: true,
-        localstorage_key: LocalStorage::Keys::Language.as_str(),
-        initial_language_from_localstorage: true,
-        set_language_to_localstorage: true,
-        initial_language_from_navigator: true,
-        initial_language_from_navigator_to_localstorage: true,
-    }
-}
 
 /// The main application component
 #[component]
@@ -92,7 +62,10 @@ pub fn App() -> impl IntoView {
     provide_hotkeys_context(main_ref, false, scopes!());
 
     view! {
-        <I18n>
+        <I18n
+            url_param=Url::params::Names::Language.as_str()
+            localstorage_key=LocalStorage::Keys::Language.as_str()
+        >
             <Head />
             <Header />
             <SVGDefsDefinition />

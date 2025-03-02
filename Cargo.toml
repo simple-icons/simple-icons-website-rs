@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "app",
+    "app/i18n",
     "components/header",
     "components/footer",
     "components/controls",
@@ -46,6 +47,7 @@ opt-level = 'z'
 simple-icons = { path = "./libs/simple-icons" }
 simple-icons-sdk = { path = "./libs/simple-icons-sdk" }
 simple-icons-macros = { path = "./libs/simple-icons-macros" }
+simple-icons-website-i18n = { path = "./app/i18n" }
 simple-icons-website-types = { path = "./libs/types" }
 simple-icons-website-preview-generator = { path = "./components/preview-generator" }
 simple-icons-website-footer = { path = "./components/footer" }
