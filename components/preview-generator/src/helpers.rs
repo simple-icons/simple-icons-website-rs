@@ -6,7 +6,6 @@ pub fn is_valid_hex_color(value: &str) -> bool {
     if value.len() != 6 && value.len() != 3 {
         return false;
     }
-
     for c in value.chars() {
         if !c.is_ascii_hexdigit() {
             return false;

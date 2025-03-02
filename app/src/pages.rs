@@ -19,7 +19,9 @@ use simple_icons_website_controls::{
 use simple_icons_website_grid::{provide_icons_grid_contexts, Grid};
 use simple_icons_website_grid_constants::{DEPRECATED_ICONS, ICONS};
 use simple_icons_website_grid_types::IconsIndexSignal;
-use simple_icons_website_preview_generator::PreviewGenerator;
+use simple_icons_website_preview_generator::{
+    add_preview_generator_scripts, PreviewGenerator,
+};
 
 fn index_redirections() -> bool {
     let query_map = use_query_map().get_untracked();
@@ -93,6 +95,7 @@ pub fn DeprecationsIndex() -> impl IntoView {
 #[component]
 pub fn Preview() -> impl IntoView {
     init_searcher(ICONS.iter().collect());
+    add_preview_generator_scripts();
 
     view! {
         <menu class="page-padding-x -mt-4 lg:bg-transparent flex flex-row lg:flex-col">

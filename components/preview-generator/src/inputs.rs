@@ -183,14 +183,12 @@ pub fn PathInput(
                     set_path(p);
                     update_preview_canvas(pixel_ratio.get_untracked());
                 }
-
                 on:focus=move |_| {
                     let p = input_ref.get().unwrap().value();
                     process_lint_errors(&p, set_path_lint_errors);
                     set_show_path_lint_errors(true);
                 }
             />
-
             <Show when=show_path_lint_errors>
                 <ul class="preview-path-lint-errors">
                     <For
@@ -205,7 +203,6 @@ pub fn PathInput(
                                 },
                             )
                         }
-
                         children=move |error| {
                             view! {
                                 <LintError
@@ -217,7 +214,6 @@ pub fn PathInput(
                             }
                         }
                     />
-
                 </ul>
             </Show>
         </div>
@@ -354,7 +350,6 @@ pub fn BrandInput(
                         set_show_more_brand_suggestions(false);
                     }
                 }
-
                 on:focus=move |ev| {
                     let value = event_target_value::<web_sys::Event>(&ev);
                     let (bs, more_bs) = search_brand_suggestions(&value);
@@ -397,7 +392,6 @@ fn BrandSuggestions(
                 if show() { "" } else { " hidden" },
             )
         }>
-
             <For
                 each=brand_suggestions
                 key=move |icon| icon.slug
@@ -412,7 +406,6 @@ fn BrandSuggestions(
                     }
                 }
             />
-
             <Show when=move || {
                 !show_more_brand_suggestions() && !more_brand_suggestions().is_empty()
             }>
@@ -427,7 +420,6 @@ fn BrandSuggestions(
                         }
                     }
                 >
-
                     <span>+</span>
                 </li>
             </Show>

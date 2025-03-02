@@ -231,7 +231,6 @@ appendfile ${jslibs} "<script type=\"module\" src=\"/js/fast-fuzzy-${fast_fuzzy.
 packagejson = readfile node_modules/svg-path-bbox/package.json
 svg_path_bbox = json_parse ${packagejson}
 exec npx esbuild ./libs/svg-path-bbox/src/svg-path-bbox.js --bundle --outfile=./app/public/assets/js/svg-path-bbox-${svg_path_bbox.version}.js --minify --log-level=error
-appendfile ${jslibs} "<script type=\"module\" src=\"/js/svg-path-bbox-${svg_path_bbox.version}.js\" defer></script>"
 
 # badge-maker
 packagejson = readfile node_modules/badge-maker/package.json
@@ -239,7 +238,6 @@ badge_maker = json_parse ${packagejson}
 #   badge-maker needs to be built with external fs and util, see https://github.com/badges/shields/issues/9728
 exec npx tsx ./scripts/comment-lines.ts ./node_modules/char-width-table-consumer/src/consumer.js "const fs = require('fs')" "const { promisify } = require('util')" "const readFile = promisify(fs.readFile)"
 exec npx esbuild ./libs/badge-maker/src/bindings.js --bundle --outfile=./app/public/assets/js/badge-maker-${badge_maker.version}.js --minify --log-level=error --external:fs --external:util
-appendfile ${jslibs} "<script type=\"module\" src=\"/js/badge-maker-${badge_maker.version}.js\" defer></script>"
 '''
 
 [tasks.build-pdfkit]

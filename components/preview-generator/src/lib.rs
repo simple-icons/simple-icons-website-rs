@@ -1,11 +1,13 @@
 mod buttons;
 mod canvas;
+mod deps;
 mod helpers;
 mod inputs;
 
 use badge_maker::make_badge;
 use buttons::PreviewButtons;
 use canvas::update_preview_canvas;
+pub use deps::add_preview_generator_scripts;
 use fast_fuzzy::search;
 use helpers::contrast_color_for;
 use inputs::{BrandInput, ColorInput, PathInput};
@@ -220,16 +222,39 @@ fn PreviewBadges(
     let color_svg =
         Memo::new(move |_| svg_with_path_opt_fill(&path(), Some(&color())));
 
+    let badge_maker_loaded = RwSignal::new(false);
+
+    let interval = set_interval_with_handle(
+        move || {
+            if deps::is_badge_maker_loaded() {
+                badge_maker_loaded(true);
+            }
+        },
+        std::time::Duration::from_millis(100),
+    )
+    .unwrap();
+
     view! {
         <div class="preview-badges">
-            <PreviewBadge color svg=white_svg style="flat" />
-            <PreviewBadge color svg=white_svg style="plastic" />
-            <PreviewBadge color svg=white_svg style="for-the-badge" />
-            <PreviewBadge color svg=color_svg style="social" />
-            <PreviewBadge color svg=color_svg style="flat" />
-            <PreviewBadge color svg=color_svg style="plastic" />
-            <PreviewBadge color svg=color_svg style="for-the-badge" />
-            <PreviewBadge color svg=color_svg style="social" text_color="4183c4" />
+            {move || {
+                match badge_maker_loaded() {
+                    false => view! { <span class="center">"..."</span> }.into_any(),
+                    true => {
+                        interval.clear();
+                        view! {
+                            <PreviewBadge color svg=white_svg style="flat" />
+                            <PreviewBadge color svg=white_svg style="plastic" />
+                            <PreviewBadge color svg=white_svg style="for-the-badge" />
+                            <PreviewBadge color svg=color_svg style="social" />
+                            <PreviewBadge color svg=color_svg style="flat" />
+                            <PreviewBadge color svg=color_svg style="plastic" />
+                            <PreviewBadge color svg=color_svg style="for-the-badge" />
+                            <PreviewBadge color svg=color_svg style="social" text_color="4183c4" />
+                        }
+                            .into_any()
+                    }
+                }
+            }}
         </div>
     }
 }
