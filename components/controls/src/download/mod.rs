@@ -92,7 +92,6 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                         set_download_type_on_localstorage(&DownloadType::SVG);
                     }
                 />
-
                 <ControlButtonText
                     text=move_tr!("png")
                     title=move_tr!("download-filetype", { "filetype" => tr!("png") })
@@ -102,7 +101,6 @@ pub fn DownloadFileTypeControl() -> impl IntoView {
                         set_download_type_on_localstorage(&DownloadType::PNG);
                     }
                 />
-
             </div>
         </div>
     }

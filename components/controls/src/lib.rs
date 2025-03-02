@@ -90,7 +90,6 @@ pub fn ControlsToggler() -> impl IntoView {
             <label class="block">""</label>
             <button
                 class="absolute right-0 sm:bottom-0 rounded"
-
                 title=move || {
                     if controls_state().buttons_group_open {
                         tr!("open-search-bar")
@@ -106,7 +105,6 @@ pub fn ControlsToggler() -> impl IntoView {
                         });
                 }
             >
-
                 {move || match controls_state().buttons_group_open {
                     true => {
                         view! {
@@ -133,7 +131,6 @@ pub fn ControlsToggler() -> impl IntoView {
                         }
                     }
                 }}
-
             </button>
         </div>
     }

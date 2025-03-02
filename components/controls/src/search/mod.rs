@@ -217,19 +217,16 @@ pub fn SearchControl() -> impl IntoView {
                         )
                     }
                 />
-
-                <Show when=move || !search().is_empty()>
-                    <span
-                        title=move || tr!("clear-search")
-                        on:click=move |_| {
-                            search_input_ref.get().unwrap().set_value("");
-                            fire_on_search_event();
-                        }
-                    >
-
-                        "×"
-                    </span>
-                </Show>
+                <span
+                    title=move || tr!("clear-search")
+                    on:click=move |_| {
+                        search_input_ref.get().unwrap().set_value("");
+                        fire_on_search_event();
+                    }
+                    class=("hidden", move || search().is_empty())
+                >
+                    "×"
+                </span>
             </div>
         </div>
     }
