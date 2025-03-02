@@ -58,15 +58,9 @@ pub fn HeaderMenuLink(
 ///
 /// Each button of the header menu that is not a link
 #[component]
-pub fn HeaderMenuButton(
-    /// Title of the button
-    #[prop(into)]
-    title: Signal<String>,
-    /// SVG path of the icon
-    icon: icondata::Icon,
-) -> impl IntoView {
+pub fn HeaderMenuButton(icon: icondata::Icon) -> impl IntoView {
     view! {
-        <li title=title tabindex=0>
+        <li tabindex=0>
             <Icon icon width="36px" height="36px" />
         </li>
     }

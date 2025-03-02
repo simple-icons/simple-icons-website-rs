@@ -52,14 +52,13 @@ fn ReportLink(
 ) -> impl IntoView {
     view! {
         <a
+            href=href
             class=concat!(
                 "text-[#00e] hover:text-[#3434ee]",
                 " focus:text-[#3434ee] visited:text-[#551a8b]",
                 " dark:text-[#227fff] dark:hover:text-[#3c8eff]",
                 " dark:focus:text-[#3c8eff] dark:visited:text-[#a990bd]",
             )
-
-            href=href
         >
             {children()}
         </a>

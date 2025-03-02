@@ -8,19 +8,11 @@ pub(crate) static XS_ICON_SIZE: &str = "19";
 /// Abstract control button
 #[component]
 pub fn ControlButton(
-    /// Button title
-    title: Signal<String>,
-    /// Button children
     children: Children,
-    /// The control is active
-    #[prop(into)]
-    active: Signal<bool>,
-    /// Optional classes
-    #[prop(optional)]
-    class: &'static str,
+    #[prop(into)] active: Signal<bool>,
 ) -> impl IntoView {
     view! {
-        <button class:selected=active type="button" title=title tabindex=0 class=class>
+        <button class:selected=active type="button" tabindex=0>
             {children()}
         </button>
     }
@@ -50,7 +42,7 @@ pub fn ControlButtonIcon(
         Memo::new(move |_| if is_xs_screen() { XS_ICON_SIZE } else { "24" });
 
     view! {
-        <ControlButton title active class>
+        <ControlButton active attr:title=title attr:class=class>
             {match icon {
                 IconOrSvg::Icon(icon) => {
                     view! {
@@ -97,7 +89,7 @@ pub fn ControlButtonText(
     active: Signal<bool>,
 ) -> impl IntoView {
     view! {
-        <ControlButton title active=active>
+        <ControlButton active attr:title=title>
             <span>{text}</span>
         </ControlButton>
     }

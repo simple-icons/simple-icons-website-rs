@@ -87,9 +87,9 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
     view! {
         <HeaderMenuButton
             on:click=move |_| header_state.update(|state| state.toggle_menu())
-            title=move_tr!("open-menu")
             icon=ChMenuHamburger
             attr:class=move || if header_state().menu_open { "hidden" } else { "block lg:hidden" }
+            attr:title=move_tr!("open-menu")
         />
     }
 }
@@ -101,10 +101,10 @@ pub fn HeaderMenuCloseButton() -> impl IntoView {
 
     view! {
         <HeaderMenuButton
-            title=move_tr!("close-menu")
             attr:class=move || if header_state().menu_open { "block" } else { "hidden" }
             icon=ChCross
             on:click=move |_| header_state.update(|state| state.toggle_menu())
+            attr:title=move_tr!("close-menu")
         />
     }
 }
