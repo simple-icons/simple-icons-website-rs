@@ -7,14 +7,15 @@ pub fn SVGIcon(
     #[prop(optional, into)] aria_label: Option<Signal<String>>,
     #[prop(optional)] class: &'static str,
     #[prop(optional)] fill: &'static str,
-    #[prop(optional, into, default = Signal::derive(|| "24"))] width: Signal<
+    #[prop(optional, into, default = "24".into())] width: MaybeProp<
         &'static str,
     >,
-    #[prop(optional, into, default = Signal::derive(|| "24"))] height: Signal<
+    #[prop(optional, into, default = "24".into())] height: MaybeProp<
         &'static str,
     >,
-    #[prop(optional, into, default = Signal::derive(|| "0 0 24 24".into()))]
-    view_box: Signal<String>,
+    #[prop(optional, into, default = "0 0 24 24".into())] view_box: MaybeProp<
+        &'static str,
+    >,
     #[prop(optional, default = "img")] role: &'static str,
     #[prop(optional, default = true)] aria_hidden: bool,
 ) -> impl IntoView {

@@ -7,17 +7,9 @@ use simple_icons_website_grid_icons_loader::IconsLoaderSignal;
 use simple_icons_website_grid_types::IconsGridSignal;
 
 #[component]
-pub fn ScrollButton(
-    /// The title of the button
-    #[prop(into)]
-    title: Signal<String>,
-    /// The SVG path of the icon
-    icon: icondata::Icon,
-    /// Additional classes to be added to the button
-    class: &'static str,
-) -> impl IntoView {
+pub fn ScrollButton(icon: icondata::Icon) -> impl IntoView {
     view! {
-        <button class=format!("scroll-button {}", class) title=title>
+        <button>
             <Icon icon width="24px" height="24px" />
         </button>
     }
@@ -31,8 +23,8 @@ pub fn ScrollToHeaderButton() -> impl IntoView {
         <Show when=move || { window_scroll_y() >= 200.0 }>
             <ScrollButton
                 icon=RiArrowUpCircleArrowsLine
-                class="scroll-to-header-button"
-                title=move_tr!("go-to-header")
+                attr:class="scroll-button scroll-to-header-button"
+                attr:title=move_tr!("go-to-header")
                 on:click=move |_| {
                     document().query_selector("header").unwrap().unwrap().scroll_into_view()
                 }
@@ -54,8 +46,8 @@ pub fn ScrollToFooterButton() -> impl IntoView {
         }>
             <ScrollButton
                 icon=RiArrowDownCircleArrowsLine
-                class="scroll-to-footer-button"
-                title=move_tr!("go-to-footer")
+                attr:class="scroll-button scroll-to-footer-button"
+                attr:title=move_tr!("go-to-footer")
                 on:click=move |_| {
                     icons_loader.update(|state| state.load = false);
                     let footer = document().query_selector("footer").unwrap().unwrap();
