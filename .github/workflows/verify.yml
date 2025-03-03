@@ -231,7 +231,6 @@ jobs:
             fi
           fi
       - uses: actions/cache/save@v4
-        if: github.ref == 'refs/heads/master'
         with:
           path: .wasm-report/
           key: ${{ runner.os }}-wasm-report
