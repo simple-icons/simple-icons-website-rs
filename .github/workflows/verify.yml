@@ -197,12 +197,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Restore WebAssembly report
-        uses: actions/cache/restore@v4
+        uses: actions/cache@v4
         with:
-          path: .wasm-report/
-          key: ${{ runner.os }}-wasm-report
+          path: .wasm-report/size_in_bytes
+          key: ${{ runner.os }}-wasm-report-${{ github.head_ref || github.ref_name }}
           restore-keys: |
-            ${{ runner.os }}-wasm-report
+            ${{ runner.os }}-wasm-report-master
       - name: Create WebAssembly report
         run: |
           size_in_bytes=$(wc -c < "$(find app/dist -name '*.wasm' -print)")
@@ -233,8 +233,3 @@ jobs:
               echo "WASM file size has not changed." >> $GITHUB_STEP_SUMMARY
             fi
           fi
-      - name: Save WebAssembly report
-        uses: actions/cache/save@v4
-        with:
-          path: .wasm-report/
-          key: ${{ runner.os }}-wasm-report
