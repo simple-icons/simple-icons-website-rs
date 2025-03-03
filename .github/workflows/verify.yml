@@ -200,7 +200,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .wasm-report/size_in_bytes
-          key: ${{ runner.os }}-wasm-report-meta-307
+          key: ${{ runner.os }}-wasm-report-master
           restore-keys: |
             ${{ runner.os }}-wasm-report-${{ github.head_ref || github.ref_name }}
       - name: Create WebAssembly report
