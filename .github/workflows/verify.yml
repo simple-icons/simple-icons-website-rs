@@ -196,12 +196,12 @@ jobs:
         run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Cache WebAssembly report
+      - name: Restore WebAssembly report
         uses: actions/cache/restore@v4
         with:
           path: .wasm-report/
           key: ${{ runner.os }}-wasm-report
-      - name: Report WebAssembly size
+      - name: Create WebAssembly report
         run: |
           size_in_bytes=$(wc -c < "$(find app/dist -name '*.wasm' -print)")
           size_in_mb=$(bc -l <<< "$size_in_bytes / (1024 * 1024)")
@@ -230,7 +230,9 @@ jobs:
               echo "WASM file size has not changed." >> $GITHUB_STEP_SUMMARY
             fi
           fi
-      - uses: actions/cache/save@v4
+      - name: Save WebAssembly report
+        if: github.ref == 'refs/heads/master'
+        uses: actions/cache/save@v4
         with:
           path: .wasm-report/
           key: ${{ runner.os }}-wasm-report
