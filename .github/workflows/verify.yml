@@ -201,6 +201,8 @@ jobs:
         with:
           path: .wasm-report/
           key: ${{ runner.os }}-wasm-report
+          restore-keys: |
+            ${{ runner.os }}-wasm-report
       - name: Create WebAssembly report
         run: |
           size_in_bytes=$(wc -c < "$(find app/dist -name '*.wasm' -print)")
@@ -211,7 +213,8 @@ jobs:
           if [ ! -f .wasm-report/size_in_bytes ]; then
             echo 0 > .wasm-report/size_in_bytes
           fi
-          previous_size_in_bytes=$(< .wasm-report/size_in_bytes)
+          previous_size_in_bytes=$(cat .wasm-report/size_in_bytes)
+          echo "Previous size: $previous_size_in_bytes"
           previous_size_in_mb=$(bc -l <<< "$previous_size_in_bytes / (1024 * 1024)")
           echo -e '### WASM file report\n' >> $GITHUB_STEP_SUMMARY
           echo "- $size_in_bytes bytes" >> $GITHUB_STEP_SUMMARY
@@ -231,7 +234,6 @@ jobs:
             fi
           fi
       - name: Save WebAssembly report
-        if: github.ref == 'refs/heads/master'
         uses: actions/cache/save@v4
         with:
           path: .wasm-report/
