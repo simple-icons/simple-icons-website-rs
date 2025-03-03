@@ -150,7 +150,7 @@ jobs:
           git-config-email: simple-icons[bot]@users.noreply.github.com
 
   report-wasm-size:
-    name: Report WASM size
+    name: WASM size report
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -213,7 +213,6 @@ jobs:
           fi
           previous_size_in_bytes=$(cat .wasm-report/size_in_bytes)
           previous_size_in_mb=$(bc -l <<< "$previous_size_in_bytes / (1024 * 1024)")
-          echo -e '### WASM file report\n' >> $GITHUB_STEP_SUMMARY
           echo "- $size_in_bytes bytes" >> $GITHUB_STEP_SUMMARY
           echo "- $size_in_mb MB" >> $GITHUB_STEP_SUMMARY
           echo -e '\n#### Comparison against master\n' >> $GITHUB_STEP_SUMMARY
