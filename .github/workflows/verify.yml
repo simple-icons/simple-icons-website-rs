@@ -196,13 +196,13 @@ jobs:
         run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore WebAssembly report
+      - name: Cache WebAssembly report
         uses: actions/cache@v4
         with:
           path: .wasm-report/size_in_bytes
           key: ${{ runner.os }}-wasm-report-${{ github.head_ref || github.ref_name }}
           restore-keys: |
-            ${{ runner.os }}-wasm-report-master
+            ${{ runner.os }}-wasm-report-meta-307
       - name: Create WebAssembly report
         run: |
           size_in_bytes=$(wc -c < "$(find app/dist -name '*.wasm' -print)")
