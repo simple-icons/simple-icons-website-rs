@@ -218,7 +218,7 @@ jobs:
           echo "- $size_in_mb MB" >> $GITHUB_STEP_SUMMARY
           echo -e '\n#### Comparison against master\n' >> $GITHUB_STEP_SUMMARY
           if [ "$previous_size_in_bytes" -eq 0 ]; then
-            echo "This is the first time the WASM file has been built." >> $GITHUB_STEP_SUMMARY
+            echo "No previous WASM file has been found in the cache." >> $GITHUB_STEP_SUMMARY
           else
             if [ "$size_in_bytes" -gt "$previous_size_in_bytes" ]; then
               echo "- WASM file size has increased by $(bc -l <<< "$size_in_bytes - $previous_size_in_bytes") bytes." >> $GITHUB_STEP_SUMMARY
