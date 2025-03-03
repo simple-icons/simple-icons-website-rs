@@ -233,6 +233,7 @@ jobs:
           fi
           echo $size_in_bytes > .wasm-report/size_in_bytes
       - name: Save WebAssembly report
+        if: github.ref == 'refs/heads/master'
         uses: actions/cache/save@v4
         with:
           path: .wasm-report/size_in_bytes
