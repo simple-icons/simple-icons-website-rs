@@ -197,10 +197,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Cache WebAssembly report
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
-          path: |
-            .wasm-report/
+          path: .wasm-report/
           key: ${{ runner.os }}-wasm-report
       - name: Report WebAssembly size
         run: |
