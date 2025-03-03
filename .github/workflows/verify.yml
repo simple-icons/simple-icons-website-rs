@@ -87,7 +87,7 @@ jobs:
             ~/.cargo/.crates.toml
             ~/.cargo/.crates2.json
             target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.command }}-${{ steps.toolchain.outputs.channel }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ steps.toolchain.outputs.channel }}-${{ matrix.command }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -174,7 +174,7 @@ jobs:
             ~/.cargo/.crates.toml
             ~/.cargo/.crates2.json
             target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.command }}-${{ steps.toolchain.outputs.channel }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ steps.toolchain.outputs.channel }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
