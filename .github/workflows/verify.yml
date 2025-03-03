@@ -212,7 +212,6 @@ jobs:
             echo 0 > .wasm-report/size_in_bytes
           fi
           previous_size_in_bytes=$(cat .wasm-report/size_in_bytes)
-          echo "Previous size: $previous_size_in_bytes"
           previous_size_in_mb=$(bc -l <<< "$previous_size_in_bytes / (1024 * 1024)")
           echo -e '### WASM file report\n' >> $GITHUB_STEP_SUMMARY
           echo "- $size_in_bytes bytes" >> $GITHUB_STEP_SUMMARY
@@ -223,10 +222,10 @@ jobs:
           else
             if [ "$size_in_bytes" -gt "$previous_size_in_bytes" ]; then
               echo "- WASM file size has increased by $(bc -l <<< "$size_in_bytes - $previous_size_in_bytes") bytes." >> $GITHUB_STEP_SUMMARY
-              echo "- Difference: $(bc -l <<< "($size_in_bytes - $previous_size_in_bytes) / $previous_size_in_bytes * 100")%" >> $GITHUB_STEP_SUMMARY
+              echo "- Difference: +$(bc -l <<< "($size_in_bytes - $previous_size_in_bytes) / $previous_size_in_bytes * 100")%" >> $GITHUB_STEP_SUMMARY
             elif [ "$size_in_bytes" -lt "$previous_size_in_bytes" ]; then
               echo "- WASM file size has decreased by $(bc -l <<< "$previous_size_in_bytes - $size_in_bytes") bytes." >> $GITHUB_STEP_SUMMARY
-              echo "- Difference: $(bc -l <<< "($previous_size_in_bytes - $size_in_bytes) / $previous_size_in_bytes * 100")%" >> $GITHUB_STEP_SUMMARY
+              echo "- Difference: -$(bc -l <<< "($previous_size_in_bytes - $size_in_bytes) / $previous_size_in_bytes * 100")%" >> $GITHUB_STEP_SUMMARY
             else
               echo "WASM file size has not changed." >> $GITHUB_STEP_SUMMARY
             fi
