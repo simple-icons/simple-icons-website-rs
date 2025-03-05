@@ -3,7 +3,7 @@ use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
 use leptos::{html::Footer as FooterHtmlElement, prelude::*};
 use leptos_hotkeys::{provide_hotkeys_context, scopes};
 use leptos_router::{
-    components::{Route, Router, Routes},
+    components::{FlatRoutes, Route, Router},
     StaticSegment,
 };
 use leptos_use::{
@@ -71,11 +71,11 @@ pub fn App() -> impl IntoView {
             <SVGDefsDefinition />
             <main node_ref=main_ref>
                 <Router>
-                    <Routes fallback=Error404>
+                    <FlatRoutes fallback=Error404>
                         <Route path=StaticSegment("/preview") view=Preview />
                         <Route path=StaticSegment("/deprecations") view=DeprecationsIndex />
                         <Route path=StaticSegment("/") view=AllIconsIndex />
-                    </Routes>
+                    </FlatRoutes>
                 </Router>
             </main>
             <Footer container_ref=footer_ref />
