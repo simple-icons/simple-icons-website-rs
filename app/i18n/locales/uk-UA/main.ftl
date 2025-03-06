@@ -43,6 +43,7 @@ go-to-footer = Вниз
 deprecated = Застаріле
 deprecations = Застарілі
 will-be-removed-at = { $icon } буде вилучено у версії v{ $version }
+will-be-renamed-at = { $icon } буде перейменовано у версії v{ $version }
 will-be-removed-at-extended = { $icon } буде вилучено { $date } у версії { $version } (див { $pr })
 will-be-renamed-at-extended = { $icon } буде перейменовано { $date } у версії { $version } (див { $pr })
 scalable-vector-graphic = Scalable Vector Graphic

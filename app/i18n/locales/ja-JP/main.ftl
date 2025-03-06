@@ -43,6 +43,7 @@ go-to-footer = フッターに移動
 deprecated = 廃止されました
 deprecations = 廃止
 will-be-removed-at = { $icon } は { $version } で削除されます
+will-be-renamed-at = { $icon } は { $version } で名前が変更されます
 will-be-removed-at-extended = { $icon } は { $version } で削除されます { $date } (参照 { $pr })
 will-be-renamed-at-extended = { $icon } は { $version } で名前が変更されます { $date } (参照 { $pr })
 scalable-vector-graphic = スケーラブルなベクター グラフィック

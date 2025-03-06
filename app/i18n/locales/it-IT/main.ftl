@@ -43,6 +43,7 @@ go-to-footer = Vai al piè di pagina
 deprecated = Deprecato
 deprecations = Deprecati
 will-be-removed-at = { $icon } verrà rimosso nella v{ $version }
+will-be-renamed-at = { $icon } verrà rinominato nella v{ $version }
 will-be-removed-at-extended = { $icon } verrà rimosso nella { $version } circa { $date } (vedi { $pr })
 will-be-renamed-at-extended = { $icon } verrà rinominato nella { $version } circa { $date } (vedi { $pr })
 scalable-vector-graphic = Grafica vettoriale scalabile

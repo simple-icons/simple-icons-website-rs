@@ -43,6 +43,7 @@ go-to-footer = 转到页脚
 deprecated = 已過時
 deprecations = 已過時
 will-be-removed-at = { $icon } 将在 { $version }
+will-be-renamed-at = { $icon } 将在 { $version } 时重命名
 will-be-removed-at-extended = { $icon } 将在 { $version } 时移除关于 { $date } 的信息（请参阅 { $pr })
 will-be-renamed-at-extended = { $icon } 将在 { $version } 时重命名关于 { $date } 的信息（请参阅 { $pr })
 scalable-vector-graphic = 可缩放矢量图形

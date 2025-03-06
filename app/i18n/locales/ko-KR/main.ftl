@@ -43,6 +43,7 @@ go-to-footer = 바닥글로 이동
 deprecated = 철수하다
 deprecations = 사용되지 않음
 will-be-removed-at = { $icon }은 v{ $version }에서 제거됩니다
+will-be-renamed-at = { $icon }은 v{ $version }에서 이름이 변경됩니다
 will-be-removed-at-extended = { $icon }은(는) { $version }에 대해 { $date }에서 제거됩니다({ $pr } 참조)
 will-be-renamed-at-extended = { $icon }은(는) { $version }에 대해 { $date }에서 이름이 변경됩니다({ $pr } 참조)
 scalable-vector-graphic = 확장 가능한 벡터 그래픽

@@ -43,6 +43,7 @@ go-to-footer = Aller au pied de page
 deprecated = Obsolète
 deprecations = Obsolètes
 will-be-removed-at = { $icon } sera supprimé en v{ $version }
+will-be-renamed-at = { $icon } sera renommé en v{ $version }
 will-be-removed-at-extended = { $icon } sera supprimé en { $version } à propos de { $date } (voir { $pr })
 will-be-renamed-at-extended = { $icon } sera renommé en { $version } à propos de { $date } (voir { $pr })
 scalable-vector-graphic = Image vectorielle

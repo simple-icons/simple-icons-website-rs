@@ -9,11 +9,19 @@ pub fn IconIsDeprecatedNotice(
     pull_request_url: String,
     /// Removal version
     at_version: &'static str,
+    /// Renamed
+    renamed: bool,
 ) -> impl IntoView {
-    let title = move_tr!("will-be-removed-at", {
-        "icon" => title(),
-        "version" => at_version,
-    });
+    let title = match renamed {
+        true => move_tr!("will-be-renamed-at", {
+            "icon" => title(),
+            "version" => at_version,
+        }),
+        false => move_tr!("will-be-removed-at", {
+            "icon" => title(),
+            "version" => at_version,
+        }),
+    };
     view! {
         <a href=pull_request_url class="deprecated" title=title target="_blank">
             <span></span>

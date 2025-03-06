@@ -41,6 +41,7 @@ pub fn IconGridItem(icon: &'static SimpleIcon) -> impl IntoView {
                             title=icon_localized_title
                             pull_request_url=deprecation.get_pull_request_url()
                             at_version=deprecation.at_version
+                            renamed=deprecation.renamed
                         />
                     }
                 })}
