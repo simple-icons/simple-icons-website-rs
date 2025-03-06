@@ -201,7 +201,7 @@ jobs:
         id: restore
         with:
           path: .wasm-report/size_in_bytes
-          key: ${{ runner.os }}-wasm-report
+          key: ${{ runner.os }}-wasm-report-01
       - name: Create WebAssembly report
         run: |
           size_in_bytes=$(wc -c < "$(find app/dist -name '*.wasm' -print)")
@@ -267,4 +267,4 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: .wasm-report/size_in_bytes
-          key: ${{ runner.os }}-wasm-report
+          key: ${{ runner.os }}-wasm-report-01
