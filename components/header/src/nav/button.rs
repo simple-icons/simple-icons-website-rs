@@ -29,7 +29,6 @@ pub fn HeaderMenuLink(
                 false => "hidden lg:block",
             }
         >
-
             {match icon {
                 IconOrSvg::Icon(icon) => {
                     view! { <Icon icon width="36px" height="36px" /> }.into_any()

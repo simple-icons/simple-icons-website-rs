@@ -46,7 +46,6 @@ pub fn MenuItem(
                 #[allow(clippy::unit_arg, clippy::unused_unit)]
                 None => view!().into_any(),
             }}
-
         </li>
     }
 }

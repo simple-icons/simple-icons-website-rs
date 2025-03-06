@@ -13,7 +13,7 @@ fn render_language(lang: &'static Language) -> impl IntoView {
             class:hidden=lang.is_active()
             on:click=move |_| {
                 modal_open.set_none();
-                i18n.language.set(lang);
+                set_timeout(move || i18n.language.set(lang), std::time::Duration::from_millis(0));
             }
         >
             {lang.name}
@@ -29,7 +29,6 @@ pub fn LanguagesList() -> impl IntoView {
             {move || {
                 expect_i18n().languages.iter().map(|lang| render_language(lang)).collect::<Vec<_>>()
             }}
-
         </ul>
     }
 }
@@ -59,7 +58,7 @@ pub fn LanguageSelector() -> impl IntoView {
         <LanguageSelectorButton />
         <Modal
             title=move_tr!("select-a-language")
-            is_open=Signal::derive(move || modal_open.0() == Some(ModalOpen::Languages))
+            is_open=Signal::derive(move || modal_open.is_open(ModalOpen::Languages))
             on_close=Signal::derive(move || modal_open.set_none())
             on_close_focus_search_bar=true
         >

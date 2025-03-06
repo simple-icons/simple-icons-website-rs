@@ -159,6 +159,10 @@ impl ModalOpenSignal {
             &ModalOpen::Icon.to_string(),
         );
     }
+
+    pub fn is_open(&self, modal_open: ModalOpen) -> bool {
+        self.0.get() == Some(modal_open)
+    }
 }
 
 pub fn provide_modal_open_context() {
