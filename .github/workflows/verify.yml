@@ -205,7 +205,10 @@ jobs:
       - name: Create WebAssembly report
         run: |
           size_in_bytes=$(wc -c < "$(find app/dist -name '*.wasm' -print)")
-          size_in_mb=$(bc -l <<< "$size_in_bytes / (1024 * 1024)")
+          size_in_kb=$(bc -l <<< "$size_in_bytes / 1024")
+          size_in_kb_rounded=$(bc -l <<< "scale=6; $size_in_kb / 1")
+          size_in_mb=$(bc -l <<< "$size_in_kb / 1024")
+          size_in_mb_rounded=$(bc -l <<< "scale=6; $size_in_mb / 1")
           if [ ! -d .wasm-report ]; then
             mkdir .wasm-report
           fi
@@ -213,9 +216,13 @@ jobs:
             echo 0 > .wasm-report/size_in_bytes
           fi
           previous_size_in_bytes=$(cat .wasm-report/size_in_bytes)
-          previous_size_in_mb=$(bc -l <<< "$previous_size_in_bytes / (1024 * 1024)")
+          previous_size_in_kb=$(bc -l <<< "$previous_size_in_bytes / 1024")
+          previous_size_in_kb_rounded=$(bc -l <<< "scale=6; $previous_size_in_kb / 1")
+          previous_size_in_mb=$(bc -l <<< "$previous_size_in_kb / 1024")
+          previous_size_in_mb_rounded=$(bc -l <<< "scale=6; $previous_size_in_mb / 1")
           echo "- $size_in_bytes bytes" >> $GITHUB_STEP_SUMMARY
-          echo "- $size_in_mb MB" >> $GITHUB_STEP_SUMMARY
+          echo "- $size_in_kb_rounded Kb" >> $GITHUB_STEP_SUMMARY
+          echo "- $size_in_mb_rounded MB" >> $GITHUB_STEP_SUMMARY
           echo -e '\n#### Comparison against master\n' >> $GITHUB_STEP_SUMMARY
           if [ "$previous_size_in_bytes" -eq 0 ]; then
             echo "No previous WASM file has been found in the cache." >> $GITHUB_STEP_SUMMARY
@@ -229,6 +236,10 @@ jobs:
             else
               echo "WASM file size has not changed." >> $GITHUB_STEP_SUMMARY
             fi
+            echo -e '\n#### Previous size\n' >> $GITHUB_STEP_SUMMARY
+            echo "- $previous_size_in_bytes bytes" >> $GITHUB_STEP_SUMMARY
+            echo "- $previous_size_in_kb_rounded Kb" >> $GITHUB_STEP_SUMMARY
+            echo "- $previous_size_in_mb_rounded MB" >> $GITHUB_STEP_SUMMARY
           fi
           echo $size_in_bytes > .wasm-report/size_in_bytes
       - name: Save WebAssembly report
