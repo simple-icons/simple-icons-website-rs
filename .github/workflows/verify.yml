@@ -228,11 +228,31 @@ jobs:
             echo "No previous WASM file has been found in the cache." >> $GITHUB_STEP_SUMMARY
           else
             if [ "$size_in_bytes" -gt "$previous_size_in_bytes" ]; then
-              echo "- WASM file size has increased by $(bc -l <<< "$size_in_bytes - $previous_size_in_bytes") bytes." >> $GITHUB_STEP_SUMMARY
-              echo "- Difference: +$(bc -l <<< "($size_in_bytes - $previous_size_in_bytes) / $previous_size_in_bytes * 100")%" >> $GITHUB_STEP_SUMMARY
+              diff_bytes=$(bc -l <<< "$size_in_bytes - $previous_size_in_bytes")
+              diff_kb=$(bc -l <<< "$diff_bytes / 1024")
+              diff_kb_rounded=$(bc -l <<< "scale=6; $diff_kb / 1")
+              diff_mb=$(bc -l <<< "$diff_kb / 1024")
+              diff_mb_rounded=$(bc -l <<< "scale=6; $diff_mb / 1")
+              echo "WASM file size has increased by:"
+              echo "- +$diff_bytes bytes" >> $GITHUB_STEP_SUMMARY
+              echo "- +$diff_kb_rounded Kb" >> $GITHUB_STEP_SUMMARY
+              echo "- +$diff_mb_rounded MB" >> $GITHUB_STEP_SUMMARY
+              rel_diff=$(bc -l <<< "($size_in_bytes - $previous_size_in_bytes) / $previous_size_in_bytes * 100")
+              rel_diff_rounded=$(bc -l <<< "scale=4; $rel_diff / 1")
+              echo "- +$rel_diff_rounded%" >> $GITHUB_STEP_SUMMARY
             elif [ "$size_in_bytes" -lt "$previous_size_in_bytes" ]; then
-              echo "- WASM file size has decreased by $(bc -l <<< "$previous_size_in_bytes - $size_in_bytes") bytes." >> $GITHUB_STEP_SUMMARY
-              echo "- Difference: -$(bc -l <<< "($previous_size_in_bytes - $size_in_bytes) / $previous_size_in_bytes * 100")%" >> $GITHUB_STEP_SUMMARY
+              diff_bytes=$(bc -l <<< "$previous_size_in_bytes - $size_in_bytes")
+              diff_kb=$(bc -l <<< "$diff_bytes / 1024")
+              diff_kb_rounded=$(bc -l <<< "scale=6; $diff_kb / 1")
+              diff_mb=$(bc -l <<< "$diff_kb / 1024")
+              diff_mb_rounded=$(bc -l <<< "scale=6; $diff_mb / 1")
+              echo "WASM file size has decreased by:"
+              echo "- -$diff_bytes bytes" >> $GITHUB_STEP_SUMMARY
+              echo "- -$diff_kb_rounded Kb" >> $GITHUB_STEP_SUMMARY
+              echo "- -$diff_mb_rounded MB" >> $GITHUB_STEP_SUMMARY
+              rel_diff=$(bc -l <<< "($previous_size_in_bytes - $size_in_bytes) / $previous_size_in_bytes * 100")
+              rel_diff_rounded=$(bc -l <<< "scale=4; $rel_diff / 1")
+              echo "- Difference: -$rel_diff_rounded%" >> $GITHUB_STEP_SUMMARY
             else
               echo "WASM file size has not changed." >> $GITHUB_STEP_SUMMARY
             fi
