@@ -1,3 +1,5 @@
+#![feature(stmt_expr_attributes)]
+
 mod ad;
 pub(crate) mod item;
 mod scroll;

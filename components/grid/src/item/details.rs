@@ -221,9 +221,9 @@ pub fn fill_icon_details_modal_with_icon(
             deprecation.pull_request_number,
         );
 
-        #[allow(unused_parens)]
         let modal_deprecation_paragraph_html = tr!(
             i18n,
+            #[allow(unused_parens)]
             if (deprecation.renamed) {
                 "will-be-renamed-at-extended"
             } else {
