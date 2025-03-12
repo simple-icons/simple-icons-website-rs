@@ -220,29 +220,22 @@ pub fn fill_icon_details_modal_with_icon(
             deprecation.get_pull_request_url(),
             deprecation.pull_request_number,
         );
-        let modal_deprecation_paragraph_html = if deprecation.renamed {
-            tr!(
-                i18n,
-                "will-be-renamed-at-extended",
-                {
-                    "icon" => icon_localized_title,
-                    "version" => version,
-                    "date" => date,
-                    "pr" => pr,
-                },
-            )
-        } else {
-            tr!(
-                i18n,
-                "will-be-removed-at-extended",
-                {
-                    "icon" => icon_localized_title,
-                    "version" => version,
-                    "date" => date,
-                    "pr" => pr,
-                },
-            )
-        };
+
+        #[allow(unused_parens)]
+        let modal_deprecation_paragraph_html = tr!(
+            i18n,
+            if (deprecation.renamed) {
+                "will-be-renamed-at-extended"
+            } else {
+                "will-be-removed-at-extended"
+            },
+            {
+                "icon" => icon_localized_title,
+                "version" => version,
+                "date" => date,
+                "pr" => pr,
+            },
+        );
 
         modal_deprecation_paragraph
             .set_inner_html(&modal_deprecation_paragraph_html);
