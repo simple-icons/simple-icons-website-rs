@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+  <script>
+    const PATH = '/404';
+    const parms = new URL(window.location).searchParams.toString();
+    const opts = parms ? `&${parms}` : '';
+    window.location = `/?r=${PATH}${opts}`;
+  </script>
+  <noscript>
+    <head>
+      <meta http-equiv="refresh" content="0; URL=/?r=/404" />
+    </head>
+  </noscript>
+</html>
