@@ -8,7 +8,7 @@ import tailwindcss from 'tailwindcss';
 
 /** @type {import('postcss-load-config').Config} */
 const config = {
-	plugins: [autoprefixer, tailwindcss, postcssImport],
+  plugins: [autoprefixer, tailwindcss, postcssImport],
 };
 
 export default config;
