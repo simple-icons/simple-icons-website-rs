@@ -68,7 +68,6 @@
 	"rust-analyzer.showUnlinkedFileNotification": false,
 
 	// RunOnSave
-	// This is currently needed to format leptos `view!` macros content
 	"emeraldwalk.runonsave": {
 		"commands": [
 			{
