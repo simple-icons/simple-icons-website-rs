@@ -3,22 +3,22 @@
 
 /* Controls group */
 menu {
-  @apply box-content flex flex-row page-padding-x
+	@apply box-content flex flex-row page-padding-x
     pt-1.5 sm:pt-0 pb-1.5 h-7 sm:h-16
     sticky sm:-top-[1.4rem] z-20
     bg-custom-background-color;
 }
 
 menu .controls-group {
-  @apply flex-row space-x-1 xs:space-x-4;
+	@apply flex-row space-x-1 xs:space-x-4;
 }
 
 /* Each control */
 menu .control {
-  @apply flex flex-col h-auto;
+	@apply flex flex-col h-auto;
 }
 
 /* Labels */
 menu .control > label {
-  @apply h-4 leading-4 mb-3 hidden sm:block;
+	@apply h-4 leading-4 mb-3 hidden sm:block;
 }

@@ -1,10 +1,10 @@
 /* Controls menu search input */
 menu .control .search {
-  @apply flex flex-row h-7 xs:h-9;
+	@apply flex flex-row h-7 xs:h-9;
 }
 
 menu .control .search > input {
-  @apply py-1.5 pl-3 pr-8 w-56 xs:w-72
+	@apply py-1.5 pl-3 pr-8 w-56 xs:w-72
     border-[1px] border-solid rounded-[3px]
     /* Theme colors */
     border-custom-button-background-selected-color
@@ -18,19 +18,19 @@ menu .control .search > input::-webkit-search-decoration,
 menu .control .search > input::-webkit-search-cancel-button,
 menu .control .search > input::-webkit-search-results-button,
 menu .control .search > input::-webkit-search-results-decoration {
-  appearance: none;
+	appearance: none;
 }
 
 menu .control .search > input::-ms-clear,
 menu .control .search > input::-ms-reveal {
-  display: none;
-  width: 0;
-  height: 0;
+	display: none;
+	width: 0;
+	height: 0;
 }
 
 /* Custom clear cross shown on input */
 menu .control .search > span {
-  @apply [font-size:1.5rem] px-3 -ml-[2.4rem] -mt-[4px] xs:mt-0
+	@apply [font-size:1.5rem] px-3 -ml-[2.4rem] -mt-[4px] xs:mt-0
     text-custom-text-default-color
     cursor-pointer
     opacity-100 hover:opacity-70;

@@ -1,2 +1,2 @@
-// eslint-disable-next-line
-window.makeBadgeWithBadgeMaker = require('badge-maker').makeBadge;
+/* eslint-disable unicorn/prefer-module */
+globalThis.makeBadgeWithBadgeMaker = require('badge-maker').makeBadge;

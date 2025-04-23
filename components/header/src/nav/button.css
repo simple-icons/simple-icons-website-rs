@@ -6,7 +6,7 @@
  * to fix this, but currently is not a priority.
  **/
 header > nav > ul > li {
-  @apply w-14 h-14
+	@apply w-14 h-14
     p-2 md:p-[10px]
     rounded-md cursor-pointer
     fill-custom-button-content-default-color

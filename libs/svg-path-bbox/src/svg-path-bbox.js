@@ -1,3 +1,3 @@
-/* eslint-disable */
+/* eslint-disable unicorn/prefer-module */
 // Expose svg-path-bbox as a global
-window.svgPathBbox = require('svg-path-bbox').svgPathBbox;
+globalThis.svgPathBbox = require('svg-path-bbox').svgPathBbox;

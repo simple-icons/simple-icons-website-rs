@@ -1,13 +1,13 @@
 header > div {
-  @apply flex flex-col columns-2 space-y-1.5 lg:space-y-2;
+	@apply flex flex-col columns-2 space-y-1.5 lg:space-y-2;
 }
 
 header > div > a {
-  @apply text-[1.7rem] font-semibold whitespace-nowrap;
+	@apply text-[1.7rem] font-semibold whitespace-nowrap;
 }
 
 header > div > p {
-  @apply font-sans tracking-wider leading-5 lg:leading-6
+	@apply font-sans tracking-wider leading-5 lg:leading-6
     text-sm md:text-base pr-3
     whitespace-normal xs:whitespace-nowrap;
 }

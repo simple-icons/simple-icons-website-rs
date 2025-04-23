@@ -1,15 +1,15 @@
 main > ul > li .deprecated {
-  @apply inline-flex flex-row justify-end relative
+	@apply inline-flex flex-row justify-end relative
     w-[95%] -top-[46px];
 }
 
 main > ul > li .deprecated > p {
-  @apply uppercase cursor-pointer relative
+	@apply uppercase cursor-pointer relative
     [font-size:11px]
     hover:opacity-70 text-right font-bold
     [display:var(--deprecated-warning-text-display)];
 }
 
 main > ul > li .deprecated > span {
-  @apply h-4 w-4 mr-1 bg-warning-icon bg-left;
+	@apply h-4 w-4 mr-1 bg-warning-icon bg-left;
 }

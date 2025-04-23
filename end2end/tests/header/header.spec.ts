@@ -1,56 +1,56 @@
 /**
- * Tests for header component.
- **/
+ * @file Tests for header component.
+ */
 
-import { test, expect } from '@playwright/test';
-import { screenWidthIsAtLeast, selectors } from '../helpers.ts';
+import {expect, test} from '@playwright/test';
+import {screenWidthIsAtLeast, selectors} from '../helpers.ts';
 
 test.describe('header', () => {
-  test('has title', async ({ page }) => {
-    await page.goto('/');
+	test('has title', async ({page}) => {
+		await page.goto('/');
 
-    const title = page.locator(selectors.header.title);
-    await expect(title).toHaveText('Simple Icons');
-    await expect(title).toBeInViewport();
-  });
+		const title = page.locator(selectors.header.title);
+		await expect(title).toHaveText('Simple Icons');
+		await expect(title).toBeInViewport();
+	});
 
-  test.describe('nav', () => {
-    const N_MENU_BUTTONS = 10;
-    const nav = selectors.header.nav.container;
+	test.describe('nav', () => {
+		const numberOfMenuButtons = 10;
+		const nav = selectors.header.nav.container;
 
-    test('has menu buttons', async ({ page }) => {
-      await page.goto('/');
+		test('has menu buttons', async ({page}) => {
+			await page.goto('/');
 
-      if (screenWidthIsAtLeast('lg', page)) {
-        // desktop
-        await expect(
-          page.locator(selectors.header.nav.buttons.container),
-        ).toBeInViewport();
-        await expect(page.locator(`${nav} > ul > li:visible`)).toHaveCount(
-          N_MENU_BUTTONS,
-        );
+			if (screenWidthIsAtLeast('lg', page)) {
+				// Desktop
+				await expect(
+					page.locator(selectors.header.nav.buttons.container),
+				).toBeInViewport();
+				await expect(page.locator(`${nav} > ul > li:visible`)).toHaveCount(
+					numberOfMenuButtons,
+				);
 
-        // burger menu is hidden
-        await expect(page.locator(selectors.header.nav.toggler)).toBeHidden();
-      } else {
-        // mobile
-        await expect(
-          page.locator(selectors.header.nav.buttons.container),
-        ).toBeHidden();
-        await expect(page.locator(`${nav} > ul li:visible`)).toHaveCount(1);
+				// Burger menu is hidden
+				await expect(page.locator(selectors.header.nav.toggler)).toBeHidden();
+			} else {
+				// Mobile
+				await expect(
+					page.locator(selectors.header.nav.buttons.container),
+				).toBeHidden();
+				await expect(page.locator(`${nav} > ul li:visible`)).toHaveCount(1);
 
-        // burger menu is visible
-        const burgerButton = page.locator(selectors.header.nav.toggler);
-        await expect(burgerButton).toBeInViewport();
-        burgerButton.click();
+				// Burger menu is visible
+				const burgerButton = page.locator(selectors.header.nav.toggler);
+				await expect(burgerButton).toBeInViewport();
+				await burgerButton.click();
 
-        await expect(
-          page.locator(selectors.header.nav.buttons.container),
-        ).toBeInViewport();
-        await expect(page.locator(`${nav} > ul > li:visible`)).toHaveCount(
-          N_MENU_BUTTONS + 1,
-        );
-      }
-    });
-  });
+				await expect(
+					page.locator(selectors.header.nav.buttons.container),
+				).toBeInViewport();
+				await expect(page.locator(`${nav} > ul > li:visible`)).toHaveCount(
+					numberOfMenuButtons + 1,
+				);
+			}
+		});
+	});
 });

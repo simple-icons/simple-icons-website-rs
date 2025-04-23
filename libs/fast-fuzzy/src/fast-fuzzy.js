@@ -1,3 +1,3 @@
-/* eslint-disable */
+/* eslint-disable unicorn/prefer-module */
 // Expose fast-fuzzy as a global for the search component
-window.Searcher = require('fast-fuzzy').Searcher;
+globalThis.Searcher = require('fast-fuzzy').Searcher;

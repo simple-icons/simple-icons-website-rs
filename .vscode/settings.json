@@ -1,74 +1,86 @@
 {
-  "emmet.includeLanguages": {
-    "rust": "html",
-    "*.rs": "html"
-  },
-  "files.associations": {
-    "*.rs": "rust",
-    "*.css": "tailwindcss"
-  },
-  "editor.quickSuggestions": {
-    "other": "on",
-    "comments": "on",
-    "strings": true
-  },
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
-  "css.validate": false,
-  "prettier.resolveGlobalModules": false,
-  "[json]": {
-    "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[css]": {
-    "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[html]": {
-    "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.foldingStrategy": "indentation"
-  },
-  "[typescript]": {
-    "editor.tabSize": 2,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
+	"emmet.includeLanguages": {
+		"rust": "html",
+		"*.rs": "html"
+	},
+	"files.associations": {
+		"*.rs": "rust",
+		"*.css": "tailwindcss"
+	},
+	"editor.quickSuggestions": {
+		"other": "on",
+		"comments": "on",
+		"strings": true
+	},
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"css.validate": false,
 
-  // TailwindCSS IntelliSense configuration
-  "tailwindCSS.includeLanguages": {
-    "rust": "javascript",
-    "css": "css",
-    "typescript": "javascript",
-    "javascript": "javascript"
-  },
-  "tailwindCSS.emmetCompletions": true,
-  "tailwindCSS.lint.cssConflict": "error",
-  "tailwindCSS.lint.recommendedVariantOrder": "error",
-  "tailwindCSS.validate": true,
+	// Prettier / XO
+	"prettier.resolveGlobalModules": false,
+	"xo.enable": true,
+	"xo.format.enable": true,
+	"[json]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "samverschueren.linter-xo"
+	},
+	"[jsonc]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "samverschueren.linter-xo"
+	},
+	"[css]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "samverschueren.linter-xo"
+	},
+	"[html]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "samverschueren.linter-xo",
+		"editor.foldingStrategy": "indentation"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "samverschueren.linter-xo"
+	},
+	"[typescript]": {
+		"editor.tabSize": 2,
+		"editor.defaultFormatter": "samverschueren.linter-xo"
+	},
 
-  // Stylelint configuration
-  "stylelint.config": {},
-  "stylelint.configFile": ".stylelintrc.json",
+	// TailwindCSS IntelliSense
+	"tailwindCSS.includeLanguages": {
+		"rust": "javascript",
+		"css": "css",
+		"typescript": "javascript",
+		"javascript": "javascript"
+	},
+	"tailwindCSS.emmetCompletions": true,
+	"tailwindCSS.lint.cssConflict": "error",
+	"tailwindCSS.lint.recommendedVariantOrder": "error",
+	"tailwindCSS.validate": true,
 
-  // VSBrowser configuration
-  "vs-browser.url": "http://127.0.0.1:8080",
+	// Stylelint
+	"stylelint.config": {},
+	"stylelint.configFile": ".stylelintrc.json",
 
-  "rust-analyzer.showUnlinkedFileNotification": false,
+	// VSBrowser
+	"vs-browser.url": "http://127.0.0.1:8080",
 
-  // RunOnSave extension configuration
-  // This is currently needed to format leptos `view!` macros content
-  "emeraldwalk.runonsave": {
-    "commands": [
-      {
-        "match": "\\.rs",
-        "isAsync": true,
-        "cmd": "leptosfmt ${file}"
-      },
-      {
-        "match": "\\.rs",
-        "isAsync": true,
-        "cmd": "rustfmt ${file}"
-      }
-    ]
-  }
+	// Rust Analyzer
+	"rust-analyzer.showUnlinkedFileNotification": false,
+
+	// RunOnSave
+	// This is currently needed to format leptos `view!` macros content
+	"emeraldwalk.runonsave": {
+		"commands": [
+			{
+				"match": "\\.rs",
+				"isAsync": true,
+				"cmd": "leptosfmt ${file}"
+			},
+			{
+				"match": "\\.rs",
+				"isAsync": true,
+				"cmd": "rustfmt ${file}"
+			}
+		]
+	}
 }

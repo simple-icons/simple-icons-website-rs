@@ -1,149 +1,149 @@
 @layer components {
-  .preview {
-    @apply relative lg:z-30 lg:-mt-11 w-[790px] lg:ml-36 my-3 px-6 py-5
+	.preview {
+		@apply relative lg:z-30 lg:-mt-11 w-[790px] lg:ml-36 my-3 px-6 py-5
       border border-opacity-10 border-[var(--divider-color)] rounded-md
       text-[var(--text-default-color)]
       bg-[var(--grid-item-background-color)];
-  }
+	}
 
-  .preview-badges > div {
-    @apply grid place-content-center;
-  }
+	.preview-badges > div {
+		@apply grid place-content-center;
+	}
 
-  .preview > div:not(:last-child) {
-    @apply whitespace-nowrap mb-3;
-  }
+	.preview > div:not(:last-child) {
+		@apply whitespace-nowrap mb-3;
+	}
 
-  .preview-input-group {
-    @apply inline-block whitespace-nowrap;
-  }
+	.preview-input-group {
+		@apply inline-block whitespace-nowrap;
+	}
 
-  .preview-input-group > label {
-    @apply w-[60px] inline-block text-sm;
-  }
+	.preview-input-group > label {
+		@apply w-[60px] inline-block text-sm;
+	}
 
-  .preview-input-group > input {
-    @apply rounded-md border border-[rgb(64,64,64)] px-2 py-[6px]
+	.preview-input-group > input {
+		@apply rounded-md border border-[rgb(64,64,64)] px-2 py-[6px]
       text-sm text-[var(--text-default-color)]
       bg-[var(--grid-item-background-color)];
-  }
+	}
 
-  .preview-input-group > input.invalid {
-    @apply border-[rgb(180,0,0)];
-  }
+	.preview-input-group > input.invalid {
+		@apply border-[rgb(180,0,0)];
+	}
 
-  .preview-input-group > input.warn {
-    @apply border-[rgba(180,150,0,.7)];
-  }
+	.preview-input-group > input.warn {
+		@apply border-[rgba(180,150,0,.7)];
+	}
 
-  .preview-figure {
-    @apply rounded-xl mt-1;
-  }
+	.preview-figure {
+		@apply rounded-xl mt-1;
+	}
 
-  .preview-figure,
-  .preview-figure text {
-    @apply font-sans;
-  }
+	.preview-figure,
+	.preview-figure text {
+		@apply font-sans;
+	}
 
-  .preview-figure canvas {
-    @apply absolute top-[127px] left-[33px] opacity-0;
-  }
+	.preview-figure canvas {
+		@apply absolute top-[127px] left-[33px] opacity-0;
+	}
 
-  .preview-badges {
-    @apply w-[700px] mx-auto py-[14px]
+	.preview-badges {
+		@apply w-[700px] mx-auto py-[14px]
       grid gap-x-8 gap-y-1.5 grid-rows-2
       grid-cols-[150px_150px_220px_fit-content(100%)];
-  }
+	}
 
-  .preview-buttons {
-    @apply border-t-[var(--divider-color)] border-t pt-5 flex flex-row content-between w-full;
-  }
+	.preview-buttons {
+		@apply border-t-[var(--divider-color)] border-t pt-5 flex flex-row content-between w-full;
+	}
 
-  .preview-buttons div:nth-child(1) {
-    @apply flex-1;
-  }
+	.preview-buttons div:nth-child(1) {
+		@apply flex-1;
+	}
 
-  .preview-buttons div:nth-child(2) {
-    @apply flex-1 flex flex-row-reverse;
-  }
+	.preview-buttons div:nth-child(2) {
+		@apply flex-1 flex flex-row-reverse;
+	}
 
-  .preview-buttons button {
-    @apply mx-1;
-  }
+	.preview-buttons button {
+		@apply mx-1;
+	}
 
-  .preview-brand-suggestions {
-    @apply absolute z-40 ml-[60px] mt-2 max-h-[312px]
+	.preview-brand-suggestions {
+		@apply absolute z-40 ml-[60px] mt-2 max-h-[312px]
       border border-[var(--divider-color)]
       rounded-br-md rounded-tr-[5px] rounded-bl-md overflow-hidden
       scroll-bar;
-  }
+	}
 
-  .preview-brand-suggestions li {
-    @apply flex items-center py-3 px-3.5 cursor-pointer
+	.preview-brand-suggestions li {
+		@apply flex items-center py-3 px-3.5 cursor-pointer
       bg-[var(--button-background-default-color)]
       hover:bg-[var(--button-background-hover-color)]
       text-[var(--button-content-default-color)]
       hover:text-custom-button-content-hover-color;
-  }
+	}
 
-  .preview-brand-suggestions li img {
-    @apply w-[21px] h-[21px] mr-3 inline-block invert-0 dark:invert;
-  }
+	.preview-brand-suggestions li img {
+		@apply w-[21px] h-[21px] mr-3 inline-block invert-0 dark:invert;
+	}
 
-  .preview-brand-suggestions li span {
-    @apply text-sm;
-  }
+	.preview-brand-suggestions li span {
+		@apply text-sm;
+	}
 
-  .preview-brand-suggestions li:hover img {
-    @apply invert dark:invert-0;
-  }
+	.preview-brand-suggestions li:hover img {
+		@apply invert dark:invert-0;
+	}
 
-  .preview-brand-suggestions .more-suggestions {
-    @apply p-[3px] border-t border-t-[var(--divider-color)];
-  }
+	.preview-brand-suggestions .more-suggestions {
+		@apply p-[3px] border-t border-t-[var(--divider-color)];
+	}
 
-  .preview-brand-suggestions .more-suggestions span {
-    @apply w-full text-[var(--button-content-default-color)]
+	.preview-brand-suggestions .more-suggestions span {
+		@apply w-full text-[var(--button-content-default-color)]
       text-center text-lg pointer-events-none;
-  }
+	}
 
-  .preview-brand-suggestions .more-suggestions:hover span {
-    @apply text-[var(--button-content-hover-color)];
-  }
+	.preview-brand-suggestions .more-suggestions:hover span {
+		@apply text-[var(--button-content-hover-color)];
+	}
 
-  .preview-path-lint-errors {
-    @apply absolute z-40 ml-[60px] mt-2 max-h-[319px] flex flex-col
+	.preview-path-lint-errors {
+		@apply absolute z-40 ml-[60px] mt-2 max-h-[319px] flex flex-col
       border border-[var(--divider-color)] box-border
       rounded-br-md rounded-tr-[4px] rounded-bl-md overflow-y-auto
       bg-[#cbc407] text-[#333] text-xs max-w-[682px]
       scroll-bar;
-  }
+	}
 
-  .preview-path-lint-errors li {
-    @apply flex flex-row py-2 px-3;
-  }
+	.preview-path-lint-errors li {
+		@apply flex flex-row py-2 px-3;
+	}
 
-  .preview-path-lint-errors li:not(:first-child) {
-    @apply flex flex-row py-2 px-3 border-t border-[rgba(0,0,0,.1)];
-  }
+	.preview-path-lint-errors li:not(:first-child) {
+		@apply flex flex-row py-2 px-3 border-t border-[rgba(0,0,0,.1)];
+	}
 
-  .preview-path-lint-errors li > :first-child {
-    @apply flex mr-[14px] leading-5;
-  }
+	.preview-path-lint-errors li > :first-child {
+		@apply flex mr-[14px] leading-5;
+	}
 
-  .preview-path-lint-errors li > :last-child {
-    @apply flex flex-row mr-1 relative float-right select-none;
-  }
+	.preview-path-lint-errors li > :last-child {
+		@apply flex flex-row mr-1 relative float-right select-none;
+	}
 
-  .preview-path-lint-errors li > :last-child button {
-    @apply py-0.5 px-1.5 rounded-sm text-xs w-fit
+	.preview-path-lint-errors li > :last-child button {
+		@apply py-0.5 px-1.5 rounded-sm text-xs w-fit
       bg-[#333] text-[#eee]
       hover:bg-[#eee] hover:text-[#333]
       focus:bg-[#333] focus:text-[#eee]
       focus:hover:bg-[#eee] focus:hover:text-[#333];
-  }
+	}
 
-  .preview-path-lint-errors li > :last-child button:not(:first-child) {
-    @apply relative left-1;
-  }
+	.preview-path-lint-errors li > :last-child button:not(:first-child) {
+		@apply relative left-1;
+	}
 }

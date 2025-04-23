@@ -2,7 +2,7 @@
  * Icon preview
  **/
 main > ul > li > :first-child {
-  @apply mx-auto w-14 h-14
+	@apply mx-auto w-14 h-14
     copy-button-color-scheme
     before:bg-[size:_1.5rem]
     before:bg-[color:var(--grid-item-transparent-background-color)]
@@ -11,5 +11,5 @@ main > ul > li > :first-child {
 }
 
 main > ul > li > :first-child img {
-  @apply h-14 dark:invert;
+	@apply h-14 dark:invert;
 }

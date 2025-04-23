@@ -1,54 +1,54 @@
 footer {
-  @apply flex flex-col justify-between pb-8 pt-4 text-sm 
+	@apply flex flex-col justify-between pb-8 pt-4 text-sm 
     page-margin-x;
 }
 
 @layer components {
-  .footer-about {
-    @apply flex flex-col flex-grow text-center justify-center md:text-left;
-  }
+	.footer-about {
+		@apply flex flex-col flex-grow text-center justify-center md:text-left;
+	}
 
-  .footer-about a {
-    @apply text-link;
-  }
+	.footer-about a {
+		@apply text-link;
+	}
 
-  .social-button {
-    @apply h-[23px];
-  }
+	.social-button {
+		@apply h-[23px];
+	}
 
-  /* X button */
-  .x-button svg path {
-    @apply fill-[#000] dark:fill-[#ccc];
-  }
+	/* X button */
+	.x-button svg path {
+		@apply fill-[#000] dark:fill-[#ccc];
+	}
 
-  .x-button:hover svg path {
-    @apply fill-[#333] dark:fill-[#fff];
-  }
+	.x-button:hover svg path {
+		@apply fill-[#333] dark:fill-[#fff];
+	}
 
-  /* Facebook button */
-  .facebook-button svg path {
-    @apply fill-[#0866FF];
-  }
+	/* Facebook button */
+	.facebook-button svg path {
+		@apply fill-[#0866FF];
+	}
 
-  .facebook-button:hover svg path {
-    @apply fill-[#3b81f2];
-  }
+	.facebook-button:hover svg path {
+		@apply fill-[#3b81f2];
+	}
 
-  /* Mastodon button */
-  .mastodon-button svg path {
-    @apply fill-[#6364FF] hover:fill-[#6c6cfc];
-  }
+	/* Mastodon button */
+	.mastodon-button svg path {
+		@apply fill-[#6364FF] hover:fill-[#6c6cfc];
+	}
 
-  .mastodon-button:hover svg path {
-    @apply fill-[#6c6cfc];
-  }
+	.mastodon-button:hover svg path {
+		@apply fill-[#6c6cfc];
+	}
 
-  /* Bluesky button */
-  .bluesky-button svg path {
-    @apply fill-[#0285FF];
-  }
+	/* Bluesky button */
+	.bluesky-button svg path {
+		@apply fill-[#0285FF];
+	}
 
-  .bluesky-button:hover svg path {
-    @apply fill-[#2493fc];
-  }
+	.bluesky-button:hover svg path {
+		@apply fill-[#2493fc];
+	}
 }

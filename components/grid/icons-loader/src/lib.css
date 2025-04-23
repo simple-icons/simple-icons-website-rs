@@ -1,14 +1,14 @@
 @layer components {
-  .icons-loader {
-    @apply flex flex-row justify-center page-margin-x;
-  }
+	.icons-loader {
+		@apply flex flex-row justify-center page-margin-x;
+	}
 
-  .icons-loader:not(.hidden) {
-    @apply pt-4;
-  }
+	.icons-loader:not(.hidden) {
+		@apply pt-4;
+	}
 
-  /* Button to load more icons manually */
-  .icons-loader > button {
-    @apply button;
-  }
+	/* Button to load more icons manually */
+	.icons-loader > button {
+		@apply button;
+	}
 }

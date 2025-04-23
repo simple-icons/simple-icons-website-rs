@@ -1,15 +1,15 @@
 @layer components {
-  .scroll-button {
-    @apply w-9 h-9 fixed right-0 md:right-[1px] lg:right-0.5
+	.scroll-button {
+		@apply w-9 h-9 fixed right-0 md:right-[1px] lg:right-0.5
       opacity-75 hover:opacity-60 hover:brightness-105
       text-custom-button-content-default-color z-50;
-  }
+	}
 
-  .scroll-to-header-button {
-    @apply top-2 hidden md:block;
-  }
+	.scroll-to-header-button {
+		@apply top-2 hidden md:block;
+	}
 
-  .scroll-to-footer-button {
-    @apply bottom-2;
-  }
+	.scroll-to-footer-button {
+		@apply bottom-2;
+	}
 }

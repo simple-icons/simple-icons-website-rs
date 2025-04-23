@@ -3,13 +3,13 @@
 @import './third_party_extensions.css';
 
 header > nav {
-  @apply h-[71px] self-center flex flex-row justify-between w-full lg:w-auto;
+	@apply h-[71px] self-center flex flex-row justify-between w-full lg:w-auto;
 }
 
 header > nav > ul:first-child {
-  @apply m-auto self-center grid grid-cols-5 gap-1 md:flex md:flex-row;
+	@apply m-auto self-center grid grid-cols-5 gap-1 md:flex md:flex-row;
 }
 
 header > nav > ul:last-child {
-  @apply flex self-center;
+	@apply flex self-center;
 }

@@ -1,7 +1,7 @@
 @layer components {
-  /* Buttons */
-  .control-button {
-    @apply w-7 h-7 xs:h-9 xs:w-9
+	/* Buttons */
+	.control-button {
+		@apply w-7 h-7 xs:h-9 xs:w-9
       xs:px-[5.5px] px-[4px] xs:py-[4px] py-[2px]
       box-border font-bold text-sm xs:text-base
       border-[1px] border-solid
@@ -9,38 +9,38 @@
       shadow-custom-shadows-color
       hover:shadow-[0_0_3px_0_var(--shadows-color)]
       focus:shadow-[0_0_3px_0_var(--shadows-color)];
-  }
+	}
 
-  /* Selected buttons */
-  .control-button.selected {
-    @apply fill-custom-button-content-selected-color
+	/* Selected buttons */
+	.control-button.selected {
+		@apply fill-custom-button-content-selected-color
       bg-custom-button-background-selected-color
       text-custom-button-content-selected-color;
-  }
+	}
 
-  .control-button:not(.selected) {
-    @apply fill-custom-button-content-default-color
+	.control-button:not(.selected) {
+		@apply fill-custom-button-content-default-color
       bg-custom-button-background-default-color
       text-custom-button-content-default-color;
-  }
+	}
 
-  .control-button span {
-    @apply flex items-center justify-center;
-  }
+	.control-button span {
+		@apply flex items-center justify-center;
+	}
 }
 
 /**
  * Control buttons in controls
  **/
 .control button {
-  @apply control-button;
+	@apply control-button;
 }
 
 .controls-group .control button:first-child,
 .controls-group .control:first-child button:nth-child(2) {
-  @apply border-r-0 rounded-l-[3px];
+	@apply border-r-0 rounded-l-[3px];
 }
 
 .controls-group .control button:last-child {
-  @apply border-l-0 rounded-r-[3px];
+	@apply border-l-0 rounded-r-[3px];
 }

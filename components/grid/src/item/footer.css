@@ -1,11 +1,11 @@
 /* Grid item footer */
 main > ul > li > :last-child {
-  @apply flex flex-row h-8;
+	@apply flex flex-row h-8;
 }
 
 /* Hex color */
 main > ul > li > :last-child > :first-child {
-  @apply w-1/2 text-xs
+	@apply w-1/2 text-xs
     text-custom-light-contrast-color
     /* Without !important doesn't work */
     hover:!text-transparent focus:!text-transparent
@@ -14,31 +14,31 @@ main > ul > li > :last-child > :first-child {
 }
 
 main > ul > li > :last-child > :first-child.dark {
-  @apply text-custom-dark-contrast-color copy-button-black;
+	@apply text-custom-dark-contrast-color copy-button-black;
 }
 
 @layer components {
-  .grid-item-button {
-    @apply w-1/4
+	.grid-item-button {
+		@apply w-1/4
       fill-custom-button-content-default-color
       hover:bg-custom-button-background-hover-color
       hover:fill-custom-button-content-hover-color
       focus:bg-custom-button-background-hover-color
       focus:fill-custom-button-content-hover-color
       [border-top:_1px_solid_var(--divider-color)];
-  }
+	}
 
-  .grid-item-button svg {
-    @apply h-4 m-auto;
-  }
+	.grid-item-button svg {
+		@apply h-4 m-auto;
+	}
 }
 
 /* View details button */
 main > ul > li > :last-child > :nth-child(2) {
-  @apply grid-item-button;
+	@apply grid-item-button;
 }
 
 /* Download button */
 main > ul > li > :last-child > :nth-child(3) {
-  @apply grid-item-button;
+	@apply grid-item-button;
 }

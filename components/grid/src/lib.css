@@ -9,61 +9,61 @@
  * The default layout is the comfortable one, the rest of them are defined by classes.
  **/
 main > ul {
-  @apply grid relative mt-5 page-padding-x;
+	@apply grid relative mt-5 page-padding-x;
 
-  grid-template-columns: repeat(auto-fill, minmax(var(--grid-width), 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(var(--grid-width), 1fr));
 
-  /* Comfortable layout variables: */
-  grid-gap: var(--grid-gap);
+	/* Comfortable layout variables: */
+	grid-gap: var(--grid-gap);
 
-  --grid-width: 13rem;
-  --grid-gap: 0.75rem;
+	--grid-width: 13rem;
+	--grid-gap: 0.75rem;
 
-  --icon-preview-margin-top: 1.5rem;
-  --icon-preview-margin-bottom: 1rem;
+	--icon-preview-margin-top: 1.5rem;
+	--icon-preview-margin-bottom: 1rem;
 
-  --deprecated-warning-text-display: block;
+	--deprecated-warning-text-display: block;
 
-  --title-x-padding: 1rem;
-  --title-font-size: 1.2rem;
-  --title-line-height: 1.5rem;
-  --title-text-overflow: none;
-  --title-white-space: normal;
-  --title-copy-button-size: 1.25rem;
-  --title-copy-button-margin-bottom: 0.15rem;
-  --title-copy-button-margin-right: 2rem;
+	--title-x-padding: 1rem;
+	--title-font-size: 1.2rem;
+	--title-line-height: 1.5rem;
+	--title-text-overflow: none;
+	--title-white-space: normal;
+	--title-copy-button-size: 1.25rem;
+	--title-copy-button-margin-bottom: 0.15rem;
+	--title-copy-button-margin-right: 2rem;
 
-  --links-font-size: 0.75rem;
-  --links-line-height: 1rem;
-  --links-container-padding-left: 1rem;
-  --links-text-padding-left: 1.25rem;
+	--links-font-size: 0.75rem;
+	--links-line-height: 1rem;
+	--links-container-padding-left: 1rem;
+	--links-text-padding-left: 1.25rem;
 
-  --footer-x-padding: 1rem;
+	--footer-x-padding: 1rem;
 }
 
 main > ul.layout-compact {
-  /* Compact layout variables: */
-  --grid-width: 8rem;
-  --grid-gap: 0.5rem;
+	/* Compact layout variables: */
+	--grid-width: 8rem;
+	--grid-gap: 0.5rem;
 
-  --icon-preview-margin-top: 0.5rem;
-  --icon-preview-margin-bottom: 0.5rem;
+	--icon-preview-margin-top: 0.5rem;
+	--icon-preview-margin-bottom: 0.5rem;
 
-  --deprecated-warning-text-display: none;
+	--deprecated-warning-text-display: none;
 
-  --title-x-padding: 0.5rem;
-  --title-font-size: 1rem;
-  --title-line-height: 1rem;
-  --title-text-overflow: ellipsis;
-  --title-white-space: nowrap;
-  --title-copy-button-size: 1rem;
-  --title-copy-button-margin-bottom: 0rem;
-  --title-copy-button-margin-right: 1.3rem;
+	--title-x-padding: 0.5rem;
+	--title-font-size: 1rem;
+	--title-line-height: 1rem;
+	--title-text-overflow: ellipsis;
+	--title-white-space: nowrap;
+	--title-copy-button-size: 1rem;
+	--title-copy-button-margin-bottom: 0rem;
+	--title-copy-button-margin-right: 1.3rem;
 
-  --links-font-size: 0.65rem;
-  --links-line-height: 0.9rem;
-  --links-container-padding-left: 0.5rem;
-  --links-text-padding-left: 1rem;
+	--links-font-size: 0.65rem;
+	--links-line-height: 0.9rem;
+	--links-container-padding-left: 0.5rem;
+	--links-text-padding-left: 1rem;
 
-  --footer-x-padding: 0.5rem;
+	--footer-x-padding: 0.5rem;
 }

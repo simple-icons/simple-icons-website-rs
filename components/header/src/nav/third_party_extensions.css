@@ -1,31 +1,31 @@
 .third-party-extensions {
-  @apply table-auto border-collapse
+	@apply table-auto border-collapse
     mx-2 xs:mx-4 md:mx-8 my-1
     text-sm xs:text-base
     overflow-hidden;
 }
 
 .third-party-extensions a {
-  @apply hover:opacity-80 whitespace-nowrap;
+	@apply hover:opacity-80 whitespace-nowrap;
 }
 
 .third-party-extensions td {
-  @apply py-1 xs:py-0.5
+	@apply py-1 xs:py-0.5
     overflow-hidden text-ellipsis
     max-w-[200px] xs:max-w-none;
 }
 
 /* Extension logo */
 .third-party-extensions td:first-child svg {
-  @apply w-4 xs:w-6 hidden xs:inline;
+	@apply w-4 xs:w-6 hidden xs:inline;
 }
 
 /* Extension name */
 .third-party-extensions td:first-child span {
-  @apply ml-3 sm:ml-4;
+	@apply ml-3 sm:ml-4;
 }
 
 /* Author */
 .third-party-extensions td:last-child a {
-  @apply ml-3 xs:ml-6;
+	@apply ml-3 xs:ml-6;
 }

@@ -1,14 +1,15 @@
 {
-  "compilerOptions": {
-    "module": "nodenext",
-    "noEmit": true,
-    "allowImportingTsExtensions": true
-  },
-  "ts-node": {
-    "esm": true,
-    "compilerOptions": {
-      "module": "nodenext",
-      "target": "ES2022"
-    }
-  }
+	"compilerOptions": {
+		"module": "nodenext",
+		"noEmit": true,
+		"allowImportingTsExtensions": true,
+		"strictNullChecks": true
+	},
+	"ts-node": {
+		"esm": true,
+		"compilerOptions": {
+			"module": "nodenext",
+			"target": "ES2022"
+		}
+	}
 }

@@ -64,11 +64,11 @@ cwd = "./app"
 [tasks.format]
 clear = true
 description = "Format files"
-run_task = { name = ["format-rust", "format-prettier"] }
+run_task = { name = ["fix-xo", "format-rust"] }
 
 [tasks.lint]
 description = "Check format of files and run linters"
-run_task = { name = ["lint-prettier", "lint-js", "lint-rust", "lint-css"] }
+run_task = { name = ["lint-xo", "lint-rust", "lint-css"] }
 
 [tasks.test]
 clear = true
@@ -189,20 +189,15 @@ args = [
     "./.stylelintrc.json"
 ]
 
-[tasks.format-prettier]
-description = "Format non Rust files in the project with prettier"
+[tasks.lint-xo]
+description = "Lint JS/TS and files affected by Prettier with XO"
 command = "npx"
-args = ["prettier", "--write", ".", "--log-level", "warn"]
+args = ["xo"]
 
-[tasks.lint-prettier]
-description = "Check formatting of non Rust files in the project with prettier"
+[tasks.fix-xo]
+description = "Format JS/TS and files affected by Prettier with XO"
 command = "npx"
-args = ["prettier", "--check", "."]
-
-[tasks.lint-js]
-description = "Lint JS and TS files in the project with ESLint"
-command = "npx"
-args = ["eslint", ".", "--ignore-path", ".gitignore"]
+args = ["xo", "--fix"]
 
 [tasks.build-js-libs]
 description = "Build JS libraries for the web"

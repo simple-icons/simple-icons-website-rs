@@ -1,9 +1,9 @@
 {
-  "recommendations": [
-    "esbenp.prettier-vscode",
-    "emeraldwalk.runonsave",
-    "bradlc.vscode-tailwindcss",
-    "rust-lang.rust-analyzer",
-    "macabeus.vscode-fluent"
-  ]
+	"recommendations": [
+		"emeraldwalk.runonsave",
+		"bradlc.vscode-tailwindcss",
+		"rust-lang.rust-analyzer",
+		"macabeus.vscode-fluent",
+		"samverschueren.linter-xo"
+	]
 }
