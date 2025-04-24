@@ -1,7 +1,9 @@
-@import './public/assets/fonts.css';
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import '@fontsource/roboto-mono/400.css';
+@import '@fontsource/roboto-mono/600.css';
+@import '@fontsource/open-sans/400.css';
 @import '../components/preview-generator/src/lib.css';
 @import '../components/footer/src/lib.css';
 @import '../components/header/src/lib.css';
@@ -12,134 +14,134 @@
 @import '../components/copy/src/lib.css';
 
 :root {
-  --dark-contrast-color: rgb(34 34 34);
-  --light-contrast-color: rgb(238 238 238);
-  --margin-x: 1rem;
-  --margin-x-sm: 1.5rem;
-  --margin-x-md: 3rem;
+	--dark-contrast-color: rgb(34 34 34);
+	--light-contrast-color: rgb(238 238 238);
+	--margin-x: 1rem;
+	--margin-x-sm: 1.5rem;
+	--margin-x-md: 3rem;
 }
 
 /* Dark color scheme */
 body.dark {
-  /* Color of the background of the site */
-  --background-color: rgb(34 34 34);
+	/* Color of the background of the site */
+	--background-color: rgb(34 34 34);
 
-  /* Color of the text by default */
-  --text-default-color: rgb(236 236 236);
+	/* Color of the text by default */
+	--text-default-color: rgb(236 236 236);
 
-  /* Color of divider lines */
-  --divider-color: rgb(64 64 64);
+	/* Color of divider lines */
+	--divider-color: rgb(64 64 64);
 
-  /* Color of the buttons content by default */
-  --button-content-default-color: rgb(212 212 212);
+	/* Color of the buttons content by default */
+	--button-content-default-color: rgb(212 212 212);
 
-  /* Color of the buttons content on hover */
-  --button-content-hover-color: rgb(34 34 34);
+	/* Color of the buttons content on hover */
+	--button-content-hover-color: rgb(34 34 34);
 
-  /* Color of the buttons content when there are selected */
-  --button-content-selected-color: rgb(34 34 34);
+	/* Color of the buttons content when there are selected */
+	--button-content-selected-color: rgb(34 34 34);
 
-  /* Color of the buttons background when there are selected */
-  --button-background-selected-color: rgb(212 212 212);
+	/* Color of the buttons background when there are selected */
+	--button-background-selected-color: rgb(212 212 212);
 
-  /* Color of the buttons background when there are not selected */
-  --button-background-default-color: rgb(34 34 34);
+	/* Color of the buttons background when there are not selected */
+	--button-background-default-color: rgb(34 34 34);
 
-  /* Color of the buttons background on hover */
-  --button-background-hover-color: rgb(212 212 212);
+	/* Color of the buttons background on hover */
+	--button-background-hover-color: rgb(212 212 212);
 
-  /* Color of shadows */
-  --shadows-color: rgb(212 212 212 / 70%);
+	/* Color of shadows */
+	--shadows-color: rgb(212 212 212 / 70%);
 
-  /* Color of transparent background non grid item elements, like copy buttons in icon detail modals */
-  --transparent-element-background-color: rgb(34 34 34 / 60%);
+	/* Color of transparent background non grid item elements, like copy buttons in icon detail modals */
+	--transparent-element-background-color: rgb(34 34 34 / 60%);
 
-  /* Color of links */
-  --link-color: rgb(236 236 236);
+	/* Color of links */
+	--link-color: rgb(236 236 236);
 
-  /* Color of on hover */
-  --link-color-hover: rgb(212 212 212);
+	/* Color of on hover */
+	--link-color-hover: rgb(212 212 212);
 
-  /* Background color of grid items */
-  --grid-item-background-color: rgb(20 20 20);
+	/* Background color of grid items */
+	--grid-item-background-color: rgb(20 20 20);
 
-  /* Transparent background on grid items */
-  --grid-item-transparent-background-color: rgb(20 20 20 / 60%);
+	/* Transparent background on grid items */
+	--grid-item-transparent-background-color: rgb(20 20 20 / 60%);
 }
 
 /* Light color scheme */
 body.light {
-  --background-color: rgb(252 252 252);
-  --text-default-color: rgb(0 0 0);
-  --divider-color: rgb(204 204 204);
-  --button-content-default-color: rgb(51 51 51);
-  --button-content-hover-color: rgb(252 252 252);
-  --button-content-selected-color: rgb(252 252 252);
-  --button-background-default-color: rgb(255 255 255);
-  --button-background-selected-color: rgb(51 51 51);
-  --button-background-hover-color: rgb(51 51 51);
-  --shadows-color: rgba(0 0 0 / 50%);
-  --transparent-element-background-color: rgb(255 255 255 / 70%);
-  --link-color: rgb(0 0 0);
-  --link-color-hover: rgb(51 51 51);
-  --grid-item-background-color: rgb(255 255 255);
-  --grid-item-transparent-background-color: rgb(255 255 255 / 70%);
+	--background-color: rgb(252 252 252);
+	--text-default-color: rgb(0 0 0);
+	--divider-color: rgb(204 204 204);
+	--button-content-default-color: rgb(51 51 51);
+	--button-content-hover-color: rgb(252 252 252);
+	--button-content-selected-color: rgb(252 252 252);
+	--button-background-default-color: rgb(255 255 255);
+	--button-background-selected-color: rgb(51 51 51);
+	--button-background-hover-color: rgb(51 51 51);
+	--shadows-color: rgba(0 0 0 / 50%);
+	--transparent-element-background-color: rgb(255 255 255 / 70%);
+	--link-color: rgb(0 0 0);
+	--link-color-hover: rgb(51 51 51);
+	--grid-item-background-color: rgb(255 255 255);
+	--grid-item-transparent-background-color: rgb(255 255 255 / 70%);
 }
 
 /* Global components */
 @layer components {
-  /* Margin X of the page */
-  .page-margin-x {
-    @apply mx-[var(--margin-x)]
+	/* Margin X of the page */
+	.page-margin-x {
+		@apply mx-[var(--margin-x)]
       sm:mx-[var(--margin-x-sm)]
       md:mx-[var(--margin-x-md)];
-  }
+	}
 
-  /**
+	/**
    * Padding X of the page.
    *
    * Useful for components that should render their background in top of others,
    * like the controls one.
    **/
-  .page-padding-x {
-    @apply px-[var(--margin-x)]
+	.page-padding-x {
+		@apply px-[var(--margin-x)]
       sm:px-[var(--margin-x-sm)]
       md:px-[var(--margin-x-md)];
-  }
+	}
 
-  /**
+	/**
    * Links inside pragraphs of text.
    */
-  .text-link {
-    @apply text-[var(--link-color)] hover:text-[var(--link-color-hover)]
+	.text-link {
+		@apply text-[var(--link-color)] hover:text-[var(--link-color-hover)]
       focus:text-[var(--link-color-hover)]
       font-bold hover:underline focus:underline;
-  }
+	}
 
-  /**
+	/**
    * Warning icon as background.
    **/
-  .bg-warning-icon {
-    @apply bg-[size:1rem] content-[''] bg-no-repeat;
+	.bg-warning-icon {
+		@apply bg-[size:1rem] content-[''] bg-no-repeat;
 
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgdmVyc2lvbj0iMS4wIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNC41NTUgLTMuNzY5KSBzY2FsZSguMTU0NDUpIj48cGF0aCBmaWxsPSIjZmZkNDJhIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMy4xMTEiIGQ9Ik0zMS45NTIgNzkuMDFjLS40MTYuODAxLS45MDcgMS41NTEtLjkwNyAyLjQzMWwuMDA0LjM2OGMwIDEuOSAxLjQ4NyAzLjA0OSAzLjE5NyAzLjA0OWg1NS4yNWMxLjcxIDAgMy4xODMtMS40MjQgMy4xODMtMy4zMjRsLS4wMTgtLjM3YzAtLjg4LS40MzMtMS42NDQtLjkwNy0yLjQzMkw2NC4zOTIgMjkuNjQ4Yy0xLjIxLTEuMzQzLTMuMTctMS4zNDMtNC4zNzggMHoiLz48Y2lyY2xlIGN4PSIyMy45MjEiIGN5PSI3NC40NzUiIHI9IjguMDQyIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9Im1hcmtlcjpub25lIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0OS41NDYgMzMuNzMxKSBzY2FsZSguNTQyMTIpIi8+PHBhdGggZD0iTTYyLjQ4NiA0My44MTdjMS43MTMgMCA0LjM3IDEuMzY1IDQuMzcgMy4wNmwtMS4yNzggMTcuNjE1YzAgMS42OTUtMS4zOCAzLjA2LTMuMDkyIDMuMDYtMS43MTMgMC0zLjA5MS0xLjM2NS0zLjA5MS0zLjA2bC0xLjQ5My0xNy42MTVjMC0xLjY5NSAyLjg3MS0zLjA2IDQuNTg0LTMuMDZ6IiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9Im1hcmtlcjpub25lIi8+PC9nPjwvc3ZnPg==');
-  }
+		background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgdmVyc2lvbj0iMS4wIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNC41NTUgLTMuNzY5KSBzY2FsZSguMTU0NDUpIj48cGF0aCBmaWxsPSIjZmZkNDJhIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMy4xMTEiIGQ9Ik0zMS45NTIgNzkuMDFjLS40MTYuODAxLS45MDcgMS41NTEtLjkwNyAyLjQzMWwuMDA0LjM2OGMwIDEuOSAxLjQ4NyAzLjA0OSAzLjE5NyAzLjA0OWg1NS4yNWMxLjcxIDAgMy4xODMtMS40MjQgMy4xODMtMy4zMjRsLS4wMTgtLjM3YzAtLjg4LS40MzMtMS42NDQtLjkwNy0yLjQzMkw2NC4zOTIgMjkuNjQ4Yy0xLjIxLTEuMzQzLTMuMTctMS4zNDMtNC4zNzggMHoiLz48Y2lyY2xlIGN4PSIyMy45MjEiIGN5PSI3NC40NzUiIHI9IjguMDQyIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9Im1hcmtlcjpub25lIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0OS41NDYgMzMuNzMxKSBzY2FsZSguNTQyMTIpIi8+PHBhdGggZD0iTTYyLjQ4NiA0My44MTdjMS43MTMgMCA0LjM3IDEuMzY1IDQuMzcgMy4wNmwtMS4yNzggMTcuNjE1YzAgMS42OTUtMS4zOCAzLjA2LTMuMDkyIDMuMDYtMS43MTMgMC0zLjA5MS0xLjM2NS0zLjA5MS0zLjA2bC0xLjQ5My0xNy42MTVjMC0xLjY5NSAyLjg3MS0zLjA2IDQuNTg0LTMuMDZ6IiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9Im1hcmtlcjpub25lIi8+PC9nPjwvc3ZnPg==');
+	}
 
-  /* Custom scroll bars */
-  .scroll-bar::-webkit-scrollbar {
-    @apply w-3 bg-custom-divider-color
+	/* Custom scroll bars */
+	.scroll-bar::-webkit-scrollbar {
+		@apply w-3 bg-custom-divider-color
       border-custom-divider-color;
-  }
+	}
 
-  .scroll-bar::-webkit-scrollbar-thumb {
-    @apply bg-custom-button-background-selected-color
+	.scroll-bar::-webkit-scrollbar-thumb {
+		@apply bg-custom-button-background-selected-color
       rounded-lg;
-  }
+	}
 }
 
 @layer components {
-  .button {
-    @apply py-2 px-3 rounded text-sm whitespace-nowrap
+	.button {
+		@apply py-2 px-3 rounded text-sm whitespace-nowrap
       text-custom-button-content-default-color
       hover:text-custom-button-content-hover-color
       focus:text-custom-button-content-default-color
@@ -150,42 +152,42 @@ body.light {
       focus:hover:bg-custom-button-background-hover-color
       shadow-[0_0_3px_0_var(--shadows-color)]
       uppercase font-bold;
-  }
+	}
 
-  .button svg {
-    @apply inline-block
+	.button svg {
+		@apply inline-block
       fill-custom-button-content-default-color mr-1.5
       w-5 h-5;
-  }
+	}
 
-  .button:hover svg {
-    @apply fill-custom-button-content-hover-color;
-  }
+	.button:hover svg {
+		@apply fill-custom-button-content-hover-color;
+	}
 
-  .button:focus svg {
-    @apply fill-custom-button-content-default-color;
-  }
+	.button:focus svg {
+		@apply fill-custom-button-content-default-color;
+	}
 
-  .button:focus:hover svg {
-    @apply fill-custom-button-content-hover-color;
-  }
+	.button:focus:hover svg {
+		@apply fill-custom-button-content-hover-color;
+	}
 }
 
 /* Global resets */
 @layer base {
-  * {
-    margin: 0;
-    padding: 0;
-  }
+	* {
+		margin: 0;
+		padding: 0;
+	}
 
-  *:focus {
-    @apply outline-none;
-  }
+	*:focus {
+		@apply outline-none;
+	}
 
-  body {
-    @apply font-mono flex flex-col min-h-[100vh]
+	body {
+		@apply font-mono flex flex-col min-h-[100vh]
       bg-custom-background-color
       text-custom-text-default-color
       scroll-bar;
-  }
+	}
 }

@@ -48,16 +48,14 @@ args = [
 cwd = "./app"
 
 [tasks.watch-css]
-description = "Build CSS with Tailwind on development"
+description = "Build CSS with PostCSS on development"
 command = "npx"
 args = [
-    "tailwind",
-    "--input",
+    "postcss",
     "./stylesheet.css",
     "--output",
     "./public/assets/stylesheet.css",
     "--watch",
-    "--no-minify",
 ]
 cwd = "./app"
 
@@ -102,11 +100,10 @@ command = "npx"
 args = ["tsx", "scripts/minify-wasm-js-binding.ts"]
 
 [tasks.build-css]
-description = "Build CSS with TailwindCSS for production"
+description = "Build CSS with PostCSS for production"
 command = "npx"
 args = [
-    "tailwind",
-    "--input",
+    "postcss",
     "./stylesheet.css",
     "--output",
     "./public/assets/stylesheet.css",
@@ -255,16 +252,6 @@ blob_stream = json_parse ${packagejson}
 exec npx terser --compress --mangle --output ./app/public/assets/js/blob-stream-${blob_stream.version}.js ./node_modules/blob-stream/.js
 '''
 
-[tasks.copy-fonts]
-description = "Copy fonts from @fontsource directory"
-script_runner = "@duckscript"
-script = '''
-rm -r ./app/public/assets/fonts
-mkdir ./app/public/assets/fonts
-cp ./node_modules/@fontsource/roboto-mono/files/ ./app/public/assets/fonts
-cp ./node_modules/@fontsource/open-sans/files/ ./app/public/assets/fonts
-'''
-
 [tasks.fetch-deprecated-icons]
 description = "Fetch deprecated icons from simple-icons repository"
 command = "npx"
@@ -279,7 +266,6 @@ args = ["tsx", "scripts/create-sitemap.ts"]
 description = "Run pre-build scripts"
 run_task = { name = [
     "build-js-libs",
-    "copy-fonts",
     "fetch-deprecated-icons",
     "create-sitemap",
 ], parallel = true }

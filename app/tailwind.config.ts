@@ -25,15 +25,16 @@ const parseRootCssVariables = (): string[] => {
 		.split(':root')[1]
 		.split('}', 2)[0]
 		.split('\n')
-		.filter((line) => line.startsWith('  --') && line.includes('-color:'))
+		.filter((line) => line.startsWith('\t--') && line.includes('-color:'))
 		.map((line) => line.split('--')[1].split(':')[0]);
 
 	const dark = css
 		.split('body.dark {', 2)[1]
 		.split('}', 2)[0]
 		.split('\n')
-		.filter((line) => line.startsWith('  --'))
+		.filter((line) => line.startsWith('\t--'))
 		.map((line) => line.split('--')[1].split(':')[0]);
+
 	return [...root, ...dark];
 };
 
