@@ -3,13 +3,10 @@ root=true
 [*]
 charset=utf-8
 insert_final_newline=true
+indent_style = tab
 
 [license.txt]
 indent_size = unset
-indent_style = space
-
-[*.{json,json5,yml,js,ts,html,css}]
-indent_size = 2
 indent_style = space
 
 [*.rs]
