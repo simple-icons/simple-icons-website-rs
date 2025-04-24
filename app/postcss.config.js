@@ -3,8 +3,8 @@
  */
 
 import autoprefixer from 'autoprefixer';
+import postcssFontsourceUrl from 'postcss-fontsource-url';
 import postcssImport from 'postcss-import';
-import postcssUrl from 'postcss-url';
 import tailwindcss from 'tailwindcss';
 
 /** @type {import('postcss-load-config').Config} */
@@ -13,17 +13,7 @@ const config = {
 		postcssImport,
 		tailwindcss,
 		autoprefixer,
-		postcssUrl({
-			url(asset) {
-				// Rewrite @fontsource fonts URLs to use the assets folder
-				// instead of the default ./files/ path.
-				if (asset.url.startsWith('./files/')) {
-					return `/assets/fonts/${asset.url.slice('./files/'.length)}`;
-				}
-
-				return asset.url;
-			},
-		}),
+		postcssFontsourceUrl({directory: '/assets/fonts'}),
 	],
 };
 
