@@ -1,7 +1,4 @@
-/**
- * @file TailwindCSS configuration file.
- * @see https://tailwindcss.com/docs
- */
+/* eslint-disable */
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,18 +6,15 @@ import postcssImportPlugin from 'postcss-import';
 import type {Config} from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
-// TODO: We are not using here `import.meta.url` because the VSCode extension
-// does not support modules with TypeScript.
-// eslint-disable-next-line unicorn/prefer-module
-const __dirname = path.dirname(__filename);
-
 /**
  * Parse theme variables from stylesheet to automatically insert
  * all custom colors into TailwindCSS configuration.
- * @returns {string[]} Array of CSS variable names.
  */
 const parseRootCssVariables = (): string[] => {
-  const css = fs.readFileSync(path.join(__dirname, 'stylesheet.css'), 'utf8');
+  const css = fs.readFileSync(
+    path.resolve(`${__dirname}/stylesheet.css`),
+    'utf8',
+  );
   const root = css
     .split(':root')[1]
     .split('}', 2)[0]
@@ -37,7 +31,7 @@ const parseRootCssVariables = (): string[] => {
   return [...root, ...dark];
 };
 
-const config = {
+export default {
   content: {
     files: ['index.html', '../{app,components}/**/*.{css,rs}'],
   },
@@ -80,5 +74,3 @@ const config = {
   darkMode: 'selector',
   plugins: [postcssImportPlugin],
 } satisfies Config;
-
-export default config;
