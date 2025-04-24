@@ -51,7 +51,7 @@ cwd = "./app"
 description = "Build CSS with Tailwind on development"
 command = "npx"
 args = [
-    "tailwindcss",
+    "tailwind",
     "--input",
     "./stylesheet.css",
     "--output",
@@ -105,7 +105,7 @@ args = ["tsx", "scripts/minify-wasm-js-binding.ts"]
 description = "Build CSS with TailwindCSS for production"
 command = "npx"
 args = [
-    "tailwindcss",
+    "tailwind",
     "--input",
     "./stylesheet.css",
     "--output",
