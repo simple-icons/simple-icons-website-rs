@@ -78,25 +78,41 @@ cwd = "./end2end"
 [tasks.build]
 clear = true
 description = "Build the app for production"
-install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
 run_task = { name = [
     "run-pre-build-scripts",
     "build-css",
     "build-wasm",
     "minify-wasm-js-binding",
+	"minify-html",
 ] }
 
 [tasks.build-wasm]
 description = "Build the WASM app for production"
 install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
 command = "trunk"
-args = ["--config", "Trunk.prod.toml", "build", "--release"]
+args = ["--config", "Trunk.prod.toml", "build", "--release", "--minify"]
 cwd = "./app"
 
 [tasks.minify-wasm-js-binding]
 description = "Minify the WASM JS binding"
-command = "npx"
-args = ["tsx", "scripts/minify-wasm-js-binding.ts"]
+script_runner = "@duckscript"
+script = '''
+files = glob_array ./app/dist/*.js
+for file in ${files}
+    exec npx terser ${file} --compress --mangle --output ${file}
+end
+'''
+
+[tasks.minify-html]
+description = "Minify the HTML files"
+install_crate = { crate_name = "minhtml", binary = "minhtml", test_arg = "--help" }
+script_runner = "@duckscript"
+script = '''
+files = glob_array ./app/dist/**/*.html
+for file in ${files}
+	exec minhtml --minify-css --minify-js --keep-closing-tags --output ${file} ${file}
+end
+'''
 
 [tasks.build-css]
 description = "Build CSS with PostCSS for production"
