@@ -24,7 +24,7 @@ await fs.writeFile(
 	`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"` +
 		` xmlns:xhtml="http://www.w3.org/1999/xhtml">\n` +
 		`  <url>\n` +
-		`    <loc>${protocol}://${domain}/index</loc>\n` +
+		`    <loc>${protocol}://${domain}</loc>\n` +
 		`    <lastmod>${currentDate}</lastmod>\n` +
 		`    <changefreq>weekly</changefreq>\n` +
 		`  </url>\n` +
