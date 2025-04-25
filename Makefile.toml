@@ -82,7 +82,6 @@ install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
 run_task = { name = [
     "run-pre-build-scripts",
     "build-css",
-    "minify-css",
     "build-wasm",
     "minify-wasm-js-binding",
 ] }
@@ -101,6 +100,7 @@ args = ["tsx", "scripts/minify-wasm-js-binding.ts"]
 
 [tasks.build-css]
 description = "Build CSS with PostCSS for production"
+env = { "NODE_ENV" = "production" }
 command = "npx"
 args = [
     "postcss",
@@ -109,11 +109,6 @@ args = [
     "./public/assets/stylesheet.css",
 ]
 cwd = "./app"
-
-[tasks.minify-css]
-description = "Minify CSS with LightningCSS"
-command = "npx"
-args = ["tsx", "scripts/minify-css.ts"]
 
 [tasks.serve-for-prod]
 description = "Serve the app with serve"
