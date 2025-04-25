@@ -25,7 +25,7 @@ fn canvas_ctx(
 }
 
 pub(crate) fn create_badge_image_for_canvas(
-    badge_index: usize,
+    badge_index: u32,
     badge_url: &str,
     x: f64,
     y: f64,
@@ -69,41 +69,43 @@ pub(crate) fn create_badge_image_for_canvas(
         .unwrap();
 }
 
-macro_rules! draw_badge_impl {
-    ($badge_index:literal, $x:literal, $y:literal$(,)?) => {{
-        let badge_img_src = ::leptos::prelude::document()
-            .get_elements_by_class_name("preview-badges")
-            .item(0)
-            .unwrap()
-            .children()
-            .item($badge_index)
-            .unwrap()
-            .unchecked_into::<web_sys::HtmlElement>()
-            .first_element_child()
-            .unwrap()
-            .unchecked_into::<web_sys::HtmlImageElement>()
-            .src();
-
-        $crate::canvas::create_badge_image_for_canvas(
-            $badge_index,
-            &badge_img_src,
-            $x as f64,
-            $y as f64,
-        )
-    }};
+fn draw_badge(badge_index: u32, x: f64, y: f64) {
+    let maybe_preview_badges = document()
+        .get_elements_by_class_name("preview-badges")
+        .item(0);
+    if maybe_preview_badges.is_none() {
+        return;
+    }
+    let maybe_bagde =
+        maybe_preview_badges.unwrap().children().item(badge_index);
+    if maybe_bagde.is_none() {
+        return;
+    }
+    let maybe_badge_img = maybe_bagde
+        .unwrap()
+        .unchecked_into::<web_sys::HtmlElement>()
+        .first_element_child();
+    if maybe_badge_img.is_none() {
+        return;
+    }
+    let badge_img_src = maybe_badge_img
+        .unwrap()
+        .unchecked_into::<web_sys::HtmlImageElement>()
+        .src();
+    create_badge_image_for_canvas(badge_index, &badge_img_src, x, y)
 }
 
 /// Draw the current badges in the canvas
 fn update_badges_in_canvas() {
-    draw_badge_impl!(0, 28, 15);
-    draw_badge_impl!(1, 207, 16);
-    draw_badge_impl!(2, 385, 6);
-    draw_badge_impl!(3, 630, 14);
+    draw_badge(0, 28.0, 15.0);
+    draw_badge(1, 207.0, 16.0);
+    draw_badge(2, 385.0, 6.0);
+    draw_badge(3, 630.0, 14.0);
 
-    draw_badge_impl!(4, 28, 41);
-    draw_badge_impl!(5, 207, 41);
-    draw_badge_impl!(6, 385, 39);
-    draw_badge_impl!(7, 630, 40);
+    draw_badge(4, 28.0, 41.0);
+    draw_badge(5, 207.0, 41.0);
+    draw_badge(6, 385.0, 39.0);
+    draw_badge(7, 630.0, 40.0);
 }
 
 /// Function triggered to update the canvas with the current SVG
