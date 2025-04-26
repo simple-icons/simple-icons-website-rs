@@ -1,8 +1,6 @@
 @layer components {
 	.scroll-button {
-		@apply w-9 h-9 fixed right-0 md:right-[1px] lg:right-0.5
-      opacity-75 hover:opacity-60 hover:brightness-105
-      text-custom-button-content-default-color z-50;
+		@apply fixed right-0 z-50 h-9 w-9 text-custom-button-content-default-color opacity-75 hover:opacity-60 hover:brightness-105 md:right-[1px] lg:right-0.5;
 	}
 
 	.scroll-to-header-button {

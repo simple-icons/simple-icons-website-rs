@@ -1,23 +1,17 @@
 @layer components {
 	/* Modal shadow */
 	.modal-shadow {
-		@apply fixed top-0 left-0 w-full h-full z-40 bg-[rgba(0,0,0,.7)];
+		@apply fixed left-0 top-0 z-40 h-full w-full bg-[rgba(0,0,0,.7)];
 	}
 
 	/* Modal */
 	.modal {
-		@apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-      flex flex-col rounded
-      w-full md:w-auto md:min-w-[65%] md:max-w-[75%]
-      lg:max-w-[60%] max-h-full md:max-h-[86%]
-      bg-custom-background-color
-      shadow-[0_0_3px_0_var(--shadows-color)];
+		@apply absolute left-1/2 top-1/2 flex max-h-full w-full -translate-x-1/2 -translate-y-1/2 flex-col rounded bg-custom-background-color shadow-[0_0_3px_0_var(--shadows-color)] md:max-h-[86%] md:w-auto md:min-w-[65%] md:max-w-[75%] lg:max-w-[60%];
 	}
 
 	/* Modal header */
 	.modal > :first-child {
-		@apply flex flex-row w-full px-5 py-3
-      [border-bottom:_1px_solid_var(--divider-color)];
+		@apply flex w-full flex-row px-5 py-3 [border-bottom:_1px_solid_var(--divider-color)];
 	}
 
 	.modal > :first-child > h2 {
@@ -25,23 +19,16 @@
 	}
 
 	.modal > :first-child > h2.copyable {
-		@apply copy-button-color-scheme
-      before:[background-position-x:100%]
-      max-w-[80%];
+		@apply copy-button-color-scheme max-w-[80%] before:[background-position-x:100%];
 	}
 
 	/* Close button */
 	.modal > :first-child > button {
-		@apply absolute right-[1.2rem] self-center
-      w-[1.3rem] h-[1.3rem] 
-      fill-custom-text-default-color
-      hover:opacity-80;
+		@apply absolute right-[1.2rem] h-[1.3rem] w-[1.3rem] self-center fill-custom-text-default-color hover:opacity-80;
 	}
 
 	/* Modal body */
 	.modal > :last-child {
-		@apply w-full px-1 xs:px-4 py-4
-      overflow-y-auto overflow-x-hidden
-      scroll-bar;
+		@apply scroll-bar w-full overflow-y-auto overflow-x-hidden px-1 py-4 xs:px-4;
 	}
 }

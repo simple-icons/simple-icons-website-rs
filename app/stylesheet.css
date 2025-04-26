@@ -92,9 +92,7 @@ body.light {
 @layer components {
 	/* Margin X of the page */
 	.page-margin-x {
-		@apply mx-[var(--margin-x)]
-      sm:mx-[var(--margin-x-sm)]
-      md:mx-[var(--margin-x-md)];
+		@apply mx-[var(--margin-x)] sm:mx-[var(--margin-x-sm)] md:mx-[var(--margin-x-md)];
 	}
 
 	/**
@@ -104,60 +102,42 @@ body.light {
    * like the controls one.
    **/
 	.page-padding-x {
-		@apply px-[var(--margin-x)]
-      sm:px-[var(--margin-x-sm)]
-      md:px-[var(--margin-x-md)];
+		@apply px-[var(--margin-x)] sm:px-[var(--margin-x-sm)] md:px-[var(--margin-x-md)];
 	}
 
 	/**
    * Links inside pragraphs of text.
    */
 	.text-link {
-		@apply text-[var(--link-color)] hover:text-[var(--link-color-hover)]
-      focus:text-[var(--link-color-hover)]
-      font-bold hover:underline focus:underline;
+		@apply font-bold text-[var(--link-color)] hover:text-[var(--link-color-hover)] hover:underline focus:text-[var(--link-color-hover)] focus:underline;
 	}
 
 	/**
    * Warning icon as background.
    **/
 	.bg-warning-icon {
-		@apply bg-[size:1rem] content-[''] bg-no-repeat;
+		@apply bg-[size:1rem] bg-no-repeat content-[''];
 
 		background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgdmVyc2lvbj0iMS4wIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNC41NTUgLTMuNzY5KSBzY2FsZSguMTU0NDUpIj48cGF0aCBmaWxsPSIjZmZkNDJhIiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMy4xMTEiIGQ9Ik0zMS45NTIgNzkuMDFjLS40MTYuODAxLS45MDcgMS41NTEtLjkwNyAyLjQzMWwuMDA0LjM2OGMwIDEuOSAxLjQ4NyAzLjA0OSAzLjE5NyAzLjA0OWg1NS4yNWMxLjcxIDAgMy4xODMtMS40MjQgMy4xODMtMy4zMjRsLS4wMTgtLjM3YzAtLjg4LS40MzMtMS42NDQtLjkwNy0yLjQzMkw2NC4zOTIgMjkuNjQ4Yy0xLjIxLTEuMzQzLTMuMTctMS4zNDMtNC4zNzggMHoiLz48Y2lyY2xlIGN4PSIyMy45MjEiIGN5PSI3NC40NzUiIHI9IjguMDQyIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9Im1hcmtlcjpub25lIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0OS41NDYgMzMuNzMxKSBzY2FsZSguNTQyMTIpIi8+PHBhdGggZD0iTTYyLjQ4NiA0My44MTdjMS43MTMgMCA0LjM3IDEuMzY1IDQuMzcgMy4wNmwtMS4yNzggMTcuNjE1YzAgMS42OTUtMS4zOCAzLjA2LTMuMDkyIDMuMDYtMS43MTMgMC0zLjA5MS0xLjM2NS0zLjA5MS0zLjA2bC0xLjQ5My0xNy42MTVjMC0xLjY5NSAyLjg3MS0zLjA2IDQuNTg0LTMuMDZ6IiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9Im1hcmtlcjpub25lIi8+PC9nPjwvc3ZnPg==');
 	}
 
 	/* Custom scroll bars */
 	.scroll-bar::-webkit-scrollbar {
-		@apply w-3 bg-custom-divider-color
-      border-custom-divider-color;
+		@apply w-3 border-custom-divider-color bg-custom-divider-color;
 	}
 
 	.scroll-bar::-webkit-scrollbar-thumb {
-		@apply bg-custom-button-background-selected-color
-      rounded-lg;
+		@apply rounded-lg bg-custom-button-background-selected-color;
 	}
 }
 
 @layer components {
 	.button {
-		@apply py-2 px-3 rounded text-sm whitespace-nowrap
-      text-custom-button-content-default-color
-      hover:text-custom-button-content-hover-color
-      focus:text-custom-button-content-default-color
-      focus:hover:text-custom-button-content-hover-color
-      bg-custom-button-background-default-color
-      hover:bg-custom-button-background-hover-color
-      focus:bg-custom-button-background-default-color
-      focus:hover:bg-custom-button-background-hover-color
-      shadow-[0_0_3px_0_var(--shadows-color)]
-      uppercase font-bold;
+		@apply whitespace-nowrap rounded bg-custom-button-background-default-color px-3 py-2 text-sm font-bold uppercase text-custom-button-content-default-color shadow-[0_0_3px_0_var(--shadows-color)] hover:bg-custom-button-background-hover-color hover:text-custom-button-content-hover-color focus:bg-custom-button-background-default-color focus:text-custom-button-content-default-color focus:hover:bg-custom-button-background-hover-color focus:hover:text-custom-button-content-hover-color;
 	}
 
 	.button svg {
-		@apply inline-block
-      fill-custom-button-content-default-color mr-1.5
-      w-5 h-5;
+		@apply mr-1.5 inline-block h-5 w-5 fill-custom-button-content-default-color;
 	}
 
 	.button:hover svg {
@@ -185,9 +165,6 @@ body.light {
 	}
 
 	body {
-		@apply font-mono flex flex-col min-h-[100vh]
-      bg-custom-background-color
-      text-custom-text-default-color
-      scroll-bar;
+		@apply scroll-bar flex min-h-[100vh] flex-col bg-custom-background-color font-mono text-custom-text-default-color;
 	}
 }

@@ -3,13 +3,12 @@
 }
 
 .icon-details-modal > :first-child {
-	@apply flex flex-row flex-grow;
+	@apply flex flex-grow flex-row;
 }
 
 /* Icon preview */
 .icon-details-modal > :first-child > button {
-	@apply w-1/2 copy-button-color-scheme
-    before:bg-[size:2.5rem];
+	@apply copy-button-color-scheme w-1/2 before:bg-[size:2.5rem];
 }
 
 .icon-details-modal > :first-child > button > img {
@@ -18,19 +17,17 @@
 
 /* Icon information */
 .icon-details-modal > :first-child > :last-child {
-	@apply flex flex-col w-1/2 space-y-3;
+	@apply flex w-1/2 flex-col space-y-3;
 }
 
 /*   Icon slug */
 .icon-details-modal > :first-child > :last-child > :first-child {
-	@apply copy-button-color-scheme before:[background-position-x:95%] pr-12;
+	@apply copy-button-color-scheme pr-12 before:[background-position-x:95%];
 }
 
 /*   Copy hex color button */
 .icon-details-modal > :first-child > :last-child > :nth-child(2) {
-	@apply w-20 py-0.5 before:-mt-0.5 rounded
-    hover:!text-transparent focus:!text-transparent
-    before:bg-[size:1.2rem] before:bg-center;
+	@apply w-20 rounded py-0.5 before:-mt-0.5 before:bg-[size:1.2rem] before:bg-center hover:!text-transparent focus:!text-transparent;
 }
 
 /*   Information links */
@@ -40,7 +37,7 @@
 
 /*   Deprecation information */
 .icon-details-modal > :first-child > :last-child > p {
-	@apply text-xs relative top-4 bg-warning-icon bg-left-top pl-5;
+	@apply bg-warning-icon relative top-4 bg-left-top pl-5 text-xs;
 }
 
 .icon-details-modal > :first-child > :last-child > p > a {

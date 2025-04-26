@@ -1,23 +1,18 @@
 .third-party-extensions {
-	@apply table-auto border-collapse
-    mx-2 xs:mx-4 md:mx-8 my-1
-    text-sm xs:text-base
-    overflow-hidden;
+	@apply mx-2 my-1 table-auto border-collapse overflow-hidden text-sm xs:mx-4 xs:text-base md:mx-8;
 }
 
 .third-party-extensions a {
-	@apply hover:opacity-80 whitespace-nowrap;
+	@apply whitespace-nowrap hover:opacity-80;
 }
 
 .third-party-extensions td {
-	@apply py-1 xs:py-0.5
-    overflow-hidden text-ellipsis
-    max-w-[200px] xs:max-w-none;
+	@apply max-w-[200px] overflow-hidden text-ellipsis py-1 xs:max-w-none xs:py-0.5;
 }
 
 /* Extension logo */
 .third-party-extensions td:first-child svg {
-	@apply w-4 xs:w-6 hidden xs:inline;
+	@apply hidden w-4 xs:inline xs:w-6;
 }
 
 /* Extension name */

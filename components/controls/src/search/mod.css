@@ -1,17 +1,10 @@
 /* Controls menu search input */
 menu .control .search {
-	@apply flex flex-row h-7 xs:h-9;
+	@apply flex h-7 flex-row xs:h-9;
 }
 
 menu .control .search > input {
-	@apply py-1.5 pl-3 pr-8 w-56 xs:w-72
-    border-[1px] border-solid rounded-[3px]
-    /* Theme colors */
-    border-custom-button-background-selected-color
-    text-custom-text-default-color
-    shadow-custom-shadows-color
-    bg-custom-background-color
-    shadow-[0_0_3px_0_var(--shadows-color)];
+	@apply /* Theme colors */ w-56 rounded-[3px] border-[1px] border-solid border-custom-button-background-selected-color bg-custom-background-color py-1.5 pl-3 pr-8 text-custom-text-default-color shadow-[0_0_3px_0_var(--shadows-color)] shadow-custom-shadows-color xs:w-72;
 }
 
 menu .control .search > input::-webkit-search-decoration,
@@ -30,8 +23,5 @@ menu .control .search > input::-ms-reveal {
 
 /* Custom clear cross shown on input */
 menu .control .search > span {
-	@apply [font-size:1.5rem] px-3 -ml-[2.4rem] -mt-[4px] xs:mt-0
-    text-custom-text-default-color
-    cursor-pointer
-    opacity-100 hover:opacity-70;
+	@apply -ml-[2.4rem] -mt-[4px] cursor-pointer px-3 text-custom-text-default-color opacity-100 [font-size:1.5rem] hover:opacity-70 xs:mt-0;
 }

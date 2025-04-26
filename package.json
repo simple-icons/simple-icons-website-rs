@@ -39,6 +39,8 @@
 		"postcss-import": "16.1.0",
 		"postcss-lightningcss": "1.0.1",
 		"prettier-plugin-packagejson": "2.5.10",
+		"prettier-plugin-tailwindcss": "0.6.11",
+		"prettier-plugin-toml": "2.0.4",
 		"serve": "14.2.4",
 		"simple-icons": "14.12.3",
 		"stylelint": "16.14.0",

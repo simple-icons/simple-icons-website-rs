@@ -1,9 +1,6 @@
 @layer components {
 	.preview {
-		@apply relative lg:z-30 lg:-mt-11 w-[790px] lg:ml-36 my-3 px-6 py-5
-      border border-opacity-10 border-[var(--divider-color)] rounded-md
-      text-[var(--text-default-color)]
-      bg-[var(--grid-item-background-color)];
+		@apply relative my-3 w-[790px] rounded-md border border-[var(--divider-color)] border-opacity-10 bg-[var(--grid-item-background-color)] px-6 py-5 text-[var(--text-default-color)] lg:z-30 lg:-mt-11 lg:ml-36;
 	}
 
 	.preview-badges > div {
@@ -11,7 +8,7 @@
 	}
 
 	.preview > div:not(:last-child) {
-		@apply whitespace-nowrap mb-3;
+		@apply mb-3 whitespace-nowrap;
 	}
 
 	.preview-input-group {
@@ -19,13 +16,11 @@
 	}
 
 	.preview-input-group > label {
-		@apply w-[60px] inline-block text-sm;
+		@apply inline-block w-[60px] text-sm;
 	}
 
 	.preview-input-group > input {
-		@apply rounded-md border border-[rgb(64,64,64)] px-2 py-[6px]
-      text-sm text-[var(--text-default-color)]
-      bg-[var(--grid-item-background-color)];
+		@apply rounded-md border border-[rgb(64,64,64)] bg-[var(--grid-item-background-color)] px-2 py-[6px] text-sm text-[var(--text-default-color)];
 	}
 
 	.preview-input-group > input.invalid {
@@ -37,7 +32,7 @@
 	}
 
 	.preview-figure {
-		@apply rounded-xl mt-1;
+		@apply mt-1 rounded-xl;
 	}
 
 	.preview-figure,
@@ -46,17 +41,15 @@
 	}
 
 	.preview-figure canvas {
-		@apply absolute top-[127px] left-[33px] opacity-0;
+		@apply absolute left-[33px] top-[127px] opacity-0;
 	}
 
 	.preview-badges {
-		@apply w-[700px] mx-auto py-[14px]
-      grid gap-x-8 gap-y-1.5 grid-rows-2
-      grid-cols-[150px_150px_220px_fit-content(100%)];
+		@apply mx-auto grid w-[700px] grid-cols-[150px_150px_220px_fit-content(100%)] grid-rows-2 gap-x-8 gap-y-1.5 py-[14px];
 	}
 
 	.preview-buttons {
-		@apply border-t-[var(--divider-color)] border-t pt-5 flex flex-row content-between w-full;
+		@apply flex w-full flex-row content-between border-t border-t-[var(--divider-color)] pt-5;
 	}
 
 	.preview-buttons div:nth-child(1) {
@@ -64,7 +57,7 @@
 	}
 
 	.preview-buttons div:nth-child(2) {
-		@apply flex-1 flex flex-row-reverse;
+		@apply flex flex-1 flex-row-reverse;
 	}
 
 	.preview-buttons button {
@@ -72,22 +65,15 @@
 	}
 
 	.preview-brand-suggestions {
-		@apply absolute z-40 ml-[60px] mt-2 max-h-[312px]
-      border border-[var(--divider-color)]
-      rounded-br-md rounded-tr-[5px] rounded-bl-md overflow-hidden
-      scroll-bar;
+		@apply scroll-bar absolute z-40 ml-[60px] mt-2 max-h-[312px] overflow-hidden rounded-bl-md rounded-br-md rounded-tr-[5px] border border-[var(--divider-color)];
 	}
 
 	.preview-brand-suggestions li {
-		@apply flex items-center py-3 px-3.5 cursor-pointer
-      bg-[var(--button-background-default-color)]
-      hover:bg-[var(--button-background-hover-color)]
-      text-[var(--button-content-default-color)]
-      hover:text-custom-button-content-hover-color;
+		@apply flex cursor-pointer items-center bg-[var(--button-background-default-color)] px-3.5 py-3 text-[var(--button-content-default-color)] hover:bg-[var(--button-background-hover-color)] hover:text-custom-button-content-hover-color;
 	}
 
 	.preview-brand-suggestions li img {
-		@apply w-[21px] h-[21px] mr-3 inline-block invert-0 dark:invert;
+		@apply mr-3 inline-block h-[21px] w-[21px] invert-0 dark:invert;
 	}
 
 	.preview-brand-suggestions li span {
@@ -99,12 +85,11 @@
 	}
 
 	.preview-brand-suggestions .more-suggestions {
-		@apply p-[3px] border-t border-t-[var(--divider-color)];
+		@apply border-t border-t-[var(--divider-color)] p-[3px];
 	}
 
 	.preview-brand-suggestions .more-suggestions span {
-		@apply w-full text-[var(--button-content-default-color)]
-      text-center text-lg pointer-events-none;
+		@apply pointer-events-none w-full text-center text-lg text-[var(--button-content-default-color)];
 	}
 
 	.preview-brand-suggestions .more-suggestions:hover span {
@@ -112,35 +97,27 @@
 	}
 
 	.preview-path-lint-errors {
-		@apply absolute z-40 ml-[60px] mt-2 max-h-[319px] flex flex-col
-      border border-[var(--divider-color)] box-border
-      rounded-br-md rounded-tr-[4px] rounded-bl-md overflow-y-auto
-      bg-[#cbc407] text-[#333] text-xs max-w-[682px]
-      scroll-bar;
+		@apply scroll-bar absolute z-40 ml-[60px] mt-2 box-border flex max-h-[319px] max-w-[682px] flex-col overflow-y-auto rounded-bl-md rounded-br-md rounded-tr-[4px] border border-[var(--divider-color)] bg-[#cbc407] text-xs text-[#333];
 	}
 
 	.preview-path-lint-errors li {
-		@apply flex flex-row py-2 px-3;
+		@apply flex flex-row px-3 py-2;
 	}
 
 	.preview-path-lint-errors li:not(:first-child) {
-		@apply flex flex-row py-2 px-3 border-t border-[rgba(0,0,0,.1)];
+		@apply flex flex-row border-t border-[rgba(0,0,0,.1)] px-3 py-2;
 	}
 
 	.preview-path-lint-errors li > :first-child {
-		@apply flex mr-[14px] leading-5;
+		@apply mr-[14px] flex leading-5;
 	}
 
 	.preview-path-lint-errors li > :last-child {
-		@apply flex flex-row mr-1 relative float-right select-none;
+		@apply relative float-right mr-1 flex select-none flex-row;
 	}
 
 	.preview-path-lint-errors li > :last-child button {
-		@apply py-0.5 px-1.5 rounded-sm text-xs w-fit
-      bg-[#333] text-[#eee]
-      hover:bg-[#eee] hover:text-[#333]
-      focus:bg-[#333] focus:text-[#eee]
-      focus:hover:bg-[#eee] focus:hover:text-[#333];
+		@apply w-fit rounded-sm bg-[#333] px-1.5 py-0.5 text-xs text-[#eee] hover:bg-[#eee] hover:text-[#333] focus:bg-[#333] focus:text-[#eee] focus:hover:bg-[#eee] focus:hover:text-[#333];
 	}
 
 	.preview-path-lint-errors li > :last-child button:not(:first-child) {

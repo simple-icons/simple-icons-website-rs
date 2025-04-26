@@ -1,14 +1,9 @@
 @layer components {
 	.language-selector {
-		@apply grid grid-cols-1 xs:grid-cols-2 space-y-1 w-full
-      uppercase;
+		@apply grid w-full grid-cols-1 space-y-1 uppercase xs:grid-cols-2;
 	}
 
 	.language-selector > li {
-		@apply cursor-pointer w-full p-2 text-center rounded
-      text-custom-button-content-default-color
-      bg-custom-button-background-default-color
-      hover:bg-custom-button-background-hover-color
-      hover:text-custom-button-content-hover-color;
+		@apply w-full cursor-pointer rounded bg-custom-button-background-default-color p-2 text-center text-custom-button-content-default-color hover:bg-custom-button-background-hover-color hover:text-custom-button-content-hover-color;
 	}
 }

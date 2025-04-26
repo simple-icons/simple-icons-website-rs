@@ -14,6 +14,8 @@
 	},
 	"editor.formatOnSave": true,
 	"editor.formatOnPaste": true,
+	"editor.wordWrap": "on",
+	"editor.wordWrapColumn": 80,
 	"css.validate": false,
 
 	// Prettier / XO
@@ -22,19 +24,19 @@
 	"xo.format.enable": true,
 	"[json]": {
 		"editor.tabSize": 2,
-		"editor.defaultFormatter": "samverschueren.linter-xo"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[jsonc]": {
 		"editor.tabSize": 2,
-		"editor.defaultFormatter": "samverschueren.linter-xo"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[css]": {
 		"editor.tabSize": 2,
-		"editor.defaultFormatter": "samverschueren.linter-xo"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[html]": {
 		"editor.tabSize": 2,
-		"editor.defaultFormatter": "samverschueren.linter-xo",
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.foldingStrategy": "indentation"
 	},
 	"[javascript]": {
@@ -43,6 +45,10 @@
 	"[typescript]": {
 		"editor.tabSize": 2,
 		"editor.defaultFormatter": "samverschueren.linter-xo"
+	},
+	"[toml]": {
+		"editor.tabSize": 4,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 
 	// TailwindCSS IntelliSense

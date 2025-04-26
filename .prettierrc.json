@@ -1,8 +1,14 @@
 {
-	"plugins": ["prettier-plugin-packagejson"],
+	"plugins": [
+		"prettier-plugin-packagejson",
+		"prettier-plugin-toml",
+		"prettier-plugin-tailwindcss"
+	],
 	"useTabs": true,
 	"singleQuote": true,
 	"bracketSpacing": false,
 	"proseWrap": "never",
-	"embeddedLanguageFormatting": "off"
+	"embeddedLanguageFormatting": "off",
+	"printWidth": 80,
+	"tailwindConfig": "./app/tailwind.config.ts"
 }

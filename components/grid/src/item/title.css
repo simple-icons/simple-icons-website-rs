@@ -1,15 +1,4 @@
 /* Icon title */
 main > ul > li > h2 {
-	@apply font-sans font-semibold w-full overflow-hidden
-    flex-grow flex items-end
-    p-[0.4rem_var(--title-x-padding)]
-    [font-size:var(--title-font-size)]
-    [line-height:var(--title-line-height)]
-    [text-overflow:var(--title-text-overflow)]
-    [white-space:var(--title-white-space)]
-    copy-button-color-scheme
-    before:bg-[size:_var(--title-copy-button-size)]
-    before:bg-[color:var(--grid-item-transparent-background-color)]
-    before:[background-position-x:calc(100%-var(--title-copy-button-margin-right))]
-    before:[background-position-y:calc(100%-var(--title-copy-button-margin-bottom))];
+	@apply copy-button-color-scheme flex w-full flex-grow items-end overflow-hidden p-[0.4rem_var(--title-x-padding)] font-sans font-semibold [font-size:var(--title-font-size)] [line-height:var(--title-line-height)] [text-overflow:var(--title-text-overflow)] [white-space:var(--title-white-space)] before:bg-[color:var(--grid-item-transparent-background-color)] before:bg-[size:_var(--title-copy-button-size)] before:[background-position-x:calc(100%-var(--title-copy-button-margin-right))] before:[background-position-y:calc(100%-var(--title-copy-button-margin-bottom))];
 }

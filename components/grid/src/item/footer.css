@@ -1,35 +1,24 @@
 /* Grid item footer */
 main > ul > li > :last-child {
-	@apply flex flex-row h-8;
+	@apply flex h-8 flex-row;
 }
 
 /* Hex color */
 main > ul > li > :last-child > :first-child {
-	@apply w-1/2 text-xs
-    text-custom-light-contrast-color
-    /* Without !important doesn't work */
-    hover:!text-transparent focus:!text-transparent
-    copy-button-white before:bg-[size:1.2rem]
-    before:top-[2px];
+	@apply /* Without !important doesn't work */ copy-button-white w-1/2 text-xs text-custom-light-contrast-color before:top-[2px] before:bg-[size:1.2rem] hover:!text-transparent focus:!text-transparent;
 }
 
 main > ul > li > :last-child > :first-child.dark {
-	@apply text-custom-dark-contrast-color copy-button-black;
+	@apply copy-button-black text-custom-dark-contrast-color;
 }
 
 @layer components {
 	.grid-item-button {
-		@apply w-1/4
-      fill-custom-button-content-default-color
-      hover:bg-custom-button-background-hover-color
-      hover:fill-custom-button-content-hover-color
-      focus:bg-custom-button-background-hover-color
-      focus:fill-custom-button-content-hover-color
-      [border-top:_1px_solid_var(--divider-color)];
+		@apply w-1/4 fill-custom-button-content-default-color [border-top:_1px_solid_var(--divider-color)] hover:bg-custom-button-background-hover-color hover:fill-custom-button-content-hover-color focus:bg-custom-button-background-hover-color focus:fill-custom-button-content-hover-color;
 	}
 
 	.grid-item-button svg {
-		@apply h-4 m-auto;
+		@apply m-auto h-4;
 	}
 }
 

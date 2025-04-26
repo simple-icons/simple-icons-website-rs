@@ -1,11 +1,10 @@
 footer {
-	@apply flex flex-col justify-between pb-8 pt-4 text-sm 
-    page-margin-x;
+	@apply page-margin-x flex flex-col justify-between pb-8 pt-4 text-sm;
 }
 
 @layer components {
 	.footer-about {
-		@apply flex flex-col flex-grow text-center justify-center md:text-left;
+		@apply flex flex-grow flex-col justify-center text-center md:text-left;
 	}
 
 	.footer-about a {

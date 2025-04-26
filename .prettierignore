@@ -12,3 +12,5 @@ app/public/assets/sitemap.xml
 app/public/assets/CNAME
 app/public/assets/js/
 app/public/js-libs.html
+Cargo.lock
+package-lock.json

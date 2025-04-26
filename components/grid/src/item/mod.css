@@ -8,11 +8,7 @@
 /* Grid item */
 main > ul > li,
 #carbonads {
-	@apply flex flex-col space-y-2
-    rounded-md border-spacing-0 border-collapse
-    overflow-hidden
-    bg-custom-grid-item-background-color
-    shadow-[0_0_3px_0_var(--shadows-color)];
+	@apply flex border-collapse border-spacing-0 flex-col space-y-2 overflow-hidden rounded-md bg-custom-grid-item-background-color shadow-[0_0_3px_0_var(--shadows-color)];
 }
 
 /* Carbon ads */

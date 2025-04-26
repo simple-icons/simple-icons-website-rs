@@ -6,11 +6,5 @@
  * to fix this, but currently is not a priority.
  **/
 header > nav > ul > li {
-	@apply w-14 h-14
-    p-2 md:p-[10px]
-    rounded-md cursor-pointer
-    fill-custom-button-content-default-color
-    hover:bg-custom-button-background-hover-color
-    hover:text-custom-button-content-hover-color
-    hover:fill-custom-button-content-hover-color;
+	@apply h-14 w-14 cursor-pointer rounded-md fill-custom-button-content-default-color p-2 hover:bg-custom-button-background-hover-color hover:fill-custom-button-content-hover-color hover:text-custom-button-content-hover-color md:p-[10px];
 }

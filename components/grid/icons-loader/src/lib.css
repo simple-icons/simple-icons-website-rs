@@ -1,6 +1,6 @@
 @layer components {
 	.icons-loader {
-		@apply flex flex-row justify-center page-margin-x;
+		@apply page-margin-x flex flex-row justify-center;
 	}
 
 	.icons-loader:not(.hidden) {

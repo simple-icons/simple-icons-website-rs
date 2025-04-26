@@ -3,10 +3,7 @@
 
 /* Controls group */
 menu {
-	@apply box-content flex flex-row page-padding-x
-    pt-1.5 sm:pt-0 pb-1.5 h-7 sm:h-16
-    sticky sm:-top-[1.4rem] z-20
-    bg-custom-background-color;
+	@apply page-padding-x sticky z-20 box-content flex h-7 flex-row bg-custom-background-color pb-1.5 pt-1.5 sm:-top-[1.4rem] sm:h-16 sm:pt-0;
 }
 
 menu .controls-group {
@@ -15,10 +12,10 @@ menu .controls-group {
 
 /* Each control */
 menu .control {
-	@apply flex flex-col h-auto;
+	@apply flex h-auto flex-col;
 }
 
 /* Labels */
 menu .control > label {
-	@apply h-4 leading-4 mb-3 hidden sm:block;
+	@apply mb-3 hidden h-4 leading-4 sm:block;
 }

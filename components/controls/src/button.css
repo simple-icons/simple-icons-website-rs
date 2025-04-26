@@ -1,27 +1,16 @@
 @layer components {
 	/* Buttons */
 	.control-button {
-		@apply w-7 h-7 xs:h-9 xs:w-9
-      xs:px-[5.5px] px-[4px] xs:py-[4px] py-[2px]
-      box-border font-bold text-sm xs:text-base
-      border-[1px] border-solid
-      border-custom-button-background-selected-color
-      shadow-custom-shadows-color
-      hover:shadow-[0_0_3px_0_var(--shadows-color)]
-      focus:shadow-[0_0_3px_0_var(--shadows-color)];
+		@apply box-border h-7 w-7 border-[1px] border-solid border-custom-button-background-selected-color px-[4px] py-[2px] text-sm font-bold shadow-custom-shadows-color hover:shadow-[0_0_3px_0_var(--shadows-color)] focus:shadow-[0_0_3px_0_var(--shadows-color)] xs:h-9 xs:w-9 xs:px-[5.5px] xs:py-[4px] xs:text-base;
 	}
 
 	/* Selected buttons */
 	.control-button.selected {
-		@apply fill-custom-button-content-selected-color
-      bg-custom-button-background-selected-color
-      text-custom-button-content-selected-color;
+		@apply bg-custom-button-background-selected-color fill-custom-button-content-selected-color text-custom-button-content-selected-color;
 	}
 
 	.control-button:not(.selected) {
-		@apply fill-custom-button-content-default-color
-      bg-custom-button-background-default-color
-      text-custom-button-content-default-color;
+		@apply bg-custom-button-background-default-color fill-custom-button-content-default-color text-custom-button-content-default-color;
 	}
 
 	.control-button span {
@@ -38,9 +27,9 @@
 
 .controls-group .control button:first-child,
 .controls-group .control:first-child button:nth-child(2) {
-	@apply border-r-0 rounded-l-[3px];
+	@apply rounded-l-[3px] border-r-0;
 }
 
 .controls-group .control button:last-child {
-	@apply border-l-0 rounded-r-[3px];
+	@apply rounded-r-[3px] border-l-0;
 }

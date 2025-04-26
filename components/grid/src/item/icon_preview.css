@@ -2,12 +2,7 @@
  * Icon preview
  **/
 main > ul > li > :first-child {
-	@apply mx-auto w-14 h-14
-    copy-button-color-scheme
-    before:bg-[size:_1.5rem]
-    before:bg-[color:var(--grid-item-transparent-background-color)]
-    mt-[var(--icon-preview-margin-top)]
-    mb-[var(--icon-preview-margin-bottom)];
+	@apply copy-button-color-scheme mx-auto mb-[var(--icon-preview-margin-bottom)] mt-[var(--icon-preview-margin-top)] h-14 w-14 before:bg-[color:var(--grid-item-transparent-background-color)] before:bg-[size:_1.5rem];
 }
 
 main > ul > li > :first-child img {

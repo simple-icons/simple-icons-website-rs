@@ -16,8 +16,10 @@ args = ["use", "--install-if-missing", "--silent-if-unchanged"]
 [tasks.npm_install]
 description = "Run 'npm install'"
 condition_script = ["which npm"]
-condition.files_modified = { input = ["./package.json"], output = [
-    "./package-lock.json"
+condition.files_modified = { input = [
+	"./package.json",
+], output = [
+	"./package-lock.json",
 ] }
 condition.env_not_set = ["CI"]
 command = "npm"
@@ -35,15 +37,15 @@ description = "Serve the app on development"
 install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
 command = "trunk"
 args = [
-    "serve",
-    "--watch",
-    ".",
-    "--watch",
-    "../components",
-    "--watch",
-    "../libs",
-    "--ignore",
-    "./public/assets/js",
+	"serve",
+	"--watch",
+	".",
+	"--watch",
+	"../components",
+	"--watch",
+	"../libs",
+	"--ignore",
+	"./public/assets/js",
 ]
 cwd = "./app"
 
@@ -51,22 +53,22 @@ cwd = "./app"
 description = "Build CSS with PostCSS on development"
 command = "npx"
 args = [
-    "postcss",
-    "./stylesheet.css",
-    "--output",
-    "./public/assets/stylesheet.css",
-    "--watch",
+	"postcss",
+	"./stylesheet.css",
+	"--output",
+	"./public/assets/stylesheet.css",
+	"--watch",
 ]
 cwd = "./app"
 
 [tasks.format]
 clear = true
 description = "Format files"
-run_task = { name = ["fix-xo", "format-rust"] }
+run_task = { name = ["xo-fix", "format-rust", "prettier-write"] }
 
 [tasks.lint]
 description = "Check format of files and run linters"
-run_task = { name = ["lint-xo", "lint-rust", "lint-css"] }
+run_task = { name = ["xo", "lint-rust", "lint-css", "prettier-check"] }
 
 [tasks.test]
 clear = true
@@ -79,10 +81,10 @@ cwd = "./end2end"
 clear = true
 description = "Build the app for production"
 run_task = { name = [
-    "run-pre-build-scripts",
-    "build-css",
-    "build-wasm",
-    "minify-wasm-js-binding",
+	"run-pre-build-scripts",
+	"build-css",
+	"build-wasm",
+	"minify-wasm-js-binding",
 	"minify-html",
 ] }
 
@@ -119,10 +121,10 @@ description = "Build CSS with PostCSS for production"
 env = { "NODE_ENV" = "production" }
 command = "npx"
 args = [
-    "postcss",
-    "./stylesheet.css",
-    "--output",
-    "./public/assets/stylesheet.css",
+	"postcss",
+	"./stylesheet.css",
+	"--output",
+	"./public/assets/stylesheet.css",
 ]
 cwd = "./app"
 
@@ -136,26 +138,20 @@ cwd = "./app/dist"
 description = "Build for production and serve"
 run_task = { name = ["build", "serve-for-prod"] }
 
-[tasks.format-rust-code]
-description = "Format Rust code with rustfmt"
-install_crate = "rustfmt"
-command = "cargo"
-args = ["fmt", "--all"]
+[tasks.lint-rust]
+description = "Lint Rust code"
+run_task = { name = [
+	"clippy",
+	"rustfmt-check",
+	"leptosfmt-check",
+	"cargo-machete",
+] }
 
 [tasks.clippy]
 description = "Run clippy"
 install_crate = "clippy"
 command = "cargo"
 args = ["clippy", "--", "-D", "warnings", "-D", "clippy::print_stdout"]
-
-[tasks.lint-rust]
-description = "Lint Rust code"
-run_task = { name = [
-    "clippy",
-    "rustfmt-check",
-    "leptosfmt-check",
-    "cargo-machete"
-] }
 
 [tasks.rustfmt-check]
 description = "Format Rust code with rustfmt"
@@ -175,6 +171,34 @@ install_crate = "cargo-machete"
 command = "cargo"
 args = ["machete"]
 
+[tasks.xo]
+description = "Lint JS/TS and files affected by Prettier with XO"
+command = "npx"
+args = ["xo"]
+
+[tasks.lint-css]
+description = "Lint CSS with stylelint"
+command = "npx"
+args = [
+	"stylelint",
+	"{components,app}/**/*.css",
+	"--ignore-path",
+	".prettierignore",
+	"--config",
+	"./.stylelintrc.json",
+]
+
+[tasks.prettier-check]
+description = "Lint files in the project with Prettier"
+command = "npx"
+args = ["prettier", "--check", ".", "--log-level", "warn"]
+
+[tasks.format-rust-code]
+description = "Format Rust code with rustfmt"
+install_crate = "rustfmt"
+command = "cargo"
+args = ["fmt", "--all"]
+
 [tasks.format-leptos-code]
 description = "Format leptos view! macros"
 install_crate = "leptosfmt"
@@ -185,24 +209,12 @@ args = ["--quiet", "*/src/**/*.rs"]
 description = "Format Rust code and leptos view! macros"
 run_task = { name = ["format-rust-code", "format-leptos-code"] }
 
-[tasks.lint-css]
-description = "Lint CSS with stylelint"
+[tasks.prettier-write]
+description = "Format files in the project with Prettier"
 command = "npx"
-args = [
-    "stylelint",
-    "{components,app}/**/*.css",
-    "--ignore-path",
-    ".prettierignore",
-    "--config",
-    "./.stylelintrc.json"
-]
+args = ["prettier", "--write", ".", "--log-level", "warn"]
 
-[tasks.lint-xo]
-description = "Lint JS/TS and files affected by Prettier with XO"
-command = "npx"
-args = ["xo"]
-
-[tasks.fix-xo]
+[tasks.xo-fix]
 description = "Format JS/TS and files affected by Prettier with XO"
 command = "npx"
 args = ["xo", "--fix"]
@@ -210,9 +222,9 @@ args = ["xo", "--fix"]
 [tasks.build-js-libs]
 description = "Build JS libraries for the web"
 run_task = { name = [
-    "build-with-esbuild",
-    "build-pdfkit",
-    "build-blob-stream",
+	"build-with-esbuild",
+	"build-pdfkit",
+	"build-blob-stream",
 ], parallel = true }
 
 [tasks.build-with-esbuild]
@@ -276,7 +288,7 @@ args = ["tsx", "scripts/create-sitemap.ts"]
 [tasks.run-pre-build-scripts]
 description = "Run pre-build scripts"
 run_task = { name = [
-    "build-js-libs",
-    "fetch-deprecated-icons",
-    "create-sitemap",
+	"build-js-libs",
+	"fetch-deprecated-icons",
+	"create-sitemap",
 ], parallel = true }
