@@ -15,7 +15,7 @@ const config = {
 		postcssImport,
 		tailwindcss,
 		autoprefixer,
-		postcssFontsourceUrl({directory: '/assets/fonts'}),
+		postcssFontsourceUrl({directory: '/fonts'}),
 		postcssLightningcss({
 			lightningcssOptions: {minify: process.env.NODE_ENV === 'production'},
 		}),
