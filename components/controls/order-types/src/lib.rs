@@ -1,4 +1,3 @@
-use rand::{prelude::SliceRandom, rng};
 use simple_icons_website_types::SimpleIcon;
 use std::str::FromStr;
 
@@ -94,7 +93,13 @@ pub fn sort_icons(order_mode: &OrderModeVariant, icons: &mut Vec<&SimpleIcon>) {
             icons.sort_by(|a, b| b.order_color.cmp(&a.order_color));
         }
         OrderModeVariant::Random => {
-            icons.shuffle(&mut rng());
+            // Durstenfeld shuffle
+            for i in 0..icons.len() {
+                let j = js_sys::Math::floor(
+                    js_sys::Math::random() * (i + 1) as f64,
+                ) as usize;
+                icons.swap(i, j);
+            }
         }
         _ => {
             // Search match order is handled by the search control

@@ -9,5 +9,4 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 simple-icons-website-types.workspace = true
-rand.workspace = true
-getrandom = { workspace = true, features = ["wasm_js"] }
+js-sys.workspace = true

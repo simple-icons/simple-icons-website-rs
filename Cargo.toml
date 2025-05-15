@@ -137,7 +137,3 @@ svg-path-cst = "0.1"
 unicode-normalization = "0.1"
 icu_collator = "1"
 snafu = { version = "0.8", default-features = false }
-rand = "0.9"
-# NOTE: While not used directly, `getrandom`'s `wasm_js` feature is needed
-#       when `rand` is used on WASM to avoid a compilation error
-getrandom = { version = "0.3", features = ["wasm_js"] }
