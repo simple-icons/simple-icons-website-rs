@@ -147,7 +147,7 @@ fn fix_path_not_starts_with_moveto_command(
         new_path.replace_range(0..1, "M");
         (new_path, (0, 1))
     } else {
-        (format!("M{}", path), (0, 1))
+        (format!("M{path}"), (0, 1))
     }
 }
 

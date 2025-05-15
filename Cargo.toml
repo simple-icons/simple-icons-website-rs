@@ -74,18 +74,16 @@ fast-fuzzy = { path = "./libs/fast-fuzzy" }
 web-sys-simple-copy = { path = "./libs/web-sys-simple-copy" }
 web-sys-simple-events = { path = "./libs/web-sys-simple-events" }
 web-sys-simple-fetch = { path = "./libs/web-sys-simple-fetch" }
-leptos = { version = "0.7", default-features = false, features = [
+leptos = { version = "0.8", default-features = false, features = [
 	"csr",
 	"nightly",
 ] }
-leptos_meta = "0.7"
-leptos_router = "0.7"
-leptos-use = "0.15"
+leptos_meta = "0.8"
+leptos_router = "0.8"
+leptos-use = "0.16.0-beta"
 leptos-fluent = { version = "0.2.10", features = ["nightly"] }
 fluent-templates = "0.13"
-# TODO: release leptos-hotkeys v0.3
-leptos_hotkeys = { git = "https://github.com/gaucho-labs/leptos-hotkeys.git", branch = "leptos-0.7" }
-leptos_icons = "0.5"
+leptos_icons = "0.6"
 icondata = { version = "0.5", default-features = false, features = [
 	"simple-icons",
 	"charm",
@@ -139,4 +137,7 @@ svg-path-cst = "0.1"
 unicode-normalization = "0.1"
 icu_collator = "1"
 snafu = { version = "0.8", default-features = false }
-rand = "0.8"
+rand = "0.9"
+# NOTE: While not used directly, `getrandom`'s `wasm_js` feature is needed
+#       when `rand` is used on WASM to avoid a compilation error
+getrandom = { version = "0.3", features = ["wasm_js"] }

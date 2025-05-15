@@ -74,7 +74,7 @@ pub fn svg_with_path_opt_fill(path: &str, fill: Option<&str>) -> String {
             " xmlns=\"http://www.w3.org/2000/svg\"><path{} d=\"{}\"/></svg>",
         ),
         match fill {
-            Some(fill) => format!(" fill=\"#{}\"", fill),
+            Some(fill) => format!(" fill=\"#{fill}\""),
             None => "".to_string(),
         },
         path,
@@ -102,7 +102,7 @@ pub fn svg_with_title_path_opt_fill(
             .replace('<', "&lt;")
             .replace('>', "&gt;"),
         match fill {
-            Some(fill) => format!(" fill=\"#{}\"", fill),
+            Some(fill) => format!(" fill=\"#{fill}\""),
             None => "".to_string(),
         },
         path,

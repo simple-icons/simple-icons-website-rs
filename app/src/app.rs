@@ -1,7 +1,6 @@
 use crate::head::Head;
 use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
 use leptos::{html::Footer as FooterHtmlElement, prelude::*};
-use leptos_hotkeys::{provide_hotkeys_context, scopes};
 use leptos_router::{
     components::{FlatRoutes, Route, Router},
     StaticSegment,
@@ -57,9 +56,6 @@ pub fn App() -> impl IntoView {
 
     // Create a context to store keyboard shortcuts
     let main_ref = NodeRef::new();
-
-    // Provide context for keyboard shortcuts
-    provide_hotkeys_context(main_ref, false, scopes!());
 
     view! {
         <I18n

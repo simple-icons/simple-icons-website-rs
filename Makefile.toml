@@ -2,6 +2,9 @@
 init_task = "init"
 default_to_workspace = false
 
+[env]
+RUSTFLAGS = '--cfg getrandom_backend="wasm_js"'
+
 [tasks.init]
 description = "Initialization task run before all others"
 run_task = { name = ["fnm_use", "npm_install"] }

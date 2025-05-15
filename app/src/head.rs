@@ -16,7 +16,7 @@ pub fn Head() -> impl IntoView {
             "svg" => tr!("svg"),
         })
     });
-    let url = format!("https://{}/", DOMAIN);
+    let url = format!("https://{DOMAIN}/");
 
     view! {
         <Title text=TITLE />
@@ -43,7 +43,7 @@ pub fn Head() -> impl IntoView {
 /// Open graph meta tags
 #[component]
 fn MetaOpenGraph(description: Signal<String>) -> impl IntoView {
-    let url = format!("https://{}/", DOMAIN);
+    let url = format!("https://{DOMAIN}/");
     view! {
         <Meta name="og:type" content="website" />
         <Meta name="og:title" content=TITLE />
@@ -57,7 +57,7 @@ fn MetaOpenGraph(description: Signal<String>) -> impl IntoView {
 /// X (social network) meta tags
 #[component]
 fn MetaX(description: Signal<String>) -> impl IntoView {
-    let url = format!("https://{}/", DOMAIN);
+    let url = format!("https://{DOMAIN}/");
     view! {
         <Meta name="twitter:card" content="summary_large_image" />
         <Meta name="twitter:title" content=TITLE />
@@ -72,7 +72,7 @@ fn MetaX(description: Signal<String>) -> impl IntoView {
 #[component]
 fn LdJSONMetadata() -> impl IntoView {
     let metadata = {
-        let logo_url = format!("https://{}/icons/simpleicons.svg", DOMAIN);
+        let logo_url = format!("https://{DOMAIN}/icons/simpleicons.svg");
         serde_json::json!({
             "@context": "https://schema.org",
             "@type": "Organization",

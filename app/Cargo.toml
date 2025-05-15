@@ -23,7 +23,6 @@ leptos.workspace = true
 leptos_meta.workspace = true
 leptos_router.workspace = true
 leptos_icons.workspace = true
-leptos_hotkeys.workspace = true
 icondata.workspace = true
 console_error_panic_hook.workspace = true
 serde_json.workspace = true

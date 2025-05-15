@@ -55,7 +55,7 @@ pub mod params {
                 Some(&url.to_string().as_string().unwrap()),
             )
             .map_err(|e| {
-                let rs_msg = format!("Failed to update the URL: {:?}", e);
+                let rs_msg = format!("Failed to update the URL: {e:?}");
                 let js_msg = wasm_bindgen::JsValue::from_str(&rs_msg);
                 web_sys::console::error_1(&js_msg);
             })

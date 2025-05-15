@@ -144,7 +144,7 @@ pub fn update_preview_canvas(pixel_ratio: f64) {
     canvas
         .set_attribute(
             "style",
-            &format!("width: {}px; height: {}px;", WIDTH, HEIGHT),
+            &format!("width: {WIDTH}px; height: {HEIGHT}px;"),
         )
         .unwrap();
 

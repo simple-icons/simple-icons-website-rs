@@ -1,4 +1,4 @@
-use rand::{prelude::SliceRandom, thread_rng};
+use rand::{prelude::SliceRandom, rng};
 use simple_icons_website_types::SimpleIcon;
 use std::str::FromStr;
 
@@ -94,7 +94,7 @@ pub fn sort_icons(order_mode: &OrderModeVariant, icons: &mut Vec<&SimpleIcon>) {
             icons.sort_by(|a, b| b.order_color.cmp(&a.order_color));
         }
         OrderModeVariant::Random => {
-            icons.shuffle(&mut thread_rng());
+            icons.shuffle(&mut rng());
         }
         _ => {
             // Search match order is handled by the search control

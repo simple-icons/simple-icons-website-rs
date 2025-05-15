@@ -3,6 +3,7 @@ mod canvas;
 mod deps;
 mod helpers;
 mod inputs;
+mod keyboard;
 
 use badge_maker::make_badge;
 use buttons::PreviewButtons;
@@ -85,6 +86,8 @@ pub fn PreviewGenerator() -> impl IntoView {
 
     let pixel_ratio = use_device_pixel_ratio();
     Effect::new(move |_| update_preview_canvas(pixel_ratio()));
+
+    keyboard::listen_keyboard_shortcuts();
 
     view! {
         <div class="preview">
@@ -326,7 +329,7 @@ fn PreviewBadge(
                 target
                     .set_attribute(
                         "src",
-                        &format!("data:image/svg+xml;utf8,{}", encoded_svg),
+                        &format!("data:image/svg+xml;utf8,{encoded_svg}"),
                     )
                     .unwrap();
 

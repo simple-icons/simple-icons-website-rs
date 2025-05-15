@@ -25,7 +25,6 @@ web-sys-simple-fetch.workspace = true
 leptos.workspace = true
 leptos-use.workspace = true
 leptos-fluent.workspace = true
-leptos_hotkeys.workspace = true
 web-sys.workspace = true
 js-sys.workspace = true
 wasm-bindgen.workspace = true

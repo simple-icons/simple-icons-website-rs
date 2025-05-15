@@ -1,7 +1,6 @@
 use crate::{canvas::canvas as canvas_container, helpers::is_valid_hex_color};
 use leptos::{prelude::*, task::spawn_local, wasm_bindgen::JsCast};
 use leptos_fluent::{move_tr, tr};
-use leptos_hotkeys::use_hotkeys;
 use simple_icons_sdk as sdk;
 use simple_icons_website_controls::download::download;
 use simple_icons_website_grid_constants::ICONS;
@@ -38,12 +37,6 @@ fn PreviewUploadSVGButton(
     set_color: WriteSignal<String>,
     set_path: WriteSignal<String>,
 ) -> impl IntoView {
-    let input_id = Ids::PreviewUploadSVGButton.as_str();
-
-    use_hotkeys!(("controlleft+arrowup,controlright+arrowup") => move |_| {
-        document().get_element_by_id(input_id).unwrap().unchecked_into::<web_sys::HtmlInputElement>().click();
-    });
-
     async fn on_upload_svg_file(
         file: web_sys::File,
         set_brand: WriteSignal<String>,
@@ -123,7 +116,7 @@ fn PreviewUploadSVGButton(
                 name="upload-svg"
                 accept=".svg"
                 class="fixed right-full bottom-full max-w-0 max-h-0 w-0 h-0 overflow-hidden -z-10 invisible"
-                id=input_id
+                id=Ids::PreviewUploadSVGButton.as_str()
                 on:change=move |ev| {
                     let input = event_target::<web_sys::HtmlInputElement>(&ev);
                     let file = input.files().unwrap().get(0).unwrap();
@@ -157,17 +150,11 @@ fn PreviewUploadSVGButton(
 fn PreviewCopyButton() -> impl IntoView {
     let (copied, set_copied) = signal(false);
 
-    let button_id = Ids::PreviewCopyButton.as_str();
-
-    use_hotkeys!(("controlleft+keyc,controlright+keyc") => move |_| {
-        document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
-    });
-
     view! {
         <button
             class="button"
             type="button"
-            id=button_id
+            id=Ids::PreviewCopyButton.as_str()
             on:click=move |_| {
                 let canvas = canvas_container();
                 spawn_local(copy_canvas_container_as_image(canvas));
@@ -180,7 +167,6 @@ fn PreviewCopyButton() -> impl IntoView {
                 );
             }
         >
-
             <svg viewBox="0 0 24 24" width="24" height="24">
                 <Show when=copied fallback=move || view! { <path d=SVGDef::Copy.d()></path> }>
                     <path d="M0 0h24v24H0z" fill="none"></path>
@@ -194,18 +180,12 @@ fn PreviewCopyButton() -> impl IntoView {
 
 #[component]
 fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
-    let button_id = Ids::PreviewSaveButton.as_str();
-
-    use_hotkeys!(("controlleft+keys,controlright+keys") => move |_| {
-        document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
-    });
-
     view! {
         <button
             title=move || tr!("save-preview")
             class="button"
             type="button"
-            id=button_id
+            id=Ids::PreviewSaveButton.as_str()
             tabindex=0
             on:click=move |_| {
                 let canvas = canvas_container();
@@ -225,17 +205,11 @@ fn PreviewDownloadSVGButton(
     brand: ReadSignal<String>,
     path: ReadSignal<String>,
 ) -> impl IntoView {
-    let button_id = Ids::PreviewDownloadSVGButton.as_str();
-
-    use_hotkeys!(("controlleft+arrowdown,controlright+arrodown") => move |_| {
-        document().get_element_by_id(button_id).unwrap().unchecked_into::<web_sys::HtmlButtonElement>().click();
-    });
-
     view! {
         <button
             title=move_tr!("download-filetype", { "filetype" => tr!("svg") })
             class="button"
-            id=button_id
+            id=Ids::PreviewDownloadSVGButton.as_str()
             type="button"
             tabindex=0
             on:click=move |_| {

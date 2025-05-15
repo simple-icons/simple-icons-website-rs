@@ -46,7 +46,7 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
 
     if let Some(message) = resp.get("message") {
         fs::remove_file(tmp_file_path).unwrap();
-        panic!("Error retrieving data from GITHUB Graphql API: {}", message);
+        panic!("Error retrieving data from GITHUB Graphql API: {message}");
     }
 
     let milestones_data = resp

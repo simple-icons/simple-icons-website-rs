@@ -180,12 +180,12 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
             is_relatively_light_icon_hex(&icon.hex),
             icon.source,
             match icon.guidelines {
-                Some(ref url) => format!("Some(\"{}\")", url),
+                Some(ref url) => format!("Some(\"{url}\")"),
                 None => "None".to_string(),
             },
             match icon.license {
                 Some(ref license) => match license.url {
-                    Some(ref url) => format!("Some(\"{}\")", url),
+                    Some(ref url) => format!("Some(\"{url}\")"),
                     None => "None".to_string(),
                 },
                 None => "None".to_string(),
@@ -205,7 +205,7 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                                 Some(aka) => format!(
                                     "Some(&[{}])",
                                     aka.iter()
-                                        .map(|aka| format!("\"{}\"", aka))
+                                        .map(|aka| format!("\"{aka}\""))
                                         .collect::<Vec<_>>()
                                         .join(", ")
                                 ),
@@ -269,8 +269,7 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                                             .iter()
                                             .map(|(lang, title)| {
                                                 format!(
-                                                    "(\"{}\", \"{}\")",
-                                                    lang, title
+                                                    "(\"{lang}\", \"{title}\")"
                                                 )
                                             })
                                             .collect::<Vec<_>>()
@@ -283,8 +282,7 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                                     }
                                     for (lang, title) in alias_dup_locs {
                                         result.push_str(&format!(
-                                            "(\"{}\", \"{}\"),",
-                                            lang, title
+                                            "(\"{lang}\", \"{title}\"),"
                                         ));
                                     }
                                 }
@@ -302,7 +300,7 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                                 Some(old) => format!(
                                     "Some(&[{}])",
                                     old.iter()
-                                        .map(|old| format!("\"{}\"", old))
+                                        .map(|old| format!("\"{old}\""))
                                         .collect::<Vec<_>>()
                                         .join(", ")
                                 ),
@@ -364,7 +362,7 @@ pub fn js_library_version(input: TokenStream) -> TokenStream {
     let package_json: serde_json::Value =
         serde_json::from_str(package_json_content.as_str()).unwrap();
     let version = package_json["version"].as_str().unwrap();
-    format!("\"{}\"", version).parse().unwrap()
+    format!("\"{version}\"").parse().unwrap()
 }
 
 /// Get an icon path from its slug
@@ -373,5 +371,5 @@ pub fn get_simple_icon_svg_path(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as LitStr);
     let icon_slug = input.value();
     let path = get_simple_icon_svg_path_impl(&icon_slug);
-    format!("\"{}\"", path).parse().unwrap()
+    format!("\"{path}\"").parse().unwrap()
 }

@@ -178,7 +178,7 @@ pub fn fill_icon_details_modal_with_icon(
         modal_license_link.set_inner_text(license_type);
         _ = modal_license_link.set_attribute(
             "href",
-            &format!("https://spdx.org/licenses/{}", license_type),
+            &format!("https://spdx.org/licenses/{license_type}"),
         );
     } else if let Some(ref title) = modal_license_link.get_attribute("title") {
         modal_license_link.set_inner_text(title);
@@ -534,9 +534,9 @@ pub fn IconDetailsModal() -> impl IntoView {
                                         match fetch_text(&format!("/icons/{}.svg", &slug)).await {
                                             Ok(svg) => {
                                                 let colored_icon_svg = svg
-                                                    .replacen("<svg", &format!("<svg fill=\"{}\"", hex), 1);
+                                                    .replacen("<svg", &format!("<svg fill=\"{hex}\""), 1);
                                                 download(
-                                                    &format!("{}-color.svg", slug),
+                                                    &format!("{slug}-color.svg"),
                                                     &format!(
                                                         "data:image/svg+xml;utf8,{}",
                                                         js_sys::encode_uri_component(&colored_icon_svg),
@@ -556,7 +556,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     let slug = get_slug_from_modal_container();
                                     set_copying_svg(true);
                                     spawn_local(async move {
-                                        match fetch_text(&format!("/icons/{}.svg", slug)).await {
+                                        match fetch_text(&format!("/icons/{slug}.svg")).await {
                                             Ok(svg) => {
                                                 copy_and_set_copied_transition(
                                                     &svg,
@@ -614,7 +614,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     let slug = get_slug_from_modal_container();
                                     set_copying_svg_path(true);
                                     spawn_local(async move {
-                                        match fetch_text(&format!("/icons/{}.svg", slug)).await {
+                                        match fetch_text(&format!("/icons/{slug}.svg")).await {
                                             Ok(svg) => {
                                                 let path = svg
                                                     .split("<path d=\"")
@@ -679,12 +679,11 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     );
                                     let slug = get_slug_from_modal_container();
                                     spawn_local(async move {
-                                        match fetch_text(&format!("/icons/{}.svg", slug)).await {
+                                        match fetch_text(&format!("/icons/{slug}.svg")).await {
                                             Ok(svg) => {
                                                 let base64 = window().btoa(&svg).unwrap();
                                                 let base64_svg = format!(
-                                                    "data:image/svg+xml;base64,{}",
-                                                    base64,
+                                                    "data:image/svg+xml;base64,{base64}",
                                                 );
                                                 copy_and_set_copied_transition(
                                                     &base64_svg,
