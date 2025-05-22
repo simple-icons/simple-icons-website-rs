@@ -89,23 +89,23 @@ jobs:
           - name: Chrome Desktop${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
             browser: chrome
             runs-on: ubuntu-24.04
-          #- name: MsEdge Desktop
-          #  command: test
-          #  browser: msedge
-          #  runs-on: ubuntu-24.04
+            window-size: 1920x1080
+          - name: Edge Desktop
+            browser: edge
+            runs-on: ubuntu-24.04
+            window-size: 1920x1080
           - name: Firefox Desktop
             browser: firefox
             runs-on: ubuntu-24.04
-          #- name: Chromium Mobile
-          #  command: test
-          #  browser: chromium
-          #  project: chromium-mobile
+            window-size: 1920x1080
+          #- name: Chrome Mobile
+          #  browser: chrome
           #  runs-on: ubuntu-22.04
-          #- name: Chromium Mobile Landscape
-          #  command: test
-          #  browser: chromium
-          #  project: chromium-mobile-landscape
+          #  window-size: 412x915
+          #- name: Chrome Mobile Landscape
+          #  browser: chrome
           #  runs-on: ubuntu-22.04
+          #  window-size: 915x412
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -151,6 +151,9 @@ jobs:
       - name: Run geckodriver
         if: matrix.browser == 'firefox'
         run: geckodriver --port=4444 &
+      - name: Run edgedriver
+        if: matrix.browser == 'edge'
+        run: edgedriver --port=4444 &
       - uses: JarvusInnovations/background-action@v1
         name: Run app server
         with:
@@ -162,6 +165,7 @@ jobs:
         run: cargo test --package simple-icons-website-end2end -- --fail-fast
         env:
           BROWSER: ${{ matrix.browser }}
+          WINDOW_SIZE: ${{ matrix.window-size }}
       - uses: actions/create-github-app-token@v1
         if: |
           startsWith(matrix.name, 'Chrome Desktop') &&

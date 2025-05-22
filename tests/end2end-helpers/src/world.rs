@@ -8,7 +8,7 @@ use thirtyfour::{
     WebDriver, WebElement,
 };
 
-const SUPPORTED_BROWSERS: [&str; 2] = ["chrome", "firefox"];
+const SUPPORTED_BROWSERS: [&str; 3] = ["chrome", "firefox", "edge"];
 
 fn readable_supported_browsers() -> String {
     SUPPORTED_BROWSERS.join(", ")
@@ -19,6 +19,7 @@ pub struct AppWorldClientOptions {
     host: &'static str,
     driver_url: &'static str,
     browser: Cow<'static, str>,
+    window_size: (u32, u32),
 }
 
 impl Default for AppWorldClientOptions {
@@ -33,10 +34,33 @@ impl Default for AppWorldClientOptions {
         let browser = std::env::var("BROWSER").unwrap();
         Self::check_browser(&browser);
 
+        let window_size = match std::env::var("WINDOW_SIZE") {
+            Ok(size) => {
+                let parts: Vec<&str> = size.split('x').collect();
+                if parts.len() != 2 {
+                    panic!("Invalid WINDOW_SIZE format. Use WIDTHxHEIGHT");
+                }
+                let width = parts[0].parse::<u32>().unwrap_or_else(|_| {
+                    panic!("Invalid WINDOW_SIZE width: {}", parts[0])
+                });
+                let height = parts[1].parse::<u32>().unwrap_or_else(|_| {
+                    panic!("Invalid WINDOW_SIZE height: {}", parts[1])
+                });
+                (width, height)
+            }
+            Err(_) => {
+                if std::env::var("CI").is_ok() {
+                    panic!("WINDOW_SIZE environment variable must be set in CI environment");
+                }
+                (1920, 1080)
+            }
+        };
+
         Self {
             host: "http://127.0.0.1:8080",
             driver_url: "http://localhost:4444",
             browser: Cow::Owned(browser),
+            window_size,
         }
     }
 }
@@ -119,10 +143,16 @@ impl AppWorld {
 
     async fn build_client(client_options: &AppWorldClientOptions) -> WebDriver {
         let driver_url = client_options.driver_url;
+
+        let window_size_opt = format!(
+            "--window-size={},{}",
+            client_options.window_size.0, client_options.window_size.1
+        );
         if client_options.browser == "chrome" {
             let mut caps = DesiredCapabilities::chrome();
+
             let opts =
-                vec!["--no-sandbox", "--headless", "--window-size=1920,1080"];
+                vec!["--no-sandbox", "--headless", window_size_opt.as_str()];
             caps.insert_browser_option("args", opts)
                 .unwrap_or_else(|err| {
                     panic!("Failed to set Chrome options: {err}");
@@ -135,15 +165,33 @@ impl AppWorld {
                         Make sure that chromedriver server is running at {driver_url}",
                     )
                 })
-        } else {
+        } else if client_options.browser == "firefox" {
             let mut caps = DesiredCapabilities::firefox();
             caps.set_headless().unwrap_or_else(|err| {
                 panic!("Failed to set Firefox headless mode: {err}");
             });
+            caps.add_arg(window_size_opt.as_str())
+                .unwrap_or_else(|err| {
+                    panic!("Failed to set Firefox window size: {err}");
+                });
             WebDriver::new(driver_url, caps).await.unwrap_or_else(|err| {
                 panic!(
                     "Failed to create WebDriver for Firefox: {err}. \
                     Make sure that geckodriver server is running at {driver_url}",
+                )
+            })
+        } else {
+            let mut caps = DesiredCapabilities::edge();
+            let opts =
+                vec!["--no-sandbox", "--headless", window_size_opt.as_str()];
+            caps.insert_browser_option("args", opts)
+                .unwrap_or_else(|err| {
+                    panic!("Failed to set Edge options: {err}");
+                });
+            WebDriver::new(driver_url, caps).await.unwrap_or_else(|err| {
+                panic!(
+                    "Failed to create WebDriver for Edge: {err}. \
+                    Make sure that edgedriver server is running at {driver_url}",
                 )
             })
         }
@@ -154,6 +202,7 @@ impl AppWorld {
             .max_concurrent_scenarios({
                 let browser = std::env::var("BROWSER").unwrap();
                 if browser == "firefox" {
+                    // Geckodriver only can run one instance at a time
                     Some(1)
                 } else {
                     None
