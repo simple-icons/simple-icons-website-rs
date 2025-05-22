@@ -150,15 +150,11 @@ jobs:
         name: Run chromedriver
         with:
           run: chromedriver --port=4444 &
-          wait-on: http://127.0.0.1:4444
-          wait-for: 5m
       - uses: JarvusInnovations/background-action@v1
         if: matrix.browser == 'firefox'
         name: Run geckodriver
         with:
           run: geckodriver --port=4444 &
-          wait-on: http://127.0.0.1:4444
-          wait-for: 5m
       - uses: JarvusInnovations/background-action@v1
         name: Run app server
         with:
