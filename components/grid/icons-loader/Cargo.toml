@@ -10,5 +10,5 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 leptos.workspace = true
 simple-icons-website-grid-types.workspace = true
-simple-icons-website-controls-layout-types.workspace = true
+simple-icons-website-controls-layout-signal.workspace = true
 leptos-fluent.workspace = true

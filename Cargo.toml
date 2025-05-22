@@ -1,11 +1,15 @@
 [workspace]
 members = [
+	# App
 	"app",
 	"app/i18n",
+
+	# Components
 	"components/header",
 	"components/footer",
 	"components/controls",
-	"components/controls/layout-types",
+	"components/controls/layout-type",
+	"components/controls/layout-signal",
 	"components/controls/order-types",
 	"components/controls/search",
 	"components/grid",
@@ -20,6 +24,8 @@ members = [
 	"components/svg-icon",
 	"components/url",
 	"components/preview-generator",
+
+	# Libraries
 	"libs/simple-icons",
 	"libs/simple-icons-macros",
 	"libs/simple-icons-sdk",
@@ -30,6 +36,12 @@ members = [
 	"libs/web-sys-simple-copy",
 	"libs/web-sys-simple-events",
 	"libs/web-sys-simple-fetch",
+
+	# Tests
+	"tests",
+	"tests/end2end",
+	"tests/end2end-helpers",
+	"tests/end2end-steps",
 ]
 resolver = "2"
 
@@ -53,7 +65,8 @@ simple-icons-website-preview-generator = { path = "./components/preview-generato
 simple-icons-website-footer = { path = "./components/footer" }
 simple-icons-website-header = { path = "./components/header" }
 simple-icons-website-controls = { path = "./components/controls" }
-simple-icons-website-controls-layout-types = { path = "./components/controls/layout-types" }
+simple-icons-website-controls-layout-type = { path = "./components/controls/layout-type" }
+simple-icons-website-controls-layout-signal = { path = "./components/controls/layout-signal" }
 simple-icons-website-controls-order-types = { path = "./components/controls/order-types" }
 simple-icons-website-controls-search = { path = "./components/controls/search" }
 simple-icons-website-grid = { path = "./components/grid" }
@@ -68,6 +81,8 @@ simple-icons-website-storage = { path = "./components/storage" }
 simple-icons-website-svg-defs = { path = "./components/svg-defs" }
 simple-icons-website-svg-icon = { path = "./components/svg-icon" }
 simple-icons-website-url = { path = "./components/url" }
+simple-icons-website-end2end-helpers = { path = "./tests/end2end-helpers" }
+simple-icons-website-end2end-steps = { path = "./tests/end2end-steps" }
 svg-path-bbox = { path = "./libs/svg-path-bbox" }
 badge-maker = { path = "./libs/badge-maker" }
 fast-fuzzy = { path = "./libs/fast-fuzzy" }
@@ -136,3 +151,9 @@ svg-path-cst = "0.1"
 unicode-normalization = "0.1"
 icu_collator = "1"
 snafu = { version = "0.8", default-features = false }
+cucumber = "0.21"
+thirtyfour = "0.35"
+tokio = { version = "1.39", default-features = false, features = [
+	"macros",
+	"rt-multi-thread",
+] }

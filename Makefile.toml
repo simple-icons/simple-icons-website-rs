@@ -70,13 +70,6 @@ run_task = { name = ["xo-fix", "format-rust", "prettier-write"] }
 description = "Check format of files and run linters"
 run_task = { name = ["xo", "lint-rust", "lint-css", "prettier-check"] }
 
-[tasks.test]
-clear = true
-description = "Run tests"
-command = "npx"
-args = ["playwright", "test", "--trace", "on", "${@}"]
-cwd = "./end2end"
-
 [tasks.build]
 clear = true
 description = "Build the app for production"

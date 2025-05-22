@@ -13,7 +13,6 @@
 
 - `cargo make`: Build WASM and serve. With `watch-css`, recommended for development. After it, you can use `cd app && trunk serve` to serve.
 - `cargo make watch-css`: Watch the CSS files with [TailwindCSS](https://tailwindcss.com/).
-- `cargo make test`: Build app for production and run tests with [Playwright](https://playwright.dev/).
 - `cargo make format`: Format files.
 - `cargo make lint`: Check formatting of files.
 - `cargo make build`: Build the website for production.
@@ -21,7 +20,22 @@
 
 ## Testing
 
-Is useful to run only certain tests in a browser. For example: `cargo make test --project=chrome-desktop --grep=header`
+To run end-to-end tests execute in three different terminals:
+
+```sh
+chromedriver --port=4444  # or `geckodriver --port=4444` (for Firefox)
+```
+
+```sh
+cargo make
+```
+
+```sh
+BROWSER=chrome cargo test --package simple-icons-website-end2end --test app -- --fail-fast
+```
+
+- Change `BROWSER=chrome` to `BROWSER=firefox` to run the tests with Firefox.
+- Change `--test app` to `--test {test_name}` to run a specific test suite. You can find the test suites in the _end2end/tests/_ folder.
 
 ## Add translation
 

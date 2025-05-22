@@ -1,5 +1,4 @@
-use leptos::prelude::RwSignal;
-use std::str::FromStr;
+use core::str::FromStr;
 
 #[derive(Default, Copy, Clone, PartialEq)]
 pub enum Layout {
@@ -9,7 +8,7 @@ pub enum Layout {
 }
 
 impl Layout {
-    pub fn icons_per_page(&self) -> u32 {
+    pub fn icons_per_page(&self) -> u8 {
         match self {
             Self::Comfortable => 30,
             Self::Compact => 60,
@@ -37,6 +36,3 @@ impl core::fmt::Display for Layout {
         }
     }
 }
-
-#[derive(Copy, Clone)]
-pub struct LayoutSignal(pub RwSignal<Layout>);

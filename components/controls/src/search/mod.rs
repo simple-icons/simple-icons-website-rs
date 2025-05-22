@@ -2,7 +2,7 @@ use crate::order::{set_order_mode, OrderModeSignal};
 use fast_fuzzy::{build_searcher, search};
 use leptos::{prelude::*, task::spawn_local};
 use leptos_fluent::tr;
-use simple_icons_website_controls_layout_types::LayoutSignal;
+use simple_icons_website_controls_layout_signal::LayoutSignal;
 use simple_icons_website_controls_order_types::{OrderMode, OrderModeVariant};
 use simple_icons_website_controls_search::{
     extend_new_icons_with_search_result, get_search_input,

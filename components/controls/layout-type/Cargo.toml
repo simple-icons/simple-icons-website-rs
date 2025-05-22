@@ -1,0 +1,8 @@
+[package]
+name = "simple-icons-website-controls-layout-type"
+description = "Type for layout control for the Simple Icons website"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]

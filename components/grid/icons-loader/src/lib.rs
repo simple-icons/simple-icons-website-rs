@@ -1,6 +1,6 @@
 use leptos::prelude::*;
 use leptos_fluent::tr;
-use simple_icons_website_controls_layout_types::LayoutSignal;
+use simple_icons_website_controls_layout_signal::LayoutSignal;
 use simple_icons_website_grid_types::IconsGridSignal;
 
 /// Data structure to control the loading of more icons

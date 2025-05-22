@@ -5,6 +5,7 @@
 		"rust-lang.rust-analyzer",
 		"macabeus.vscode-fluent",
 		"samverschueren.linter-xo",
-		"esbenp.prettier-vscode"
+		"esbenp.prettier-vscode",
+		"alexkrechik.cucumberautocomplete"
 	]
 }

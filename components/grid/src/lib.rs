@@ -12,7 +12,8 @@ use leptos::{
 };
 use leptos_use::use_intersection_observer;
 use scroll::ScrollButtons;
-use simple_icons_website_controls_layout_types::{Layout, LayoutSignal};
+use simple_icons_website_controls_layout_signal::LayoutSignal;
+use simple_icons_website_controls_layout_type::Layout;
 use simple_icons_website_controls_order_types::OrderMode;
 use simple_icons_website_grid_icons_loader::{IconsLoader, IconsLoaderSignal};
 use simple_icons_website_grid_types::{IconsGrid, IconsGridSignal};

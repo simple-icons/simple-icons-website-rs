@@ -4,7 +4,8 @@ use super::search::{
 };
 use leptos::prelude::*;
 use leptos_fluent::move_tr;
-use simple_icons_website_controls_layout_types::{Layout, LayoutSignal};
+use simple_icons_website_controls_layout_signal::LayoutSignal;
+use simple_icons_website_controls_layout_type::Layout;
 use simple_icons_website_controls_order_types::{
     sort_icons, OrderMode, OrderModeVariant,
 };

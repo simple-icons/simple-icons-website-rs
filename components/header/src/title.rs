@@ -22,7 +22,7 @@ pub fn HeaderTitle() -> impl IntoView {
     view! {
         <div>
             <a href="/">"Simple Icons"</a>
-            <p id="site-description" inner_html=description_html></p>
+            <p inner_html=description_html></p>
         </div>
     }
 }
