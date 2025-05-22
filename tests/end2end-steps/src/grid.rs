@@ -1,4 +1,5 @@
 use anyhow::{Ok, Result};
+use core::str::FromStr;
 use cucumber::{given, then, when};
 use simple_icons_website_controls_layout_type::Layout;
 use simple_icons_website_end2end_helpers::AppWorld;
@@ -13,26 +14,29 @@ async fn grid_is_displayed(world: &mut AppWorld) -> Result<()> {
     Ok(())
 }
 
-#[then("the default number of icons per page have been loaded")]
+#[then(
+    regex = "the (comfortable|compact) number of icons per page have been loaded"
+)]
 async fn default_number_of_icons_per_page_loaded(
     world: &mut AppWorld,
+    layout: String,
 ) -> Result<()> {
-    number_of_icons_per_page_loaded(world, "1".to_string()).await
+    number_of_icons_per_page_loaded(world, layout, "1".to_string()).await
 }
 
 #[then(
-    regex = r"the default number of icons per page \* (\d+) have been loaded"
+    regex = r"the (comfortable|compact) number of icons per page \* (\d+) have been loaded"
 )]
 async fn number_of_icons_per_page_loaded(
     world: &mut AppWorld,
+    layout: String,
     multiplicator: String,
 ) -> Result<()> {
     let client = world.client().clone();
 
-    // by default, the layout is set to comfortable
-    let expected_number_of_icons = Layout::Comfortable.icons_per_page()
-        as usize
-        * multiplicator.parse::<usize>()?;
+    let expected_number_of_icons =
+        Layout::from_str(&layout).unwrap().icons_per_page() as usize
+            * multiplicator.parse::<usize>()?;
 
     _ = client
         .query(By::Css("main > ul"))

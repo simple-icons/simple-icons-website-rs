@@ -11,3 +11,4 @@ cucumber.workspace = true
 thirtyfour.workspace = true
 anyhow = "1"
 simple-icons-website-controls-layout-type.workspace = true
+serde_json.workspace = true

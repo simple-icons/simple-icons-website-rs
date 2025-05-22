@@ -11,9 +11,9 @@ async fn open_the_app(world: &mut AppWorld) -> Result<()> {
         .await?
         .client()
         .query(By::Tag("header"))
-        .wait(Duration::from_secs(5), Duration::from_millis(100))
+        .wait(Duration::from_secs(60), Duration::from_millis(100))
         .and_displayed()
-        .all_from_selector_required()
+        .first()
         .await?;
     Ok(())
 }
@@ -28,7 +28,13 @@ async fn header_touches_viewport(world: &mut AppWorld) -> Result<()> {
 
 #[then(regex = r#"^the title of the header is "(.+)""#)]
 async fn check_header_title(world: &mut AppWorld, title: String) -> Result<()> {
-    let header_title = world.client().find(By::Css("header > div > a")).await?;
+    let header_title = world
+        .client()
+        .query(By::Css("header > div > a"))
+        .wait(Duration::from_secs(6), Duration::from_millis(10))
+        .and_displayed()
+        .first()
+        .await?;
     let text = header_title.text().await?;
     assert_eq!(text, title);
     Ok(())

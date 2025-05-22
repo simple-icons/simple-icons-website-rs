@@ -2990,6 +2990,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "cucumber",
+ "serde_json",
  "simple-icons-website-controls-layout-type",
  "simple-icons-website-end2end-helpers",
  "thirtyfour",

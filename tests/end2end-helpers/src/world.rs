@@ -42,6 +42,7 @@ impl Default for AppWorldClientOptions {
 }
 
 impl AppWorldClientOptions {
+    #[must_use]
     pub fn host(&self) -> &str {
         self.host
     }
@@ -51,6 +52,7 @@ impl AppWorldClientOptions {
         self
     }
 
+    #[must_use]
     pub fn driver_url(&self) -> &str {
         self.driver_url
     }
@@ -70,6 +72,7 @@ impl AppWorldClientOptions {
         }
     }
 
+    #[must_use]
     pub fn browser(&self) -> &str {
         self.browser.as_ref()
     }
@@ -89,10 +92,12 @@ pub struct AppWorld {
 }
 
 impl AppWorld {
+    #[must_use]
     pub fn client(&self) -> &WebDriver {
         &self.client
     }
 
+    #[must_use]
     pub fn client_options(&self) -> &AppWorldClientOptions {
         &self.client_options
     }
@@ -167,8 +172,7 @@ impl AppWorld {
                 vec![element.to_json()?],
             )
             .await?;
-        let value = ret.json();
-        match value {
+        match ret.json() {
             serde_json::Value::Bool(value) => Ok(*value),
             _ => unreachable!(),
         }
