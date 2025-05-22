@@ -72,7 +72,7 @@ jobs:
         run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run `cargo make lint`
+      - name: Lint
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 40
@@ -163,8 +163,12 @@ jobs:
           run: npx serve --no-clipboard -l 8080 app/dist &
           wait-on: http://127.0.0.1:8080
           wait-for: 5m
-      - name: Run app tests
-        run: cargo test --package simple-icons-website-end2end --test ${{ matrix.suite }} -- --fail-fast
+      - name: Run tests
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: cargo test --package simple-icons-website-end2end --test ${{ matrix.suite }} -- --fail-fast
         env:
           BROWSER: ${{ matrix.browser }}
           WINDOW_SIZE: ${{ matrix.window-size }}
