@@ -11,6 +11,6 @@ simple-icons-website-end2end-helpers.workspace = true
 tokio.workspace = true
 
 [[test]]
-# Main tests suite, whitout any specific capability
+# Desktop tests
 name = "desktop"
 harness = false

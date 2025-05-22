@@ -23,7 +23,7 @@
 To run end-to-end tests execute in three different terminals:
 
 ```sh
-chromedriver --port=4444 
+chromedriver --port=4444
 # or `geckodriver --port=4444` (for Firefox)
 # or `msedgedriver --port=4444` (for MsEdge)
 ```
@@ -33,16 +33,15 @@ cargo make
 ```
 
 ```sh
-BROWSER=chrome cargo test --package simple-icons-website-end2end --test app -- --fail-fast
+BROWSER=chrome cargo test --package simple-icons-website-end2end --test desktop -- --fail-fast
 ```
 
 - Change `BROWSER=chrome` to `BROWSER=firefox` (for Firefox) or `BROWSER=edge` (for MsEdge).
-- Change `--test app` to `--test {test_name}` to run a specific test suite. You can find the test suites in the _tests/end2end/tests/_ folder.
+- Change `--test desktop` to `--test {suite}` to run a specific test suite. You can find the test suites in the _tests/end2end/tests/_ folder and under `[[test]]` sections in _tests/end2end/Cargo.toml_.
 
 ### Different screen sizes
 
-The environment variable `WINDOW_SIZE=WIDTHxHEIGHT` controls size of the browser window.
-For example, `WINDOW_SIZE=1280x720` will set the browser window to 1280 x 720 pixels.
+The environment variable `WINDOW_SIZE=WIDTHxHEIGHT` controls size of the browser window. For example, `WINDOW_SIZE=1280x720` will set the browser window to 1280 x 720 pixels.
 
 Note that different screen sizes must be located in different test suites.
 
