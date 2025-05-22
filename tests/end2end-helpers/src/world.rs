@@ -149,6 +149,21 @@ impl AppWorld {
         }
     }
 
+    pub async fn run_features(features_path: &'static str) {
+        Self::cucumber()
+            .max_concurrent_scenarios({
+                let browser = std::env::var("BROWSER").unwrap();
+                if browser == "firefox" {
+                    Some(1)
+                } else {
+                    None
+                }
+            })
+            .fail_on_skipped()
+            .run_and_exit(features_path)
+            .await
+    }
+
     // Helpers for tests
 
     /// Navigate to the given path inside the host

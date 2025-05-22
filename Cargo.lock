@@ -2968,10 +2968,8 @@ dependencies = [
 name = "simple-icons-website-end2end"
 version = "0.1.0"
 dependencies = [
- "cucumber",
  "simple-icons-website-end2end-helpers",
  "simple-icons-website-end2end-steps",
- "thirtyfour",
  "tokio",
 ]
 

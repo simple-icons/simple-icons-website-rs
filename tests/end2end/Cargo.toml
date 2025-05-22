@@ -8,8 +8,6 @@ publish = false
 [dev-dependencies]
 simple-icons-website-end2end-steps.workspace = true
 simple-icons-website-end2end-helpers.workspace = true
-cucumber.workspace = true
-thirtyfour.workspace = true
 tokio.workspace = true
 
 [[test]]
