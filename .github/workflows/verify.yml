@@ -88,19 +88,19 @@ jobs:
         include:
           - name: Chrome Desktop${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
             browser: chrome
-            runs-on: ubuntu-24.04
-            window-size: 1920x1080
             suite: desktop
+            window-size: 1920x1080
+            runs-on: ubuntu-24.04
           - name: Edge Desktop
             browser: edge
-            runs-on: ubuntu-24.04
-            window-size: 1920x1080
             suite: desktop
+            window-size: 1920x1080
+            runs-on: ubuntu-24.04
           - name: Firefox Desktop
             browser: firefox
-            runs-on: ubuntu-24.04
-            window-size: 1920x1080
             suite: desktop
+            window-size: 1920x1080
+            runs-on: ubuntu-24.04
           #- name: Chrome Mobile
           #  browser: chrome
           #  runs-on: ubuntu-22.04
@@ -178,7 +178,8 @@ jobs:
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
       - name: Publish website
         if: |
-          startsWith(matrix.name, 'Chrome Desktop') &&
+          matrix.browser == 'chrome' &&
+          matrix.suite == 'desktop' &&
           github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
