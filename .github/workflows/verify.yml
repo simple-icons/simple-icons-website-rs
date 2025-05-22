@@ -79,7 +79,7 @@ jobs:
           max_attempts: 3
           command: cargo make lint
 
-  end2end-test:
+  end2end-tests:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
     strategy:
@@ -117,7 +117,7 @@ jobs:
         with:
           rust-version: ${{ steps.toolchain.outputs.channel }}
           targets: wasm32-unknown-unknown
-          profile: 'minimal'
+          profile: minimal
       - name: Cache Rust dependencies
         uses: actions/cache@v4
         with:
@@ -151,14 +151,13 @@ jobs:
       - name: Run geckodriver
         if: matrix.browser == 'firefox'
         run: geckodriver --port=4444 &
-      - name: Run edgedriver
+      - name: Run edge_driver
         if: matrix.browser == 'edge'
-        run: edgedriver --port=4444 &
+        run: edge_driver --port=4444 &
       - uses: JarvusInnovations/background-action@v1
         name: Run app server
         with:
-          run: |
-            npx serve --no-clipboard -l 8080 app/dist &
+          run: npx serve --no-clipboard -l 8080 app/dist &
           wait-on: http://127.0.0.1:8080
           wait-for: 5m
       - name: Run app tests
