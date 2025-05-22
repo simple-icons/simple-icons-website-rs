@@ -153,7 +153,7 @@ jobs:
         run: geckodriver --port=4444 &
       - name: Run edge_driver
         if: matrix.browser == 'edge'
-        run: edge_driver --port=4444 &
+        run: /usr/local/share/edge_driver --port=4444 &
       - uses: JarvusInnovations/background-action@v1
         name: Run app server
         with:
