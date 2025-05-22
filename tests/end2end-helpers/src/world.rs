@@ -121,7 +121,8 @@ impl AppWorld {
         let driver_url = client_options.driver_url;
         if client_options.browser == "chrome" {
             let mut caps = DesiredCapabilities::chrome();
-            let opts = vec!["--no-sandbox"];
+            let opts =
+                vec!["--no-sandbox", "--headless", "--window-size=1920,1080"];
             caps.insert_browser_option("args", opts)
                 .unwrap_or_else(|err| {
                     panic!("Failed to set Chrome options: {err}");
@@ -135,7 +136,11 @@ impl AppWorld {
                     )
                 })
         } else {
-            WebDriver::new(driver_url, DesiredCapabilities::firefox()).await.unwrap_or_else(|err| {
+            let mut caps = DesiredCapabilities::firefox();
+            caps.set_headless().unwrap_or_else(|err| {
+                panic!("Failed to set Firefox headless mode: {err}");
+            });
+            WebDriver::new(driver_url, caps).await.unwrap_or_else(|err| {
                 panic!(
                     "Failed to create WebDriver for Firefox: {err}. \
                     Make sure that geckodriver server is running at {driver_url}",

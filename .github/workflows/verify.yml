@@ -79,7 +79,7 @@ jobs:
           max_attempts: 3
           command: cargo make lint
 
-  test:
+  end2end-test:
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
     strategy:
@@ -87,35 +87,25 @@ jobs:
       matrix:
         include:
           - name: Chrome Desktop${{ github.ref == 'refs/heads/master' && ' and publish' || '' }}
-            command: test
             browser: chrome
-            project: chrome-desktop
-            runs-on: ubuntu-22.04
-          - name: MsEdge Desktop
-            command: test
-            browser: msedge
-            project: msedge-desktop
-            runs-on: ubuntu-22.04
-          - name: Firefox Desktop
-            command: test
-            browser: firefox
-            project: firefox-desktop
-            runs-on: ubuntu-22.04
-          #- name: Safari Desktop
+            runs-on: ubuntu-24.04
+          #- name: MsEdge Desktop
           #  command: test
-          #  browser: webkit
-          #  project: webkit-desktop
+          #  browser: msedge
+          #  runs-on: ubuntu-24.04
+          - name: Firefox Desktop
+            browser: firefox
+            runs-on: ubuntu-24.04
+          #- name: Chromium Mobile
+          #  command: test
+          #  browser: chromium
+          #  project: chromium-mobile
           #  runs-on: ubuntu-22.04
-          - name: Chromium Mobile
-            command: test
-            browser: chromium
-            project: chromium-mobile
-            runs-on: ubuntu-22.04
-          - name: Chromium Mobile Landscape
-            command: test
-            browser: chromium
-            project: chromium-mobile-landscape
-            runs-on: ubuntu-22.04
+          #- name: Chromium Mobile Landscape
+          #  command: test
+          #  browser: chromium
+          #  project: chromium-mobile-landscape
+          #  runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -127,7 +117,7 @@ jobs:
         with:
           rust-version: ${{ steps.toolchain.outputs.channel }}
           targets: wasm32-unknown-unknown
-          profile: ${{ matrix.command == 'test' && 'minimal' || 'default' }}
+          profile: 'minimal'
       - name: Cache Rust dependencies
         uses: actions/cache@v4
         with:
@@ -139,48 +129,35 @@ jobs:
             ~/.cargo/.crates.toml
             ~/.cargo/.crates2.json
             target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ steps.toolchain.outputs.channel }}-${{ matrix.command }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}-${{ steps.toolchain.outputs.channel }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v20
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: npm
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-make,trunk,cargo-machete
+          tool: cargo-make,trunk
       - name: Install Node.js dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Build
         run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install Playwright browsers
-        if: matrix.command == 'test'
-        run: npx playwright install ${{ matrix.browser }} --with-deps
-      - name: Get test arguments
-        id: args
-        run: |
-          echo "arguments=${{ matrix.command == 'test' && '--project=$PROJECT --reporter=github' || '' }}" \
-            >> $GITHUB_OUTPUT
+      - uses: JarvusInnovations/background-action@v1
+        name: Run app server
+        with:
+          run: npx serve --no-clipboard -l 8080 app/dist &
+          wait-on: http://127.0.0.1:8080
+          wait-for: 5m
+      - name: Run app tests
+        run: cargo test --package simple-icons-website-end2end -- --fail-fast
         env:
-          PROJECT: ${{ matrix.project }}
-      - name: List tests
-        if: matrix.command == 'test'
-        working-directory: end2end
-        run: npx playwright test --list ${{ steps.args.outputs.arguments }}
-      - name: Run `cargo make ${{ matrix.command }}`
-        run: cargo make ${{ matrix.command }} ${{ steps.args.outputs.arguments }}
+          BROWSER: ${{ matrix.browser }}
       - uses: actions/create-github-app-token@v1
         if: |
-          matrix.command == 'test' &&
-          matrix.project == 'chrome-desktop' &&
+          startsWith(matrix.name, 'Chrome Desktop') &&
           github.ref == 'refs/heads/master'
         id: app-token
         with:
@@ -188,8 +165,7 @@ jobs:
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
       - name: Publish website
         if: |
-          matrix.command == 'test' &&
-          matrix.project == 'chrome-desktop' &&
+          startsWith(matrix.name, 'Chrome Desktop') &&
           github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
