@@ -109,7 +109,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: ls -la /usr/local/share/edge_driver
       - name: Get toolchain config
         id: toolchain
         uses: ./.github/actions/get-toolchain
@@ -152,9 +151,9 @@ jobs:
       - name: Run geckodriver
         if: matrix.browser == 'firefox'
         run: geckodriver --port=4444 &
-      - name: Run edge_driver
+      - name: Run msedgedriver
         if: matrix.browser == 'edge'
-        run: /usr/local/share/edge_driver --port=4444 &
+        run: msedgedriver --port=4444 &
       - uses: JarvusInnovations/background-action@v1
         name: Run app server
         with:
