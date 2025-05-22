@@ -12,5 +12,5 @@ tokio.workspace = true
 
 [[test]]
 # Main tests suite, whitout any specific capability
-name = "app"
+name = "desktop"
 harness = false

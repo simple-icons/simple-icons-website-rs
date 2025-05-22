@@ -90,14 +90,17 @@ jobs:
             browser: chrome
             runs-on: ubuntu-24.04
             window-size: 1920x1080
+            suite: desktop
           - name: Edge Desktop
             browser: edge
             runs-on: ubuntu-24.04
             window-size: 1920x1080
+            suite: desktop
           - name: Firefox Desktop
             browser: firefox
             runs-on: ubuntu-24.04
             window-size: 1920x1080
+            suite: desktop
           #- name: Chrome Mobile
           #  browser: chrome
           #  runs-on: ubuntu-22.04
@@ -161,7 +164,7 @@ jobs:
           wait-on: http://127.0.0.1:8080
           wait-for: 5m
       - name: Run app tests
-        run: cargo test --package simple-icons-website-end2end -- --fail-fast
+        run: cargo test --package simple-icons-website-end2end --test ${{ matrix.suite }} -- --fail-fast
         env:
           BROWSER: ${{ matrix.browser }}
           WINDOW_SIZE: ${{ matrix.window-size }}
