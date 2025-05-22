@@ -69,13 +69,6 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v20
           restore-keys: |
             ${{ runner.os }}-node-
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
@@ -90,7 +83,7 @@ jobs:
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-make,trunk,cargo-machete
+          tool: cargo-make,trunk
       - name: Build
         run: cargo make build
         env:

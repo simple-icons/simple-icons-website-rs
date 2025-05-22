@@ -6,7 +6,6 @@
 - Install [cargo-make] with `cargo install --force cargo-make`.
 - Install [fnm](https://github.com/Schniz/fnm) with `cargo install fnm` and [setup your Shell](https://github.com/Schniz/fnm#shell-setup).
 - Install NodeJS with npm and run `npm install`.
-- Install Playwright browsers and dependencies with `npx playwright install --with-deps`.
 - Create an _.env_ file at the root including a Github personal token with the variable `GITHUB_TOKEN` like `GITHUB_TOKEN=...`.
 
 ## Commands
@@ -59,7 +58,6 @@ Note that different screen sizes must be located in different test suites.
 - [Leptos](https://docs.rs/leptos) as the components library with a client side rendering approach.
 - [TailwindCSS](https://tailwindcss.com/) as the CSS framework.
 - [Trunk](https://trunkrs.dev/) as the web server (on development) and application builder (on production).
-- [Playwright](https://playwright.dev/) for end to end testing.
 
 ### Rust crates
 
