@@ -109,6 +109,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - run: ls -la /usr/local/share/edge_driver
       - name: Get toolchain config
         id: toolchain
         uses: ./.github/actions/get-toolchain
