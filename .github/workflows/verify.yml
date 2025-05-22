@@ -145,20 +145,17 @@ jobs:
         run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: JarvusInnovations/background-action@v1
+      - name: Run chromedriver
         if: matrix.browser == 'chrome'
-        name: Run chromedriver
-        with:
-          run: chromedriver --port=4444 &
-      - uses: JarvusInnovations/background-action@v1
+        run: chromedriver --port=4444 &
+      - name: Run geckodriver
         if: matrix.browser == 'firefox'
-        name: Run geckodriver
-        with:
-          run: geckodriver --port=4444 &
+        run: geckodriver --port=4444 &
       - uses: JarvusInnovations/background-action@v1
         name: Run app server
         with:
-          run: npx serve --no-clipboard -l 8080 app/dist &
+          run: |
+            npx serve --no-clipboard -l 8080 app/dist &
           wait-on: http://127.0.0.1:8080
           wait-for: 5m
       - name: Run app tests
