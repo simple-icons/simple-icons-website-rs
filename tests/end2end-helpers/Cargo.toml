@@ -9,3 +9,7 @@ publish = false
 cucumber.workspace = true
 thirtyfour.workspace = true
 serde_json.workspace = true
+cucumber-thirtyfour-worlder.workspace = true
+
+[package.metadata.cargo-machete]
+ignored = ["thirtyfour", "cucumber"]

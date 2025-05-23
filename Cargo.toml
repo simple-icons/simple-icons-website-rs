@@ -36,6 +36,7 @@ members = [
 	"libs/web-sys-simple-copy",
 	"libs/web-sys-simple-events",
 	"libs/web-sys-simple-fetch",
+	"libs/cucumber-thirtyfour-worlder",
 
 	# Tests
 	"tests",
@@ -89,6 +90,7 @@ fast-fuzzy = { path = "./libs/fast-fuzzy" }
 web-sys-simple-copy = { path = "./libs/web-sys-simple-copy" }
 web-sys-simple-events = { path = "./libs/web-sys-simple-events" }
 web-sys-simple-fetch = { path = "./libs/web-sys-simple-fetch" }
+cucumber-thirtyfour-worlder = { path = "./libs/cucumber-thirtyfour-worlder" }
 leptos = { version = "0.8", default-features = false, features = [
 	"csr",
 	"nightly",

@@ -5,7 +5,7 @@ use thirtyfour::prelude::*;
 
 #[then(regex = "the selected layout is (comfortable|compact)")]
 async fn check_layout(world: &mut AppWorld, layout: String) -> Result<()> {
-    let grid = world.client().find(By::Css("main > ul")).await?;
+    let grid = world.driver().find(By::Css("main > ul")).await?;
     let class = grid
         .attr("class")
         .await
@@ -32,7 +32,7 @@ async fn click_layout_button(
     layout: String,
 ) -> Result<()> {
     let xpath = format!(".//button[@title=\"{}\"]", capitalize(&layout));
-    let button = world.client().find(By::XPath(xpath.as_str())).await?;
+    let button = world.driver().find(By::XPath(xpath.as_str())).await?;
     button.click().await?;
 
     Ok(())

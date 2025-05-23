@@ -1,6 +1,8 @@
 use anyhow::{Ok, Result};
 use cucumber::{given, then, when};
-use simple_icons_website_end2end_helpers::AppWorld;
+use simple_icons_website_end2end_helpers::{
+    element_touches_viewport, AppWorld,
+};
 use std::time::Duration;
 use thirtyfour::prelude::*;
 
@@ -9,7 +11,7 @@ async fn open_the_app(world: &mut AppWorld) -> Result<()> {
     _ = world
         .goto_path("")
         .await?
-        .client()
+        .driver()
         .query(By::Tag("header"))
         .wait(Duration::from_secs(60), Duration::from_millis(100))
         .and_displayed()
@@ -20,8 +22,8 @@ async fn open_the_app(world: &mut AppWorld) -> Result<()> {
 
 #[then("the header touches the viewport")]
 async fn header_touches_viewport(world: &mut AppWorld) -> Result<()> {
-    let header = world.client().find(By::Tag("header")).await?;
-    let touches_viewport = world.element_touches_viewport(&header).await?;
+    let header = world.driver().find(By::Tag("header")).await?;
+    let touches_viewport = element_touches_viewport(world, &header).await?;
     assert!(touches_viewport, "The header not touches viewport");
     Ok(())
 }
@@ -29,7 +31,7 @@ async fn header_touches_viewport(world: &mut AppWorld) -> Result<()> {
 #[then(regex = r#"^the title of the header is "(.+)""#)]
 async fn check_header_title(world: &mut AppWorld, title: String) -> Result<()> {
     let header_title = world
-        .client()
+        .driver()
         .query(By::Css("header > div > a"))
         .wait(Duration::from_secs(6), Duration::from_millis(10))
         .and_displayed()
@@ -46,7 +48,7 @@ async fn check_header_description(
     title: String,
 ) -> Result<()> {
     world
-        .client()
+        .driver()
         .query(By::Css("header > div > p"))
         .wait(Duration::from_millis(1000), Duration::from_millis(10))
         .with_filter(move |e: WebElement| {
@@ -82,7 +84,7 @@ async fn check_app_language(
 #[when("I click on the language selector")]
 async fn click_language_selector_button(world: &mut AppWorld) -> Result<()> {
     world
-        .client()
+        .driver()
         .find(By::Css("header > nav > ul > li:last-of-type"))
         .await?
         .click()
@@ -93,7 +95,7 @@ async fn click_language_selector_button(world: &mut AppWorld) -> Result<()> {
 #[then("I see the language selector")]
 async fn check_language_selector_modal(world: &mut AppWorld) -> Result<()> {
     world
-        .client()
+        .driver()
         .query(By::Css(".language-selector"))
         .wait(Duration::from_millis(200), Duration::from_millis(10))
         .and_displayed()
@@ -105,7 +107,7 @@ async fn check_language_selector_modal(world: &mut AppWorld) -> Result<()> {
 #[then("I don't see the language selector")]
 async fn check_not_language_selector_modal(world: &mut AppWorld) -> Result<()> {
     world
-        .client()
+        .driver()
         .query(By::Css(".language-selector"))
         .wait(Duration::from_millis(200), Duration::from_millis(10))
         .not_exists()
@@ -122,7 +124,7 @@ async fn select_language(
         r#".//ul[@class="language-selector"]//li[text()={language_name}]"#
     );
     world
-        .client()
+        .driver()
         .query(By::XPath(&xpath))
         .wait(Duration::from_millis(200), Duration::from_millis(10))
         .and_displayed()

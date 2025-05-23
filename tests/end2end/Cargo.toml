@@ -9,6 +9,7 @@ publish = false
 simple-icons-website-end2end-steps.workspace = true
 simple-icons-website-end2end-helpers.workspace = true
 tokio.workspace = true
+cucumber.workspace = true
 
 [[test]]
 # Desktop tests
