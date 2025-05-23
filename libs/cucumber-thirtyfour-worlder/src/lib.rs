@@ -278,6 +278,7 @@ pub fn worlder(
                 let mut reading_arg = false;
                 let mut found = false;
                 for arg in std::env::args() {
+                    println!("arg: {arg} {}", arg.starts_with("--concurrency="));
                     if arg == "--concurrency" || arg == "-c" {
                         reading_arg = true;
                     } else if arg.starts_with("--concurrency=")
@@ -291,6 +292,7 @@ pub fn worlder(
                         if value.is_ok() && value.unwrap() != 1 {
                             lets_panic();
                         }
+                        break;
                     } else if reading_arg {
                         found = true;
                         let value = arg.parse::<u32>();
