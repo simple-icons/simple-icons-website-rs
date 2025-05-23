@@ -45,15 +45,15 @@ async fn main() {
 }
 ```
 
-## Reference
-
 ## Known issues
 
 ### `cargo-machete` additional configuration
 
-The `cargo-machete` tool don't know that you're not using neither `cucumber` nor `thirtyfour` directly, so it could complain about missing dependencies. To fix this, add the following to your `Cargo.toml`.
+The [`cargo-machete`] tool don't know that you're not using neither `cucumber` nor `thirtyfour` directly, so it could complain about missing dependencies. To fix this, add the following to your _Cargo.toml_.
 
 ```toml
 [package.metadata.cargo-machete]
 ignored = ["thirtyfour", "cucumber"]
 ```
+
+[`cargo-machete`]: https://github.com/bnjbvr/cargo-machete

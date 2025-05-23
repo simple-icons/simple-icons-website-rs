@@ -169,12 +169,24 @@ jobs:
           run: npx serve --no-clipboard -l 8080 app/dist &
           wait-on: http://127.0.0.1:8080
           wait-for: 5m
+      - name: Build '--concurrency' flag
+        id: concurrency
+        run: |
+          if [[ "${{ matrix.browser }}" == "firefox" ]]; then
+            echo "flag=--concurrency=1" >> $GITHUB_OUTPUT
+          else
+            echo "flag=" >> $GITHUB_OUTPUT
+          fi
       - name: Run tests
         uses: nick-fields/retry@v3
         with:
           timeout_minutes: 20
           max_attempts: 3
-          command: cargo test --package simple-icons-website-end2end --test ${{ matrix.suite }} -- --fail-fast
+          command: |
+            cargo test --package simple-icons-website-end2end \
+              --test ${{ matrix.suite }} -- \
+              --fail-fast \
+              ${{ steps.concurrency.outputs.flag }}
         env:
           BROWSER: ${{ matrix.browser }}
           WINDOW_SIZE: ${{ matrix.window-size }}
