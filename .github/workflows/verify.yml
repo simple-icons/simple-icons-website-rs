@@ -183,9 +183,9 @@ jobs:
           timeout_minutes: 20
           max_attempts: 3
           command: |
-            cargo test --package simple-icons-website-end2end \
-              --test ${{ matrix.suite }} -- \
-              --fail-fast \
+            cargo test --package simple-icons-website-end2end
+              --test ${{ matrix.suite }} --
+              --fail-fast
               ${{ steps.concurrency.outputs.flag }}
         env:
           BROWSER: ${{ matrix.browser }}
