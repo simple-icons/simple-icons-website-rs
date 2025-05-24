@@ -1,14 +1,14 @@
 use anyhow::{Ok, Result};
 use core::str::FromStr;
 use cucumber::{given, then, when};
+use end2end_helpers::AppWorld;
 use simple_icons_website_controls_layout_type::Layout;
-use simple_icons_website_end2end_helpers::AppWorld;
 use std::time::Duration;
 use thirtyfour::prelude::*;
 
 #[given("I see the grid")]
 async fn grid_is_displayed(world: &mut AppWorld) -> Result<()> {
-    let grid = world.client().find(By::Css("main > ul")).await?;
+    let grid = world.driver().find(By::Css("main > ul")).await?;
     let displayed = grid.is_displayed().await?;
     assert!(displayed);
     Ok(())
@@ -32,7 +32,7 @@ async fn number_of_icons_per_page_loaded(
     layout: String,
     multiplicator: String,
 ) -> Result<()> {
-    let client = world.client().clone();
+    let client = world.driver().clone();
 
     let expected_number_of_icons =
         Layout::from_str(&layout).unwrap().icons_per_page() as usize
@@ -60,7 +60,7 @@ async fn number_of_icons_per_page_loaded(
 
 #[given("I scroll to the top")]
 async fn scroll_to_top(world: &mut AppWorld) -> Result<()> {
-    let header = world.client().find(By::Tag("header")).await?;
+    let header = world.driver().find(By::Tag("header")).await?;
     header.scroll_into_view().await?;
     Ok(())
 }
@@ -68,7 +68,7 @@ async fn scroll_to_top(world: &mut AppWorld) -> Result<()> {
 #[when(r#"I click on the "Go to footer" button"#)]
 async fn click_go_to_footer_button(world: &mut AppWorld) -> Result<()> {
     let button = world
-        .client()
+        .driver()
         .find(By::ClassName("scroll-to-footer-button"))
         .await?;
     button.click().await?;
@@ -78,7 +78,7 @@ async fn click_go_to_footer_button(world: &mut AppWorld) -> Result<()> {
 #[when(r#"I click on the "Go to header" button"#)]
 async fn click_go_to_header_button(world: &mut AppWorld) -> Result<()> {
     let button = world
-        .client()
+        .driver()
         .find(By::ClassName("scroll-to-header-button"))
         .await?;
     button.click().await?;
@@ -90,7 +90,7 @@ async fn go_to_header_button_does_not_exists(
     world: &mut AppWorld,
 ) -> Result<()> {
     let not_exists = world
-        .client()
+        .driver()
         .query(By::ClassName("scroll-to-header-button"))
         .nowait()
         .not_exists()
@@ -104,7 +104,7 @@ async fn load_more_icons_button_does_not_exists(
     world: &mut AppWorld,
 ) -> Result<()> {
     let not_exists = world
-        .client()
+        .driver()
         .query(By::Css(".icons-loader > button"))
         .nowait()
         .not_exists()
@@ -118,7 +118,7 @@ async fn load_more_icons_button_is_displayed(
     world: &mut AppWorld,
 ) -> Result<()> {
     let button = world
-        .client()
+        .driver()
         .find(By::Css(".icons-loader > button"))
         .await?;
     let is_displayed = button.is_displayed().await?;
@@ -129,7 +129,7 @@ async fn load_more_icons_button_is_displayed(
 #[when(r#"I click on the "Load more icons" button"#)]
 async fn load_more_icons_button_click(world: &mut AppWorld) -> Result<()> {
     let button = world
-        .client()
+        .driver()
         .find(By::Css(".icons-loader > button"))
         .await?;
     button.click().await?;

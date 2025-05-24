@@ -1,14 +1,15 @@
 [package]
-name = "simple-icons-website-end2end"
+name = "end2end"
 description = "End-to-end tests of the Simple Icons website"
 version = "0.1.0"
 edition.workspace = true
 publish = false
 
 [dev-dependencies]
-simple-icons-website-end2end-steps.workspace = true
-simple-icons-website-end2end-helpers.workspace = true
+end2end-steps.workspace = true
+end2end-helpers.workspace = true
 tokio.workspace = true
+cucumber.workspace = true
 
 [[test]]
 # Desktop tests

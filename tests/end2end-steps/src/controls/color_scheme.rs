@@ -1,6 +1,6 @@
 use anyhow::{Ok, Result};
 use cucumber::{then, when};
-use simple_icons_website_end2end_helpers::{capitalize, AppWorld};
+use end2end_helpers::{capitalize, AppWorld};
 use thirtyfour::prelude::*;
 
 #[when(
@@ -12,7 +12,7 @@ async fn click_color_scheme_button(
 ) -> Result<()> {
     let title = format!("{} color scheme", capitalize(&button));
     let xpath = format!(".//button[@title=\"{title}\"]");
-    let button = world.client().find(By::XPath(xpath.as_str())).await?;
+    let button = world.driver().find(By::XPath(xpath.as_str())).await?;
     button.click().await?;
     Ok(())
 }
@@ -22,7 +22,7 @@ async fn check_app_background(
     world: &mut AppWorld,
     background: String,
 ) -> Result<()> {
-    let body = world.client().find(By::Tag("body")).await?;
+    let body = world.driver().find(By::Tag("body")).await?;
     let class = body.attr("class").await?;
     assert!(class.is_some());
     let class = class.unwrap();
@@ -35,7 +35,7 @@ async fn check_app_background_is_system_color_scheme(
     world: &mut AppWorld,
 ) -> Result<()> {
     let ret = world
-        .client()
+        .driver()
         .execute(
             "return window.matchMedia('(prefers-color-scheme: dark)').matches",
             vec![],

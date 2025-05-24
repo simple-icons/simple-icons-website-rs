@@ -1,8 +1,11 @@
-extern crate simple_icons_website_end2end_steps;
+extern crate end2end_steps;
 
-use simple_icons_website_end2end_helpers::AppWorld;
+use cucumber::World;
 
 #[tokio::main]
 async fn main() {
-    AppWorld::run_features("./features/desktop").await;
+    end2end_helpers::AppWorld::cucumber()
+        .fail_on_skipped()
+        .run_and_exit("./features/desktop")
+        .await
 }

@@ -551,6 +551,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "cucumber-thirtyfour-worlder"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0677bb28f8d8d9e13acf0a0579d647303e9fa565cfa3b0498ed9d2a7b24f511"
+dependencies = [
+ "proc-macro2",
+ "quote",
+]
+
+[[package]]
 name = "current_platform"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -686,6 +696,38 @@ name = "encode_unicode"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34aa73646ffb006b8f5147f3dc182bd4bcb190227ce861fc4a4844bf8e3cb2c0"
+
+[[package]]
+name = "end2end"
+version = "0.1.0"
+dependencies = [
+ "cucumber",
+ "end2end-helpers",
+ "end2end-steps",
+ "tokio",
+]
+
+[[package]]
+name = "end2end-helpers"
+version = "0.1.0"
+dependencies = [
+ "cucumber",
+ "cucumber-thirtyfour-worlder",
+ "serde_json",
+ "thirtyfour",
+]
+
+[[package]]
+name = "end2end-steps"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cucumber",
+ "end2end-helpers",
+ "serde_json",
+ "simple-icons-website-controls-layout-type",
+ "thirtyfour",
+]
 
 [[package]]
 name = "equivalent"
@@ -2962,36 +3004,6 @@ dependencies = [
  "wasm-bindgen",
  "web-sys",
  "web-sys-simple-fetch",
-]
-
-[[package]]
-name = "simple-icons-website-end2end"
-version = "0.1.0"
-dependencies = [
- "simple-icons-website-end2end-helpers",
- "simple-icons-website-end2end-steps",
- "tokio",
-]
-
-[[package]]
-name = "simple-icons-website-end2end-helpers"
-version = "0.1.0"
-dependencies = [
- "cucumber",
- "serde_json",
- "thirtyfour",
-]
-
-[[package]]
-name = "simple-icons-website-end2end-steps"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cucumber",
- "serde_json",
- "simple-icons-website-controls-layout-type",
- "simple-icons-website-end2end-helpers",
- "thirtyfour",
 ]
 
 [[package]]
