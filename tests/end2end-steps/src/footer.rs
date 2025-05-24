@@ -1,8 +1,6 @@
 use anyhow::{Ok, Result};
 use cucumber::{then, when};
-use simple_icons_website_end2end_helpers::{
-    element_touches_viewport, AppWorld,
-};
+use end2end_helpers::{element_touches_viewport, AppWorld};
 use thirtyfour::prelude::*;
 
 #[when("I scroll to the footer")]

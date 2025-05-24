@@ -1,5 +1,5 @@
 [package]
-name = "simple-icons-website-end2end-helpers"
+name = "end2end-helpers"
 description = "Helpers for end-to-end tests of the Simple Icons website"
 version = "0.1.0"
 edition.workspace = true

@@ -1,6 +1,6 @@
 use anyhow::{Ok, Result};
 use cucumber::{then, when};
-use simple_icons_website_end2end_helpers::{capitalize, AppWorld};
+use end2end_helpers::{capitalize, AppWorld};
 use thirtyfour::prelude::*;
 
 #[then(regex = "the selected layout is (comfortable|compact)")]

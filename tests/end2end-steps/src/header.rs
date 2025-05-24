@@ -1,8 +1,6 @@
 use anyhow::{Ok, Result};
 use cucumber::{given, then, when};
-use simple_icons_website_end2end_helpers::{
-    element_touches_viewport, AppWorld,
-};
+use end2end_helpers::{element_touches_viewport, AppWorld};
 use std::time::Duration;
 use thirtyfour::prelude::*;
 

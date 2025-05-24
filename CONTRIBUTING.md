@@ -32,7 +32,7 @@ cargo make
 ```
 
 ```sh
-BROWSER=chrome cargo test --package simple-icons-website-end2end --test desktop -- --fail-fast
+BROWSER=chrome cargo test --package end2end --test desktop -- --fail-fast
 ```
 
 - Change `BROWSER=chrome` to `BROWSER=firefox` (for Firefox) or `BROWSER=edge` (for MsEdge).

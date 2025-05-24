@@ -1,12 +1,12 @@
 [package]
-name = "simple-icons-website-end2end-steps"
+name = "end2end-steps"
 description = "Gherkin steps for end-to-end tests of the Simple Icons website"
 version = "0.1.0"
 edition.workspace = true
 publish = false
 
 [dependencies]
-simple-icons-website-end2end-helpers.workspace = true
+end2end-helpers.workspace = true
 cucumber.workspace = true
 thirtyfour.workspace = true
 anyhow = "1"

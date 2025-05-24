@@ -1,6 +1,6 @@
 use anyhow::{Ok, Result};
 use cucumber::{then, when};
-use simple_icons_website_end2end_helpers::AppWorld;
+use end2end_helpers::AppWorld;
 use thirtyfour::prelude::*;
 
 #[when(regex = "I type \"([^\"]+)\" in the search input")]

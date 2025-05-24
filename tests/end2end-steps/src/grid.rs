@@ -1,8 +1,8 @@
 use anyhow::{Ok, Result};
 use core::str::FromStr;
 use cucumber::{given, then, when};
+use end2end_helpers::AppWorld;
 use simple_icons_website_controls_layout_type::Layout;
-use simple_icons_website_end2end_helpers::AppWorld;
 use std::time::Duration;
 use thirtyfour::prelude::*;
 
