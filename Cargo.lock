@@ -552,9 +552,9 @@ dependencies = [
 
 [[package]]
 name = "cucumber-thirtyfour-worlder"
-version = "0.1.0"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c26351b10a117c3b404a107a4f0c677976310d35610992063ee3884fea3219c5"
+checksum = "a0677bb28f8d8d9e13acf0a0579d647303e9fa565cfa3b0498ed9d2a7b24f511"
 dependencies = [
  "proc-macro2",
  "quote",
