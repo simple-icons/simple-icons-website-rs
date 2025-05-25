@@ -1,6 +1,6 @@
 use anyhow::{Ok, Result};
 use cucumber::{given, then, when};
-use end2end_helpers::{element_touches_viewport, AppWorld};
+use end2end_helpers::{AppWorld, TouchesViewport};
 use std::time::Duration;
 use thirtyfour::prelude::*;
 
@@ -21,7 +21,7 @@ async fn open_the_app(world: &mut AppWorld) -> Result<()> {
 #[then("the header touches the viewport")]
 async fn header_touches_viewport(world: &mut AppWorld) -> Result<()> {
     let header = world.driver().find(By::Tag("header")).await?;
-    let touches_viewport = element_touches_viewport(world, &header).await?;
+    let touches_viewport = world.element_touches_viewport(&header).await?;
     assert!(touches_viewport, "The header not touches viewport");
     Ok(())
 }

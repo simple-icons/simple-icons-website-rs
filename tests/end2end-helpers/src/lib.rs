@@ -1,6 +1,6 @@
 mod world;
 
-pub use world::{element_touches_viewport, AppWorld};
+pub use world::{AppWorld, TouchesViewport};
 
 /// Make the first character of a string uppercase and the rest lowercase.
 pub fn capitalize(s: &str) -> String {
