@@ -77,6 +77,14 @@
 
 	// Rust Analyzer
 	"rust-analyzer.showUnlinkedFileNotification": false,
+	"rust-analyzer.check.overrideCommand": [
+		"cargo",
+		"dylint",
+		"--all",
+		"--",
+		"--all-targets",
+		"--message-format=json"
+	],
 
 	// RunOnSave
 	"emeraldwalk.runonsave": {

@@ -13,3 +13,6 @@ cucumber-thirtyfour-worlder.workspace = true
 
 [package.metadata.cargo-machete]
 ignored = ["cucumber"]
+
+[lints]
+workspace = true

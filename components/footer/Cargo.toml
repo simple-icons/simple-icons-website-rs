@@ -12,3 +12,6 @@ leptos.workspace = true
 leptos-fluent.workspace = true
 simple-icons-macros.workspace = true
 simple-icons-website-svg-icon.workspace = true
+
+[lints]
+workspace = true

@@ -12,3 +12,6 @@ syn.workspace = true
 simple-icons.workspace = true
 simple-icons-website-types.workspace = true
 serde_json.workspace = true
+
+[lints]
+workspace = true

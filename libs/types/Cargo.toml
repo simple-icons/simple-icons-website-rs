@@ -3,3 +3,6 @@ name = "simple-icons-website-types"
 description = "Types for the Simple Icons website. Mainly includes static wrappers over simple-icons types with some extra fields."
 version.workspace = true
 edition.workspace = true
+
+[lints]
+workspace = true

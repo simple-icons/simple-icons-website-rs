@@ -1,0 +1,7 @@
+[target.'cfg(all())']
+rustflags = [
+	# Configuration for Dylint libraries
+	#
+	# https://github.com/leptos-rs/leptos-lints
+	"-Dleptos_print_stdout",
+]

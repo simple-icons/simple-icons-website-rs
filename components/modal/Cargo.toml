@@ -17,3 +17,6 @@ leptos.workspace = true
 leptos-fluent.workspace = true
 leptos-use.workspace = true
 web-sys.workspace = true
+
+[lints]
+workspace = true

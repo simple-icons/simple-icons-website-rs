@@ -11,3 +11,6 @@ crate-type = ["cdylib", "rlib"]
 leptos.workspace = true
 leptos_icons.workspace = true
 icondata.workspace = true
+
+[lints]
+workspace = true

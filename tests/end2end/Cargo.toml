@@ -15,3 +15,6 @@ cucumber.workspace = true
 # Desktop tests
 name = "desktop"
 harness = false
+
+[lints]
+workspace = true

@@ -158,3 +158,16 @@ tokio = { version = "1.39", default-features = false, features = [
 	"macros",
 	"rt-multi-thread",
 ] }
+
+[workspace.metadata.dylint]
+libraries = [
+	{ git = "https://github.com/leptos-rs/leptos-lints", tag = "v0.1.0" },
+]
+
+[workspace.lints.rust]
+warnings = "deny"
+unknown_lints = "allow"
+
+[workspace.lints.rust.unexpected_cfgs]
+level = "deny"
+check-cfg = ["cfg(dylint_lib, values(any()))"]

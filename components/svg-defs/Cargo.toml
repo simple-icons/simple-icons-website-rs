@@ -10,3 +10,6 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 simple-icons-website-ids.workspace = true
 leptos.workspace = true
+
+[lints]
+workspace = true

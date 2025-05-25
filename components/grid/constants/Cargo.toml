@@ -10,3 +10,6 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 simple-icons-macros.workspace = true
 simple-icons-website-types.workspace = true
+
+[lints]
+workspace = true

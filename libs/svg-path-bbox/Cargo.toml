@@ -10,3 +10,6 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 js-sys.workspace = true
 wasm-bindgen.workspace = true
+
+[lints]
+workspace = true

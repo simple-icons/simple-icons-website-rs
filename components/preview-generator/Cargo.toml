@@ -32,3 +32,6 @@ wasm-bindgen-futures.workspace = true
 svg-path-cst.workspace = true
 badge-maker.workspace = true
 fast-fuzzy.workspace = true
+
+[lints]
+workspace = true

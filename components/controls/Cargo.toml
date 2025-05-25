@@ -31,3 +31,6 @@ leptos-fluent.workspace = true
 wasm-bindgen.workspace = true
 web-sys.workspace = true
 js-sys.workspace = true
+
+[lints]
+workspace = true

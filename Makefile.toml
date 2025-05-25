@@ -135,6 +135,7 @@ run_task = { name = ["build", "serve-for-prod"] }
 description = "Lint Rust code"
 run_task = { name = [
 	"clippy",
+	"dylint",
 	"rustfmt-check",
 	"leptosfmt-check",
 	"cargo-machete",
@@ -144,7 +145,13 @@ run_task = { name = [
 description = "Run clippy"
 install_crate = "clippy"
 command = "cargo"
-args = ["clippy", "--", "-D", "warnings", "-D", "clippy::print_stdout"]
+args = ["clippy", "--no-deps"]
+
+[tasks.dylint]
+description = "Run dylint"
+install_crate = "cargo-dylint"
+command = "cargo"
+args = ["dylint", "--all"]
 
 [tasks.rustfmt-check]
 description = "Format Rust code with rustfmt"

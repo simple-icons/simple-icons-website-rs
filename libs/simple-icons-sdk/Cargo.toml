@@ -7,3 +7,6 @@ edition.workspace = true
 [dependencies]
 unicode-normalization.workspace = true
 nanoserde.workspace = true
+
+[lints]
+workspace = true

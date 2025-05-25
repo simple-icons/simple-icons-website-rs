@@ -11,3 +11,6 @@ crate-type = ["cdylib", "rlib"]
 web-sys = { workspace = true, features = ["Clipboard", "ClipboardItem"] }
 wasm-bindgen.workspace = true
 js-sys.workspace = true
+
+[lints]
+workspace = true

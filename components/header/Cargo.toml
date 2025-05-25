@@ -17,3 +17,6 @@ simple-icons-website-svg-icon.workspace = true
 simple-icons-website-modal.workspace = true
 simple-icons-macros.workspace = true
 web-sys-simple-fetch.workspace = true
+
+[lints]
+workspace = true

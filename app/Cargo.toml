@@ -27,3 +27,6 @@ icondata.workspace = true
 console_error_panic_hook.workspace = true
 serde_json.workspace = true
 leptos-use.workspace = true
+
+[lints]
+workspace = true

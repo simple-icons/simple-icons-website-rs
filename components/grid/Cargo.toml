@@ -33,3 +33,6 @@ simple-icons-website-controls-layout-type.workspace = true
 simple-icons-website-controls-layout-signal.workspace = true
 simple-icons-website-controls-order-types.workspace = true
 web-sys-simple-fetch.workspace = true
+
+[lints]
+workspace = true

@@ -10,3 +10,6 @@ serde_json.workspace = true
 colorsys.workspace = true
 svg-path-cst.workspace = true
 snafu.workspace = true
+
+[lints]
+workspace = true

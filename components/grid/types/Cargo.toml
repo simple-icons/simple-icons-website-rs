@@ -13,3 +13,6 @@ simple-icons-website-types.workspace = true
 simple-icons-website-controls-layout-type.workspace = true
 simple-icons-website-controls-order-types.workspace = true
 simple-icons-website-controls-search.workspace = true
+
+[lints]
+workspace = true

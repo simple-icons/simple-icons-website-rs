@@ -11,3 +11,6 @@ crate-type = ["cdylib", "rlib"]
 simple-icons-website-svg-defs.workspace = true
 leptos.workspace = true
 icondata.workspace = true
+
+[lints]
+workspace = true

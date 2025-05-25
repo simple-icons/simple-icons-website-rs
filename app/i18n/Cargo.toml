@@ -8,3 +8,6 @@ edition.workspace = true
 leptos-fluent.workspace = true
 fluent-templates.workspace = true
 leptos.workspace = true
+
+[lints]
+workspace = true
