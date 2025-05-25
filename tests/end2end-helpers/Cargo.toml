@@ -12,4 +12,4 @@ serde_json.workspace = true
 cucumber-thirtyfour-worlder.workspace = true
 
 [package.metadata.cargo-machete]
-ignored = ["thirtyfour", "cucumber"]
+ignored = ["cucumber"]
