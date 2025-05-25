@@ -166,7 +166,9 @@ libraries = [
 
 [workspace.lints.rust]
 warnings = "deny"
+# Configuration for leptos-lints
 unknown_lints = "allow"
+leptos_print_stdout = "deny"
 
 [workspace.lints.rust.unexpected_cfgs]
 level = "deny"
