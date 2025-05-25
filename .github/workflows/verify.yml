@@ -49,7 +49,7 @@ jobs:
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-make,trunk,cargo-machete
+          tool: cargo-make,trunk,cargo-machete,dylint-link
       - name: Install Node.js dependencies
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Build
