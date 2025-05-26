@@ -39,19 +39,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v20
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: npm
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
           tool: cargo-make,trunk,cargo-machete,dylint-link
       - name: Install Node.js dependencies
-        run: npm ci --ignore-scripts --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
       - name: Build
         run: cargo make build
         env:
@@ -74,17 +68,17 @@ jobs:
             browser: chrome
             suite: desktop
             window-size: 1920x1080
-            runs-on: ubuntu-24.04
+            runs-on: ubuntu-latest
           - name: Edge Desktop
             browser: edge
             suite: desktop
             window-size: 1920x1080
-            runs-on: ubuntu-24.04
+            runs-on: ubuntu-latest
           - name: Firefox Desktop
             browser: firefox
             suite: desktop
             window-size: 1920x1080
-            runs-on: ubuntu-24.04
+            runs-on: ubuntu-latest
           #- name: Chrome Mobile
           #  browser: chrome
           #  runs-on: ubuntu-22.04
@@ -182,13 +176,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v20
-          restore-keys: |
-            ${{ runner.os }}-node-
+          cache: npm
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:

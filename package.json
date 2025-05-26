@@ -14,7 +14,7 @@
 	"author": "Simple Icons Collaborators",
 	"type": "module",
 	"scripts": {
-		"postinstall": "husky"
+		"prepare": "node -e 'process.exit(process.env.CI ? 0 : 1)' || husky"
 	},
 	"dependencies": {
 		"@fontsource/open-sans": "5.0.8",

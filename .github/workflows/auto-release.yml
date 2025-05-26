@@ -20,13 +20,13 @@ jobs:
       - name: Get releases
         id: releases
         run: |
-          simple_icons_version="$(curl --retry 5 -s https://api.github.com/repos/simple-icons/simple-icons/releases/latest | jq -r .tag_name)"
+          simple_icons_version="$(curl --retry 15 -s https://api.github.com/repos/simple-icons/simple-icons/releases/latest | jq -r .tag_name)"
           echo "si=$simple_icons_version" >> $GITHUB_OUTPUT
           echo "dep=$(grep -i '"simple-icons":' package.json | cut -d'"' -f4)" >> $GITHUB_OUTPUT
 
   auto-release:
     name: Automated release
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: get-releases
     if: needs.get-releases.outputs.dep != needs.get-releases.outputs.si
     steps:
@@ -45,24 +45,18 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           target: wasm32-unknown-unknown
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}-v20
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
+          cache: npm
       - name: Update simple-icons
         run: |
           sed -i 's/"simple-icons": "${{needs.get-releases.outputs.dep}}"/"simple-icons": "${{needs.get-releases.outputs.si}}"/' package.json
           cat package.json | grep '"simple-icons":' -C 2
-          npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+          npm install --package-lock-only --no-audit --no-fund
       - name: Install Node.js dependencies
-        run: npm ci --ignore-scripts --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
