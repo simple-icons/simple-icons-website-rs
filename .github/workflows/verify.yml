@@ -104,7 +104,7 @@ jobs:
         with:
           tool: cargo-make,trunk
       - name: Install Node.js dependencies
-        run: npm ci --ignore-scripts --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
       - name: Build
         # Experiencing the next issue from time to time, that's why is using retry here
         # https://github.com/mondeja/leptos-fluent/issues/315
@@ -182,7 +182,7 @@ jobs:
         with:
           tool: cargo-make,trunk,cargo-machete
       - name: Install Node.js dependencies
-        run: npm ci --ignore-scripts --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
       - name: Build
         run: cargo make build
         env:
