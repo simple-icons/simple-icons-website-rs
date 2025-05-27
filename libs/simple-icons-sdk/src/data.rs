@@ -7,7 +7,7 @@
 use nanoserde::DeJson;
 use std::collections::HashMap;
 use std::fs;
-use std::path;
+use std::path::{Path, PathBuf};
 
 #[derive(DeJson, Clone)]
 #[cfg_attr(debug_assertions, derive(Debug))]
@@ -46,10 +46,46 @@ pub struct SimpleIconData {
     pub aliases: Option<SimpleIconDataAliases>,
 }
 
+/// Extract the Simple Icons data file path from its package.json exports.
+///
+/// We could change its path. We've changed it in v15
+/// (see https://github.com/simple-icons/simple-icons/pull/13316)
+/// and maybe we'll do it again in the future.
+fn get_simple_icons_data_file_path() -> PathBuf {
+    let package_json_file = Path::new("node_modules")
+        .join("simple-icons")
+        .join("package.json");
+    let package_json_raw = fs::read_to_string(&package_json_file)
+        .expect("Could not read package.json file");
+    let package_json: serde_json::Value =
+        serde_json::from_str(&package_json_raw)
+            .expect("JSON was not well-formatted");
+    let exported_data_file_path = package_json
+        .get("exports")
+        .and_then(|exports| {
+            exports
+                .get("./icons.json")
+                .and_then(|data| data.get("default"))
+        })
+        .expect("Exported data file path not found in `.exports.[./icons.json].default` of Simple Icons package.json")
+        .as_str()
+        .expect("Exported data file path is not a string");
+
+    let icons_data_file = Path::new("node_modules")
+        .join("simple-icons")
+        .join(exported_data_file_path);
+    if !icons_data_file.exists() {
+        panic!(
+            "Simple Icons data file does not exist at path: {}",
+            icons_data_file.display()
+        );
+    }
+    icons_data_file
+}
+
 pub fn get_simple_icons_data() -> Vec<SimpleIconData> {
-    let icons_data_file =
-        path::Path::new("node_modules/simple-icons/_data/simple-icons.json");
-    let icons_data_raw = fs::read_to_string(icons_data_file)
+    let icons_data_file = get_simple_icons_data_file_path();
+    let icons_data_raw = fs::read_to_string(&icons_data_file)
         .expect("Could not read simple-icons.json file");
     DeJson::deserialize_json(&icons_data_raw)
         .expect("JSON was not well-formatted")

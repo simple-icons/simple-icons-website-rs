@@ -16,7 +16,9 @@ use syn::{parse_macro_input, LitStr};
 /// Get number of icons available in the simple-icons npm package
 #[proc_macro]
 pub fn get_number_of_icons(_: TokenStream) -> TokenStream {
-    Path::new("node_modules/simple-icons/icons")
+    Path::new("node_modules")
+        .join("simple-icons")
+        .join("icons")
         .read_dir()
         .unwrap()
         .count()
@@ -38,9 +40,12 @@ pub fn get_number_of_deprecated_icons(_: TokenStream) -> TokenStream {
 fn get_simple_icons_3rd_party_extensions_libraries_impl(
     section_name: &'static str,
 ) -> TokenStream {
-    let readme_file_content =
-        fs::read_to_string(Path::new("node_modules/simple-icons/README.md"))
-            .unwrap();
+    let path = Path::new("node_modules")
+        .join("simple-icons")
+        .join("README.md");
+    let readme_file_content = fs::read_to_string(&path).unwrap_or_else(|err| {
+        panic!("Error reading {} file: {err}", path.display());
+    });
 
     let mut extensions_array_code = "&[".to_string();
 
@@ -351,8 +356,13 @@ pub fn deprecated_icons_array(_: TokenStream) -> TokenStream {
 #[proc_macro]
 pub fn js_library_version(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as LitStr);
-    let path = format!("node_modules/{}/package.json", input.value());
-    let package_json_content = fs::read_to_string(Path::new(&path)).unwrap();
+    let path = Path::new("node_modules")
+        .join(input.value())
+        .join("package.json");
+    let package_json_content =
+        fs::read_to_string(&path).unwrap_or_else(move |err| {
+            panic!("Error reading {} file: {err}", path.display());
+        });
     let package_json: serde_json::Value =
         serde_json::from_str(package_json_content.as_str()).unwrap();
     let version = package_json["version"].as_str().unwrap();

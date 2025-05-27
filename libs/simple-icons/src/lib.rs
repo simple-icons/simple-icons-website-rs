@@ -50,9 +50,12 @@ pub fn get_simple_icons() -> Vec<SimpleIcon> {
 
 /// Get the SVG path for a simple icon by its slug
 pub fn get_simple_icon_svg_path(slug: &str) -> String {
-    let icon_file_path = format!("node_modules/simple-icons/icons/{slug}.svg");
-    let icon_file_content =
-        fs::read_to_string(Path::new(&icon_file_path)).unwrap();
+    let icon_file_path = Path::new("node_modules")
+        .join("simple-icons")
+        .join("icons")
+        .join(format!("{slug}.svg"));
+    let icon_file_content = fs::read_to_string(&icon_file_path)
+        .unwrap_or_else(|err| panic!("Error reading icon file: {err}"));
     let icon_path = icon_file_content
         .split_once("d=\"")
         .unwrap()
