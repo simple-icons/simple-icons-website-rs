@@ -10,5 +10,8 @@ proc-macro = true
 [dependencies]
 convert_case = "0.8"
 
+[features]
+default = []
+
 [lints]
 workspace = true

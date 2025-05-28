@@ -52,53 +52,60 @@ pub fn leptos_unique_ids(attr: TokenStream, item: TokenStream) -> TokenStream {
         let span = first_token.span();
 
         return error(
-            "Expected an enum formed with the token tree `enum Ids {{}}`.",
+            b"Expected an enum formed with the token tree `enum Ids {{}}`.",
             span,
         );
     }
 
+    let call_site_span = Span::call_site();
+
     let mut ids: Vec<String> = Vec::new();
+    let mut ids_variants_idents = Vec::new();
+
     for token in attr {
         if let TokenTree::Literal(literal) = token {
-            let maybe_value = value_from_literal(&literal);
+            let literal_str = literal.to_string();
+            let maybe_value = value_from_literal_str(&literal_str);
             if let Err(err) = maybe_value {
                 let span = literal.span();
                 return error(err, span);
             }
-            let value = maybe_value.unwrap();
+            let value = maybe_value.unwrap().to_string();
 
             if value.is_empty() {
                 let span = literal.span();
                 return error(
-                    "String literals in the attribute cannot be empty.",
+                    b"String literals in the attribute cannot be empty.",
                     span,
                 );
             }
 
             if ids.contains(&value) {
                 let span = literal.span();
-                return error("Duplicated string literal found.", span);
+                return error(b"Duplicated string literal found.", span);
             }
 
+            ids_variants_idents
+                .push(to_pascal_case_ident(&value, &call_site_span));
             ids.push(value);
         } else if let TokenTree::Punct(punct) = token {
             if punct.as_char() != ',' {
                 let span = punct.span();
                 return error(
-                    "Expected a comma between string literals in the attribute.",
+                    b"Expected a comma between string literals in the attribute.",
                     span,
                 );
             }
         } else {
             let span = token.span();
             return error(
-                "Expected only string literals and commas in the attribute.",
+                b"Expected only string literals and commas in the attribute.",
                 span,
             );
         }
     }
 
-    let call_site_span = Span::call_site();
+    let ids_length = ids.len();
 
     // remove the last token and add the implementation
     let mut tokens: Vec<TokenTree> = item.into_iter().collect();
@@ -107,10 +114,11 @@ pub fn leptos_unique_ids(attr: TokenStream, item: TokenStream) -> TokenStream {
     // enum declaration
     let group = Group::new(Delimiter::Brace, {
         let mut inner = TokenStream::new();
-        let ids_iter = ids.clone().into_iter();
-        for id in ids_iter {
+        #[expect(clippy::needless_range_loop)]
+        for i in 0..ids_length {
+            let ident = &ids_variants_idents[i];
             inner.extend([
-                TokenTree::Ident(to_pascal_case_ident(&id, &call_site_span)),
+                TokenTree::Ident(ident.clone()),
                 TokenTree::Punct(Punct::new(',', Spacing::Alone)),
             ]);
         }
@@ -157,32 +165,16 @@ pub fn leptos_unique_ids(attr: TokenStream, item: TokenStream) -> TokenStream {
                 TokenTree::Ident(Ident::new("self", call_site_span)),
                 TokenTree::Group(Group::new(Delimiter::Brace, {
                     let mut inner = TokenStream::new();
-                    for id in &ids {
+                    for i in 0..ids_length {
+                        let (id, ident) = (&ids[i], &ids_variants_idents[i]);
                         inner.extend([
-                            TokenTree::Ident(to_pascal_case_ident(
-                                id,
-                                &call_site_span,
-                            )),
+                            TokenTree::Ident(ident.to_owned()),
                             TokenTree::Punct(Punct::new('=', Spacing::Joint)),
                             TokenTree::Punct(Punct::new('>', Spacing::Alone)),
                             TokenTree::Literal(Literal::string(id)),
                             TokenTree::Punct(Punct::new(',', Spacing::Alone)),
                         ]);
                     }
-                    inner.extend([
-                        TokenTree::Ident(Ident::new("_", call_site_span)),
-                        TokenTree::Punct(Punct::new('=', Spacing::Joint)),
-                        TokenTree::Punct(Punct::new('>', Spacing::Alone)),
-                        TokenTree::Ident(Ident::new(
-                            "unreachable",
-                            call_site_span,
-                        )),
-                        TokenTree::Punct(Punct::new('!', Spacing::Joint)),
-                        TokenTree::Group(Group::new(
-                            Delimiter::Parenthesis,
-                            TokenStream::new(),
-                        )),
-                    ]);
                     inner
                 })),
             ]);
@@ -198,13 +190,14 @@ pub fn leptos_unique_ids(attr: TokenStream, item: TokenStream) -> TokenStream {
     tokens.into_iter().collect()
 }
 
-fn error(message: &str, span: Span) -> TokenStream {
-    let mut error_message = Literal::string(&format!("Error: {message}"));
+fn error(message: &[u8], span: Span) -> TokenStream {
+    let mut error_message = Literal::string(&String::from_utf8_lossy(message));
 
     // Asignamos el span del token original
     error_message.set_span(span);
 
-    let tokens = vec![
+    let mut stream = TokenStream::new();
+    stream.extend([
         TokenTree::Ident(Ident::new("compile_error", span)),
         TokenTree::Punct({
             let mut punct = Punct::new('!', Spacing::Alone);
@@ -215,46 +208,23 @@ fn error(message: &str, span: Span) -> TokenStream {
             Delimiter::Brace,
             TokenStream::from(TokenTree::Literal(error_message)),
         )),
-    ];
+    ]);
 
-    tokens.into_iter().collect()
+    stream
 }
 
 /// Convert a literal to a string, removing the quotes and the string type characters
-fn value_from_literal(
-    literal: &proc_macro::Literal,
-) -> Result<String, &'static str> {
-    let literal_str = literal.to_string();
+fn value_from_literal_str(literal_str: &str) -> Result<&str, &'static [u8]> {
     if literal_str.starts_with("r#") {
-        Ok(literal_str
-            .strip_prefix("r#\"")
-            .unwrap()
-            .strip_suffix("\"#")
-            .unwrap()
-            .into())
+        Ok(&literal_str[2..literal_str.len() - 2])
     } else if literal_str.starts_with("c\"") {
-        Ok(literal_str
-            .strip_prefix("c\"")
-            .unwrap()
-            .strip_suffix('"')
-            .unwrap()
-            .into())
+        Ok(&literal_str[2..literal_str.len() - 1])
     } else if literal_str.starts_with("cr#") {
-        Ok(literal_str
-            .strip_prefix("cr#\"")
-            .unwrap()
-            .strip_suffix("\"#")
-            .unwrap()
-            .into())
+        Ok(&literal_str[3..literal_str.len() - 2])
     } else if literal_str.starts_with('"') {
-        Ok(literal_str
-            .strip_prefix('"')
-            .unwrap()
-            .strip_suffix('"')
-            .unwrap()
-            .into())
+        Ok(&literal_str[1..literal_str.len() - 1])
     } else {
-        Err("Literal must be a string literal")
+        Err(b"Literal must be a string literal")
     }
 }
 
