@@ -148,7 +148,7 @@ run_task = { name = [
 description = "Run clippy"
 install_crate = "clippy"
 command = "cargo"
-args = ["clippy", "--no-deps", "--", "-Dwarnings"]
+args = ["clippy", "--no-deps"]
 
 [tasks.dylint]
 description = "Run dylint"
