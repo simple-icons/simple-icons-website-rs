@@ -1,6 +1,4 @@
 use leptos_unique_ids::leptos_unique_ids;
-
-/// Some documentation
 #[leptos_unique_ids(
     "icon-details-modal",
     "search-input",
@@ -15,6 +13,9 @@ use leptos_unique_ids::leptos_unique_ids;
     "cross-svg-path",
     "upload-svg-path",
     "save-svg-path",
-    "copy-svg-path"
+    "copy-svg-path",
+    "preview-color",
+    "preview-path",
+    "preview-brand"
 )]
 pub enum Ids {}

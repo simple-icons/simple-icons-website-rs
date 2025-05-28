@@ -142,14 +142,15 @@ pub fn leptos_unique_ids(attr: TokenStream, item: TokenStream) -> TokenStream {
         inner.extend([
             TokenTree::Ident(Ident::new("fn", call_site_span)),
             TokenTree::Ident(Ident::new("as_str", call_site_span)),
-            TokenTree::Group(Group::new(Delimiter::Parenthesis, {
-                let mut inner = TokenStream::new();
-                inner.extend([
+            TokenTree::Group(Group::new(
+                Delimiter::Parenthesis,
+                [
                     TokenTree::Punct(Punct::new('&', Spacing::Joint)),
                     TokenTree::Ident(Ident::new("self", call_site_span)),
-                ]);
-                inner
-            })),
+                ]
+                .into_iter()
+                .collect(),
+            )),
             TokenTree::Punct(Punct::new('-', Spacing::Joint)),
             TokenTree::Punct(Punct::new('>', Spacing::Alone)),
             TokenTree::Punct(Punct::new('&', Spacing::Joint)),
@@ -158,16 +159,23 @@ pub fn leptos_unique_ids(attr: TokenStream, item: TokenStream) -> TokenStream {
             TokenTree::Ident(Ident::new("str", call_site_span)),
         ]);
 
-        let group = Group::new(Delimiter::Brace, {
-            let mut inner = TokenStream::new();
-            inner.extend([
+        let group = Group::new(
+            Delimiter::Brace,
+            [
                 TokenTree::Ident(Ident::new("match", call_site_span)),
                 TokenTree::Ident(Ident::new("self", call_site_span)),
                 TokenTree::Group(Group::new(Delimiter::Brace, {
                     let mut inner = TokenStream::new();
                     for i in 0..ids_length {
-                        let (id, ident) = (&ids[i], &ids_variants_idents[i]);
+                        let id = &ids[i];
+                        let ident = &ids_variants_idents[i];
                         inner.extend([
+                            TokenTree::Ident(Ident::new(
+                                "Self",
+                                call_site_span,
+                            )),
+                            TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+                            TokenTree::Punct(Punct::new(':', Spacing::Joint)),
                             TokenTree::Ident(ident.to_owned()),
                             TokenTree::Punct(Punct::new('=', Spacing::Joint)),
                             TokenTree::Punct(Punct::new('>', Spacing::Alone)),
@@ -177,23 +185,144 @@ pub fn leptos_unique_ids(attr: TokenStream, item: TokenStream) -> TokenStream {
                     }
                     inner
                 })),
-            ]);
-            inner
-        });
+            ]
+            .into_iter()
+            .collect(),
+        );
         inner.extend([TokenTree::Group(group)]);
 
         inner
     });
-
     tokens.push(TokenTree::Group(impl_group));
+
+    // Into<&'static str> impl
+    #[cfg(feature = "into-str")]
+    tokens.extend([
+        TokenTree::Ident(Ident::new("impl", call_site_span)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Ident(Ident::new("std", call_site_span)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Ident(Ident::new("convert", call_site_span)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Ident(Ident::new("Into", call_site_span)),
+        TokenTree::Punct(Punct::new('<', Spacing::Joint)),
+        TokenTree::Punct(Punct::new('&', Spacing::Joint)),
+        TokenTree::Punct(Punct::new('\'', Spacing::Joint)),
+        TokenTree::Ident(Ident::new("static", call_site_span)),
+        TokenTree::Ident(Ident::new("str", call_site_span)),
+        TokenTree::Punct(Punct::new('>', Spacing::Alone)),
+        TokenTree::Ident(Ident::new("for", call_site_span)),
+        TokenTree::Ident(Ident::new("Ids", call_site_span)),
+        TokenTree::Group(Group::new(
+            Delimiter::Brace,
+            [
+                TokenTree::Ident(Ident::new("fn", call_site_span)),
+                TokenTree::Ident(Ident::new("into", call_site_span)),
+                TokenTree::Group(Group::new(
+                    Delimiter::Parenthesis,
+                    TokenStream::from(TokenTree::Ident(Ident::new(
+                        "self",
+                        call_site_span,
+                    ))),
+                )),
+                TokenTree::Punct(Punct::new('-', Spacing::Joint)),
+                TokenTree::Punct(Punct::new('>', Spacing::Alone)),
+                TokenTree::Punct(Punct::new('&', Spacing::Joint)),
+                TokenTree::Punct(Punct::new('\'', Spacing::Joint)),
+                TokenTree::Ident(Ident::new("static", call_site_span)),
+                TokenTree::Ident(Ident::new("str", call_site_span)),
+                TokenTree::Group(Group::new(
+                    Delimiter::Brace,
+                    [
+                        TokenTree::Ident(Ident::new("self", call_site_span)),
+                        TokenTree::Punct(Punct::new('.', Spacing::Joint)),
+                        TokenTree::Ident(Ident::new("as_str", call_site_span)),
+                        TokenTree::Group(Group::new(
+                            Delimiter::Parenthesis,
+                            TokenStream::new(),
+                        )),
+                    ]
+                    .into_iter()
+                    .collect(),
+                )),
+            ]
+            .into_iter()
+            .collect(),
+        )),
+    ]);
+
+    // leptos::prelude::IntoAttributeValue impl
+    #[cfg(feature = "into-attribute-value")]
+    tokens.extend([
+        TokenTree::Ident(Ident::new("impl", call_site_span)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Ident(Ident::new("leptos", call_site_span)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Ident(Ident::new("prelude", call_site_span)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Ident(Ident::new("IntoAttributeValue", call_site_span)),
+        TokenTree::Ident(Ident::new("for", call_site_span)),
+        TokenTree::Ident(Ident::new("Ids", call_site_span)),
+        TokenTree::Group(Group::new(
+            Delimiter::Brace,
+            [
+                TokenTree::Ident(Ident::new("type", call_site_span)),
+                TokenTree::Ident(Ident::new("Output", call_site_span)),
+                TokenTree::Punct(Punct::new('=', Spacing::Alone)),
+                TokenTree::Punct(Punct::new('&', Spacing::Joint)),
+                TokenTree::Punct(Punct::new('\'', Spacing::Joint)),
+                TokenTree::Ident(Ident::new("static", call_site_span)),
+                TokenTree::Ident(Ident::new("str", call_site_span)),
+                TokenTree::Punct(Punct::new(';', Spacing::Joint)),
+                TokenTree::Ident(Ident::new("fn", call_site_span)),
+                TokenTree::Ident(Ident::new(
+                    "into_attribute_value",
+                    call_site_span,
+                )),
+                TokenTree::Group(Group::new(
+                    Delimiter::Parenthesis,
+                    TokenStream::from(TokenTree::Ident(Ident::new(
+                        "self",
+                        call_site_span,
+                    ))),
+                )),
+                TokenTree::Punct(Punct::new('-', Spacing::Joint)),
+                TokenTree::Punct(Punct::new('>', Spacing::Alone)),
+                TokenTree::Ident(Ident::new("Self", call_site_span)),
+                TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+                TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+                TokenTree::Ident(Ident::new("Output", call_site_span)),
+                TokenTree::Group(Group::new(
+                    Delimiter::Brace,
+                    [
+                        TokenTree::Ident(Ident::new("self", call_site_span)),
+                        TokenTree::Punct(Punct::new('.', Spacing::Joint)),
+                        TokenTree::Ident(Ident::new("as_str", call_site_span)),
+                        TokenTree::Group(Group::new(
+                            Delimiter::Parenthesis,
+                            TokenStream::new(),
+                        )),
+                    ]
+                    .into_iter()
+                    .collect(),
+                )),
+            ]
+            .into_iter()
+            .collect(),
+        )),
+    ]);
 
     tokens.into_iter().collect()
 }
 
 fn error(message: &[u8], span: Span) -> TokenStream {
     let mut error_message = Literal::string(&String::from_utf8_lossy(message));
-
-    // Asignamos el span del token original
     error_message.set_span(span);
 
     let mut stream = TokenStream::new();
@@ -213,7 +342,6 @@ fn error(message: &[u8], span: Span) -> TokenStream {
     stream
 }
 
-/// Convert a literal to a string, removing the quotes and the string type characters
 fn value_from_literal_str(literal_str: &str) -> Result<&str, &'static [u8]> {
     if literal_str.starts_with("r#") {
         Ok(&literal_str[2..literal_str.len() - 2])

@@ -33,4 +33,10 @@ use your_crate::Ids;
 Ids::LanguageSelector.as_str();
 ```
 
+## Features
+
+- `into-str` (enabled by default): Implements the `Into<&'static str>` trait for the `Ids` enum.
+- `into-attribute-value` (enabled by default): Implements the [Leptos' `IntoAttributeValue` trait] in `Ids` enum, allowing to use the identifiers as HTML attributes directly. Require inclusion of `leptos` dependency in your consumer crate.
+
 [Leptos]: https://leptos.dev
+[Leptos' `IntoAttributeValue` trait]: https://docs.rs/leptos/latest/leptos/attr/trait.IntoAttributeValue.html

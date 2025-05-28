@@ -116,7 +116,7 @@ fn PreviewUploadSVGButton(
                 name="upload-svg"
                 accept=".svg"
                 class="fixed right-full bottom-full max-w-0 max-h-0 w-0 h-0 overflow-hidden -z-10 invisible"
-                id=Ids::PreviewUploadSvgButton.as_str()
+                id=Ids::PreviewUploadSvgButton
                 on:change=move |ev| {
                     let input = event_target::<web_sys::HtmlInputElement>(&ev);
                     let file = input.files().unwrap().get(0).unwrap();
@@ -154,7 +154,7 @@ fn PreviewCopyButton() -> impl IntoView {
         <button
             class="button"
             type="button"
-            id=Ids::PreviewCopyButton.as_str()
+            id=Ids::PreviewCopyButton
             on:click=move |_| {
                 let canvas = canvas_container();
                 spawn_local(copy_canvas_container_as_image(canvas));
@@ -185,7 +185,7 @@ fn PreviewSaveButton(brand: ReadSignal<String>) -> impl IntoView {
             title=move || tr!("save-preview")
             class="button"
             type="button"
-            id=Ids::PreviewSaveButton.as_str()
+            id=Ids::PreviewSaveButton
             tabindex=0
             on:click=move |_| {
                 let canvas = canvas_container();
@@ -209,7 +209,7 @@ fn PreviewDownloadSVGButton(
         <button
             title=move_tr!("download-filetype", { "filetype" => tr!("svg") })
             class="button"
-            id=Ids::PreviewDownloadSvgButton.as_str()
+            id=Ids::PreviewDownloadSvgButton
             type="button"
             tabindex=0
             on:click=move |_| {

@@ -458,7 +458,7 @@ pub fn IconDetailsModal() -> impl IntoView {
             })
         >
 
-            <div class="icon-details-modal" id=Ids::IconDetailsModal.as_str()>
+            <div class="icon-details-modal" id=Ids::IconDetailsModal>
                 <div>
                     <IconDetailsModalPreview />
                     <IconDetailsModalInformation />

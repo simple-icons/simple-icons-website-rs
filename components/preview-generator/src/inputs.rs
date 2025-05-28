@@ -6,6 +6,7 @@ use leptos_use::{on_click_outside, use_device_pixel_ratio};
 use simple_icons::lint::errors::PathLintError;
 use simple_icons_sdk as sdk;
 use simple_icons_website_grid_constants::ICONS;
+use simple_icons_website_ids::Ids;
 use simple_icons_website_types::SimpleIcon;
 use svg_path_bbox::svg_path_bbox;
 use svg_path_cst::svg_path_cst;
@@ -26,7 +27,7 @@ pub fn ColorInput(
             <input
                 type="text"
                 style="width:68px"
-                id="preview-color"
+                id=Ids::PreviewColor
                 value=color
                 prop:value=color
                 on:input=move |ev| {
@@ -172,7 +173,7 @@ pub fn PathInput(
                 node_ref=input_ref
                 type="text"
                 style="width:682px"
-                id="preview-path"
+                id=Ids::PreviewPath
                 value=path
                 prop:value=path
                 class:warn=move || !path_lint_errors().is_empty()
@@ -334,7 +335,7 @@ pub fn BrandInput(
                 node_ref=input_ref
                 type="text"
                 class="mr-7 w-[524px]"
-                id="preview-brand"
+                id=Ids::PreviewBrand
                 value=brand
                 prop:value=brand
                 on:input=move |ev| {

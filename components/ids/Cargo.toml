@@ -9,6 +9,10 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 leptos-unique-ids.workspace = true
+leptos.workspace = true
+
+[package.metadata.cargo-machete]
+ignored = ["leptos"]
 
 [lints]
 workspace = true

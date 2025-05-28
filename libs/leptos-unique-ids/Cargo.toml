@@ -11,7 +11,9 @@ proc-macro = true
 convert_case = "0.8"
 
 [features]
-default = []
+default = ["into-str", "into-attribute-value"]
+into-str = []
+into-attribute-value = []
 
 [lints]
 workspace = true
