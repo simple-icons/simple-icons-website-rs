@@ -36,6 +36,7 @@ members = [
 	"libs/web-sys-simple-copy",
 	"libs/web-sys-simple-events",
 	"libs/web-sys-simple-fetch",
+	"libs/leptos-unique-ids",
 
 	# Tests
 	"tests",
@@ -60,8 +61,11 @@ libraries = [
 	{ git = "https://github.com/leptos-rs/leptos-lints", tag = "v0.1.0" },
 ]
 
+[workspace.lints.clippy]
+print_stdout = "deny"
+
 [workspace.lints.rust]
-warnings = "deny"
+warnings = "warn"
 # Configuration for leptos-lints
 unknown_lints = "allow"
 leptos_print_stdout = "deny"
@@ -98,6 +102,7 @@ simple-icons-website-svg-icon = { path = "./components/svg-icon" }
 simple-icons-website-url = { path = "./components/url" }
 end2end-helpers = { path = "./tests/end2end-helpers" }
 end2end-steps = { path = "./tests/end2end-steps" }
+leptos-unique-ids = { path = "./libs/leptos-unique-ids" }
 svg-path-bbox = { path = "./libs/svg-path-bbox" }
 badge-maker = { path = "./libs/badge-maker" }
 fast-fuzzy = { path = "./libs/fast-fuzzy" }

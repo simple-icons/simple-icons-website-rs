@@ -46,12 +46,12 @@ pub(crate) fn listen_keyboard_shortcuts() {
                 && ["controlleft", "controlright"]
                     .contains(&previous_code.as_str())
             {
-                click_button(Ids::PreviewUploadSVGButton.as_str());
+                click_button(Ids::PreviewUploadSvgButton.as_str());
             } else if code == "arrowdown"
                 && ["controlleft", "controlright"]
                     .contains(&previous_code.as_str())
             {
-                click_button(Ids::PreviewDownloadSVGButton.as_str());
+                click_button(Ids::PreviewDownloadSvgButton.as_str());
             } else if code == "keyc"
                 && ["controlleft", "controlright"]
                     .contains(&previous_code.as_str())

@@ -116,7 +116,7 @@ fn PreviewUploadSVGButton(
                 name="upload-svg"
                 accept=".svg"
                 class="fixed right-full bottom-full max-w-0 max-h-0 w-0 h-0 overflow-hidden -z-10 invisible"
-                id=Ids::PreviewUploadSVGButton.as_str()
+                id=Ids::PreviewUploadSvgButton.as_str()
                 on:change=move |ev| {
                     let input = event_target::<web_sys::HtmlInputElement>(&ev);
                     let file = input.files().unwrap().get(0).unwrap();
@@ -209,7 +209,7 @@ fn PreviewDownloadSVGButton(
         <button
             title=move_tr!("download-filetype", { "filetype" => tr!("svg") })
             class="button"
-            id=Ids::PreviewDownloadSVGButton.as_str()
+            id=Ids::PreviewDownloadSvgButton.as_str()
             type="button"
             tabindex=0
             on:click=move |_| {

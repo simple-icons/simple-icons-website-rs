@@ -29,14 +29,14 @@ impl SVGDef {
     pub fn id(&self) -> &'static str {
         match self {
             Self::Null => "null",
-            Self::View => Ids::ViewSVGPath.as_str(),
-            Self::Download => Ids::DownloadSVGPath.as_str(),
-            Self::DownloadThin => Ids::DownloadThinSVGPath.as_str(),
-            Self::Controls => Ids::ControlsSVGPath.as_str(),
-            Self::Cross => Ids::CrossSVGPath.as_str(),
-            Self::Upload => Ids::UploadSVGPath.as_str(),
-            Self::Save => Ids::SaveSVGPath.as_str(),
-            Self::Copy => Ids::CopySVGPath.as_str(),
+            Self::View => Ids::ViewSvgPath.as_str(),
+            Self::Download => Ids::DownloadSvgPath.as_str(),
+            Self::DownloadThin => Ids::DownloadThinSvgPath.as_str(),
+            Self::Controls => Ids::ControlsSvgPath.as_str(),
+            Self::Cross => Ids::CrossSvgPath.as_str(),
+            Self::Upload => Ids::UploadSvgPath.as_str(),
+            Self::Save => Ids::SaveSvgPath.as_str(),
+            Self::Copy => Ids::CopySvgPath.as_str(),
         }
     }
 

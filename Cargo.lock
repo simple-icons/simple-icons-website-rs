@@ -1696,6 +1696,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "leptos-unique-ids"
+version = "0.1.0"
+dependencies = [
+ "convert_case 0.8.0",
+]
+
+[[package]]
 name = "leptos-use"
 version = "0.16.0-beta"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3105,6 +3112,9 @@ dependencies = [
 [[package]]
 name = "simple-icons-website-ids"
 version = "0.1.0"
+dependencies = [
+ "leptos-unique-ids",
+]
 
 [[package]]
 name = "simple-icons-website-menu"

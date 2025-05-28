@@ -2,7 +2,8 @@
 //!
 //! Minify identifiers in release mode.
 
-pub enum Ids {
+/*
+pub enum IdsOld {
     SearchInput,
     IconDetailsModal,
     PreviewCopyButton,
@@ -20,43 +21,65 @@ pub enum Ids {
     CopySVGPath,
 }
 
-impl Ids {
+impl IdsOld {
     pub fn as_str(&self) -> &'static str {
         #[cfg(debug_assertions)]
         match self {
-            Ids::IconDetailsModal => "icon-details-modal",
-            Ids::SearchInput => "search-input",
-            Ids::PreviewCopyButton => "preview-copy-button",
-            Ids::PreviewSaveButton => "preview-save-button",
-            Ids::PreviewDownloadSVGButton => "preview-download-svg-button",
-            Ids::PreviewUploadSVGButton => "preview-upload-svg-button",
+            IdsOld::IconDetailsModal => "icon-details-modal",
+            IdsOld::SearchInput => "search-input",
+            IdsOld::PreviewCopyButton => "preview-copy-button",
+            IdsOld::PreviewSaveButton => "preview-save-button",
+            IdsOld::PreviewDownloadSVGButton => "preview-download-svg-button",
+            IdsOld::PreviewUploadSVGButton => "preview-upload-svg-button",
 
-            Ids::ViewSVGPath => "view-path",
-            Ids::DownloadSVGPath => "download-path",
-            Ids::DownloadThinSVGPath => "download-thin-path",
-            Ids::ControlsSVGPath => "controls-path",
-            Ids::CrossSVGPath => "cross-path",
-            Ids::UploadSVGPath => "upload-path",
-            Ids::SaveSVGPath => "save-path",
-            Ids::CopySVGPath => "copy-path",
+            IdsOld::ViewSVGPath => "view-path",
+            IdsOld::DownloadSVGPath => "download-path",
+            IdsOld::DownloadThinSVGPath => "download-thin-path",
+            IdsOld::ControlsSVGPath => "controls-path",
+            IdsOld::CrossSVGPath => "cross-path",
+            IdsOld::UploadSVGPath => "upload-path",
+            IdsOld::SaveSVGPath => "save-path",
+            IdsOld::CopySVGPath => "copy-path",
         }
         #[cfg(not(debug_assertions))]
         match self {
-            Ids::IconDetailsModal => "i",
-            Ids::SearchInput => "f",
-            Ids::PreviewCopyButton => "b",
-            Ids::PreviewSaveButton => "j",
-            Ids::PreviewDownloadSVGButton => "k",
-            Ids::PreviewUploadSVGButton => "l",
+            IdsOld::IconDetailsModal => "i",
+            IdsOld::SearchInput => "f",
+            IdsOld::PreviewCopyButton => "b",
+            IdsOld::PreviewSaveButton => "j",
+            IdsOld::PreviewDownloadSVGButton => "k",
+            IdsOld::PreviewUploadSVGButton => "l",
 
-            Ids::ViewSVGPath => "v",
-            Ids::DownloadSVGPath => "d",
-            Ids::DownloadThinSVGPath => "h",
-            Ids::ControlsSVGPath => "c",
-            Ids::CrossSVGPath => "x",
-            Ids::UploadSVGPath => "u",
-            Ids::SaveSVGPath => "s",
-            Ids::CopySVGPath => "p",
+            IdsOld::ViewSVGPath => "v",
+            IdsOld::DownloadSVGPath => "d",
+            IdsOld::DownloadThinSVGPath => "h",
+            IdsOld::ControlsSVGPath => "c",
+            IdsOld::CrossSVGPath => "x",
+            IdsOld::UploadSVGPath => "u",
+            IdsOld::SaveSVGPath => "s",
+            IdsOld::CopySVGPath => "p",
         }
     }
 }
+*/
+
+use leptos_unique_ids::leptos_unique_ids;
+
+/// Some documentation
+#[leptos_unique_ids(
+    "icon-details-modal",
+    "search-input",
+    "preview-copy-button",
+    "preview-save-button",
+    "preview-download-svg-button",
+    "preview-upload-svg-button",
+    "view-svg-path",
+    "download-svg-path",
+    "download-thin-svg-path",
+    "controls-svg-path",
+    "cross-svg-path",
+    "upload-svg-path",
+    "save-svg-path",
+    "copy-svg-path"
+)]
+pub enum Ids {}
