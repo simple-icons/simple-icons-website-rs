@@ -1,4 +1,4 @@
-use leptos::prelude::{document, GetUntracked, RwSignal, Update};
+use leptos::prelude::{document, window, GetUntracked, RwSignal, Update};
 use simple_icons_website_ids::Ids;
 use std::boxed::Box;
 use wasm_bindgen::JsCast;
@@ -8,22 +8,12 @@ pub(crate) fn listen_keyboard_shortcuts() {
 
     let keydown_listener = wasm_bindgen::closure::Closure::wrap(Box::new(
         move |event: web_sys::KeyboardEvent| {
-            event.prevent_default();
             keys_pressed.update(|keys| {
                 keys.push(event.code().to_lowercase());
             });
-        },
-    )
-        as Box<dyn Fn(_)>);
 
-    let keyup_listener = wasm_bindgen::closure::Closure::wrap(Box::new(
-        move |event: web_sys::KeyboardEvent| {
-            event.prevent_default();
             let pressed_codes = keys_pressed.get_untracked();
             let code = event.code().to_lowercase();
-            keys_pressed.update(|keys| {
-                keys.retain(|key| key != &code);
-            });
 
             if pressed_codes.len() != 2 {
                 return;
@@ -47,22 +37,40 @@ pub(crate) fn listen_keyboard_shortcuts() {
                     .contains(&previous_code.as_str())
             {
                 click_button(Ids::PreviewUploadSVGButton.as_str());
+                event.prevent_default();
             } else if code == "arrowdown"
                 && ["controlleft", "controlright"]
                     .contains(&previous_code.as_str())
             {
                 click_button(Ids::PreviewDownloadSVGButton.as_str());
+                event.prevent_default();
             } else if code == "keyc"
                 && ["controlleft", "controlright"]
                     .contains(&previous_code.as_str())
             {
-                click_button(Ids::PreviewCopyButton.as_str());
+                // Ctrl + C
+                if let Ok(Some(_)) = window().get_selection() {
+                    // don't copy the view because there is some text selected
+                } else {
+                    click_button(Ids::PreviewCopyButton.as_str());
+                }
             } else if code == "keys"
                 && ["controlleft", "controlright"]
                     .contains(&previous_code.as_str())
             {
                 click_button(Ids::PreviewSaveButton.as_str());
+                event.prevent_default();
             }
+        },
+    )
+        as Box<dyn Fn(_)>);
+
+    let keyup_listener = wasm_bindgen::closure::Closure::wrap(Box::new(
+        move |event: web_sys::KeyboardEvent| {
+            let code = event.code().to_lowercase();
+            keys_pressed.update(|keys| {
+                keys.retain(|key| key != &code);
+            });
         },
     )
         as Box<dyn Fn(_)>);
