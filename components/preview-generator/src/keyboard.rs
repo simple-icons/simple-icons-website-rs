@@ -49,10 +49,17 @@ pub(crate) fn listen_keyboard_shortcuts() {
                     .contains(&previous_code.as_str())
             {
                 // Ctrl + C
-                if let Ok(Some(_)) = window().get_selection() {
+                let click_preview_copy_button =
+                    || click_button(Ids::PreviewCopyButton.as_str());
+                if let Ok(Some(selection)) = window().get_selection() {
                     // don't copy the view because there is some text selected
+                    if selection.type_() != "Range" {
+                        click_preview_copy_button();
+                        event.prevent_default();
+                    }
                 } else {
-                    click_button(Ids::PreviewCopyButton.as_str());
+                    click_preview_copy_button();
+                    event.prevent_default();
                 }
             } else if code == "keys"
                 && ["controlleft", "controlright"]
