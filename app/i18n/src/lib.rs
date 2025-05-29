@@ -11,7 +11,7 @@ fluent_templates::static_loader! {
         // According to fluent-templates documentation, these marks are used
         // to display the text correctly in right-to-left languages. We don't
         // currently have any right-to-left languages in the project, so it's
-        // disable to make testing easier. We can enable it later if this
+        // disabled to make testing easier. We can enable it later if this
         // affects the rendering of right-to-left languages.
         // See https://github.com/XAMPPRocky/fluent-templates?tab=readme-ov-file#why-is-there-extra-characters-around-the-values-of-arguments
         customise: |bundle| bundle.set_use_isolating(false),
