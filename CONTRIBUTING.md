@@ -14,6 +14,7 @@
 - `cargo make watch-css`: Watch the CSS files with [TailwindCSS](https://tailwindcss.com/).
 - `cargo make format`: Format files.
 - `cargo make lint`: Check formatting of files.
+- `cargo make dylint`: Run dylint (separated from `cargo make lint` to avoid long execution times).
 - `cargo make build`: Build the website for production.
 - `cargo make serve`: Build the website for production and serve it with [serve](https://www.npmjs.com/package/serve).
 

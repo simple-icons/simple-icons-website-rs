@@ -25,8 +25,12 @@ jobs:
           temporaryPublicStorage: true
 
   lint:
-    name: Lint
+    name: Lint (`cargo make ${{ matrix.task }}`)
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [lint, dylint]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,15 +39,15 @@ jobs:
         with:
           target: wasm32-unknown-unknown
           components: clippy,rustfmt
+      - name: Install tooling dependencies
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-make,trunk,cargo-machete${{ matrix.task == 'dylint' && ',dylint-link' || '' }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
           cache: npm
-      - name: Install tooling dependencies
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-make,trunk,cargo-machete,dylint-link
       - name: Install Node.js dependencies
         run: npm ci --no-audit --no-fund
       - name: Build
@@ -55,7 +59,7 @@ jobs:
         with:
           timeout_minutes: 40
           max_attempts: 3
-          command: cargo make lint
+          command: cargo make ${{ matrix.task }}
 
   end2end-tests:
     name: ${{ matrix.name }}
@@ -187,12 +191,6 @@ jobs:
         run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore WebAssembly report
-        uses: actions/cache/restore@v4
-        id: restore
-        with:
-          path: .wasm-report/size_in_bytes
-          key: ${{ runner.os }}-wasm-report-01
       - name: Create WebAssembly report
         run: |
           size_in_bytes=$(wc -c < "$(find app/dist -name '*.wasm' -print)")
@@ -200,62 +198,6 @@ jobs:
           size_in_kb_rounded=$(bc -l <<< "scale=6; $size_in_kb / 1")
           size_in_mb=$(bc -l <<< "$size_in_kb / 1024")
           size_in_mb_rounded=$(bc -l <<< "scale=6; $size_in_mb / 1")
-          if [ ! -d .wasm-report ]; then
-            mkdir .wasm-report
-          fi
-          if [ ! -f .wasm-report/size_in_bytes ]; then
-            echo 0 > .wasm-report/size_in_bytes
-          fi
-          previous_size_in_bytes=$(cat .wasm-report/size_in_bytes)
-          previous_size_in_kb=$(bc -l <<< "$previous_size_in_bytes / 1024")
-          previous_size_in_kb_rounded=$(bc -l <<< "scale=6; $previous_size_in_kb / 1")
-          previous_size_in_mb=$(bc -l <<< "$previous_size_in_kb / 1024")
-          previous_size_in_mb_rounded=$(bc -l <<< "scale=6; $previous_size_in_mb / 1")
           echo "- $size_in_bytes bytes" >> $GITHUB_STEP_SUMMARY
           echo "- $size_in_kb_rounded Kb" >> $GITHUB_STEP_SUMMARY
           echo "- $size_in_mb_rounded MB" >> $GITHUB_STEP_SUMMARY
-          echo -e '\n#### Comparison against master\n' >> $GITHUB_STEP_SUMMARY
-          if [ "$previous_size_in_bytes" -eq 0 ]; then
-            echo "No previous WASM file has been found in the cache." >> $GITHUB_STEP_SUMMARY
-          else
-            if [ "$size_in_bytes" -gt "$previous_size_in_bytes" ]; then
-              diff_bytes=$(bc -l <<< "$size_in_bytes - $previous_size_in_bytes")
-              diff_kb=$(bc -l <<< "$diff_bytes / 1024")
-              diff_kb_rounded=$(bc -l <<< "scale=6; $diff_kb / 1")
-              diff_mb=$(bc -l <<< "$diff_kb / 1024")
-              diff_mb_rounded=$(bc -l <<< "scale=6; $diff_mb / 1")
-              echo "WASM file size has increased by:"
-              echo "- +$diff_bytes bytes" >> $GITHUB_STEP_SUMMARY
-              echo "- +$diff_kb_rounded Kb" >> $GITHUB_STEP_SUMMARY
-              echo "- +$diff_mb_rounded MB" >> $GITHUB_STEP_SUMMARY
-              rel_diff=$(bc -l <<< "($size_in_bytes - $previous_size_in_bytes) / $previous_size_in_bytes * 100")
-              rel_diff_rounded=$(bc -l <<< "scale=4; $rel_diff / 1")
-              echo "- +$rel_diff_rounded%" >> $GITHUB_STEP_SUMMARY
-            elif [ "$size_in_bytes" -lt "$previous_size_in_bytes" ]; then
-              diff_bytes=$(bc -l <<< "$previous_size_in_bytes - $size_in_bytes")
-              diff_kb=$(bc -l <<< "$diff_bytes / 1024")
-              diff_kb_rounded=$(bc -l <<< "scale=6; $diff_kb / 1")
-              diff_mb=$(bc -l <<< "$diff_kb / 1024")
-              diff_mb_rounded=$(bc -l <<< "scale=6; $diff_mb / 1")
-              echo "WASM file size has decreased by:"
-              echo "- -$diff_bytes bytes" >> $GITHUB_STEP_SUMMARY
-              echo "- -$diff_kb_rounded Kb" >> $GITHUB_STEP_SUMMARY
-              echo "- -$diff_mb_rounded MB" >> $GITHUB_STEP_SUMMARY
-              rel_diff=$(bc -l <<< "($previous_size_in_bytes - $size_in_bytes) / $previous_size_in_bytes * 100")
-              rel_diff_rounded=$(bc -l <<< "scale=4; $rel_diff / 1")
-              echo "- Difference: -$rel_diff_rounded%" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "WASM file size has not changed." >> $GITHUB_STEP_SUMMARY
-            fi
-            echo -e '\n#### Previous size\n' >> $GITHUB_STEP_SUMMARY
-            echo "- $previous_size_in_bytes bytes" >> $GITHUB_STEP_SUMMARY
-            echo "- $previous_size_in_kb_rounded Kb" >> $GITHUB_STEP_SUMMARY
-            echo "- $previous_size_in_mb_rounded MB" >> $GITHUB_STEP_SUMMARY
-          fi
-          echo $size_in_bytes > .wasm-report/size_in_bytes
-      - name: Save WebAssembly report
-        if: github.ref == 'refs/heads/master' || steps.restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: .wasm-report/size_in_bytes
-          key: ${{ runner.os }}-wasm-report-01

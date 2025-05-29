@@ -138,7 +138,6 @@ run_task = { name = ["build", "serve-for-prod"] }
 description = "Lint Rust code"
 run_task = { name = [
 	"clippy",
-	"dylint",
 	"rustfmt-check",
 	"leptosfmt-check",
 	"cargo-machete",
