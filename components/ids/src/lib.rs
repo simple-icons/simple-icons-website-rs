@@ -1,5 +1,6 @@
 use leptos_unique_ids::leptos_unique_ids;
 #[leptos_unique_ids(
+    "_carbonads_js",
     "icon-details-modal",
     "search-input",
     "preview-copy-button",

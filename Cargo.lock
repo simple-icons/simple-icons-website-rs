@@ -1698,6 +1698,8 @@ dependencies = [
 [[package]]
 name = "leptos-unique-ids"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8b46d38c8ea670d799242c5e3e7e6e91cc4fad788710f85aa47ee8efca8b501"
 dependencies = [
  "convert_case 0.8.0",
 ]

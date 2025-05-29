@@ -36,13 +36,13 @@ pub(crate) fn listen_keyboard_shortcuts() {
                 && ["controlleft", "controlright"]
                     .contains(&previous_code.as_str())
             {
-                click_button(Ids::PreviewUploadSVGButton.as_str());
+                click_button(Ids::PreviewUploadSvgButton.as_str());
                 event.prevent_default();
             } else if code == "arrowdown"
                 && ["controlleft", "controlright"]
                     .contains(&previous_code.as_str())
             {
-                click_button(Ids::PreviewDownloadSVGButton.as_str());
+                click_button(Ids::PreviewDownloadSvgButton.as_str());
                 event.prevent_default();
             } else if code == "keyc"
                 && ["controlleft", "controlright"]
@@ -52,7 +52,7 @@ pub(crate) fn listen_keyboard_shortcuts() {
                 let click_preview_copy_button =
                     || click_button(Ids::PreviewCopyButton.as_str());
                 if let Ok(Some(selection)) = window().get_selection() {
-                    // don't copy the view because there is some text selected
+                    // don't copy the view when there is text selected
                     if selection.type_() != "Range" {
                         click_preview_copy_button();
                         event.prevent_default();

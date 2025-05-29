@@ -36,7 +36,6 @@ members = [
 	"libs/web-sys-simple-copy",
 	"libs/web-sys-simple-events",
 	"libs/web-sys-simple-fetch",
-	"libs/leptos-unique-ids",
 
 	# Tests
 	"tests",
@@ -59,6 +58,7 @@ opt-level = 'z'
 [workspace.metadata.dylint]
 libraries = [
 	{ git = "https://github.com/leptos-rs/leptos-lints", tag = "v0.1.0" },
+	{ git = "https://github.com/mondeja/leptos-unique-ids", tag = "v0.1.0", pattern = "lints" },
 ]
 
 [workspace.lints.clippy]
@@ -69,6 +69,9 @@ warnings = "warn"
 # Configuration for leptos-lints
 unknown_lints = "allow"
 leptos_print_stdout = "deny"
+# Configuration for leptos-unique-ids lints
+literal_as_id_attribute_value = "deny"
+tt_as_id_attribute_value = "deny"
 
 [workspace.lints.rust.unexpected_cfgs]
 level = "deny"
@@ -102,7 +105,6 @@ simple-icons-website-svg-icon = { path = "./components/svg-icon" }
 simple-icons-website-url = { path = "./components/url" }
 end2end-helpers = { path = "./tests/end2end-helpers" }
 end2end-steps = { path = "./tests/end2end-steps" }
-leptos-unique-ids = { path = "./libs/leptos-unique-ids" }
 svg-path-bbox = { path = "./libs/svg-path-bbox" }
 badge-maker = { path = "./libs/badge-maker" }
 fast-fuzzy = { path = "./libs/fast-fuzzy" }
@@ -179,3 +181,4 @@ tokio = { version = "1.39", default-features = false, features = [
 	"macros",
 	"rt-multi-thread",
 ] }
+leptos-unique-ids = "0.1.0"
