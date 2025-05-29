@@ -5,7 +5,6 @@ fluent_templates::static_loader! {
     static TRANSLATIONS = {
         locales: "./locales",
         fallback_language: "en-US",
-        customise: |bundle| bundle.set_use_isolating(false),
     };
 }
 
@@ -19,6 +18,7 @@ pub fn I18n(
         children: children(),
         locales: "./locales",
         translations: [TRANSLATIONS],
+        default_language: "en-US",
         check_translations: "../../{app,components}/**/*.rs",
         sync_html_tag_lang: true,
         sync_html_tag_dir: true,

@@ -552,9 +552,9 @@ dependencies = [
 
 [[package]]
 name = "cucumber-thirtyfour-worlder"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a2b7901ea5ef2061cdc8d072e7a1c3c4034a2dacc314ec49c3e7b8c85516de3b"
+checksum = "2e7a118f2f637182ddd24e4893d04e8872549ffe50931d93c543c8f7c7215eb8"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -749,7 +749,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cea14ef9355e3beab063703aa9dab15afd25f0667c341310c1e5274bb1d0da18"
 dependencies = [
  "libc",
- "windows-sys 0.59.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -1666,9 +1666,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent"
-version = "0.2.10"
+version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "76724ed10138a615c597353024c1d0ec0d269365ce55d1c3b51832c609f3fb52"
+checksum = "53d136aa0f34dbd0a0fd03781cfe9eecb0e8dd35ae82eddd627726286a8c974d"
 dependencies = [
  "fluent-templates",
  "leptos",
@@ -1679,9 +1679,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent-macros"
-version = "0.2.10"
+version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1734e3376ea4007bce91eeaedf4eb24100e73c66123c5b0a19db92cad810ddea"
+checksum = "4be44507c35e7331821c194da00d95d924017f09bb7ff7bf5937849de2c2cd00"
 dependencies = [
  "cfg-expr",
  "current_platform",
@@ -2354,7 +2354,7 @@ dependencies = [
  "once_cell",
  "socket2",
  "tracing",
- "windows-sys 0.59.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -2628,7 +2628,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys",
- "windows-sys 0.59.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -4118,7 +4118,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
