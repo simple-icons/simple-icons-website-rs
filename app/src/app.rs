@@ -2,12 +2,12 @@ use crate::head::Head;
 use crate::pages::{AllIconsIndex, DeprecationsIndex, Error404, Preview};
 use leptos::{html::Footer as FooterHtmlElement, prelude::*};
 use leptos_router::{
-    components::{FlatRoutes, Route, Router},
     StaticSegment,
+    components::{FlatRoutes, Route, Router},
 };
 use leptos_use::{
-    use_color_mode_with_options, ColorMode, UseColorModeOptions,
-    UseColorModeReturn,
+    ColorMode, UseColorModeOptions, UseColorModeReturn,
+    use_color_mode_with_options,
 };
 use simple_icons_website_footer::Footer;
 use simple_icons_website_header::Header;

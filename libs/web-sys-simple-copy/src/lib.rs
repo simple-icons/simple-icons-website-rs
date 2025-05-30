@@ -1,4 +1,4 @@
-use wasm_bindgen::{closure::Closure, JsCast};
+use wasm_bindgen::{JsCast, closure::Closure};
 
 /// Copy a `<canvas>` HTML container as an image to the clipboard.
 ///

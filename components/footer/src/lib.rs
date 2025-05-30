@@ -15,7 +15,7 @@ pub fn Footer(
     view! {
         <footer node_ref=container_ref>
             <ReportProblems />
-            <div class="flex flex-col md:flex-row justify-between">
+            <div class="flex-col flex md:flex-row justify-between">
                 <About />
                 <div class="flex flex-col mt-8 space-y-2 md:mt-auto">
                     <p class="text-center min-w-[135px]">{move_tr!("share-this")}</p>

@@ -72,9 +72,6 @@
 	"stylelint.config": {},
 	"stylelint.configFile": ".stylelintrc.json",
 
-	// VSBrowser
-	"vs-browser.url": "http://127.0.0.1:8080",
-
 	// Rust Analyzer
 	"rust-analyzer.showUnlinkedFileNotification": false,
 	"rust-analyzer.check.overrideCommand": [
@@ -85,20 +82,5 @@
 		"--all-targets",
 		"--message-format=json"
 	],
-
-	// RunOnSave
-	"emeraldwalk.runonsave": {
-		"commands": [
-			{
-				"match": "\\.rs",
-				"isAsync": true,
-				"cmd": "leptosfmt ${file}"
-			},
-			{
-				"match": "\\.rs",
-				"isAsync": true,
-				"cmd": "rustfmt ${file}"
-			}
-		]
-	}
+	"rust-analyzer.rustfmt.overrideCommand": ["leptosfmt", "--stdin", "--rustfmt"]
 }

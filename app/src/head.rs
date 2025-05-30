@@ -1,7 +1,7 @@
 use crate::app::TITLE;
 use leptos::prelude::*;
 use leptos_fluent::tr;
-use leptos_meta::{provide_meta_context, Link, Meta, Title};
+use leptos_meta::{Link, Meta, Title, provide_meta_context};
 use simple_icons_macros::get_number_of_icons;
 
 static DOMAIN: &str = "simpleicons.org";

@@ -1,5 +1,5 @@
 use leptos::{ev::MouseEvent, prelude::*};
-use leptos_fluent::{tr, Language};
+use leptos_fluent::{Language, tr};
 use simple_icons_website_copy::copy_and_set_copied_transition;
 use simple_icons_website_types::SimpleIcon;
 

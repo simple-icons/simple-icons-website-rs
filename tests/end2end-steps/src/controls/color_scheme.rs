@@ -1,6 +1,6 @@
 use anyhow::{Ok, Result};
 use cucumber::{then, when};
-use end2end_helpers::{capitalize, AppWorld};
+use end2end_helpers::{AppWorld, capitalize};
 use thirtyfour::prelude::*;
 
 #[when(

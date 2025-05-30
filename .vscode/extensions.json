@@ -1,12 +1,16 @@
 {
 	"recommendations": [
-		"emeraldwalk.runonsave",
-		"bradlc.vscode-tailwindcss",
 		"rust-lang.rust-analyzer",
+		"bradlc.vscode-tailwindcss",
 		"macabeus.vscode-fluent",
 		"samverschueren.linter-xo",
 		"esbenp.prettier-vscode",
 		"alexkrechik.cucumberautocomplete",
-		"mondeja.leptos-snippets"
+		"mondeja.leptos-snippets",
+		"fill-labs.dependi",
+		"github.vscode-github-actions",
+		"editorconfig.editorconfig",
+		"davidanson.vscode-markdownlint",
+		"lorenzopirro.rust-flash-snippets"
 	]
 }

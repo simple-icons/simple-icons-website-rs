@@ -1,8 +1,8 @@
 mod data;
 
 pub use data::{
-    get_simple_icons_data, SimpleIconData, SimpleIconDataAliases,
-    SimpleIconDataLicense,
+    SimpleIconData, SimpleIconDataAliases, SimpleIconDataLicense,
+    get_simple_icons_data,
 };
 use unicode_normalization::UnicodeNormalization;
 

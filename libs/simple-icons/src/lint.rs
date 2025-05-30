@@ -80,7 +80,9 @@ pub mod errors {
         },
 
         /// Incorrect icon size
-        #[snafu(display("Size must be exactly 24 pixels in one dimension, currently {width} x {height}"))]
+        #[snafu(display(
+            "Size must be exactly 24 pixels in one dimension, currently {width} x {height}"
+        ))]
         IncorrectIconSize {
             /// Width of the icon
             width: f64,

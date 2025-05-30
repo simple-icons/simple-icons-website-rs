@@ -6,7 +6,7 @@ use simple_icons_website_controls::download::download;
 use simple_icons_website_grid_constants::ICONS;
 use simple_icons_website_ids::Ids;
 use simple_icons_website_svg_defs::SVGDef;
-use simple_icons_website_svg_icon::{svg_with_title_path_opt_fill, SVGIcon};
+use simple_icons_website_svg_icon::{SVGIcon, svg_with_title_path_opt_fill};
 use web_sys_simple_copy::copy_canvas_container_as_image;
 
 #[component]

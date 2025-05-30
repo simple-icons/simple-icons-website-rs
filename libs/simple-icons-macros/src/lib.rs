@@ -11,7 +11,7 @@ use simple_icons::{
 };
 use std::fs;
 use std::path::Path;
-use syn::{parse_macro_input, LitStr};
+use syn::{LitStr, parse_macro_input};
 
 /// Get number of icons available in the simple-icons npm package
 #[proc_macro]
@@ -197,116 +197,100 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                 None => "None".to_string(),
                 Some(aliases) => format!(
                     "Some(&::simple_icons_website_types::SimpleIconAliases {{{}, {}, {}, {}}})",
-                    {
-                        &format!(
-                            "aka: {}",
-                            match &aliases.aka {
-                                Some(aka) => format!(
-                                    "Some(&[{}])",
-                                    aka.iter()
-                                        .map(|aka| format!("\"{aka}\""))
-                                        .collect::<Vec<_>>()
-                                        .join(", ")
-                                ),
-                                None => "None".to_string(),
-                            }
-                        )
-                    },
-                    {
-                        &format!(
-                            "dup: {}",
-                            match &aliases.dup {
-                                Some(dup) => format!(
-                                    "Some(&[{}])",
-                                    dup.iter()
-                                        .map(|dup| format!(
-                                            "\"{}\"",
-                                            dup.title.clone()
-                                        ))
-                                        .collect::<Vec<_>>()
-                                        .join(", ")
-                                ),
-                                None => "None".to_string(),
-                            }
-                        )
-                    },
-                    {
-                        &format!("loc: {}", {
-                            let mut result = "".to_string();
-                            let mut alias_dup_locs: Vec<(String, String)> =
-                                vec![];
-                            if aliases.dup.is_some() {
-                                for alias_dup in aliases.dup.as_ref().unwrap() {
-                                    if alias_dup.loc.is_some() {
-                                        alias_dup_locs.extend(
-                                            alias_dup
-                                                .loc
-                                                .as_ref()
-                                                .unwrap()
-                                                .iter()
-                                                .map(|(lang, title)| {
-                                                    (
-                                                        lang.clone(),
-                                                        title.clone(),
-                                                    )
-                                                }),
-                                        );
-                                    }
-                                }
-                            }
-
-                            if aliases.loc.is_some()
-                                || !alias_dup_locs.is_empty()
-                            {
-                                result.push_str("Some(&[");
-                                if aliases.loc.is_some() {
-                                    result.push_str(
-                                        &aliases
+                    &format!(
+                        "aka: {}",
+                        match &aliases.aka {
+                            Some(aka) => format!(
+                                "Some(&[{}])",
+                                aka.iter()
+                                    .map(|aka| format!("\"{aka}\""))
+                                    .collect::<Vec<_>>()
+                                    .join(", ")
+                            ),
+                            None => "None".to_string(),
+                        }
+                    ),
+                    &format!(
+                        "dup: {}",
+                        match &aliases.dup {
+                            Some(dup) => format!(
+                                "Some(&[{}])",
+                                dup.iter()
+                                    .map(|dup| format!(
+                                        "\"{}\"",
+                                        dup.title.clone()
+                                    ))
+                                    .collect::<Vec<_>>()
+                                    .join(", ")
+                            ),
+                            None => "None".to_string(),
+                        }
+                    ),
+                    &format!("loc: {}", {
+                        let mut result = "".to_string();
+                        let mut alias_dup_locs: Vec<(String, String)> = vec![];
+                        if aliases.dup.is_some() {
+                            for alias_dup in aliases.dup.as_ref().unwrap() {
+                                if alias_dup.loc.is_some() {
+                                    alias_dup_locs.extend(
+                                        alias_dup
                                             .loc
                                             .as_ref()
                                             .unwrap()
                                             .iter()
                                             .map(|(lang, title)| {
-                                                format!(
-                                                    "(\"{lang}\", \"{title}\")"
-                                                )
-                                            })
-                                            .collect::<Vec<_>>()
-                                            .join(", "),
+                                                (lang.clone(), title.clone())
+                                            }),
                                     );
                                 }
-                                if !alias_dup_locs.is_empty() {
-                                    if aliases.loc.is_some() {
-                                        result.push_str(", ");
-                                    }
-                                    for (lang, title) in alias_dup_locs {
-                                        result.push_str(&format!(
-                                            "(\"{lang}\", \"{title}\"),"
-                                        ));
-                                    }
-                                }
-                                result.push_str("])");
-                            } else {
-                                result.push_str("None");
                             }
-                            result
-                        })
-                    },
-                    {
-                        &format!(
-                            "old: {}",
-                            match &aliases.old {
-                                Some(old) => format!(
-                                    "Some(&[{}])",
-                                    old.iter()
-                                        .map(|old| format!("\"{old}\""))
+                        }
+
+                        if aliases.loc.is_some() || !alias_dup_locs.is_empty() {
+                            result.push_str("Some(&[");
+                            if aliases.loc.is_some() {
+                                result.push_str(
+                                    &aliases
+                                        .loc
+                                        .as_ref()
+                                        .unwrap()
+                                        .iter()
+                                        .map(|(lang, title)| {
+                                            format!("(\"{lang}\", \"{title}\")")
+                                        })
                                         .collect::<Vec<_>>()
-                                        .join(", ")
-                                ),
-                                None => "None".to_string(),
+                                        .join(", "),
+                                );
                             }
-                        )
-                    },
+                            if !alias_dup_locs.is_empty() {
+                                if aliases.loc.is_some() {
+                                    result.push_str(", ");
+                                }
+                                for (lang, title) in alias_dup_locs {
+                                    result.push_str(&format!(
+                                        "(\"{lang}\", \"{title}\"),"
+                                    ));
+                                }
+                            }
+                            result.push_str("])");
+                        } else {
+                            result.push_str("None");
+                        }
+                        result
+                    }),
+                    &format!(
+                        "old: {}",
+                        match &aliases.old {
+                            Some(old) => format!(
+                                "Some(&[{}])",
+                                old.iter()
+                                    .map(|old| format!("\"{old}\""))
+                                    .collect::<Vec<_>>()
+                                    .join(", ")
+                            ),
+                            None => "None".to_string(),
+                        }
+                    ),
                 ),
             },
             i,

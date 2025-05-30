@@ -1,6 +1,6 @@
 use leptos::prelude::RwSignal;
 use simple_icons_website_controls_layout_type::Layout;
-use simple_icons_website_controls_order_types::{sort_icons, OrderModeVariant};
+use simple_icons_website_controls_order_types::{OrderModeVariant, sort_icons};
 use simple_icons_website_controls_search::search_icons_and_returns_first_page;
 use simple_icons_website_types::SimpleIcon;
 

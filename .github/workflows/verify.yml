@@ -38,7 +38,7 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           target: wasm32-unknown-unknown
-          components: clippy,rustfmt
+          components: clippy
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:

@@ -5,7 +5,7 @@ pub(crate) mod item;
 mod scroll;
 
 use ad::CarbonAdsAdGridItem;
-use item::{details::IconDetailsModal, IconGridItem};
+use item::{IconGridItem, details::IconDetailsModal};
 use leptos::{
     html::Footer,
     prelude::{NodeRef, *},

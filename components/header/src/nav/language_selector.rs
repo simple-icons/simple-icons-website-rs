@@ -1,7 +1,7 @@
-use crate::{nav::button::HeaderMenuButton, HeaderStateSignal};
+use crate::{HeaderStateSignal, nav::button::HeaderMenuButton};
 use icondata::IoLanguageSharp;
 use leptos::prelude::*;
-use leptos_fluent::{expect_i18n, move_tr, Language};
+use leptos_fluent::{Language, expect_i18n, move_tr};
 use simple_icons_website_modal::{Modal, ModalOpen, ModalOpenSignal};
 
 fn render_language(lang: &'static Language) -> impl IntoView {

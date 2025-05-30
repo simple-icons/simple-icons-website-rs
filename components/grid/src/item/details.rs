@@ -1,4 +1,4 @@
-use crate::{item::title::get_icon_localized_title, CurrentIconViewSignal};
+use crate::{CurrentIconViewSignal, item::title::get_icon_localized_title};
 use icondata::{
     BiCheckRegular, BiMenuAltRightRegular, BiMenuRegular, BsCode,
     BsWindowFullscreen, IoColorWand, TbJpg, TbPdf, TbPng, TbSvg,
@@ -7,9 +7,9 @@ use icondata::{
 use leptos::{
     ev::MouseEvent, prelude::*, task::spawn_local, wasm_bindgen::JsCast,
 };
-use leptos_fluent::{move_tr, tr, I18n};
+use leptos_fluent::{I18n, move_tr, tr};
 use leptos_icons::Icon;
-use leptos_use::{on_click_outside, use_clipboard, UseClipboardReturn};
+use leptos_use::{UseClipboardReturn, on_click_outside, use_clipboard};
 use simple_icons_website_controls::download::{
     add_pdfkit_scripts, copy_as_base64_jpg, copy_as_base64_png,
     copy_as_image_jpg, copy_as_image_png, download, download_jpg, download_pdf,

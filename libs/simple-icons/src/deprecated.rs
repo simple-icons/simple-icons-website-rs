@@ -35,9 +35,10 @@ impl PartialEq for IconDeprecation {
 pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
     let tmp_file_name = "simple-icons-deprecated.json";
     let tmp_file_path = Path::new(&env::temp_dir()).join(tmp_file_name);
-    if !tmp_file_path.exists() {
-        panic!("You need to run the script fetch-deprecated-icons.rs before building")
-    }
+    assert!(
+        tmp_file_path.exists(),
+        "Run `cargo make` to execute the script fetch-deprecated-icons.rs and build."
+    );
 
     let resp: serde_json::Value = serde_json::from_str::<serde_json::Value>(
         &fs::read_to_string(&tmp_file_path).unwrap(),

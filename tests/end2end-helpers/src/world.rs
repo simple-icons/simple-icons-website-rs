@@ -1,7 +1,7 @@
 #[allow(clippy::single_component_path_imports)]
 use cucumber;
 use std::future::Future;
-use thirtyfour::{self, error::WebDriverError, WebElement};
+use thirtyfour::{self, WebElement, error::WebDriverError};
 
 #[cucumber_thirtyfour_worlder::worlder(
     cucumber = cucumber,
@@ -29,9 +29,11 @@ impl TouchesViewport for AppWorld {
             const box = element.getBoundingClientRect();
             return box.top >= 0 && box.left >= 0;
             "#,
-            vec![element
-                .to_json()
-                .expect("Failed to convert element to JSON")],
+            vec![
+                element
+                    .to_json()
+                    .expect("Failed to convert element to JSON"),
+            ],
         );
         async {
             let ret = execute_future.await?;

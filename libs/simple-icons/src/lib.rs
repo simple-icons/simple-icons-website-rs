@@ -2,10 +2,10 @@ pub mod color;
 mod deprecated;
 pub mod lint;
 
-pub use deprecated::{fetch_deprecated_simple_icons, IconDeprecation};
+pub use deprecated::{IconDeprecation, fetch_deprecated_simple_icons};
 use simple_icons_sdk::{
-    get_simple_icons_data, title_to_slug, SimpleIconDataAliases,
-    SimpleIconDataLicense,
+    SimpleIconDataAliases, SimpleIconDataLicense, get_simple_icons_data,
+    title_to_slug,
 };
 use std::fs;
 use std::path::Path;

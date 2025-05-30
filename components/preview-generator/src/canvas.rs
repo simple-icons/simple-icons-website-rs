@@ -1,6 +1,6 @@
 use leptos::{
     prelude::*,
-    wasm_bindgen::{closure::Closure, JsCast},
+    wasm_bindgen::{JsCast, closure::Closure},
 };
 
 pub(crate) static WIDTH: u32 = 740;

@@ -1,4 +1,4 @@
-use crate::order::{set_order_mode, OrderModeSignal};
+use crate::order::{OrderModeSignal, set_order_mode};
 use fast_fuzzy::{build_searcher, search};
 use leptos::{prelude::*, task::spawn_local};
 use leptos_fluent::tr;

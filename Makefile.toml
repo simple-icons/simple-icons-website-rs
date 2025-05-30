@@ -136,12 +136,7 @@ run_task = { name = ["build", "serve-for-prod"] }
 
 [tasks.lint-rust]
 description = "Lint Rust code"
-run_task = { name = [
-	"clippy",
-	"rustfmt-check",
-	"leptosfmt-check",
-	"cargo-machete",
-] }
+run_task = { name = ["clippy", "leptosfmt-check", "cargo-machete"] }
 
 [tasks.clippy]
 description = "Run clippy"
@@ -154,12 +149,6 @@ description = "Run dylint"
 install_crate = "cargo-dylint"
 command = "cargo"
 args = ["dylint", "--all"]
-
-[tasks.rustfmt-check]
-description = "Format Rust code with rustfmt"
-install_crate = "rustfmt"
-command = "cargo"
-args = ["fmt", "--all", "--check"]
 
 [tasks.leptosfmt-check]
 description = "Check Leptos code format with leptosfmt"
@@ -195,21 +184,15 @@ description = "Lint files in the project with Prettier"
 command = "npx"
 args = ["prettier", "--check", ".", "--log-level", "warn"]
 
-[tasks.format-rust-code]
-description = "Format Rust code with rustfmt"
-install_crate = "rustfmt"
-command = "cargo"
-args = ["fmt", "--all"]
-
-[tasks.format-leptos-code]
+[tasks.leptosfmt]
 description = "Format leptos view! macros"
 install_crate = "leptosfmt"
 command = "leptosfmt"
 args = ["--quiet", "*/src/**/*.rs"]
 
 [tasks.format-rust]
-description = "Format Rust code and leptos view! macros"
-run_task = { name = ["format-rust-code", "format-leptos-code"] }
+description = "Format Rust code"
+run_task = { name = ["leptosfmt"] }
 
 [tasks.prettier-write]
 description = "Format files in the project with Prettier"

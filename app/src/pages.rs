@@ -4,23 +4,23 @@ use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use leptos_icons::Icon;
 use leptos_router::{
+    NavigateOptions,
     components::A,
     hooks::{use_navigate, use_query_map},
-    NavigateOptions,
 };
 use simple_icons_website_controls::{
+    Controls,
     color_scheme::ColorSchemeControl,
     download::provide_download_type_context,
     layout::provide_layout_context,
     order::provide_order_mode_context,
     search::{init_searcher, provide_search_context},
-    Controls,
 };
-use simple_icons_website_grid::{provide_icons_grid_contexts, Grid};
+use simple_icons_website_grid::{Grid, provide_icons_grid_contexts};
 use simple_icons_website_grid_constants::{DEPRECATED_ICONS, ICONS};
 use simple_icons_website_grid_types::IconsIndexSignal;
 use simple_icons_website_preview_generator::{
-    add_preview_generator_scripts, PreviewGenerator,
+    PreviewGenerator, add_preview_generator_scripts,
 };
 
 fn index_redirections() -> bool {

@@ -1,13 +1,13 @@
 use super::button::ControlButtonIcon;
 use super::search::{
-    fire_on_search_event, get_search_value_from_localstorage, SearchValueSignal,
+    SearchValueSignal, fire_on_search_event, get_search_value_from_localstorage,
 };
 use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use simple_icons_website_controls_layout_signal::LayoutSignal;
 use simple_icons_website_controls_layout_type::Layout;
 use simple_icons_website_controls_order_types::{
-    sort_icons, OrderMode, OrderModeVariant,
+    OrderMode, OrderModeVariant, sort_icons,
 };
 use simple_icons_website_grid_types::{
     IconsGrid, IconsGridSignal, IconsIndexSignal,

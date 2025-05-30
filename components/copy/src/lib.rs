@@ -1,5 +1,5 @@
 use leptos::{ev::MouseEvent, prelude::*, task::spawn_local};
-use leptos_use::{use_clipboard, UseClipboardReturn};
+use leptos_use::{UseClipboardReturn, use_clipboard};
 use wasm_bindgen::JsCast;
 use web_sys_simple_fetch::fetch_text;
 

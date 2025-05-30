@@ -1,4 +1,4 @@
-use crate::{nav::button::HeaderMenuButton, HeaderStateSignal};
+use crate::{HeaderStateSignal, nav::button::HeaderMenuButton};
 use icondata::FaPuzzlePieceSolid;
 use leptos::{prelude::*, task::spawn_local};
 use leptos_fluent::move_tr;

@@ -1,4 +1,4 @@
-use leptos::prelude::{document, window, GetUntracked, RwSignal, Update};
+use leptos::prelude::{GetUntracked, RwSignal, Update, document, window};
 use simple_icons_website_ids::Ids;
 use std::boxed::Box;
 use wasm_bindgen::JsCast;
