@@ -154,7 +154,7 @@ args = ["dylint", "--all"]
 description = "Check Leptos code format with leptosfmt"
 install_crate = "leptosfmt"
 command = "leptosfmt"
-args = ["--check", "--quiet", "*/src/**/*.rs"]
+args = ["--check", "--quiet", "**/src/**/*.rs"]
 
 [tasks.cargo-machete]
 description = "Check for outdated dependencies"
@@ -188,7 +188,7 @@ args = ["prettier", "--check", ".", "--log-level", "warn"]
 description = "Format leptos view! macros"
 install_crate = "leptosfmt"
 command = "leptosfmt"
-args = ["--quiet", "*/src/**/*.rs"]
+args = ["--quiet", "**/src/**/*.rs"]
 
 [tasks.format-rust]
 description = "Format Rust code"
