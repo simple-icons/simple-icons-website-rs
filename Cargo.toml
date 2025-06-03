@@ -118,8 +118,10 @@ leptos = { version = "0.8", default-features = false, features = [
 leptos_meta = "0.8"
 leptos_router = "0.8"
 leptos-use = "0.16.0-beta"
-leptos-fluent = { version = "0.2", features = ["nightly"] }
-fluent-templates = "0.13"
+leptos-fluent = { version = "0.2", features = [
+	"nightly",
+	"disable-unicode-isolating-marks",
+] }
 leptos_icons = "0.6"
 icondata = { version = "0.5", default-features = false, features = [
 	"charm",

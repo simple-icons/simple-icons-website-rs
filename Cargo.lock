@@ -749,7 +749,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cea14ef9355e3beab063703aa9dab15afd25f0667c341310c1e5274bb1d0da18"
 dependencies = [
  "libc",
- "windows-sys 0.59.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -820,8 +820,6 @@ version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4ed02449601d0dacdc05cb5e13db5dab8f2b98d773aff5c53b62fad43a1b19a1"
 dependencies = [
- "flume",
- "ignore",
  "proc-macro2",
  "quote",
  "syn",
@@ -839,22 +837,11 @@ dependencies = [
  "fluent-langneg",
  "fluent-syntax",
  "fluent-template-macros",
- "flume",
- "ignore",
  "intl-memoizer",
  "log",
  "thiserror 1.0.69",
  "unic-langid",
  "walkdir",
-]
-
-[[package]]
-name = "flume"
-version = "0.11.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "da0e4dd2a88388a1f4ccc7c9ce104604dab68d9f408dc34cd45823d5a9069095"
-dependencies = [
- "spin",
 ]
 
 [[package]]
@@ -1666,9 +1653,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent"
-version = "0.2.11"
+version = "0.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "53d136aa0f34dbd0a0fd03781cfe9eecb0e8dd35ae82eddd627726286a8c974d"
+checksum = "e70c0f7665572b81d4c53e2474de6824c6aad0a4fb87a56df7fe57b3ced3be51"
 dependencies = [
  "fluent-templates",
  "leptos",
@@ -1679,9 +1666,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent-macros"
-version = "0.2.11"
+version = "0.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4be44507c35e7331821c194da00d95d924017f09bb7ff7bf5937849de2c2cd00"
+checksum = "55323dec70a459992a6db1043f0c5481d882fed24fb5ca66f9775f2463eb7e60"
 dependencies = [
  "cfg-expr",
  "current_platform",
@@ -2354,7 +2341,7 @@ dependencies = [
  "once_cell",
  "socket2",
  "tracing",
- "windows-sys 0.59.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -2628,7 +2615,7 @@ dependencies = [
  "errno",
  "libc",
  "linux-raw-sys",
- "windows-sys 0.59.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -3106,7 +3093,6 @@ dependencies = [
 name = "simple-icons-website-i18n"
 version = "0.1.0"
 dependencies = [
- "fluent-templates",
  "leptos",
  "leptos-fluent",
 ]
@@ -3283,15 +3269,6 @@ checksum = "4f5fd57c80058a56cf5c777ab8a126398ece8e442983605d280a44ce79d0edef"
 dependencies = [
  "libc",
  "windows-sys 0.52.0",
-]
-
-[[package]]
-name = "spin"
-version = "0.9.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6980e8d7511241f8acf4aebddbb1ff938df5eebe98691418c4468d0b72a96a67"
-dependencies = [
- "lock_api",
 ]
 
 [[package]]
@@ -4118,7 +4095,7 @@ version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
- "windows-sys 0.59.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]

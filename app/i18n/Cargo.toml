@@ -6,7 +6,6 @@ edition.workspace = true
 
 [dependencies]
 leptos-fluent.workspace = true
-fluent-templates.workspace = true
 leptos.workspace = true
 
 [lints]
