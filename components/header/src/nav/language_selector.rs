@@ -1,16 +1,16 @@
-use crate::{HeaderStateSignal, nav::button::HeaderMenuButton};
+use crate::{nav::button::HeaderMenuButton, HeaderStateSignal};
 use icondata::IoLanguageSharp;
 use leptos::prelude::*;
-use leptos_fluent::{Language, expect_i18n, move_tr};
+use leptos_fluent::{move_tr, I18n, Language};
 use simple_icons_website_modal::{Modal, ModalOpen, ModalOpenSignal};
 
 fn render_language(lang: &'static Language) -> impl IntoView {
     let modal_open = expect_context::<ModalOpenSignal>();
-    let i18n = expect_i18n();
+    let i18n = expect_context::<I18n>();
 
     view! {
         <li
-            class:hidden=lang.is_active()
+            class:hidden=i18n.language.get() == lang
             on:click=move |_| {
                 modal_open.set_none();
                 set_timeout(move || i18n.language.set(lang), std::time::Duration::from_millis(0));
@@ -24,10 +24,11 @@ fn render_language(lang: &'static Language) -> impl IntoView {
 /// Languages list
 #[component]
 pub fn LanguagesList() -> impl IntoView {
+    let i18n = expect_context::<I18n>();
     view! {
         <ul class="language-selector">
             {move || {
-                expect_i18n().languages.iter().map(|lang| render_language(lang)).collect::<Vec<_>>()
+                i18n.languages.iter().map(|lang| render_language(lang)).collect::<Vec<_>>()
             }}
         </ul>
     }

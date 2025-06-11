@@ -1,11 +1,11 @@
 use crate::{
-    CurrentIconViewSignal, item::details::fill_icon_details_modal_with_icon,
+    item::details::fill_icon_details_modal_with_icon, CurrentIconViewSignal,
 };
 use leptos::ev::MouseEvent;
 use leptos::prelude::*;
-use leptos_fluent::{expect_i18n, move_tr, tr};
+use leptos_fluent::{move_tr, tr, I18n};
 use simple_icons_website_controls::download::{
-    DownloadType, DownloadTypeSignal, download_png, download_svg,
+    download_png, download_svg, DownloadType, DownloadTypeSignal,
 };
 use simple_icons_website_controls_search::focus_search_bar;
 use simple_icons_website_copy::copy_and_set_copied_transition;
@@ -39,7 +39,7 @@ pub fn IconGridItemFooter(
     let view_icon_button_title =
         move || tr!("view-icon", {"icon" => icon_localized_title()});
 
-    let i18n = expect_i18n();
+    let i18n = expect_context::<I18n>();
 
     view! {
         <div>
