@@ -55,11 +55,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Lint
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 40
-          max_attempts: 3
-          command: cargo make ${{ matrix.task }}
+        run: cargo make ${{ matrix.task }}
 
   end2end-tests:
     name: ${{ matrix.name }}
@@ -110,13 +106,7 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci --no-audit --no-fund
       - name: Build
-        # Experiencing the next issue from time to time, that's why is using retry here
-        # https://github.com/mondeja/leptos-fluent/issues/315
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 40
-          max_attempts: 3
-          command: cargo make build
+        run: cargo make build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run chromedriver
