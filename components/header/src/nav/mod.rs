@@ -35,16 +35,6 @@ pub fn HeaderMenu() -> impl IntoView {
                     icon=get_simple_icon_svg_path!("packagist")
                 />
                 <HeaderMenuLink
-                    title=move_tr!("jsdelivr")
-                    href="https://www.jsdelivr.com/package/npm/simple-icons"
-                    icon=get_simple_icon_svg_path!("jsdelivr")
-                />
-                <HeaderMenuLink
-                    title=move_tr!("unpkg")
-                    href="https://unpkg.com/browse/simple-icons/"
-                    icon=get_simple_icon_svg_path!("unpkg")
-                />
-                <HeaderMenuLink
                     title=move_tr!("discord")
                     href="https://discord.gg/vUXFa7t5xJ"
                     icon=get_simple_icon_svg_path!("discord")
