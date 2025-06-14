@@ -152,7 +152,7 @@ args = ["dylint", "--all"]
 
 [tasks.leptosfmt-check]
 description = "Check Leptos code format with leptosfmt"
-install_crate = "leptosfmt"
+dependencies = ["install-leptosfmt"]
 command = "leptosfmt"
 args = ["--check", "--quiet", "**/src/**/*.rs"]
 
@@ -184,15 +184,21 @@ description = "Lint files in the project with Prettier"
 command = "npx"
 args = ["prettier", "--check", ".", "--log-level", "warn"]
 
+[tasks.cargo-fmt]
+description = "Format Rust code with cargo fmt"
+install_crate = "cargo-fmt"
+command = "cargo"
+args = ["fmt", "--all", "--quiet"]
+
 [tasks.leptosfmt]
 description = "Format leptos view! macros"
-install_crate = "leptosfmt"
+dependencies = ["install-leptosfmt"]
 command = "leptosfmt"
 args = ["--quiet", "**/src/**/*.rs"]
 
 [tasks.format-rust]
 description = "Format Rust code"
-run_task = { name = ["leptosfmt"] }
+run_task = { name = ["cargo-fmt", "leptosfmt"] }
 
 [tasks.prettier-write]
 description = "Format files in the project with Prettier"
@@ -277,3 +283,13 @@ run_task = { name = [
 	"fetch-deprecated-icons",
 	"create-sitemap",
 ], parallel = true }
+
+[tasks.install-leptosfmt]
+# Using the latest version of leptosfmt from GitHub, because released versions
+# don't include support for passing arguments to `rustfmt`, which is needed to
+# format files with Rust features like async functions.
+description = "Install leptosfmt from Git if not already installed"
+script_runner = "bash"
+script = '''
+which leptosfmt > /dev/null || cargo install --git https://github.com/bram209/leptosfmt
+'''

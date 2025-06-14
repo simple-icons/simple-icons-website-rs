@@ -234,7 +234,7 @@ pub fn OrderControl() -> impl IntoView {
                 />
                 {move || match search_signal().is_empty() {
                     #[allow(clippy::unit_arg, clippy::unused_unit)]
-                    true => view!().into_any(),
+                    true => view! {  }.into_any(),
                     false => {
                         view! {
                             <ControlButtonIcon

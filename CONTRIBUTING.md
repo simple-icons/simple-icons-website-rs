@@ -4,13 +4,12 @@
 
 - Install Rust with [rustup](https://rustup.rs/).
 - Install [cargo-make] with `cargo install --force cargo-make`.
-- Install [fnm](https://github.com/Schniz/fnm) with `cargo install fnm` and [setup your Shell](https://github.com/Schniz/fnm#shell-setup).
 - Install NodeJS with npm and run `npm install`.
 - Create an _.env_ file at the root including a Github personal token with the variable `GITHUB_TOKEN` like `GITHUB_TOKEN=...`.
 
 ## Commands
 
-- `cargo make`: Build WASM and serve. With `watch-css`, recommended for development. After it, you can use `cd app && trunk serve` to serve.
+- `cargo make`: Build WASM and serve for development. This does not watch CSS files (see `watch-css` below).
 - `cargo make watch-css`: Watch the CSS files with [TailwindCSS](https://tailwindcss.com/).
 - `cargo make format`: Format files.
 - `cargo make lint`: Check formatting of files.
@@ -20,7 +19,7 @@
 
 ## Testing
 
-To run end-to-end tests execute in three different terminals:
+To run end-to-end tests, execute in three different terminals:
 
 ```sh
 chromedriver --port=4444
@@ -68,7 +67,7 @@ Note that different screen sizes must be located in different test suites.
 
 ### Where to look
 
-- End to end tests are located in _end2end/tests/_. They are written with [Playwright](https://playwright.dev/). Configuration is located at _end2end/playwright.config.ts_.
+- End to end tests are located in _end2end/tests/_.
 - The main stylesheet is located at _app/stylesheet.css_ other assets are located at _app/assets/_. Hopefully you don't need to change this style due to the class-based approach of TailwindCSS framework. Configuration is located at _app/tailwind.config.ts_.
 - The initial HTML is located at _app/index.html_. It is used by Trunk to generate the distributed HTML. Most frontend assets are located at _app/public/_.
 - The file _Makefile.toml_ contains the commands to build, test, format, lint and serve the website. It is used by [cargo-make].

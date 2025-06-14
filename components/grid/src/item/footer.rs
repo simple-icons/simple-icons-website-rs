@@ -1,11 +1,11 @@
 use crate::{
-    item::details::fill_icon_details_modal_with_icon, CurrentIconViewSignal,
+    CurrentIconViewSignal, item::details::fill_icon_details_modal_with_icon,
 };
 use leptos::ev::MouseEvent;
 use leptos::prelude::*;
-use leptos_fluent::{move_tr, tr, I18n};
+use leptos_fluent::{I18n, move_tr, tr};
 use simple_icons_website_controls::download::{
-    download_png, download_svg, DownloadType, DownloadTypeSignal,
+    DownloadType, DownloadTypeSignal, download_png, download_svg,
 };
 use simple_icons_website_controls_search::focus_search_bar;
 use simple_icons_website_copy::copy_and_set_copied_transition;

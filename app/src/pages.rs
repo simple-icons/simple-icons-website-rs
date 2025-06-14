@@ -56,7 +56,7 @@ pub fn Index() -> AnyView {
 
     if redirected {
         #[allow(clippy::unit_arg, clippy::unused_unit)]
-        return view!().into_any();
+        return view! {  }.into_any();
     }
 
     let icons = expect_context::<IconsIndexSignal>().0;

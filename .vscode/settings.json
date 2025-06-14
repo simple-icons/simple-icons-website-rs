@@ -50,6 +50,10 @@
 		"editor.tabSize": 4,
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
+	"[rust]": {
+		"editor.tabSize": 4,
+		"editor.defaultFormatter": "rust-lang.rust-analyzer"
+	},
 
 	// TailwindCSS IntelliSense
 	"tailwindCSS.includeLanguages": {
@@ -83,5 +87,10 @@
 		"--all-targets",
 		"--message-format=json"
 	],
-	"rust-analyzer.rustfmt.overrideCommand": ["leptosfmt", "--stdin", "--rustfmt"]
+	"rust-analyzer.rustfmt.overrideCommand": [
+		"leptosfmt",
+		"--stdin",
+		"--rustfmt",
+		"--rustfmt-args=--edition=2024"
+	]
 }
