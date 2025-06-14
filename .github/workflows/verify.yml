@@ -39,6 +39,7 @@ jobs:
         with:
           target: wasm32-unknown-unknown
           components: clippy
+          cache-key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.task }}
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
