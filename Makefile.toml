@@ -241,7 +241,7 @@ exec npx esbuild ./libs/svg-path-bbox/src/svg-path-bbox.js --bundle --outfile=./
 # badge-maker
 packagejson = readfile node_modules/badge-maker/package.json
 badge_maker = json_parse ${packagejson}
-exec npx esbuild ./libs/badge-maker/src/bindings.js --bundle --outfile=./app/public/assets/js/badge-maker-${badge_maker.version}.js --minify --log-level=error --external:fs --external:util
+exec npx esbuild ./libs/badge-maker/src/bindings.js --bundle --outfile=./app/public/assets/js/badge-maker-${badge_maker.version}.js --minify --log-level=error
 '''
 
 [tasks.build-pdfkit]
