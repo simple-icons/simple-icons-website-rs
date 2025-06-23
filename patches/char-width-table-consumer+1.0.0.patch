@@ -1,0 +1,57 @@
+diff --git a/node_modules/char-width-table-consumer/src/consumer.js b/node_modules/char-width-table-consumer/src/consumer.js
+index c723a90..a167880 100644
+--- a/node_modules/char-width-table-consumer/src/consumer.js
++++ b/node_modules/char-width-table-consumer/src/consumer.js
+@@ -1,9 +1,9 @@
+ 'use strict'
+ 
+-const fs = require('fs')
++// const fs = require('fs')
+ const bs = require('binary-search')
+-const { promisify } = require('util')
+-const readFile = promisify(fs.readFile)
++// const { promisify } = require('util')
++// const readFile = promisify(fs.readFile)
+ 
+ module.exports = class CharWidthTableConsumer {
+   constructor(data) {
+@@ -77,3 +77,39 @@ module.exports = class CharWidthTableConsumer {
+     }, 0.0)
+   }
+ }
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
