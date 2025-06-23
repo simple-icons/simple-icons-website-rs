@@ -25,12 +25,8 @@ jobs:
           temporaryPublicStorage: true
 
   lint:
-    name: Lint (`cargo make ${{ matrix.task }}`)
+    name: Lint (`cargo make lint`)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        task: [lint, dylint]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,11 +35,11 @@ jobs:
         with:
           target: wasm32-unknown-unknown
           components: clippy
-          cache-key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}-${{ matrix.task }}
+          cache-key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}-lint
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-make,trunk,cargo-machete${{ matrix.task == 'dylint' && ',dylint-link' || '' }}
+          tool: cargo-make,trunk,cargo-machete
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -56,7 +52,46 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Lint
-        run: cargo make ${{ matrix.task }}
+        run: cargo make lint
+
+  dylint:
+    name: Lint (`cargo make dylint`)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Get dylint remote library toolchain
+        id: get-channel
+        # Get the remote library toolchain. This speeds up the workflow by avoiding
+        # the need to download the toolchain from the remote library every time
+        # and compile the full codebase.
+        run: |
+          channel=$(curl -s --retry 15 https://raw.githubusercontent.com/leptos-rs/leptos-lints/refs/heads/main/rust-toolchain.toml | grep channel | cut -d'"' -f2)
+          echo "channel=$channel" >> $GITHUB_OUTPUT
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: ${{ steps.get-channel.outputs.channel }}
+          target: wasm32-unknown-unknown
+          components: clippy
+          cache-key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}-${{ steps.get-channel.outputs.channel }}
+      - name: Install tooling dependencies
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-make,trunk,dylint-link
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Install Node.js dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Build
+        run: cargo make build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Lint
+        run: cargo make dylint
 
   end2end-tests:
     name: ${{ matrix.name }}
