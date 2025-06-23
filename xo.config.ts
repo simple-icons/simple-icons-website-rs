@@ -2,19 +2,15 @@
  * @file XO Flat config file.
  */
 
-import importPlugin from 'eslint-plugin-import';
 import jsdoc from 'eslint-plugin-jsdoc';
-import tseslint from 'typescript-eslint';
 
 const xoConfig = [
 	{
 		prettier: true,
 	},
 	jsdoc.configs['flat/recommended'],
-	tseslint.configs.recommended,
 	{
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-		plugins: {jsdoc, import: importPlugin},
+		plugins: {jsdoc},
 		rules: {
 			'sort-imports': [
 				'error',
@@ -29,10 +25,8 @@ const xoConfig = [
 			'n/no-extraneous-import': 'off',
 			'import-x/no-extraneous-dependencies': 'off',
 			'import/no-named-as-default': 'off',
-			// eslint-disable-next-line @typescript-eslint/naming-convention
-			'import/extensions': 'off',
-			// eslint-disable-next-line @typescript-eslint/naming-convention
-			'import/order': [
+			'import-x/extensions': 'off',
+			'import-x/order': [
 				'error',
 				{
 					groups: ['builtin', 'external', 'parent', 'sibling', 'index'],
