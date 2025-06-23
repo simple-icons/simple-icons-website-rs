@@ -76,7 +76,7 @@ jobs:
           components: clippy
           cache-key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}-dylint-${{ steps.get-channel.outputs.channel }}
           cache-directories: |
-            ./target/dylint
+            ~/.dylint_drivers
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
