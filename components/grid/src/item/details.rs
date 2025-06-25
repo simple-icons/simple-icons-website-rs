@@ -4,9 +4,7 @@ use icondata::{
     BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline, TbPngOutline,
     TbSvgOutline, VsSymbolNamespace,
 };
-use leptos::{
-    ev::MouseEvent, prelude::*, task::spawn_local, wasm_bindgen::JsCast,
-};
+use leptos::{ev::MouseEvent, prelude::*, task::spawn_local};
 use leptos_fluent::{I18n, move_tr, tr};
 use leptos_icons::Icon;
 use leptos_use::{UseClipboardReturn, on_click_outside, use_clipboard};
@@ -22,6 +20,7 @@ use simple_icons_website_ids::Ids;
 use simple_icons_website_menu::{Menu, MenuItem};
 use simple_icons_website_modal::{Modal, ModalOpenSignal};
 use simple_icons_website_types::SimpleIcon;
+use wasm_bindgen::JsCast;
 use web_sys_simple_fetch::fetch_text;
 
 fn get_brand_name_from_modal_container() -> String {

@@ -59,6 +59,7 @@ opt-level = 'z'
 libraries = [
 	{ git = "https://github.com/leptos-rs/leptos-lints", tag = "v0.1.0" },
 	{ git = "https://github.com/mondeja/leptos-unique-ids", tag = "v0.1.0", pattern = "lints" },
+	{ git = "https://github.com/mondeja/rs-apps-lints", tag = "v0.1.1", pattern = "lints/*" },
 ]
 
 [workspace.lints.clippy]
@@ -72,6 +73,13 @@ leptos_print_stdout = "deny"
 # Configuration for leptos-unique-ids lints
 literal_as_id_attribute_value = "deny"
 tt_as_id_attribute_value = "deny"
+# Configuration for rs-apps-lints
+#   web-sys
+#     this is triggering a warning with clippy,
+#     see https://github.com/rust-lang/rust-clippy/issues/15126
+web_sys_reexports = "deny"
+#   leptos
+leptos_reexports = "deny"
 
 [workspace.lints.rust.unexpected_cfgs]
 level = "deny"

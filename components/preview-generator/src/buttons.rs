@@ -1,5 +1,5 @@
 use crate::{canvas::canvas as canvas_container, helpers::is_valid_hex_color};
-use leptos::{prelude::*, task::spawn_local, wasm_bindgen::JsCast};
+use leptos::{prelude::*, task::spawn_local};
 use leptos_fluent::{move_tr, tr};
 use simple_icons_sdk as sdk;
 use simple_icons_website_controls::download::download;
@@ -7,6 +7,7 @@ use simple_icons_website_grid_constants::ICONS;
 use simple_icons_website_ids::Ids;
 use simple_icons_website_svg_defs::SVGDef;
 use simple_icons_website_svg_icon::{SVGIcon, svg_with_title_path_opt_fill};
+use wasm_bindgen::JsCast;
 use web_sys_simple_copy::copy_canvas_container_as_image;
 
 #[component]

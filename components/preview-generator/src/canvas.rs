@@ -1,7 +1,5 @@
-use leptos::{
-    prelude::*,
-    wasm_bindgen::{JsCast, closure::Closure},
-};
+use leptos::prelude::*;
+use wasm_bindgen::{JsCast, closure::Closure};
 
 pub(crate) static WIDTH: u32 = 740;
 pub(crate) static HEIGHT: u32 = 490;
