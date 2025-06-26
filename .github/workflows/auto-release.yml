@@ -8,9 +8,29 @@ permissions:
   contents: write
 
 jobs:
+  check-is-fork:
+    # If the workflow is executed in a fork, we don't want to run it
+    # because would fail due to missing permissions and will generate
+    # noise for activity watchers.
+    name: Check if running in a fork
+    runs-on: ubuntu-latest
+    outputs:
+      is-fork: ${{ steps.check.outputs.is-fork }}
+    steps:
+      - name: Set output
+        id: check
+        run: |
+          if [ "${{ github.repository_owner }}" != "simple-icons" ]; then
+            echo "is-fork=true" >> $GITHUB_OUTPUT
+          else
+            echo "is-fork=false" >> $GITHUB_OUTPUT
+          fi
+
   get-releases:
     name: Check for new release
     runs-on: ubuntu-22.04
+    needs: check-is-fork
+    if: needs.check-is-fork.outputs.is-fork == 'false'
     outputs:
       si: ${{ steps.releases.outputs.si }}
       dep: ${{ steps.releases.outputs.dep }}
