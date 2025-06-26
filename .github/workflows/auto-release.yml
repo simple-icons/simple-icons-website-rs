@@ -22,6 +22,7 @@ jobs:
         run: |
           if [ "${{ github.repository_owner }}" != "simple-icons" ]; then
             echo "is-fork=true" >> $GITHUB_OUTPUT
+            echo "Auto release only can be executed in the main repository, skipping."
           else
             echo "is-fork=false" >> $GITHUB_OUTPUT
           fi
