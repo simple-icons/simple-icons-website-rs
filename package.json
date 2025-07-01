@@ -15,7 +15,7 @@
 	"type": "module",
 	"scripts": {
 		"postinstall": "npm run setup:husky && npm run patches",
-		"patches": "patch-package",
+		"patches": "npx patch-package",
 		"setup:husky": "node -e 'process.exit(process.env.CI ? 0 : 1)' || husky"
 	},
 	"dependencies": {
