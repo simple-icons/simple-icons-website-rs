@@ -46,12 +46,12 @@ Note that different screen sizes must be located in different test suites.
 
 ## Add translation
 
-- Copy the _app/i18n/locales/en-US/_ folder into _app/locales/{id}_ changing `{id}` with the identifier of the translation. See [leptos-fluent languages documentation].
+- Copy the [english](/app/i18n/locales/en-US/) folder into _app/i18n/locales/{id}/_ changing `{id}` with the identifier of the translation. See [leptos-fluent languages documentation].
 - Translate the messages in the new file.
 
-[leptos-fluent languages documentation]: https://mondeja.github.io/leptos-fluent/languages.html
+[leptos-fluent languages documentation]: https://mondeja.github.io/leptos-fluent/latest/languages.html
 
-## Arquitecture
+## Architecture
 
 ### Technologies
 
