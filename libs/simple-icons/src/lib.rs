@@ -5,7 +5,6 @@ pub mod lint;
 pub use deprecated::{IconDeprecation, fetch_deprecated_simple_icons};
 use simple_icons_sdk::{
     SimpleIconDataAliases, SimpleIconDataLicense, get_simple_icons_data,
-    title_to_slug,
 };
 use std::fs;
 use std::path::Path;
@@ -31,10 +30,7 @@ pub fn get_simple_icons() -> Vec<SimpleIcon> {
 
     for icon_data in simple_icons_data {
         let icon = SimpleIcon {
-            slug: match icon_data.slug {
-                Some(slug) => slug,
-                None => title_to_slug(&icon_data.title),
-            },
+            slug: icon_data.slug,
             title: icon_data.title,
             hex: icon_data.hex,
             source: icon_data.source,

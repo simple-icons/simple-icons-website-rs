@@ -37,7 +37,7 @@ pub struct SimpleIconDataAliases {
 
 #[derive(DeJson)]
 pub struct SimpleIconData {
-    pub slug: Option<String>,
+    pub slug: String,
     pub title: String,
     pub hex: String,
     pub source: String,

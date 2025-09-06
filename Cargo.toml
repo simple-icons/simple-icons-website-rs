@@ -75,9 +75,9 @@ literal_as_id_attribute_value = "deny"
 tt_as_id_attribute_value = "deny"
 # Configuration for rs-apps-lints
 #   web-sys
-#     this is triggering a warning with clippy,
+#     TODO: this is triggering a warning with the Rust compiler,
 #     see https://github.com/rust-lang/rust-clippy/issues/15126
-web_sys_reexports = "deny"
+#web_sys_reexports = "deny"
 #   leptos
 leptos_reexports = "deny"
 
