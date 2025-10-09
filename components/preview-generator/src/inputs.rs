@@ -493,8 +493,16 @@ fn BrandSuggestion(
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
 ) -> impl IntoView {
+    let brand_suggestions_state =
+        expect_context::<RwSignal<BrandSuggestionsState>>();
+
     view! {
         <li on:click=move |_| {
+            brand_suggestions_state
+                .update(|state| {
+                    state.show_brand_suggestions = false;
+                    state.show_more_brand_suggestions = false;
+                });
             set_brand(icon.title.to_string());
             set_color(icon.hex.to_string());
             spawn_local(async move {
