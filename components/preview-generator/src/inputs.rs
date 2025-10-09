@@ -30,6 +30,7 @@ pub fn ColorInput(
                 id=Ids::PreviewColor
                 value=color
                 prop:value=color
+                autocomplete="off"
                 on:input=move |ev| {
                     let input = event_target::<web_sys::HtmlInputElement>(&ev);
                     let selection_start = input.selection_start().unwrap();
@@ -176,6 +177,7 @@ pub fn PathInput(
                 id=Ids::PreviewPath
                 value=path
                 prop:value=path
+                autocomplete="off"
                 class:warn=move || !path_lint_errors().is_empty()
                 on:input=move |_| {
                     let p = input_ref.get().unwrap().value();
@@ -306,6 +308,45 @@ fn LintError(
     }
 }
 
+#[derive(Clone)]
+struct BrandSuggestionsState {
+    brand_suggestions: Vec<&'static SimpleIcon>,
+    more_brand_suggestions: Vec<&'static SimpleIcon>,
+    input_value: String,
+    show_brand_suggestions: bool,
+    show_more_brand_suggestions: bool,
+}
+
+impl Default for BrandSuggestionsState {
+    fn default() -> Self {
+        Self {
+            brand_suggestions: Vec::with_capacity(
+                Self::MAX_MINIMAL_SUGGESTIONS,
+            ),
+            more_brand_suggestions: Vec::new(),
+            input_value: String::new(),
+            show_brand_suggestions: false,
+            show_more_brand_suggestions: false,
+        }
+    }
+}
+
+impl BrandSuggestionsState {
+    const MIN_INPUT_LENGTH: usize = 4;
+    const MAX_MINIMAL_SUGGESTIONS: usize = 6;
+
+    fn show_brand_suggestions(&self) -> bool {
+        !self.input_value.is_empty() && self.show_brand_suggestions
+    }
+
+    fn show_more_brand_suggestions(&self) -> bool {
+        self.input_value.len() >= Self::MIN_INPUT_LENGTH
+            && !self.more_brand_suggestions.is_empty()
+            && self.show_brand_suggestions
+            && self.show_more_brand_suggestions
+    }
+}
+
 #[component]
 pub fn BrandInput(
     brand: ReadSignal<String>,
@@ -314,62 +355,59 @@ pub fn BrandInput(
 ) -> impl IntoView {
     let pixel_ratio = use_device_pixel_ratio();
 
-    let (brand_suggestions, set_brand_suggestions) =
-        signal(Vec::<&SimpleIcon>::with_capacity(7));
-    let (more_brand_suggestions, set_more_brand_suggestions) =
-        signal(Vec::<&SimpleIcon>::new());
-    let (show_brand_suggestions, set_show_brand_suggestions) = signal(false);
-    let (show_more_brand_suggestions, set_show_more_brand_suggestions) =
-        signal(false);
+    let brand_suggestions_state =
+        RwSignal::new(BrandSuggestionsState::default());
+    provide_context(brand_suggestions_state);
 
-    let input_ref = NodeRef::new();
-    _ = on_click_outside(input_ref, move |_| {
-        set_show_brand_suggestions(false);
-        set_show_more_brand_suggestions(false);
+    let container_ref = NodeRef::new();
+    _ = on_click_outside(container_ref, move |_| {
+        brand_suggestions_state.update(|state| {
+            state.show_brand_suggestions = false;
+            state.show_more_brand_suggestions = false;
+        });
     });
 
     view! {
-        <div class="preview-input-group">
+        <div node_ref=container_ref class="preview-input-group">
             <label for="preview-brand">{move || tr!("brand")}</label>
             <input
-                node_ref=input_ref
                 type="text"
                 class="mr-7 w-[524px]"
                 id=Ids::PreviewBrand
                 value=brand
                 prop:value=brand
+                autocomplete="off"
                 on:input=move |ev| {
                     let value = event_target_value::<web_sys::Event>(&ev);
                     let (bs, more_bs) = search_brand_suggestions(&value);
-                    let more_bs_length = more_bs.len();
                     set_brand(value.clone());
                     update_preview_canvas(pixel_ratio.get_untracked());
-                    set_brand_suggestions(bs);
-                    set_more_brand_suggestions(more_bs);
-                    set_show_brand_suggestions(true);
-                    if value.len() < 4 || more_bs_length == 0 {
-                        set_show_more_brand_suggestions(false);
-                    }
+                    brand_suggestions_state
+                        .update(|state| {
+                            state.input_value = value;
+                            state.brand_suggestions = bs;
+                            state.more_brand_suggestions = more_bs;
+                            state.show_brand_suggestions = true;
+                            state.show_more_brand_suggestions = false;
+                        });
                 }
                 on:focus=move |ev| {
                     let value = event_target_value::<web_sys::Event>(&ev);
                     let (bs, more_bs) = search_brand_suggestions(&value);
-                    set_brand_suggestions(bs);
-                    set_more_brand_suggestions(more_bs);
-                    set_show_brand_suggestions(true);
+                    brand_suggestions_state
+                        .update(|state| {
+                            state.input_value = value;
+                            state.brand_suggestions = bs;
+                            state.more_brand_suggestions = more_bs;
+                            state.show_brand_suggestions = true;
+                        });
                 }
             />
 
             <BrandSuggestions
-                show=Signal::derive(move || {
-                    show_brand_suggestions() && !brand_suggestions().is_empty()
-                })
-                show_more_brand_suggestions
-                brand_suggestions
-                more_brand_suggestions
+                show=Signal::derive(move || { brand_suggestions_state().show_brand_suggestions() })
                 set_brand
                 set_color
-                set_show_more_brand_suggestions
             />
         </div>
     }
@@ -378,44 +416,54 @@ pub fn BrandInput(
 #[component]
 fn BrandSuggestions(
     show: Signal<bool>,
-    show_more_brand_suggestions: ReadSignal<bool>,
-    brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
-    more_brand_suggestions: ReadSignal<Vec<&'static SimpleIcon>>,
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
-    set_show_more_brand_suggestions: WriteSignal<bool>,
 ) -> impl IntoView {
+    let brand_suggestions_state =
+        expect_context::<RwSignal<BrandSuggestionsState>>();
+
     view! {
         <ul class=move || {
             format!(
                 "preview-brand-suggestions{}{}",
-                if show_more_brand_suggestions() { " overflow-y-scroll" } else { "" },
+                if brand_suggestions_state().show_more_brand_suggestions() {
+                    " overflow-y-scroll"
+                } else {
+                    ""
+                },
                 if show() { "" } else { " hidden" },
             )
         }>
-            <For
-                each=brand_suggestions
-                key=move |icon| icon.slug
-                children=move |icon: &'static SimpleIcon| {
-                    view! {
-                        <BrandSuggestion
-                            icon=icon
-                            set_brand=set_brand
-                            set_color=set_color
-                            hidden=Signal::derive(|| false)
-                        />
-                    }
+            {move || {
+                let state = brand_suggestions_state();
+                if !state.show_brand_suggestions() {
+                    return vec![];
                 }
-            />
+                state
+                    .brand_suggestions
+                    .iter()
+                    .map(|icon| {
+                        view! {
+                            <BrandSuggestion icon=icon set_brand=set_brand set_color=set_color />
+                        }
+                    })
+                    .collect::<Vec<_>>()
+            }}
             <Show when=move || {
-                !show_more_brand_suggestions() && !more_brand_suggestions().is_empty()
+                let state = brand_suggestions_state();
+                !state.more_brand_suggestions.is_empty() && !state.show_more_brand_suggestions()
+                    && state.input_value.len() >= BrandSuggestionsState::MIN_INPUT_LENGTH
             }>
                 <li
                     class="more-suggestions"
                     role="button"
                     title=move || tr!("load-more-icons")
                     on:click=move |_| {
-                        set_show_more_brand_suggestions(true);
+                        brand_suggestions_state
+                            .update(|state| {
+                                state.show_brand_suggestions = true;
+                                state.show_more_brand_suggestions = true;
+                            });
                         if let Some(input) = document().get_element_by_id("preview-brand") {
                             _ = input.unchecked_into::<web_sys::HtmlInputElement>().focus();
                         }
@@ -424,20 +472,17 @@ fn BrandSuggestions(
                     <span>+</span>
                 </li>
             </Show>
-            <For
-                each=more_brand_suggestions
-                key=move |icon| icon.slug
-                children=move |icon| {
-                    view! {
-                        <BrandSuggestion
-                            icon
-                            set_brand
-                            set_color
-                            hidden=Signal::derive(move || !show_more_brand_suggestions())
-                        />
-                    }
+            {move || {
+                let state = brand_suggestions_state();
+                if !state.show_more_brand_suggestions() {
+                    return vec![];
                 }
-            />
+                state
+                    .more_brand_suggestions
+                    .into_iter()
+                    .map(|icon| view! { <BrandSuggestion icon set_brand set_color /> })
+                    .collect::<Vec<_>>()
+            }}
         </ul>
     }
 }
@@ -447,30 +492,26 @@ fn BrandSuggestion(
     icon: &'static SimpleIcon,
     set_brand: WriteSignal<String>,
     set_color: WriteSignal<String>,
-    hidden: Signal<bool>,
 ) -> impl IntoView {
     view! {
-        <li
-            class:hidden=hidden
-            on:click=move |_| {
-                set_brand(icon.title.to_string());
-                set_color(icon.hex.to_string());
-                spawn_local(async move {
-                    match fetch_text(&format!("/icons/{}.svg", icon.slug)).await {
-                        Ok(svg) => {
-                            let path_input = document()
-                                .get_element_by_id("preview-path")
-                                .unwrap()
-                                .unchecked_into::<web_sys::HtmlInputElement>();
-                            let path = sdk::svg_to_path(&svg);
-                            path_input.set_value(&path);
-                            dispatch_input_event_on_input(&path_input);
-                        }
-                        Err(err) => leptos::logging::error!("{}", err),
+        <li on:click=move |_| {
+            set_brand(icon.title.to_string());
+            set_color(icon.hex.to_string());
+            spawn_local(async move {
+                match fetch_text(&format!("/icons/{}.svg", icon.slug)).await {
+                    Ok(svg) => {
+                        let path_input = document()
+                            .get_element_by_id("preview-path")
+                            .unwrap()
+                            .unchecked_into::<web_sys::HtmlInputElement>();
+                        let path = sdk::svg_to_path(&svg);
+                        path_input.set_value(&path);
+                        dispatch_input_event_on_input(&path_input);
                     }
-                });
-            }
-        >
+                    Err(err) => leptos::logging::error!("{}", err),
+                }
+            });
+        }>
             <span>
                 <img src=format!("./icons/{}.svg", icon.slug) width="24px" height="24px" />
                 <span>{icon.title}</span>
@@ -482,7 +523,8 @@ fn BrandSuggestion(
 fn search_brand_suggestions(
     value: &str,
 ) -> (Vec<&'static SimpleIcon>, Vec<&'static SimpleIcon>) {
-    let mut initial_icons: Vec<&'static SimpleIcon> = Vec::with_capacity(7);
+    let mut initial_icons: Vec<&'static SimpleIcon> =
+        Vec::with_capacity(BrandSuggestionsState::MAX_MINIMAL_SUGGESTIONS);
     let mut more_icons: Vec<&'static SimpleIcon> = vec![];
     let search_result = js_sys::Array::from(&search(value));
     let search_result_length = search_result.length();
