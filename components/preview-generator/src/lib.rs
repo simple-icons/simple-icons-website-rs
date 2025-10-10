@@ -295,15 +295,15 @@ fn PreviewBadges(color: Signal<String>, path: Signal<String>) -> impl IntoView {
                                 color
                                 svg=white_svg
                                 style="flat"
-                                translate_x=5
-                                translate_y=1
+                                translate_x=10
+                                translate_y=3
                                 id="b1"
                             />
                             <PreviewBadge
                                 color
                                 svg=color_svg
                                 style="flat"
-                                translate_x=5
+                                translate_x=10
                                 translate_y=translate_y
                                 id="b2"
                             />
@@ -311,16 +311,16 @@ fn PreviewBadges(color: Signal<String>, path: Signal<String>) -> impl IntoView {
                                 color
                                 svg=white_svg
                                 style="plastic"
-                                translate_x=185
-                                translate_y=2
+                                translate_x=188
+                                translate_y=7
                                 id="b3"
                             />
                             <PreviewBadge
                                 color
                                 svg=color_svg
                                 style="plastic"
-                                translate_x=185
-                                translate_y=translate_y + 2
+                                translate_x=188
+                                translate_y=translate_y + 1
                                 id="b4"
                             />
                             <PreviewBadge
@@ -328,7 +328,7 @@ fn PreviewBadges(color: Signal<String>, path: Signal<String>) -> impl IntoView {
                                 svg=white_svg
                                 style="for-the-badge"
                                 translate_x=365
-                                translate_y=-4
+                                translate_y=-3
                                 id="b5"
                             />
                             <PreviewBadge
@@ -336,7 +336,7 @@ fn PreviewBadges(color: Signal<String>, path: Signal<String>) -> impl IntoView {
                                 svg=color_svg
                                 style="for-the-badge"
                                 translate_x=365
-                                translate_y=translate_y - 4
+                                translate_y=translate_y - 3
                                 id="b6"
                             />
                             <PreviewBadge
@@ -344,7 +344,7 @@ fn PreviewBadges(color: Signal<String>, path: Signal<String>) -> impl IntoView {
                                 svg=color_svg
                                 style="social"
                                 translate_x=610
-                                translate_y=2
+                                translate_y=3
                                 id="b7"
                             />
                             <PreviewBadge
@@ -391,13 +391,13 @@ fn PreviewBadge(
         )
         // Internal identifiers for gradients must be unique in the parent SVG document
         .replace(r#"id="r""#, format!(r#"id="{id}-r""#).as_str())
-        .replace(r#"url(#r)"#, format!(r#"url(#{id}-r)"#).as_str())
+        .replace("url(#r)", format!("url(#{id}-r)").as_str())
         .replace(r#"id="s""#, format!(r#"id="{id}-s""#).as_str())
-        .replace(r#"url(#s)"#, format!(r#"url(#{id}-s)"#).as_str())
+        .replace("url(#s)", format!("url(#{id}-s)").as_str())
         .replace(r#"id="a""#, format!(r#"id="{id}-a""#).as_str())
-        .replace(r#"url(#a)"#, format!(r#"url(#{id}-a)"#).as_str())
+        .replace("url(#a)", format!("url(#{id}-a)").as_str())
         .replace(r#"id="b""#, format!(r#"id="{id}-b""#).as_str())
-        .replace(r#"url(#b)"#, format!(r#"url(#{id}-b)"#).as_str())
+        .replace("url(#b)", format!("url(#{id}-b)").as_str())
     }
 
     view! {
