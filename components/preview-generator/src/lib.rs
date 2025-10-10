@@ -111,7 +111,6 @@ pub fn PreviewGenerator() -> impl IntoView {
             <PathInput path set_path />
 
             <PreviewFigure color path />
-            <PreviewBadges color path />
             <PreviewButtons path set_color set_path />
         </div>
     }
@@ -125,21 +124,23 @@ fn PreviewFigure(
     let fill_color = Memo::new(move |_| contrast_color_for(&color()));
     let brand = expect_context::<RwSignal<Brand>>();
 
+    let (width, height) = (canvas::WIDTH, canvas::HEIGHT);
+
     view! {
         <figure class="preview-figure">
             <svg
-                width=canvas::WIDTH
-                height=canvas::HEIGHT - 70
-                viewBox=format!("0 0 {} {}", canvas::WIDTH, canvas::HEIGHT - 70)
+                width=width
+                height=height
+                viewBox=format!("0 0 {width} {height}")
                 xmlns="http://www.w3.org/2000/svg"
                 class="pt-3"
             >
                 <rect
                     fill=move || format!("#{}", color())
-                    height=canvas::HEIGHT - 70
+                    height=height - 100
                     rx="10"
                     ry="10"
-                    width=canvas::WIDTH
+                    width=width
                     x="0"
                     y="0"
                 ></rect>
@@ -223,71 +224,159 @@ fn PreviewFigure(
                         </text>
                     </g>
                 </g>
+                <PreviewBadges color=color.into() path=path.into() />
             </svg>
-            <canvas height=canvas::HEIGHT width=canvas::WIDTH></canvas>
+            <canvas width=width height=height></canvas>
         </figure>
     }
 }
 
 #[component]
-fn PreviewBadges(
-    color: ReadSignal<String>,
-    path: ReadSignal<String>,
-) -> impl IntoView {
+fn PreviewBadges(color: Signal<String>, path: Signal<String>) -> impl IntoView {
+    let pixel_ratio = use_device_pixel_ratio();
+
     let white_svg =
-        Memo::new(move |_| svg_with_path_opt_fill(&path(), Some("FFF")));
+        Signal::derive(move || svg_with_path_opt_fill(&path(), Some("FFF")));
     let color_svg =
-        Memo::new(move |_| svg_with_path_opt_fill(&path(), Some(&color())));
+        Signal::derive(move || svg_with_path_opt_fill(&path(), Some(&color())));
 
     let badge_maker_loaded = RwSignal::new(false);
 
-    let interval = set_interval_with_handle(
+    let badge_maker_loaded_interval = set_interval_with_handle(
         move || {
             if deps::is_badge_maker_loaded() {
                 badge_maker_loaded(true);
+
+                // Execute at the next re-paint
+                set_timeout(
+                    move || {
+                        update_preview_canvas(
+                            use_device_pixel_ratio().get_untracked(),
+                        );
+                    },
+                    std::time::Duration::from_millis(0),
+                );
             }
         },
         std::time::Duration::from_millis(100),
     )
     .unwrap();
 
+    Effect::new(move |_| {
+        // Update canvas after changing the path or color
+        let _path = path();
+        let _color = color();
+        set_timeout(
+            move || {
+                update_preview_canvas(pixel_ratio.get_untracked());
+            },
+            std::time::Duration::from_millis(0),
+        );
+    });
+
+    let translate_y = 34;
+
     view! {
-        <div class="preview-badges">
+        <g transform="translate(10,437) scale(1.03)">
             {move || {
                 match badge_maker_loaded() {
-                    false => view! { <span class="center">"..."</span> }.into_any(),
-                    true => {
-                        interval.clear();
+                    false => {
                         view! {
-                            <PreviewBadge color svg=white_svg style="flat" />
-                            <PreviewBadge color svg=white_svg style="plastic" />
-                            <PreviewBadge color svg=white_svg style="for-the-badge" />
-                            <PreviewBadge color svg=color_svg style="social" />
-                            <PreviewBadge color svg=color_svg style="flat" />
-                            <PreviewBadge color svg=color_svg style="plastic" />
-                            <PreviewBadge color svg=color_svg style="for-the-badge" />
-                            <PreviewBadge color svg=color_svg style="social" text_color="4183c4" />
+                            <text fill="white" transform="translate(310,35) scale(1.5)">
+                                ...
+                            </text>
+                        }
+                            .into_any()
+                    }
+                    true => {
+                        badge_maker_loaded_interval.clear();
+                        view! {
+                            <PreviewBadge
+                                color
+                                svg=white_svg
+                                style="flat"
+                                translate_x=5
+                                translate_y=1
+                                id="b1"
+                            />
+                            <PreviewBadge
+                                color
+                                svg=color_svg
+                                style="flat"
+                                translate_x=5
+                                translate_y=translate_y
+                                id="b2"
+                            />
+                            <PreviewBadge
+                                color
+                                svg=white_svg
+                                style="plastic"
+                                translate_x=185
+                                translate_y=2
+                                id="b3"
+                            />
+                            <PreviewBadge
+                                color
+                                svg=color_svg
+                                style="plastic"
+                                translate_x=185
+                                translate_y=translate_y + 2
+                                id="b4"
+                            />
+                            <PreviewBadge
+                                color
+                                svg=white_svg
+                                style="for-the-badge"
+                                translate_x=365
+                                translate_y=-4
+                                id="b5"
+                            />
+                            <PreviewBadge
+                                color
+                                svg=color_svg
+                                style="for-the-badge"
+                                translate_x=365
+                                translate_y=translate_y - 4
+                                id="b6"
+                            />
+                            <PreviewBadge
+                                color
+                                svg=color_svg
+                                style="social"
+                                translate_x=610
+                                translate_y=2
+                                id="b7"
+                            />
+                            <PreviewBadge
+                                color
+                                svg=color_svg
+                                style="social"
+                                text_color="4183c4"
+                                translate_x=610
+                                translate_y=translate_y - 2
+                                id="b8"
+                            />
                         }
                             .into_any()
                     }
                 }
             }}
-        </div>
+        </g>
     }
 }
 
 #[component]
 fn PreviewBadge(
-    color: ReadSignal<String>,
-    svg: Memo<String>,
+    color: Signal<String>,
+    svg: Signal<String>,
     style: &'static str,
     #[prop(optional)] text_color: Option<&'static str>,
+    translate_x: usize,
+    translate_y: isize,
+    id: &'static str,
 ) -> impl IntoView {
-    let pixel_ratio = use_device_pixel_ratio();
-
-    /// Get the URL of a badge
-    fn badge_url(color_: &str, svg_: &str, style_: &str) -> String {
-        let badge_svg = make_badge(
+    fn badge_svg(color_: &str, svg_: &str, style_: &str, id: &str) -> String {
+        make_badge(
             match style_ {
                 "social" => "",
                 _ => "simple icons",
@@ -299,64 +388,32 @@ fn PreviewBadge(
                 "data:image/svg+xml;base64,{}",
                 window().btoa(svg_).unwrap()
             ),
-        );
-
-        format!(
-            "data:image/svg+xml;base64,{}",
-            window().btoa(&badge_svg).unwrap()
         )
+        // Internal identifiers for gradients must be unique in the parent SVG document
+        .replace(r#"id="r""#, format!(r#"id="{id}-r""#).as_str())
+        .replace(r#"url(#r)"#, format!(r#"url(#{id}-r)"#).as_str())
+        .replace(r#"id="s""#, format!(r#"id="{id}-s""#).as_str())
+        .replace(r#"url(#s)"#, format!(r#"url(#{id}-s)"#).as_str())
+        .replace(r#"id="a""#, format!(r#"id="{id}-a""#).as_str())
+        .replace(r#"url(#a)"#, format!(r#"url(#{id}-a)"#).as_str())
+        .replace(r#"id="b""#, format!(r#"id="{id}-b""#).as_str())
+        .replace(r#"url(#b)"#, format!(r#"url(#{id}-b)"#).as_str())
     }
 
-    let on_load = move |ev: web_sys::Event| {
-        let target = event_target::<web_sys::HtmlInputElement>(&ev);
-
-        if target.get_attribute("reloaded") == Some("true".into()) {
-            _ = target.set_attribute("reloaded", "false");
-            return;
-        }
-        if text_color.is_some() {
-            spawn_local(async move {
-                let url = badge_url(
-                    &color.get_untracked(),
-                    &svg.get_untracked(),
-                    style,
-                );
-                let badge_svg = match fetch_text(&url).await {
-                    Ok(svg) => svg,
-                    Err(err) => {
-                        leptos::logging::error!("{}", err);
-                        "".to_string()
-                    }
-                };
-                let styled_badge_svg = badge_svg.replace(
-                    "id=\"rlink\"",
-                    &format!("id=\"rlink\" fill=\"#{}\"", &text_color.unwrap()),
-                );
-                let encoded_svg =
-                    js_sys::encode_uri_component(&styled_badge_svg);
-                if encoded_svg == target.get_attribute("src").unwrap() {
-                    target.set_attribute("reloaded", "false").unwrap();
-                    return;
-                }
-
-                target.set_attribute("reloaded", "true").unwrap();
-                target
-                    .set_attribute(
-                        "src",
-                        &format!("data:image/svg+xml;utf8,{encoded_svg}"),
-                    )
-                    .unwrap();
-
-                update_preview_canvas(pixel_ratio.get_untracked());
-            });
-        } else {
-            update_preview_canvas(pixel_ratio.get_untracked());
-        }
-    };
-
     view! {
-        <div>
-            <img src=move || badge_url(&color(), &svg(), style) on:load=on_load />
-        </div>
+        <g
+            transform=format!("translate({translate_x},{translate_y})")
+            inner_html=move || {
+                let mut badge_svg = badge_svg(&color(), &svg(), style, id);
+                if let Some(text_color) = text_color {
+                    badge_svg = badge_svg
+                        .replace(
+                            "text id=\"rlink\"",
+                            &format!("text id=\"rlink\" fill=\"#{}\"", &text_color),
+                        );
+                }
+                badge_svg
+            }
+        />
     }
 }

@@ -3,10 +3,6 @@
 		@apply relative my-3 w-[790px] rounded-md border border-[var(--divider-color)] border-opacity-10 bg-[var(--grid-item-background-color)] px-6 py-5 text-[var(--text-default-color)] lg:z-30 lg:-mt-11 lg:ml-36;
 	}
 
-	.preview-badges > div {
-		@apply grid place-content-center;
-	}
-
 	.preview > div:not(:last-child) {
 		@apply mb-3 whitespace-nowrap;
 	}
@@ -42,10 +38,6 @@
 
 	.preview-figure canvas {
 		@apply absolute left-[33px] top-[127px] opacity-0;
-	}
-
-	.preview-badges {
-		@apply mx-auto grid w-[700px] grid-cols-[150px_150px_220px_fit-content(100%)] grid-rows-2 gap-x-8 gap-y-1.5 py-[14px];
 	}
 
 	.preview-buttons {

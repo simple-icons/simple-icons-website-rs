@@ -18,6 +18,7 @@ use leptos_unique_ids::leptos_unique_ids;
     "copy-svg-path",
     "preview-color",
     "preview-path",
-    "preview-brand"
+    "preview-brand",
+    "preview-card-image-for-canvas"
 )]
 pub enum Ids {}
