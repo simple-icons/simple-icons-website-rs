@@ -238,15 +238,17 @@ async fn check_preview_badges_logo(
                                         rest.split_once('"').map(|(d, _)| d)
                                     });
                                 if let Some(d) = maybe_d {
-                                    if predicate_fn(d, &expected_svg_path) {
-                                        paths.push(d.to_string());
-                                    }
+                                    paths.push(d.to_string());
                                 }
                             }
                         }
                     }
 
-                    return std::result::Result::Ok(paths.len() == 8);
+                    let result = paths.len() == 8
+                        && paths
+                            .iter()
+                            .all(|d| predicate_fn(d, &expected_svg_path));
+                    return std::result::Result::Ok(result);
                 }
 
                 std::result::Result::Ok(false)
