@@ -78,6 +78,7 @@ async fn type_in_input(
 ) -> Result<()> {
     let id = format!("preview-{input}");
     let color_input = world.driver().find(By::Id(id)).await?;
+    color_input.clear().await?;
     color_input.send_keys(value).await?;
     Ok(())
 }

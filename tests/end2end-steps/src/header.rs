@@ -50,7 +50,7 @@ async fn check_header_description(
     world: &mut AppWorld,
     title: String,
 ) -> Result<()> {
-    world
+    let found = world
         .driver()
         .query(By::Css("header > div > p"))
         .wait(Duration::from_millis(1000), Duration::from_millis(10))
@@ -66,8 +66,9 @@ async fn check_header_description(
                 std::result::Result::Ok(false)
             }
         })
-        .first()
+        .exists()
         .await?;
+    assert!(found);
     Ok(())
 }
 

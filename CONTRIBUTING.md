@@ -5,7 +5,7 @@
 - Install Rust with [rustup](https://rustup.rs/).
 - Install [cargo-make] with `cargo install --force cargo-make`.
 - Install NodeJS with npm and run `npm install`.
-- Create an _.env_ file at the root including a Github personal token with the variable `GITHUB_TOKEN` like `GITHUB_TOKEN=...`.
+- Create an _.env_ file at the root including a Github personal token with the variable `GITHUB_TOKEN` like `GITHUB_TOKEN="..."`.
 
 ## Commands
 

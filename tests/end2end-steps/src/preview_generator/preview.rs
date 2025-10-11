@@ -1,6 +1,10 @@
 use anyhow::{Ok, Result};
+use base64::{
+    Engine as _, engine::general_purpose::STANDARD as BASE64_STANDARD,
+};
 use cucumber::then;
 use end2end_helpers::AppWorld;
+use end2end_helpers::{equality_predicate, starts_with_predicate};
 use std::time::Duration;
 use thirtyfour::prelude::*;
 
@@ -19,7 +23,7 @@ async fn check_preview_data(
         "color" => ".preview-figure > svg > g > text:nth-child(4)",
         _ => unreachable!(),
     };
-    _ = world
+    let found = world
         .driver()
         .query(By::Css(selector))
         .wait(Duration::from_secs(6), Duration::from_millis(50))
@@ -35,6 +39,7 @@ async fn check_preview_data(
         })
         .exists()
         .await?;
+    assert!(found);
     Ok(())
 }
 
@@ -44,7 +49,7 @@ async fn check_preview_background_color(
     color: String,
 ) -> Result<()> {
     let selector = ".preview-figure > svg > rect:nth-child(1)";
-    _ = world
+    let found = world
         .driver()
         .query(By::Css(selector))
         .wait(Duration::from_secs(6), Duration::from_millis(50))
@@ -60,6 +65,10 @@ async fn check_preview_background_color(
         })
         .exists()
         .await?;
+    assert!(
+        found,
+        "The preview does not have the expected background color"
+    );
     Ok(())
 }
 
@@ -71,15 +80,7 @@ async fn check_preview_svg_paths(
 ) -> Result<()> {
     let client = world.driver().clone();
 
-    fn are_predicate(d: &str, value: &str) -> bool {
-        d == value
-    }
-
-    fn starts_with_predicate(d: &str, value: &str) -> bool {
-        d.starts_with(value)
-    }
-
-    _ = world
+    let found = world
         .driver()
         .query(By::Css(".preview-figure > svg"))
         .wait(Duration::from_secs(6), Duration::from_millis(50))
@@ -102,12 +103,12 @@ async fn check_preview_svg_paths(
                         }
                     }
                     let predicate_fn = match mode.as_str() {
-                        "are" => are_predicate,
+                        "are" => equality_predicate,
                         _ => starts_with_predicate,
                     };
-                    std::result::Result::Ok(
-                        paths.iter().all(|d| predicate_fn(d, &value)),
-                    )
+                    let result = paths.len() == 4
+                        && paths.iter().all(|d| predicate_fn(d, &value));
+                    std::result::Result::Ok(result)
                 } else {
                     std::result::Result::Ok(false)
                 }
@@ -115,5 +116,146 @@ async fn check_preview_svg_paths(
         })
         .exists()
         .await?;
+    assert!(found, "The SVG paths were not found as expected");
+    Ok(())
+}
+
+#[then(regex = "The color of the badges in the preview is (#[0-9a-fA-F]{3,6})")]
+async fn check_preview_badges_color(
+    world: &mut AppWorld,
+    color: String,
+) -> Result<()> {
+    let selector = ".preview-figure > svg > g:nth-child(7)";
+    let found = world
+        .driver()
+        .query(By::Css(selector))
+        .wait(Duration::from_secs(6), Duration::from_millis(50))
+        .with_filter(move |element: thirtyfour::WebElement| {
+            let expected_color = color.clone();
+            async move {
+                // flat + plastic + for the badge
+                let background_badges =
+                    element.find_all(By::Css("g > svg > g > rect")).await;
+                let mut colors = vec![];
+                if let std::result::Result::Ok(badges) = background_badges {
+                    for badge in &badges {
+                        if let std::result::Result::Ok(Some(fill)) =
+                            badge.attr("fill").await
+                        {
+                            let found_color = fill.to_uppercase();
+                            if found_color == expected_color {
+                                colors.push(found_color);
+                            }
+                        }
+                    }
+                }
+
+                let social_badges =
+                    element.find_all(By::Css("g > svg > image")).await;
+                if let std::result::Result::Ok(badges) = social_badges {
+                    for badge in &badges {
+                        if let std::result::Result::Ok(Some(href)) =
+                            badge.attr("href").await
+                        {
+                            let base64_data =
+                                href.split(',').nth(1).unwrap_or("");
+                            let decoded_data =
+                                BASE64_STANDARD.decode(base64_data);
+                            if let std::result::Result::Ok(data) = decoded_data
+                            {
+                                let decoded_as_str =
+                                    String::from_utf8_lossy(&data);
+                                let maybe_fill = decoded_as_str
+                                    .split_once("fill=\"")
+                                    .and_then(|(_, rest)| {
+                                        rest.split_once('"')
+                                            .map(|(fill, _)| fill)
+                                    });
+                                if let Some(fill) = maybe_fill {
+                                    let found_color = fill.to_uppercase();
+                                    if found_color == expected_color {
+                                        colors.push(found_color);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                std::result::Result::Ok(
+                    colors.len() == 8
+                        && colors.iter().all(|c| c == &expected_color),
+                )
+            }
+        })
+        .exists()
+        .await?;
+    assert!(found, "The badges with the expected color were not found");
+    Ok(())
+}
+
+#[then(
+    regex = r#"The logo SVG paths of the badges in the preview (start with|are) "([^"]+)""#
+)]
+async fn check_preview_badges_logo(
+    world: &mut AppWorld,
+    mode: String,
+    expected_svg_path: String,
+) -> Result<()> {
+    let selector = ".preview-figure > svg > g:nth-child(7)";
+    let found = world
+        .driver()
+        .query(By::Css(selector))
+        .wait(Duration::from_secs(6), Duration::from_millis(50))
+        .with_filter(move |element: thirtyfour::WebElement| {
+            let expected_svg_path = expected_svg_path.clone();
+            let mode = mode.clone();
+            async move {
+                let badge_images =
+                    element.find_all(By::Css("g > svg image")).await;
+                if let std::result::Result::Ok(badge_images) = badge_images {
+                    let mut paths = vec![];
+
+                    let predicate_fn = match mode.as_str() {
+                        "are" => equality_predicate,
+                        _ => starts_with_predicate,
+                    };
+                    for badge_image in &badge_images {
+                        if let std::result::Result::Ok(Some(href)) =
+                            badge_image.attr("href").await
+                        {
+                            let base64_data =
+                                href.split(',').nth(1).unwrap_or("");
+                            let decoded_data =
+                                BASE64_STANDARD.decode(base64_data);
+                            if let std::result::Result::Ok(data) = decoded_data
+                            {
+                                let decoded_as_str =
+                                    String::from_utf8_lossy(&data);
+                                let maybe_d = decoded_as_str
+                                    .split_once("d=\"")
+                                    .and_then(|(_, rest)| {
+                                        rest.split_once('"').map(|(d, _)| d)
+                                    });
+                                if let Some(d) = maybe_d {
+                                    paths.push(d.to_string());
+                                }
+                            }
+                        }
+                    }
+
+                    let result = paths.len() == 8
+                        && paths
+                            .iter()
+                            .all(|d| predicate_fn(d, &expected_svg_path));
+                    return std::result::Result::Ok(result);
+                }
+
+                std::result::Result::Ok(false)
+            }
+        })
+        .exists()
+        .await?;
+    assert!(found);
     Ok(())
 }
