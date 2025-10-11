@@ -38,7 +38,7 @@ async fn number_of_icons_per_page_loaded(
         Layout::from_str(&layout).unwrap().icons_per_page() as usize
             * multiplicator.parse::<usize>()?;
 
-    _ = client
+    let found = client
         .query(By::Css("main > ul"))
         .wait(Duration::from_secs(6), Duration::from_millis(50))
         .with_filter(move |_| {
@@ -55,6 +55,7 @@ async fn number_of_icons_per_page_loaded(
         })
         .exists()
         .await?;
+    assert!(found);
     Ok(())
 }
 

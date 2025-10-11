@@ -12,3 +12,4 @@ Feature: Change color by manual input
 		When I type "FF4F64" in the color input
 		Then The color in the preview is "Color: #FF4F64"
 		Then The background color of the preview is #FF4F64
+		Then The color of the badges in the preview is #FF4F64

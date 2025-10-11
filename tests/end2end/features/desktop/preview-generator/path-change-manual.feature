@@ -12,3 +12,4 @@ Feature: Change SVG path by manual input
 	Scenario: Change SVG path by manual input
 		When I type "M0 0h24v24h-24z" in the path input
 		Then The SVG paths of the preview are "M0 0h24v24h-24z"
+		Then The logo SVG paths of the badges in the preview are "M0 0h24v24h-24z"
