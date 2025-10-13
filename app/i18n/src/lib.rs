@@ -22,5 +22,6 @@ pub fn I18n(
         set_language_to_local_storage: true,
         initial_language_from_navigator: true,
         initial_language_from_navigator_to_local_storage: true,
+        customise: |bundle| bundle.set_use_isolating(false),
     }
 }

@@ -37,14 +37,16 @@ fn PreviewUploadSVGButton(
     set_color: WriteSignal<String>,
     set_path: WriteSignal<String>,
 ) -> impl IntoView {
+    let brand = expect_context::<RwSignal<Brand>>();
+
     async fn on_upload_svg_file(
         file: web_sys::File,
         set_color: WriteSignal<String>,
         set_path: WriteSignal<String>,
+        brand: RwSignal<Brand>,
     ) {
         match wasm_bindgen_futures::JsFuture::from(file.text()).await {
             Ok(text) => {
-                let brand = expect_context::<RwSignal<Brand>>();
                 let file_content = text.as_string().unwrap();
 
                 // Set color
@@ -120,7 +122,7 @@ fn PreviewUploadSVGButton(
                 on:change=move |ev| {
                     let input = event_target::<web_sys::HtmlInputElement>(&ev);
                     let file = input.files().unwrap().get(0).unwrap();
-                    spawn_local(on_upload_svg_file(file, set_color, set_path));
+                    spawn_local(on_upload_svg_file(file, set_color, set_path, brand));
                     input.set_value("");
                 }
             />
