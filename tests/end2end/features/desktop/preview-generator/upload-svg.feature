@@ -7,8 +7,8 @@ Feature: Upload SVG file
 		Given I see the preview generator page
 		Then The brand input value is "Simple Icons"
 
-	Scenario: Change preview icon by uploading a file using the "Upload SVG" button
-		When I upload the file "node_modules/simple-icons/icons/leptos.svg" by clicking the "Upload SVG" button
+	Scenario: Change preview icon by uploading a file in the "Upload SVG" input
+		When I upload the file "node_modules/simple-icons/icons/leptos.svg" in the "#preview-upload-svg-button" input
 		Then The brand input value is "Leptos"
 		Then The title in the preview is "Leptos Preview"
 		Then The filename in the preview is "leptos.svg"
@@ -23,3 +23,6 @@ Feature: Upload SVG file
 
 	Scenario: Click "Upload SVG" button file input by pressing Ctrl + ⇧ keyboard shortcut
 		When I press the "Ctrl" + "ArrowUp" keys, the event "onclick" is executed on the element "#preview-upload-svg-button"
+
+	Scenario: Click "Upload SVG" triggers a click on the hidden file input
+		When I click on the element "button[title='Upload SVG']", the event "onclick" is executed on the element "#preview-upload-svg-button"

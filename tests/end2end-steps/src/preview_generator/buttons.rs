@@ -3,16 +3,13 @@ use cucumber::when;
 use end2end_helpers::AppWorld;
 use thirtyfour::prelude::*;
 
-#[when(
-    regex = r#"I upload the file "([^"]+)" by clicking the "Upload SVG" button"#
-)]
-async fn upload_file_by_clicking_on_upload_svg_button(
+#[when(regex = r#"I upload the file "([^"]+)" in the "([^"]+)" input"#)]
+async fn upload_file_to_input(
     world: &mut AppWorld,
     filepath: String,
+    selector: String,
 ) -> Result<()> {
-    let input_id = "preview-upload-svg-button";
-    let input = world.driver().find(By::Id(input_id)).await?;
-
+    let input = world.driver().find(By::Css(selector)).await?;
     let rooted_path = std::env::current_dir()
         .unwrap()
         .join("../..")
@@ -91,13 +88,68 @@ async fn press_keys_combination_and_check_event_is_executed_on_element(
             vec![],
         )
         .await?;
-    let clicked = match script_ret.json() {
+    let event_executed = match script_ret.json() {
         serde_json::Value::Bool(value) => *value,
         _ => unreachable!(),
     };
 
     assert!(
-        clicked,
+        event_executed,
+        "The event {element_event} has not been executed on the element {selector}"
+    );
+    Ok(())
+}
+
+#[when(
+    regex = r#"I click on the element "([^"]+)", the event "([^"]+)" is executed on the element "([^"]+)""#
+)]
+async fn click_element_and_check_event_is_executed_on_element(
+    world: &mut AppWorld,
+    element_to_click_selector: String,
+    element_event: String,
+    selector: String,
+) -> Result<()> {
+    let driver = world.driver();
+
+    driver
+        .execute(
+            r#"
+                window.elementEventExecuted = false;
+                const element = document.querySelector(arguments[0]);
+                const previousElementEvent = element[arguments[1]];
+                element[arguments[1]] = (event) => {
+                    window.elementEventExecuted = true;
+                    this.apply(previousElementEvent, event);
+                };
+            "#,
+            vec![
+                serde_json::Value::String(selector.clone()),
+                serde_json::Value::String(element_event.clone()),
+            ],
+        )
+        .await?;
+
+    let element_to_click =
+        driver.find(By::Css(element_to_click_selector)).await?;
+    element_to_click.click().await?;
+
+    let script_ret = driver
+        .execute(
+            r#"
+                const result = window.elementEventExecuted;
+                delete window.elementEventExecuted;
+                return result;
+            "#,
+            vec![],
+        )
+        .await?;
+    let event_executed = match script_ret.json() {
+        serde_json::Value::Bool(value) => *value,
+        _ => unreachable!(),
+    };
+
+    assert!(
+        event_executed,
         "The event {element_event} has not been executed on the element {selector}"
     );
     Ok(())
