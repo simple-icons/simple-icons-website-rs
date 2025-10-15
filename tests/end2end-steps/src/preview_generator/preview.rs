@@ -9,7 +9,7 @@ use std::time::Duration;
 use thirtyfour::prelude::*;
 
 #[then(
-    regex = r#"The (title|filename|brand|color) in the preview is "([^"]+)""#
+    regex = r#"the (title|filename|brand|color) in the preview is "([^"]+)""#
 )]
 async fn check_preview_data(
     world: &mut AppWorld,
@@ -43,7 +43,7 @@ async fn check_preview_data(
     Ok(())
 }
 
-#[then(regex = "The background color of the preview is (#[0-9a-fA-F]{3,6})")]
+#[then(regex = "the background color of the preview is (#[0-9a-fA-F]{3,6})")]
 async fn check_preview_background_color(
     world: &mut AppWorld,
     color: String,
@@ -72,7 +72,7 @@ async fn check_preview_background_color(
     Ok(())
 }
 
-#[then(regex = r#"The SVG paths of the preview (start with|are) "([^"]+)""#)]
+#[then(regex = r#"the SVG paths of the preview (start with|are) "([^"]+)""#)]
 async fn check_preview_svg_paths(
     world: &mut AppWorld,
     mode: String,
@@ -120,7 +120,7 @@ async fn check_preview_svg_paths(
     Ok(())
 }
 
-#[then(regex = "The color of the badges in the preview is (#[0-9a-fA-F]{3,6})")]
+#[then(regex = "the color of the badges in the preview is (#[0-9a-fA-F]{3,6})")]
 async fn check_preview_badges_color(
     world: &mut AppWorld,
     color: String,
@@ -195,7 +195,7 @@ async fn check_preview_badges_color(
 }
 
 #[then(
-    regex = r#"The logo SVG paths of the badges in the preview (start with|are) "([^"]+)""#
+    regex = r#"the logo SVG paths of the badges in the preview (start with|are) "([^"]+)""#
 )]
 async fn check_preview_badges_logo(
     world: &mut AppWorld,

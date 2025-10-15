@@ -46,7 +46,7 @@ async fn click_first_brand_suggestion(world: &mut AppWorld) -> Result<()> {
 }
 
 #[then(
-    regex = r#"The (brand|color|path) input value (is|starts with) "([^"]+)""#
+    regex = r#"the (brand|color|path) input value (is|starts with) "([^"]+)""#
 )]
 async fn check_input_value(
     world: &mut AppWorld,

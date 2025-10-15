@@ -5,11 +5,11 @@ Feature: Change color by manual input
 
 	Background:
 		Given I see the preview generator page
-		Then The brand input value is "Simple Icons"
-		Then The color input value is "111111"
+		Then the brand input value is "Simple Icons"
+		Then the color input value is "111111"
 
 	Scenario: Change color by manual input
 		When I type "FF4F64" in the color input
-		Then The color in the preview is "Color: #FF4F64"
-		Then The background color of the preview is #FF4F64
-		Then The color of the badges in the preview is #FF4F64
+		Then the color in the preview is "Color: #FF4F64"
+		Then the background color of the preview is #FF4F64
+		Then the color of the badges in the preview is #FF4F64
