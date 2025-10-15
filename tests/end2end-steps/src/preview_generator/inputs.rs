@@ -3,10 +3,10 @@ use cucumber::{then, when};
 use end2end_helpers::AppWorld;
 use thirtyfour::prelude::*;
 
-#[when(regex = "I focus on the (brand|color|path) input")]
-async fn focus_on_input(world: &mut AppWorld, input: String) -> Result<()> {
+#[when(regex = "I click the (brand|color|path) input")]
+async fn click_input(world: &mut AppWorld, input: String) -> Result<()> {
     let id = format!("preview-{input}");
-    world.driver().find(By::Id(id)).await?.focus().await?;
+    world.driver().find(By::Id(id)).await?.click().await?;
     Ok(())
 }
 

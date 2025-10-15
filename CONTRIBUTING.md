@@ -33,6 +33,7 @@ cargo make
 
 ```sh
 BROWSER=chrome cargo test --package end2end --test desktop -- --fail-fast
+# or `cargo make e2e-chrome` (for Chrome)
 ```
 
 - Change `BROWSER=chrome` to `BROWSER=firefox` (for Firefox) or `BROWSER=edge` (for MsEdge).

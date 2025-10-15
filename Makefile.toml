@@ -291,3 +291,17 @@ script_runner = "bash"
 script = '''
 which leptosfmt > /dev/null || cargo install --git https://github.com/bram209/leptosfmt
 '''
+
+[tasks.e2e-chrome]
+description = "Run end-to-end tests with Chrome"
+env = { "BROWSER" = "chrome" }
+command = "cargo"
+args = [
+	"test",
+	"--package",
+	"end2end",
+	"--test",
+	"desktop",
+	"--",
+	"--fail-fast",
+]

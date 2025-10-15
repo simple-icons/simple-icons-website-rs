@@ -8,7 +8,7 @@ Feature: Change brand by minimal suggestion
 		Then the brand input value is "Simple Icons"
 
 	Scenario: Change brand by minimal suggestion
-		When I focus on the brand input
+		When I click the brand input
 		Then I can see some brand suggestions
 		When I click on the first brand suggestion
 		Then the brand input value is "Simple Analytics"
