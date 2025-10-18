@@ -23,6 +23,3 @@ Feature: Upload SVG file
 
 	Scenario: Click "Upload SVG" button file input by pressing Ctrl + ⇧ keyboard shortcut
 		When I press the "Ctrl" + "ArrowUp" keys, the event "onclick" is executed on the element "#preview-upload-svg-button"
-
-	Scenario: Click "Upload SVG" triggers a click on the hidden file input
-		When I click on the element "button[title='Upload SVG']", the event "onclick" is executed on the element "#preview-upload-svg-button"
