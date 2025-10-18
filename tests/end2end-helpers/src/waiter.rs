@@ -1,3 +1,4 @@
+use std::future::Future;
 use std::sync::Arc;
 use std::time::Duration;
 use thirtyfour::{
@@ -16,7 +17,7 @@ pub trait Predicate: Send + Sync {
 impl<F, Fut> Predicate for F
 where
     F: Fn() -> Fut + Send + Sync,
-    Fut: std::future::Future<Output = WebDriverResult<bool>> + Send,
+    Fut: Future<Output = WebDriverResult<bool>> + Send,
 {
     async fn call(&self) -> WebDriverResult<bool> {
         (self)().await
