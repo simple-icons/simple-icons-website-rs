@@ -305,3 +305,18 @@ args = [
 	"--",
 	"--fail-fast",
 ]
+
+[tasks.e2e-firefox]
+description = "Run end-to-end tests with Firefox"
+env = { "BROWSER" = "firefox" }
+command = "cargo"
+args = [
+	"test",
+	"--package",
+	"end2end",
+	"--test",
+	"desktop",
+	"--",
+	"--fail-fast",
+	"--concurrency=1",
+]

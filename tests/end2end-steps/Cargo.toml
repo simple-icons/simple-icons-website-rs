@@ -9,10 +9,10 @@ publish = false
 end2end-helpers.workspace = true
 cucumber.workspace = true
 thirtyfour.workspace = true
-anyhow = "1"
+anyhow.workspace = true
 simple-icons-website-controls-layout-type.workspace = true
 serde_json.workspace = true
-base64 = "0.21"
+base64 = "0.22"
 
 [lints]
 workspace = true

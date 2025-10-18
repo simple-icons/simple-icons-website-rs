@@ -189,7 +189,8 @@ unicode-normalization = "0.1"
 snafu = { version = "0.8", default-features = false }
 cucumber = "0.21"
 thirtyfour = "0.35"
-cucumber-thirtyfour-worlder = "0.1"
+anyhow = "1"
+cucumber-thirtyfour-worlder = "0.2"
 tokio = { version = "1.45", default-features = false, features = [
 	"macros",
 	"rt-multi-thread",

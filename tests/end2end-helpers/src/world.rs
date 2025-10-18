@@ -1,11 +1,10 @@
-#[allow(clippy::single_component_path_imports)]
-use cucumber;
 use std::future::Future;
 use thirtyfour::{self, WebElement, error::WebDriverError};
 
 #[cucumber_thirtyfour_worlder::worlder(
     cucumber = cucumber,
     thirtyfour = thirtyfour,
+    serde_json = serde_json,
     check_concurrency_cli_option_when_firefox = true,
 )]
 pub struct AppWorld;

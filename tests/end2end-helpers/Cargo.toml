@@ -6,10 +6,12 @@ edition.workspace = true
 publish = false
 
 [dependencies]
+anyhow.workspace = true
 cucumber.workspace = true
 thirtyfour.workspace = true
 serde_json.workspace = true
 cucumber-thirtyfour-worlder.workspace = true
+async-trait = "0.1"
 
 [lints]
 workspace = true
