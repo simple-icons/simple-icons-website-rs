@@ -34,13 +34,7 @@ async fn check_file_is_downloaded(
 
     let condition = move || {
         let file_path = file_path.clone();
-        async move {
-            Ok(file_path.exists()).map_err(|e| {
-                thirtyfour::error::WebDriverError::UnknownError(
-                    thirtyfour::error::WebDriverErrorInfo::new(e.to_string()),
-                )
-            })
-        }
+        async move { Ok(file_path.exists()) }
     };
 
     Waiter::new(timeout, interval, message)

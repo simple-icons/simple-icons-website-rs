@@ -768,6 +768,7 @@ dependencies = [
  "cucumber-thirtyfour-worlder",
  "serde_json",
  "thirtyfour",
+ "tokio",
 ]
 
 [[package]]

@@ -12,6 +12,7 @@ thirtyfour.workspace = true
 serde_json.workspace = true
 cucumber-thirtyfour-worlder.workspace = true
 async-trait = "0.1"
+tokio = { version = "1.30", features = ["time"] }
 
 [lints]
 workspace = true
