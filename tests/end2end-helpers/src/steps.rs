@@ -5,7 +5,7 @@ use cucumber::{then, when};
 use std::time::Duration;
 use thirtyfour::prelude::*;
 
-#[when(regex = r#"I click on the element "([^"]+)""#)]
+#[when(regex = r#"I click on the element "([^"]+)"$"#)]
 async fn click_element(world: &mut AppWorld, selector: String) -> Result<()> {
     let driver = world.driver();
     driver
