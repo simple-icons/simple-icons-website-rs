@@ -60,13 +60,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Get dylint remote library toolchain
+      - name: Get dylint library toolchain
         id: get-channel
-        # Get the remote library toolchain. This speeds up the workflow by avoiding
-        # the need to download the toolchain from the remote library every time
-        # and compile the full codebase.
         run: |
-          channel=$(curl -s --retry 15 https://raw.githubusercontent.com/leptos-rs/leptos-lints/refs/heads/main/rust-toolchain.toml | grep channel | cut -d'"' -f2)
+          channel=$(cat rust-toolchain.toml | grep channel | cut -d'"' -f2)
           echo "channel=$channel" >> $GITHUB_OUTPUT
       - name: Setup Rust
         uses: actions-rust-lang/setup-rust-toolchain@v1
