@@ -500,8 +500,8 @@ pub fn collinear_segments(segments: &[SVGPathCSTNode]) -> Vec<LintError> {
                         let (x2, y2) = current_line[p];
                         let (x3, y3) = current_line[p + 1];
 
-                        if points_are_collinear(x1, y1, x2, y2, x3, y3) {
-                            if let SVGPathCSTNode::Segment(SVGPathSegment {
+                        if points_are_collinear(x1, y1, x2, y2, x3, y3)
+                            && let SVGPathCSTNode::Segment(SVGPathSegment {
                                 command,
                                 start,
                                 end,
@@ -509,18 +509,17 @@ pub fn collinear_segments(segments: &[SVGPathCSTNode]) -> Vec<LintError> {
                             }) = segments
                                 .get(s - current_line.len() + p + 1)
                                 .unwrap()
-                            {
-                                errors.push((
-                                    errors::PathLintError::CollinearSegmentFoundAtCommand {
-                                        command: **command as u8 as char,
-                                    },
-                                    // TODO: show complete range including
-                                    //  previous and next segments
-                                    Some((*start as u32, *end as u32)),
-                                    // TODO: fix most variants of this rule
-                                    None,
-                                ));
-                            }
+                        {
+                            errors.push((
+                                errors::PathLintError::CollinearSegmentFoundAtCommand {
+                                    command: **command as u8 as char,
+                                },
+                                // TODO: show complete range including
+                                //  previous and next segments
+                                Some((*start as u32, *end as u32)),
+                                // TODO: fix most variants of this rule
+                                None,
+                            ));
                         }
                     }
                 }

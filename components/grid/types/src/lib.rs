@@ -46,7 +46,7 @@ impl IconsGrid {
                 break;
             }
             self.loaded_icons.push(self.icons[i]);
-            if (loaded_icons_length + 1) % icons_per_page == 0 {
+            if (loaded_icons_length + 1).is_multiple_of(icons_per_page) {
                 break;
             }
         }

@@ -229,18 +229,15 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
                     &format!("loc: {}", {
                         let mut result = "".to_string();
                         let mut alias_dup_locs: Vec<(String, String)> = vec![];
-                        if aliases.dup.is_some() {
-                            for alias_dup in aliases.dup.as_ref().unwrap() {
-                                if alias_dup.loc.is_some() {
+                        if let Some(ref aliases_dup) = aliases.dup {
+                            for alias_dup in aliases_dup {
+                                if let Some(ref alias_dup_loc) = alias_dup.loc {
                                     alias_dup_locs.extend(
-                                        alias_dup
-                                            .loc
-                                            .as_ref()
-                                            .unwrap()
-                                            .iter()
-                                            .map(|(lang, title)| {
+                                        alias_dup_loc.iter().map(
+                                            |(lang, title)| {
                                                 (lang.clone(), title.clone())
-                                            }),
+                                            },
+                                        ),
                                     );
                                 }
                             }
@@ -248,12 +245,9 @@ fn icons_array_impl(only_include_deprecated: bool) -> String {
 
                         if aliases.loc.is_some() || !alias_dup_locs.is_empty() {
                             result.push_str("Some(&[");
-                            if aliases.loc.is_some() {
+                            if let Some(ref aliases_loc) = aliases.loc {
                                 result.push_str(
-                                    &aliases
-                                        .loc
-                                        .as_ref()
-                                        .unwrap()
+                                    &aliases_loc
                                         .iter()
                                         .map(|(lang, title)| {
                                             format!("(\"{lang}\", \"{title}\")")
