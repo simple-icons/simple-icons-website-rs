@@ -13,3 +13,9 @@ Feature: Change color by manual input
 		Then the color in the preview is "Color: #FF4F64"
 		Then the background color of the preview is #FF4F64
 		Then the color of the badges in the preview is #FF4F64
+
+	Scenario: Change color by manual input with leading "#"
+		When I type "#123123" in the color input
+		Then the color in the preview is "Color: #123123"
+		Then the background color of the preview is #123123
+		Then the color of the badges in the preview is #123123

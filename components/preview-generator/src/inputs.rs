@@ -5,7 +5,7 @@ use fast_fuzzy::search;
 use leptos::{html::Input, prelude::*, task::spawn_local};
 use leptos_fluent::{move_tr, tr};
 use leptos_use::{on_click_outside, use_device_pixel_ratio};
-use simple_icons::lint::errors::PathLintError;
+use simple_icons::lint::{LintError, LintErrorFixer, errors::PathLintError};
 use simple_icons_sdk as sdk;
 use simple_icons_website_grid_constants::ICONS;
 use simple_icons_website_ids::Ids;
@@ -33,20 +33,36 @@ pub fn ColorInput(
                 value=color
                 prop:value=color
                 autocomplete="off"
+                class:invalid=move || !is_valid_hex_color(&color())
                 on:input=move |ev| {
                     let input = event_target::<web_sys::HtmlInputElement>(&ev);
-                    let selection_start = input.selection_start().unwrap();
-                    let selection_end = input.selection_end().unwrap();
-                    let normalized_value = input.value().to_uppercase().replace('#', "");
+                    let original_value = input.value();
+                    let selection_start = input.selection_start().ok().flatten();
+                    let selection_end = input.selection_end().ok().flatten();
+                    let mut normalized_value = original_value.to_uppercase().replace('#', "");
+                    normalized_value.truncate(6);
                     input.set_value(&normalized_value);
-                    input.set_selection_start(selection_start).unwrap();
-                    input.set_selection_end(selection_end).unwrap();
+                    if let (Some(start), Some(end)) = (selection_start, selection_end) {
+                        let hashes_before_start = original_value[..start
+                                .min(original_value.len() as u32) as usize]
+                            .matches('#')
+                            .count() as u32;
+                        let hashes_before_end = original_value[..end
+                                .min(original_value.len() as u32) as usize]
+                            .matches('#')
+                            .count() as u32;
+                        let new_start = start
+                            .saturating_sub(hashes_before_start)
+                            .min(normalized_value.len() as u32);
+                        let new_end = end
+                            .saturating_sub(hashes_before_end)
+                            .min(normalized_value.len() as u32);
+                        let _ = input.set_selection_start(Some(new_start));
+                        let _ = input.set_selection_end(Some(new_end));
+                    }
                     set_color(normalized_value);
                     update_preview_canvas(pixel_ratio.get_untracked());
                 }
-
-                class:invalid=move || !is_valid_hex_color(&color())
-                maxlength=6
             />
         </div>
     }
@@ -60,14 +76,14 @@ pub fn PathInput(
     let pixel_ratio = use_device_pixel_ratio();
 
     let (path_lint_errors, set_path_lint_errors) =
-        signal::<Vec<simple_icons::lint::LintError>>(vec![]);
+        signal::<Vec<LintError>>(vec![]);
     let (show_path_lint_errors, set_show_path_lint_errors) = signal(false);
     let input_ref = NodeRef::new();
     let input_group_ref = NodeRef::new();
 
     fn process_lint_errors(
         path: &str,
-        set_path_lint_errors: WriteSignal<Vec<simple_icons::lint::LintError>>,
+        set_path_lint_errors: WriteSignal<Vec<LintError>>,
     ) {
         let mut new_lint_errors =
             simple_icons::lint::lint_path_characters(path);
@@ -231,9 +247,10 @@ fn ShowLintErrorButton(
     end: u32,
     input_ref: NodeRef<Input>,
 ) -> impl IntoView {
+    let title = move_tr!("show");
     view! {
         <button
-            title=move_tr!("show")
+            title=title
             class="button"
             type="button"
             tabindex=0
@@ -244,7 +261,7 @@ fn ShowLintErrorButton(
                 input.set_selection_end(Some(end)).unwrap();
             }
         >
-            {move_tr!("show")}
+            {title}
         </button>
     }
 }
@@ -253,12 +270,13 @@ fn ShowLintErrorButton(
 fn FixLintErrorButton(
     start: u32,
     end: u32,
-    fixer: simple_icons::lint::LintErrorFixer,
+    fixer: LintErrorFixer,
     input_ref: NodeRef<Input>,
 ) -> impl IntoView {
+    let title = move_tr!("fix");
     view! {
         <button
-            title=move_tr!("fix")
+            title=title
             class="button"
             type="button"
             tabindex=0
@@ -278,7 +296,7 @@ fn FixLintErrorButton(
                 );
             }
         >
-            {move_tr!("fix")}
+            {title}
         </button>
     }
 }
@@ -287,7 +305,7 @@ fn FixLintErrorButton(
 fn LintError(
     message: Signal<String>,
     range: Option<(u32, u32)>,
-    fixer: Option<simple_icons::lint::LintErrorFixer>,
+    fixer: Option<LintErrorFixer>,
     input_ref: NodeRef<Input>,
 ) -> impl IntoView {
     view! {
