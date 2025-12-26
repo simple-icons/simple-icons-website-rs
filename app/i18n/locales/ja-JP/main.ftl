@@ -91,4 +91,5 @@ maybe-youre-looking-for = もしかしたら探しているかもしれません
 extensions = 拡張機能
 libraries = ライブラリ
 copy-icon-modal-url = アイコン モーダル URL をコピー
+copy-icon-url = アイコン URL をコピー
 copy-icon-svg-path = アイコン SVG パスをコピー

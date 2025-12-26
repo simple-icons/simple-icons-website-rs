@@ -93,4 +93,5 @@ copy-brand-name = Копирај назив бренда
 extensions = Проширења
 libraries = Библиотеке
 copy-icon-modal-url = Копирај URL модала за иконицу
+copy-icon-url = Копирај URL иконице
 copy-icon-svg-path = Копирај SVG путању иконице

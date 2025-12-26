@@ -1,8 +1,8 @@
 use crate::{CurrentIconViewSignal, item::title::get_icon_localized_title};
 use icondata::{
-    BiCheckRegular, BiMenuAltRightRegular, BiMenuRegular, BsCode,
-    BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline, TbPngOutline,
-    TbSvgOutline, VsSymbolNamespace,
+    BiCheckRegular, BiLinkAltRegular, BiMenuAltRightRegular, BiMenuRegular,
+    BsCode, BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline,
+    TbPngOutline, TbSvgOutline, VsSymbolNamespace,
 };
 use leptos::{ev::MouseEvent, prelude::*, task::spawn_local};
 use leptos_fluent::{I18n, move_tr, tr};
@@ -446,6 +446,22 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
+    let (copying_icon_url, set_copying_icon_url) = signal(false);
+    #[allow(unused_parens)]
+    let copy_icon_url_msg = move_tr!(if (copying_icon_url()) {
+        "copied"
+    } else {
+        "copy-icon-url"
+    });
+
+    let copy_icon_url_icon = Signal::derive(move || {
+        if copying_icon_url() {
+            BiCheckRegular
+        } else {
+            BiLinkAltRegular
+        }
+    });
+
     view! {
         <Modal
             title_is_copyable=true
@@ -778,6 +794,38 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     );
                                     set_timeout(
                                         move || set_copying_icon_modal_url(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                }
+                            />
+
+                            <DetailsMenuItem
+                                text=copy_icon_url_msg
+                                icon=copy_icon_url_icon
+                                on:click=move |ev| {
+                                    if copying_icon_url.get_untracked() {
+                                        return;
+                                    }
+                                    set_copying_icon_url(true);
+                                    let current_url = window().location().href().unwrap();
+                                    let current_url_split = current_url
+                                        .split("/")
+                                        .collect::<Vec<&str>>();
+                                    let url = format!(
+                                        "{}//{}/icons/{}.svg",
+                                        current_url_split[0],
+                                        current_url_split[2],
+                                        get_slug_from_modal_container(),
+                                    );
+                                    copy_and_set_copied_transition(
+                                        &url,
+                                        ev
+                                            .target()
+                                            .unwrap()
+                                            .unchecked_into::<web_sys::HtmlElement>(),
+                                    );
+                                    set_timeout(
+                                        move || set_copying_icon_url(false),
                                         std::time::Duration::from_secs(1),
                                     );
                                 }

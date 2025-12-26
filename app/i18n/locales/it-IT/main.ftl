@@ -91,4 +91,5 @@ copy-brand-name = Copia nome del marchio
 extensions = Estensioni
 libraries = Librerie
 copy-icon-modal-url = Copia URL del modal dell'icona
+copy-icon-url = Copia URL dell'icona
 copy-icon-svg-path = Copia percorso SVG dell'icona
