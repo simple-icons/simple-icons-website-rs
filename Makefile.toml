@@ -103,7 +103,7 @@ end
 
 [tasks.minify-html]
 description = "Minify the HTML files"
-install_crate = { crate_name = "minhtml", binary = "minhtml", test_arg = "--help", version = "0.17.1" }
+install_crate = { crate_name = "minhtml", binary = "minhtml", test_arg = "--help" }
 script_runner = "@duckscript"
 script = '''
 files = glob_array ./app/dist/**/*.html
