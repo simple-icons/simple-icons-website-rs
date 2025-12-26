@@ -2,6 +2,7 @@ use leptos::{ev::MouseEvent, prelude::*};
 use leptos_fluent::{Language, tr};
 use simple_icons_website_copy::copy_and_set_copied_transition;
 use simple_icons_website_types::SimpleIcon;
+use unic_langid::{LanguageIdentifier, LanguageIdentifierError};
 
 pub fn get_icon_localized_title(
     icon: &'static SimpleIcon,
@@ -9,14 +10,25 @@ pub fn get_icon_localized_title(
 ) -> &'static str {
     if let Some(aliases) = icon.aliases {
         if let Some(loc) = aliases.loc {
-            let current_lang_region = language.id.to_string();
-            let current_lang = language.id.language.to_string();
+            let current_lang_region = language.id;
+            let maybe_current_lang: Result<
+                LanguageIdentifier,
+                LanguageIdentifierError,
+            > = language.id.parse();
+            if let Err(e) = &maybe_current_lang {
+                leptos::logging::warn!(
+                    "Failed to parse language identifier: {}",
+                    e
+                );
+            }
 
             for (lang, loc_title) in loc {
                 if *lang == current_lang_region {
                     return loc_title;
                 }
             }
+
+            let current_lang = maybe_current_lang.unwrap().language.to_string();
 
             for (lang, loc_title) in loc {
                 let mut loc_language = lang.to_string();

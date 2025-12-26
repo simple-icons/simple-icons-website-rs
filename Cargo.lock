@@ -1753,9 +1753,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent"
-version = "0.2.18"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "07b3d40f981588286d7c37b32758ffc8b4257531f96aaf52fab81e128674071d"
+checksum = "3a092f51ad38d029b749ec4796688d9a67021b347572668abff2d482512af7ab"
 dependencies = [
  "fluent-bundle",
  "fluent-templates",
@@ -1768,9 +1768,9 @@ dependencies = [
 
 [[package]]
 name = "leptos-fluent-macros"
-version = "0.2.18"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34107bcc6194a07ea69447703cbe995de24cb026ed26a2390bf9cbd74b3ac8f1"
+checksum = "8ebf2723285d8789b68bf35a1afc6a94ac65d6a0d8c761040e0344a7b2ffbb13"
 dependencies = [
  "cfg-expr",
  "current_platform",
@@ -1779,7 +1779,6 @@ dependencies = [
  "fluent-templates",
  "globwalk",
  "pathdiff",
- "proc-macro-warning",
  "proc-macro2",
  "quote",
  "syn",
@@ -2354,17 +2353,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "smallvec",
-]
-
-[[package]]
-name = "proc-macro-warning"
-version = "1.84.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75eea531cfcd120e0851a3f8aed42c4841f78c889eefafd96339c72677ae42c3"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -3133,6 +3121,7 @@ dependencies = [
  "simple-icons-website-svg-icon",
  "simple-icons-website-types",
  "simple-icons-website-url",
+ "unic-langid",
  "wasm-bindgen",
  "web-sys",
  "web-sys-simple-fetch",

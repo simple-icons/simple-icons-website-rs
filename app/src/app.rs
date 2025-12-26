@@ -58,7 +58,7 @@ pub fn App() -> impl IntoView {
     view! {
         <I18n
             url_param=Url::params::Names::Language.as_str()
-            localstorage_key=LocalStorage::Keys::Language.as_str()
+            local_storage_key=LocalStorage::Keys::Language.as_str()
         >
             <Head />
             <Header />

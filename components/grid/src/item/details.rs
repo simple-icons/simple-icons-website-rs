@@ -209,7 +209,7 @@ pub fn fill_icon_details_modal_with_icon(
             deprecation.milestone_due_on,
         ))
         .to_locale_date_string(
-            &language.id.to_string(),
+            language.id,
             &wasm_bindgen::JsValue::from(&date_options),
         )
         .as_string()

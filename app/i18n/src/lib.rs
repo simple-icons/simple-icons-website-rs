@@ -5,7 +5,7 @@ use leptos_fluent::leptos_fluent;
 pub fn I18n(
     children: Children,
     url_param: &'static str,
-    localstorage_key: &'static str,
+    local_storage_key: &'static str,
 ) -> impl IntoView {
     leptos_fluent! {
         children: children(),
@@ -17,7 +17,7 @@ pub fn I18n(
         url_param,
         initial_language_from_url_param: true,
         initial_language_from_url_param_to_local_storage: true,
-        localstorage_key,
+        local_storage_key,
         initial_language_from_local_storage: true,
         set_language_to_local_storage: true,
         initial_language_from_navigator: true,
