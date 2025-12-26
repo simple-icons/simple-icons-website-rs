@@ -74,7 +74,7 @@ jobs:
           toolchain: ${{ steps.get-channel.outputs.channel }}
           target: wasm32-unknown-unknown
           components: clippy
-          cache-key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}-dylint-${{ steps.get-channel.outputs.channel }}
+          cache-key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}-dylint-${{ steps.get-channel.outputs.channel }}-${{ hashFiles('**/rust-toolchain.toml') }}
           cache-directories: |
             ~/.dylint_drivers
       - name: Install tooling dependencies
