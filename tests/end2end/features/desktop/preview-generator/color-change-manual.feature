@@ -19,3 +19,21 @@ Feature: Change color by manual input
 		Then the color in the preview is "Color: #123123"
 		Then the background color of the preview is #123123
 		Then the color of the badges in the preview is #123123
+
+	Scenario: Change color by manual input with lowercase letters
+		When I type "ab12cd" in the color input
+		Then the color in the preview is "Color: #AB12CD"
+		Then the background color of the preview is #AB12CD
+		Then the color of the badges in the preview is #AB12CD
+
+	Scenario: Change color by manual input with mixed case letters
+		When I type "aB12Cd" in the color input
+		Then the color in the preview is "Color: #AB12CD"
+		Then the background color of the preview is #AB12CD
+		Then the color of the badges in the preview is #AB12CD
+
+	Scenario: Change color by manual input with lowercase letters and leading "#"
+		When I type "#ab12cd" in the color input
+		Then the color in the preview is "Color: #AB12CD"
+		Then the background color of the preview is #AB12CD
+		Then the color of the badges in the preview is #AB12CD
