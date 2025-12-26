@@ -164,7 +164,7 @@ jobs:
         with:
           timeout_minutes: 20
           max_attempts: 3
-          command: cargo test --package end2end --test ${{ matrix.suite }} -- --fail-fast --concurrency=${{ matrix.browser == 'firefox' && '1' || '16' }}
+          command: cargo test --package end2end --test ${{ matrix.suite }} -- --fail-fast --concurrency=${{ matrix.browser == 'firefox' && '1' || '12' }}
         env:
           BROWSER: ${{ matrix.browser }}
           WINDOW_SIZE: ${{ matrix.window-size }}
