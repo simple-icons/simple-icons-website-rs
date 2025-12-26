@@ -109,11 +109,11 @@ jobs:
             suite: desktop
             window-size: 1920x1080
             runs-on: ubuntu-latest
-          - name: Firefox Desktop
-            browser: firefox
-            suite: desktop
-            window-size: 1920x1080
-            runs-on: ubuntu-latest
+          #- name: Firefox Desktop
+          #  browser: firefox
+          #  suite: desktop
+          #  window-size: 1920x1080
+          #  runs-on: ubuntu-latest
           #- name: Chrome Mobile
           #  browser: chrome
           #  runs-on: ubuntu-22.04
