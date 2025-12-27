@@ -1,0 +1,16 @@
+[package]
+name = "simple-icons-website-deprecations-page"
+description = "Simple Icons website /deprecations page entrypoint"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+leptos.workspace = true
+simple-icons-website-page-base.workspace = true
+simple-icons-website-grid-types.workspace = true
+simple-icons-website-grid-constants.workspace = true
+wasm-bindgen.workspace = true
+console_error_panic_hook.workspace = true

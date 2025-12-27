@@ -1,5 +1,5 @@
 /target/
-app/dist/
+dist/
 playwright-report/
 **/*.rs.bk
 node_modules/
@@ -11,3 +11,4 @@ app/public/assets/stylesheet.css
 app/public/assets/sitemap.xml
 app/public/assets/js/
 app/public/js-libs.html
+index.dist.html

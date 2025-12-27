@@ -1,0 +1,26 @@
+[package]
+name = "simple-icons-website-page-base"
+description = "Simple Icons website base page"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+leptos.workspace = true
+leptos-use.workspace = true
+simple-icons-website-controls.workspace = true
+simple-icons-website-grid.workspace = true
+simple-icons-website-grid-types.workspace = true
+simple-icons-website-storage.workspace = true
+simple-icons-website-footer.workspace = true
+simple-icons-website-header.workspace = true
+simple-icons-website-i18n.workspace = true
+simple-icons-website-modal.workspace = true
+simple-icons-website-svg-defs.workspace = true
+simple-icons-website-url.workspace = true
+serde_json.workspace = true
+leptos-fluent.workspace = true
+leptos_meta.workspace = true
+simple-icons-macros.workspace = true

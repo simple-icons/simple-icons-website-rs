@@ -1,11 +1,3 @@
-//! Simple Icons website
-//!
-//! Built with Rust using [Leptos](https://docs.rs/leptos)
-//! and [Tailwind CSS](https://tailwindcss.com/).
-//!
-//! See the contributing guide for instructions on how to
-//! develop and build for production.
-//!
 pub(crate) mod app;
 
 use crate::app::App;

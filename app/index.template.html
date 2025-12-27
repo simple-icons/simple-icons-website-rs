@@ -5,10 +5,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{{initial_title}}</title>
 		<script type="module">
-			import init, { initSync } from "./{{out_name}}-{{build_timestamp}}.js";
-			await init("./{{out_name}}-{{build_timestamp}}_bg.wasm");
-			initSync();
+			import init from "/{{out_name}}-{{build_timestamp}}.js";
+			init({module_or_path: "/{{out_name}}-{{build_timestamp}}_bg.wasm"});
 		</script>
+		{{js_libs}}
+		<link rel="stylesheet" href="{{stylesheet}}" />
 	</head>
 	<body style="background-color: #222222">
 		<svg

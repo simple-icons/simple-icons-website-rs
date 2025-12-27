@@ -79,20 +79,12 @@ clear = true
 description = "Build the app for production"
 run_task = { name = [
 	"run-pre-build-scripts",
-	"remove-app-dist-folder",
 	"build-css",
 	"build-website",
 	"move-website-assets",
 	#"minify-wasm-js-binding",
 	#"minify-html",
 ] }
-
-[tasks.remove-app-dist-folder]
-description = "Remove the app dist folder if it exists"
-script_runner = "@duckscript"
-script = '''
-exec rm -rf ./app/dist
-'''
 
 [tasks.build-wasm]
 description = "Build the WASM app for production"
@@ -120,21 +112,122 @@ script_runner = "@duckscript"
 script = '''
 build_timestamp = get_env BUILD_TIMESTAMP
 
+# index.html
 template = readfile ./app/index.template.html
 template = replace ${template} "{{build_timestamp}}" ${build_timestamp}
-
+js_libs = readfile ./app/public/js-libs.html
 index = replace ${template} "{{initial_title}}" "Simple Icons"
 index = replace ${index} "{{out_name}}" "simple-icons-website"
+index = replace ${index} "{{js_libs}}" "${js_libs}"
 writefile app/index.dist.html ${index}
+
+# deprecations/index.html
+template = readfile ./app/index.template.html
+template = replace ${template} "{{build_timestamp}}" ${build_timestamp}
+js_libs = readfile ./app/public/js-libs.html
+index = replace ${template} "{{initial_title}}" "Simple Icons | Deprecations"
+index = replace ${index} "{{out_name}}" "simple-icons-website-deprecations"
+index = replace ${index} "{{js_libs}}" "${js_libs}"
+writefile app/public/deprecations/index.dist.html ${index}
+
+wasm_pack_build_env = set "--dev"
+build_timestamp = get_env BUILD_TIMESTAMP
+if get_env RELEASE == "true"
+  wasm_pack_build_env = set "--release"
+end
+
 cd ./app
-exec wasm-pack build . --no-pack --no-typescript --release --target web -d ./dist/ --out-name simple-icons-website-${build_timestamp}
+# Index page
+exec wasm-pack build . --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ./dist/ --out-name simple-icons-website-${build_timestamp}
+
+# Deprecations page
+mkdir ./dist/deprecations/
+exec wasm-pack build pages/deprecations --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-deprecations-${build_timestamp}
+
+# Preview generator page
+mkdir ./dist/preview/
+exec wasm-pack build pages/preview --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-preview-${build_timestamp}
+
+# 404 page
+mkdir ./dist/404/
+exec wasm-pack build pages/404 --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-404-${build_timestamp}
+cd ..
 '''
 
 [tasks.move-website-assets]
 description = "Move website assets to the dist folder"
 script_runner = "@duckscript"
 script = '''
-exec mv ./app/index.dist.html ./app/dist/index.html
+build_timestamp = get_env BUILD_TIMESTAMP
+
+# Stylesheet
+exec cp ./app/public/assets/stylesheet.css ./app/dist/stylesheet-${build_timestamp}.css
+
+# index.html
+index = readfile ./app/index.dist.html
+index = replace ${index} "{{stylesheet}}" "/stylesheet-${build_timestamp}.css"
+writefile app/index.dist.html ${index}
+exec cp ./app/index.dist.html ./app/dist/index.html
+
+# deprecations/index.html
+deprecations = readfile ./app/index.dist.html
+deprecations = replace ${deprecations} "{{initial_title}}" "Simple Icons | Deprecations"
+deprecations = replace ${deprecations} "{{out_name}}" "simple-icons-website-deprecations"
+mkdir ./app/public/deprecations/
+writefile ./app/public/deprecations/index.dist.html ${deprecations}
+exec cp ./app/public/deprecations/index.dist.html ./app/dist/deprecations/index.html
+#   deprecations.html
+exec cp ./app/public/deprecations.html ./app/dist/deprecations.html
+
+# preview/index.html
+preview = readfile ./app/index.dist.html
+preview = replace ${preview} "{{initial_title}}" "Simple Icons | Preview Generator"
+preview = replace ${preview} "{{out_name}}" "simple-icons-website-preview"
+mkdir ./app/public/preview/
+writefile ./app/public/preview/index.dist.html ${preview}
+cp ./app/public/preview/index.dist.html ./app/dist/preview/index.html
+#   preview.html
+exec cp ./app/public/preview.html ./app/dist/preview.html
+
+# 404/index.html
+error404 = readfile ./app/index.dist.html
+error404 = replace ${error404} "{{initial_title}}" "Simple Icons | 404 Not Found"
+error404 = replace ${error404} "{{out_name}}" "simple-icons-website-404"
+mkdir ./app/public/404/
+writefile ./app/public/404/index.dist.html ${error404}
+cp ./app/public/404/index.dist.html ./app/dist/404/index.html
+#   404.html
+exec cp ./app/public/404.html ./app/dist/404.html
+
+# CNAME
+exec cp ./app/public/assets/CNAME ./app/dist/CNAME
+# Sitemap
+exec cp ./app/public/assets/sitemap.xml ./app/dist/sitemap.xml
+# Favicon
+exec cp ./app/public/assets/favicon.ico ./app/dist/favicon.ico
+exec cp ./app/public/assets/favicon.png ./app/dist/favicon.png
+exec cp ./app/public/assets/logo.svg ./app/dist/logo.svg
+exec cp ./app/public/assets/og.png ./app/dist/og.png
+exec cp ./app/public/assets/apple-touch-icon.png ./app/dist/apple-touch-icon.png
+# License
+exec cp ./license.txt ./app/dist/license.txt
+# Simple Icons
+exec cp -r ./node_modules/simple-icons/icons ./app/dist/icons
+# Utility icons
+exec cp ./app/public/assets/copy.svg ./app/dist/copy.svg
+exec cp ./app/public/assets/copy-white.svg ./app/dist/copy-white.svg
+exec cp ./app/public/assets/check.svg ./app/dist/check.svg
+exec cp ./app/public/assets/check-white.svg ./app/dist/check-white.svg
+exec cp ./app/public/assets/external-link.svg ./app/dist/external-link.svg
+exec cp ./app/public/assets/external-link-white.svg ./app/dist/external-link-white.svg
+exec cp ./app/public/assets/legal.svg ./app/dist/legal.svg
+exec cp ./app/public/assets/legal-white.svg ./app/dist/legal-white.svg
+# JS Libraries
+exec cp -r ./app/public/assets/js ./app/dist/js
+# Fonts
+mkdir ./app/dist/fonts/
+glob_cp node_modules/@fontsource/roboto-mono/files/* ./app/dist/fonts/
+glob_cp node_modules/@fontsource/open-sans/files/* ./app/dist/fonts/
 '''
 
 [tasks.minify-wasm-js-binding]

@@ -2927,24 +2927,30 @@ dependencies = [
  "icondata",
  "leptos",
  "leptos-fluent",
- "leptos-use",
  "leptos_icons",
- "leptos_meta",
  "leptos_router",
- "serde_json",
- "simple-icons-macros",
  "simple-icons-website-controls",
- "simple-icons-website-footer",
  "simple-icons-website-grid",
  "simple-icons-website-grid-constants",
  "simple-icons-website-grid-types",
- "simple-icons-website-header",
- "simple-icons-website-i18n",
- "simple-icons-website-modal",
+ "simple-icons-website-page-base",
  "simple-icons-website-preview-generator",
- "simple-icons-website-storage",
- "simple-icons-website-svg-defs",
- "simple-icons-website-url",
+ "wasm-bindgen",
+]
+
+[[package]]
+name = "simple-icons-website-404-page"
+version = "0.1.0"
+dependencies = [
+ "console_error_panic_hook",
+ "icondata",
+ "leptos",
+ "leptos-fluent",
+ "leptos_icons",
+ "leptos_router",
+ "simple-icons-website-controls",
+ "simple-icons-website-page-base",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -3019,6 +3025,18 @@ dependencies = [
  "wasm-bindgen",
  "web-sys",
  "web-sys-simple-fetch",
+]
+
+[[package]]
+name = "simple-icons-website-deprecations-page"
+version = "0.1.0"
+dependencies = [
+ "console_error_panic_hook",
+ "leptos",
+ "simple-icons-website-grid-constants",
+ "simple-icons-website-grid-types",
+ "simple-icons-website-page-base",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -3148,6 +3166,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "simple-icons-website-page-base"
+version = "0.1.0"
+dependencies = [
+ "leptos",
+ "leptos-fluent",
+ "leptos-use",
+ "leptos_meta",
+ "serde_json",
+ "simple-icons-macros",
+ "simple-icons-website-controls",
+ "simple-icons-website-footer",
+ "simple-icons-website-grid",
+ "simple-icons-website-grid-types",
+ "simple-icons-website-header",
+ "simple-icons-website-i18n",
+ "simple-icons-website-modal",
+ "simple-icons-website-storage",
+ "simple-icons-website-svg-defs",
+ "simple-icons-website-url",
+]
+
+[[package]]
 name = "simple-icons-website-preview-generator"
 version = "0.1.0"
 dependencies = [
@@ -3175,6 +3215,23 @@ dependencies = [
  "web-sys-simple-copy",
  "web-sys-simple-events",
  "web-sys-simple-fetch",
+]
+
+[[package]]
+name = "simple-icons-website-preview-page"
+version = "0.1.0"
+dependencies = [
+ "console_error_panic_hook",
+ "icondata",
+ "leptos",
+ "leptos-fluent",
+ "leptos_icons",
+ "leptos_router",
+ "simple-icons-website-controls",
+ "simple-icons-website-grid-constants",
+ "simple-icons-website-page-base",
+ "simple-icons-website-preview-generator",
+ "wasm-bindgen",
 ]
 
 [[package]]
