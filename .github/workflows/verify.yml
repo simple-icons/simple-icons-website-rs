@@ -218,6 +218,8 @@ jobs:
         env:
           RELEASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Show dist tree
+        run: tree -ah -L 1 app/dist
       - name: Create WebAssembly report
         run: |
           echo "## 📦 WASM Bundle Sizes" >> $GITHUB_STEP_SUMMARY
@@ -226,18 +228,22 @@ jobs:
           echo "|-----|-------|----|----|" >> $GITHUB_STEP_SUMMARY
 
           total_bytes=0
-          for wasm_file in app/dist/**/*.wasm; do
-            if [ -f "$wasm_file" ]; then
-              app_name=$(basename "$wasm_file" .wasm)
-              size_in_bytes=$(wc -c < "$wasm_file")
-              size_in_kb=$(bc -l <<< "scale=2; $size_in_bytes / 1024")
-              size_in_mb=$(bc -l <<< "scale=2; $size_in_kb / 1024")
-              
-              echo "| $app_name | $size_in_bytes | $size_in_kb | $size_in_mb |" >> $GITHUB_STEP_SUMMARY
-              total_bytes=$((total_bytes + size_in_bytes))
-            fi
-          done
+          while IFS= read -r wasm_file; do
+            # Extraer nombre sin _bg.wasm y sin timestamp
+            app_name=$(basename "$wasm_file" _bg.wasm | sed 's/-[0-9]\+$//')
+            
+            size_in_bytes=$(wc -c < "$wasm_file")
+            size_in_kb=$(echo "scale=2; $size_in_bytes / 1024" | bc -l)
+            size_in_mb=$(echo "scale=2; $size_in_kb / 1024" | bc -l)
+            
+            echo "| \`$app_name\` | $size_in_bytes | $size_in_kb | $size_in_mb |" >> $GITHUB_STEP_SUMMARY
+            total_bytes=$((total_bytes + size_in_bytes))
+          done < <(find app/dist -name "*_bg.wasm" -type f | sort)
 
-          total_kb=$(bc -l <<< "scale=2; $total_bytes / 1024")
-          total_mb=$(bc -l <<< "scale=2; $total_kb / 1024")
-          echo "| **Total** | **$total_bytes** | **$total_kb** | **$total_mb** |" >> $GITHUB_STEP_SUMMARY
+          if [ $total_bytes -gt 0 ]; then
+            total_kb=$(echo "scale=2; $total_bytes / 1024" | bc -l)
+            total_mb=$(echo "scale=2; $total_kb / 1024" | bc -l)
+            echo "| **Total** | **$total_bytes** | **$total_kb** | **$total_mb** |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| *No WASM files found* | - | - | - |" >> $GITHUB_STEP_SUMMARY
+          fi
