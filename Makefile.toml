@@ -107,7 +107,7 @@ args = [
 cwd = "./app"
 
 [tasks.build-website]
-description = "Build the website for production"
+description = "Build the apps WASM bundles and HTML files"
 install_crate = { crate_name = "wasm-pack", binary = "wasm-pack", test_arg = "--help", force = false }
 script_runner = "@duckscript"
 script = '''
