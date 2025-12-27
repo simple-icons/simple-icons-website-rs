@@ -220,11 +220,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create WebAssembly report
         run: |
-          size_in_bytes=$(wc -c < "$(find app/dist -name '*.wasm' -print)")
-          size_in_kb=$(bc -l <<< "$size_in_bytes / 1024")
-          size_in_kb_rounded=$(bc -l <<< "scale=6; $size_in_kb / 1")
-          size_in_mb=$(bc -l <<< "$size_in_kb / 1024")
-          size_in_mb_rounded=$(bc -l <<< "scale=6; $size_in_mb / 1")
-          echo "- $size_in_bytes bytes" >> $GITHUB_STEP_SUMMARY
-          echo "- $size_in_kb_rounded Kb" >> $GITHUB_STEP_SUMMARY
-          echo "- $size_in_mb_rounded MB" >> $GITHUB_STEP_SUMMARY
+          echo "## 📦 WASM Bundle Sizes" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| App | Bytes | KB | MB |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|-------|----|----|" >> $GITHUB_STEP_SUMMARY
+
+          total_bytes=0
+          for wasm_file in app/dist/**/*.wasm; do
+            if [ -f "$wasm_file" ]; then
+              app_name=$(basename "$wasm_file" .wasm)
+              size_in_bytes=$(wc -c < "$wasm_file")
+              size_in_kb=$(bc -l <<< "scale=2; $size_in_bytes / 1024")
+              size_in_mb=$(bc -l <<< "scale=2; $size_in_kb / 1024")
+              
+              echo "| $app_name | $size_in_bytes | $size_in_kb | $size_in_mb |" >> $GITHUB_STEP_SUMMARY
+              total_bytes=$((total_bytes + size_in_bytes))
+            fi
+          done
+
+          total_kb=$(bc -l <<< "scale=2; $total_bytes / 1024")
+          total_mb=$(bc -l <<< "scale=2; $total_kb / 1024")
+          echo "| **Total** | **$total_bytes** | **$total_kb** | **$total_mb** |" >> $GITHUB_STEP_SUMMARY
