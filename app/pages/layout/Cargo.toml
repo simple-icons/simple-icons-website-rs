@@ -1,6 +1,6 @@
 [package]
-name = "simple-icons-website-page-base"
-description = "Simple Icons website base page"
+name = "simple-icons-website-page-layout"
+description = "Simple Icons website page layout"
 version.workspace = true
 edition.workspace = true
 

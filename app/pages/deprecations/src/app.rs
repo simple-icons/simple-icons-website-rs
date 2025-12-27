@@ -1,7 +1,7 @@
 use leptos::prelude::*;
 use simple_icons_website_grid_constants::DEPRECATED_ICONS;
 use simple_icons_website_grid_types::IconsIndexSignal;
-use simple_icons_website_page_base::{Index, SimpleIconsApp};
+use simple_icons_website_page_layout::{Index, SimpleIconsApp};
 
 pub static TITLE: &str = "Simple Icons | Deprecations";
 

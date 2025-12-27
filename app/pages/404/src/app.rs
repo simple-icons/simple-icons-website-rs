@@ -3,7 +3,7 @@ use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use leptos_icons::Icon;
 use simple_icons_website_controls::color_scheme::ColorSchemeControl;
-use simple_icons_website_page_base::SimpleIconsApp;
+use simple_icons_website_page_layout::SimpleIconsApp;
 
 pub const TITLE: &str = "Simple Icons | 404 Not Found";
 

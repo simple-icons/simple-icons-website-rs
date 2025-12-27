@@ -2891,7 +2891,7 @@ dependencies = [
  "leptos",
  "simple-icons-website-grid-constants",
  "simple-icons-website-grid-types",
- "simple-icons-website-page-base",
+ "simple-icons-website-page-layout",
  "wasm-bindgen",
 ]
 
@@ -2905,7 +2905,7 @@ dependencies = [
  "leptos-fluent",
  "leptos_icons",
  "simple-icons-website-controls",
- "simple-icons-website-page-base",
+ "simple-icons-website-page-layout",
  "wasm-bindgen",
 ]
 
@@ -2991,7 +2991,7 @@ dependencies = [
  "leptos",
  "simple-icons-website-grid-constants",
  "simple-icons-website-grid-types",
- "simple-icons-website-page-base",
+ "simple-icons-website-page-layout",
  "wasm-bindgen",
 ]
 
@@ -3122,7 +3122,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "simple-icons-website-page-base"
+name = "simple-icons-website-page-layout"
 version = "0.1.0"
 dependencies = [
  "leptos",
@@ -3184,7 +3184,7 @@ dependencies = [
  "leptos_icons",
  "simple-icons-website-controls",
  "simple-icons-website-grid-constants",
- "simple-icons-website-page-base",
+ "simple-icons-website-page-layout",
  "simple-icons-website-preview-generator",
  "wasm-bindgen",
 ]

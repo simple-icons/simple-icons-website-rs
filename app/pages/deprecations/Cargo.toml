@@ -9,7 +9,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 leptos.workspace = true
-simple-icons-website-page-base.workspace = true
+simple-icons-website-page-layout.workspace = true
 simple-icons-website-grid-types.workspace = true
 simple-icons-website-grid-constants.workspace = true
 wasm-bindgen.workspace = true

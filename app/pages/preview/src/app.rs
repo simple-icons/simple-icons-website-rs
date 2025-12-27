@@ -5,7 +5,7 @@ use leptos_icons::Icon;
 use simple_icons_website_controls::color_scheme::ColorSchemeControl;
 use simple_icons_website_controls::search::init_searcher;
 use simple_icons_website_grid_constants::ICONS;
-use simple_icons_website_page_base::SimpleIconsApp;
+use simple_icons_website_page_layout::SimpleIconsApp;
 use simple_icons_website_preview_generator::{
     PreviewGenerator, add_preview_generator_scripts,
 };

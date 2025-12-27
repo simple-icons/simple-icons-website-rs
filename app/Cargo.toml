@@ -10,7 +10,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 simple-icons-website-grid-types.workspace = true
 simple-icons-website-grid-constants.workspace = true
-simple-icons-website-page-base.workspace = true
+simple-icons-website-page-layout.workspace = true
 leptos.workspace = true
 console_error_panic_hook.workspace = true
 wasm-bindgen.workspace = true
