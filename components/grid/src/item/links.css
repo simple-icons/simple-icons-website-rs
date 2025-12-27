@@ -17,3 +17,7 @@ main > ul > li > .links > a.brand-guidelines {
 main > ul > li > .links > a.license {
 	@apply bg-[url(./legal.svg)] dark:bg-[url(./legal-white.svg)];
 }
+
+:dir(rtl) main > ul > li > .links > a {
+	@apply self-end;
+}
