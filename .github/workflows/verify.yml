@@ -230,7 +230,6 @@ jobs:
 
           total_bytes=0
           while IFS= read -r wasm_file; do
-            # Extraer nombre sin _bg.wasm y sin timestamp
             app_name=$(basename "$wasm_file" _bg.wasm | sed 's/-[0-9]\+$//')
             
             size_in_bytes=$(wc -c < "$wasm_file")
