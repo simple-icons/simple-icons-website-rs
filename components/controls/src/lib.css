@@ -10,9 +10,21 @@ menu .controls-group {
 	@apply flex-row space-x-1 xs:space-x-4;
 }
 
+:dir(rtl) menu .controls-group {
+	@apply mr-6;
+}
+
 /* Each control */
 menu .control {
 	@apply flex h-auto flex-col;
+}
+
+:dir(rtl) menu .control:nth-child(2) {
+	@apply mr-4;
+}
+
+:dir(rtl) menu .control > div {
+	@apply flex flex-row-reverse;
 }
 
 /* Labels */

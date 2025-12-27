@@ -22,7 +22,11 @@
 
 /*   Icon slug */
 .icon-details-modal > :first-child > :last-child > :first-child {
-	@apply copy-button-color-scheme pr-12 before:[background-position-x:95%];
+	@apply copy-button-color-scheme before:[background-position-x:95%];
+}
+
+:dir(ltr) .icon-details-modal > :first-child > :last-child > :first-child {
+	@apply pr-12;
 }
 
 /*   Copy hex color button */

@@ -14,6 +14,10 @@
 		@apply flex w-full flex-row px-5 py-3 [border-bottom:_1px_solid_var(--divider-color)];
 	}
 
+	:dir(rtl) .modal > :first-child {
+		@apply flex-row-reverse;
+	}
+
 	.modal > :first-child > h2 {
 		@apply flex-grow text-base xs:text-lg;
 	}
