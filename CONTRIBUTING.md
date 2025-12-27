@@ -9,13 +9,18 @@
 
 ## Commands
 
-- `cargo make`: Build WASM and serve for development. This does not watch CSS files (see `watch-css` below).
+- `cargo make`: Alias of `cargo make serve`. It does not watch CSS files (see `watch-css` below).
+- `cargo make serve`: Build the website and serve it with [serve](https://www.npmjs.com/package/serve).
 - `cargo make watch-css`: Watch the CSS files with [TailwindCSS](https://tailwindcss.com/).
 - `cargo make format`: Format files.
 - `cargo make lint`: Check formatting of files.
 - `cargo make dylint`: Run dylint (separated from `cargo make lint` to avoid long execution times).
-- `cargo make build`: Build the website for production.
-- `cargo make serve`: Build the website for production and serve it with [serve](https://www.npmjs.com/package/serve).
+- `cargo make build`: Build the website.
+
+Use the next environment variables to customize the build:
+
+- `RELEASE=true` to build in release mode.
+- `APPS=index,deprecations,preview,404` to build only specific apps (comma separated list).
 
 ## Testing
 
@@ -58,7 +63,8 @@ Note that different screen sizes must be located in different test suites.
 
 - [Leptos](https://docs.rs/leptos) as the components library with a client side rendering approach.
 - [TailwindCSS](https://tailwindcss.com/) as the CSS framework.
-- [Trunk](https://trunkrs.dev/) as the web server (on development) and application builder (on production).
+- [wasm-pack](https://drager.github.io/wasm-pack/book/) as the application builder.
+- [serve](https://www.npmjs.com/package/serve) as the static file server for development.
 
 ### Rust crates
 

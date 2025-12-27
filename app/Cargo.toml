@@ -8,17 +8,10 @@ edition.workspace = true
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-simple-icons-website-preview-generator.workspace = true
-simple-icons-website-controls.workspace = true
-simple-icons-website-grid.workspace = true
 simple-icons-website-grid-types.workspace = true
 simple-icons-website-grid-constants.workspace = true
 simple-icons-website-page-base.workspace = true
-leptos-fluent.workspace = true
 leptos.workspace = true
-leptos_router.workspace = true
-leptos_icons.workspace = true
-icondata.workspace = true
 console_error_panic_hook.workspace = true
 wasm-bindgen.workspace = true
 

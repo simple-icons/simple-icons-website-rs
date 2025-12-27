@@ -6,29 +6,30 @@ use leptos_use::{
     ColorMode, UseColorModeOptions, UseColorModeReturn,
     use_color_mode_with_options,
 };
+use simple_icons_website_controls::{
+    Controls, download::provide_download_type_context,
+    layout::provide_layout_context, order::provide_order_mode_context,
+    search::provide_search_context,
+};
 use simple_icons_website_footer::Footer;
+use simple_icons_website_grid::{Grid, provide_icons_grid_contexts};
+use simple_icons_website_grid_types::IconsIndexSignal;
 use simple_icons_website_header::Header;
 use simple_icons_website_i18n::I18n;
 use simple_icons_website_modal::provide_modal_open_context;
 use simple_icons_website_storage::LocalStorage;
 use simple_icons_website_svg_defs::SVGDefsDefinition;
 use simple_icons_website_url as Url;
-use simple_icons_website_controls::{
-    Controls,
-    download::provide_download_type_context,
-    layout::provide_layout_context,
-    order::provide_order_mode_context,
-    search::{provide_search_context},
-};
-use simple_icons_website_grid::{Grid, provide_icons_grid_contexts};
-use simple_icons_website_grid_types::IconsIndexSignal;
 
 /// Title of the page
 pub static TITLE: &str = "Simple Icons";
 
 /// The main application component
 #[component]
-pub fn SimpleIconsApp(#[prop(default = TITLE)] title: &'static str, children: Children) -> impl IntoView {
+pub fn SimpleIconsApp(
+    children: Children,
+    #[prop(default = TITLE)] title: &'static str,
+) -> impl IntoView {
     let UseColorModeReturn {
         mode: color_mode,
         set_mode: set_color_mode,
@@ -73,7 +74,6 @@ pub fn SimpleIconsApp(#[prop(default = TITLE)] title: &'static str, children: Ch
         </I18n>
     }
 }
-
 
 #[component]
 pub fn Index() -> AnyView {

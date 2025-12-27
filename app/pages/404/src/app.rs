@@ -1,9 +1,8 @@
+use icondata::{BsGrid3x2GapFill, IoWarningSharp, VsPreview};
 use leptos::prelude::*;
-use simple_icons_website_controls::color_scheme::ColorSchemeControl;
 use leptos_fluent::move_tr;
 use leptos_icons::Icon;
-use leptos_router::components::A;
-use icondata::{BsGrid3x2GapFill, IoWarningSharp, VsPreview};
+use simple_icons_website_controls::color_scheme::ColorSchemeControl;
 use simple_icons_website_page_base::SimpleIconsApp;
 
 pub const TITLE: &str = "Simple Icons | 404 Not Found";
@@ -30,22 +29,22 @@ pub fn Error404() -> impl IntoView {
             <p class="text-lg font-bold font-sans pt-2">{move_tr!("maybe-youre-looking-for")}</p>
             <ul class="flex flex-col sm:flex-row py-5">
                 <li class="flex p-1">
-                    <A attr:class="button mx-auto" href="/">
+                    <a class="button mx-auto" href="/">
                         <Icon icon=BsGrid3x2GapFill width="24px" height="24px" />
                         {move_tr!("icons")}
-                    </A>
+                    </a>
                 </li>
                 <li class="flex p-1">
-                    <A attr:class="button mx-auto" href="/deprecations">
+                    <a class="button mx-auto" href="/deprecations/">
                         <Icon icon=IoWarningSharp width="24px" height="24px" />
                         {move_tr!("deprecations")}
-                    </A>
+                    </a>
                 </li>
                 <li class="flex p-1">
-                    <A attr:class="button mx-auto" href="/preview">
+                    <a class="button mx-auto" href="/preview/">
                         <Icon icon=VsPreview width="24px" height="24px" />
                         {move_tr!("preview-generator")}
-                    </A>
+                    </a>
                 </li>
             </ul>
         </div>

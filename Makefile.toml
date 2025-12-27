@@ -30,28 +30,7 @@ command = "npm"
 args = ["install"]
 
 [tasks.default]
-alias = "dev"
-
-[tasks.dev]
-description = "Build and run the app on development"
-run_task = { name = ["run-pre-build-scripts", "serve-for-dev"] }
-
-[tasks.serve-for-dev]
-description = "Serve the app on development"
-install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
-command = "trunk"
-args = [
-	"serve",
-	"--watch",
-	".",
-	"--watch",
-	"../components",
-	"--watch",
-	"../libs",
-	"--ignore",
-	"./public/assets/js",
-]
-cwd = "./app"
+alias = "serve"
 
 [tasks.watch-css]
 description = "Build CSS with PostCSS on development"
@@ -82,8 +61,8 @@ run_task = { name = [
 	"build-css",
 	"build-website",
 	"move-website-assets",
-	#"minify-wasm-js-binding",
-	#"minify-html",
+	"minify-wasm-js-bindings",
+	"minify-html",
 ] }
 
 [tasks.build-wasm]
@@ -111,46 +90,71 @@ install_crate = { crate_name = "wasm-pack", binary = "wasm-pack", test_arg = "--
 script_runner = "@duckscript"
 script = '''
 build_timestamp = get_env BUILD_TIMESTAMP
-
-# index.html
-template = readfile ./app/index.template.html
-template = replace ${template} "{{build_timestamp}}" ${build_timestamp}
-js_libs = readfile ./app/public/js-libs.html
-index = replace ${template} "{{initial_title}}" "Simple Icons"
-index = replace ${index} "{{out_name}}" "simple-icons-website"
-index = replace ${index} "{{js_libs}}" "${js_libs}"
-writefile app/index.dist.html ${index}
-
-# deprecations/index.html
-template = readfile ./app/index.template.html
-template = replace ${template} "{{build_timestamp}}" ${build_timestamp}
-js_libs = readfile ./app/public/js-libs.html
-index = replace ${template} "{{initial_title}}" "Simple Icons | Deprecations"
-index = replace ${index} "{{out_name}}" "simple-icons-website-deprecations"
-index = replace ${index} "{{js_libs}}" "${js_libs}"
-writefile app/public/deprecations/index.dist.html ${index}
+APPS = get_env APPS
+if is_empty ${APPS}
+  APPS = set "index,deprecations,preview,404"
+end
 
 wasm_pack_build_env = set "--dev"
 build_timestamp = get_env BUILD_TIMESTAMP
 if get_env RELEASE == "true"
   wasm_pack_build_env = set "--release"
+  rm -r ./app/dist/
+  mkdir ./app/dist/
 end
 
+# template
+template = readfile app/index.template.html
+template = replace ${template} "{{build_timestamp}}" ${build_timestamp}
+js_libs = readfile app/public/js-libs.html
+template = replace ${template} "{{js_libs}}" "${js_libs}"
+template = replace ${template} "{{stylesheet}}" "/stylesheet-${build_timestamp}.css"
+
+# index.html
+index = replace ${template} "{{initial_title}}" "Simple Icons"
+index = replace ${index} "{{out_name}}" "simple-icons-website"
+writefile app/index.dist.html ${index}
+
+# deprecations/index.html
+index = replace ${template} "{{initial_title}}" "Simple Icons | Deprecations"
+index = replace ${index} "{{out_name}}" "simple-icons-website-deprecations"
+writefile app/public/deprecations/index.dist.html ${index}
+
+# preview/index.html
+index = replace ${template} "{{initial_title}}" "Simple Icons | Preview Generator"
+index = replace ${index} "{{out_name}}" "simple-icons-website-preview"
+writefile app/public/preview/index.dist.html ${index}
+
+# 404/index.html
+index = replace ${template} "{{initial_title}}" "Simple Icons | 404 Not Found"
+index = replace ${index} "{{out_name}}" "simple-icons-website-404"
+writefile app/public/404/index.dist.html ${index}
+
 cd ./app
+
 # Index page
-exec wasm-pack build . --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ./dist/ --out-name simple-icons-website-${build_timestamp}
+if contains ${APPS} "index"
+  exec wasm-pack build . --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ./dist/ --out-name simple-icons-website-${build_timestamp}
+end
 
 # Deprecations page
 mkdir ./dist/deprecations/
-exec wasm-pack build pages/deprecations --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-deprecations-${build_timestamp}
+if contains ${APPS} "deprecations"
+  exec wasm-pack build pages/deprecations --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-deprecations-${build_timestamp}
+end
 
 # Preview generator page
 mkdir ./dist/preview/
-exec wasm-pack build pages/preview --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-preview-${build_timestamp}
+if contains ${APPS} "preview"
+  exec wasm-pack build pages/preview --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-preview-${build_timestamp}
+end
 
 # 404 page
 mkdir ./dist/404/
-exec wasm-pack build pages/404 --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-404-${build_timestamp}
+if contains ${APPS} "404"
+  exec wasm-pack build pages/404 --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-404-${build_timestamp}
+end
+
 cd ..
 '''
 
@@ -164,38 +168,20 @@ build_timestamp = get_env BUILD_TIMESTAMP
 exec cp ./app/public/assets/stylesheet.css ./app/dist/stylesheet-${build_timestamp}.css
 
 # index.html
-index = readfile ./app/index.dist.html
-index = replace ${index} "{{stylesheet}}" "/stylesheet-${build_timestamp}.css"
-writefile app/index.dist.html ${index}
 exec cp ./app/index.dist.html ./app/dist/index.html
 
 # deprecations/index.html
-deprecations = readfile ./app/index.dist.html
-deprecations = replace ${deprecations} "{{initial_title}}" "Simple Icons | Deprecations"
-deprecations = replace ${deprecations} "{{out_name}}" "simple-icons-website-deprecations"
-mkdir ./app/public/deprecations/
-writefile ./app/public/deprecations/index.dist.html ${deprecations}
 exec cp ./app/public/deprecations/index.dist.html ./app/dist/deprecations/index.html
 #   deprecations.html
 exec cp ./app/public/deprecations.html ./app/dist/deprecations.html
 
 # preview/index.html
-preview = readfile ./app/index.dist.html
-preview = replace ${preview} "{{initial_title}}" "Simple Icons | Preview Generator"
-preview = replace ${preview} "{{out_name}}" "simple-icons-website-preview"
-mkdir ./app/public/preview/
-writefile ./app/public/preview/index.dist.html ${preview}
-cp ./app/public/preview/index.dist.html ./app/dist/preview/index.html
+exec cp ./app/public/preview/index.dist.html ./app/dist/preview/index.html
 #   preview.html
 exec cp ./app/public/preview.html ./app/dist/preview.html
 
 # 404/index.html
-error404 = readfile ./app/index.dist.html
-error404 = replace ${error404} "{{initial_title}}" "Simple Icons | 404 Not Found"
-error404 = replace ${error404} "{{out_name}}" "simple-icons-website-404"
-mkdir ./app/public/404/
-writefile ./app/public/404/index.dist.html ${error404}
-cp ./app/public/404/index.dist.html ./app/dist/404/index.html
+exec cp ./app/public/404/index.dist.html ./app/dist/404/index.html
 #   404.html
 exec cp ./app/public/404.html ./app/dist/404.html
 
@@ -230,8 +216,9 @@ glob_cp node_modules/@fontsource/roboto-mono/files/* ./app/dist/fonts/
 glob_cp node_modules/@fontsource/open-sans/files/* ./app/dist/fonts/
 '''
 
-[tasks.minify-wasm-js-binding]
-description = "Minify the WASM JS binding"
+[tasks.minify-wasm-js-bindings]
+description = "Minify the WASM JS bindings"
+condition = { env_true = ["RELEASE"] }
 script_runner = "@duckscript"
 script = '''
 files = glob_array ./app/dist/*.js
@@ -242,6 +229,7 @@ end
 
 [tasks.minify-html]
 description = "Minify the HTML files"
+condition = { env_true = ["RELEASE"] }
 install_crate = { crate_name = "minhtml", binary = "minhtml", test_arg = "--help" }
 script_runner = "@duckscript"
 script = '''
@@ -262,16 +250,6 @@ args = [
 	"./public/assets/stylesheet.css",
 ]
 cwd = "./app"
-
-[tasks.serve-for-prod]
-description = "Serve the app with npx serve"
-command = "npx"
-args = ["serve", "--no-clipboard", "-l", "8000"]
-cwd = "./app/dist"
-
-[tasks.serve]
-description = "Build for production and serve"
-run_task = { name = ["build", "serve-for-prod"] }
 
 [tasks.lint-rust]
 description = "Lint Rust code"

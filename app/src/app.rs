@@ -1,7 +1,7 @@
 use leptos::prelude::*;
-use simple_icons_website_grid_types::IconsIndexSignal;
-use simple_icons_website_page_base::{SimpleIconsApp, Index};
 use simple_icons_website_grid_constants::ICONS;
+use simple_icons_website_grid_types::IconsIndexSignal;
+use simple_icons_website_page_base::{Index, SimpleIconsApp};
 
 #[component]
 pub fn App() -> impl IntoView {

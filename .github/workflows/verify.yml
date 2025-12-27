@@ -39,7 +39,7 @@ jobs:
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-make,trunk,cargo-machete
+          tool: cargo-make,cargo-machete
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -77,7 +77,7 @@ jobs:
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-make,trunk,dylint-link
+          tool: cargo-make,dylint-link
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -137,12 +137,13 @@ jobs:
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-make,trunk
+          tool: cargo-make
       - name: Install Node.js dependencies
         run: npm ci --no-audit --no-fund
       - name: Build
         run: cargo make build
         env:
+          RELEASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run chromedriver
         if: matrix.browser == 'chrome'
@@ -209,12 +210,13 @@ jobs:
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-make,trunk,cargo-machete
+          tool: cargo-make,cargo-machete
       - name: Install Node.js dependencies
         run: npm ci --no-audit --no-fund
       - name: Build
         run: cargo make build
         env:
+          RELEASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create WebAssembly report
         run: |

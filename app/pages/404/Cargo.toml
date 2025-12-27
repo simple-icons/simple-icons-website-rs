@@ -14,6 +14,5 @@ wasm-bindgen.workspace = true
 console_error_panic_hook.workspace = true
 simple-icons-website-controls.workspace = true
 leptos-fluent.workspace = true
-leptos_router.workspace = true
 icondata.workspace = true
 leptos_icons.workspace = true
