@@ -4,6 +4,9 @@ description = "Simple Icons website main entrypoint"
 version.workspace = true
 edition.workspace = true
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
 simple-icons-macros.workspace = true
 simple-icons-website-preview-generator.workspace = true

@@ -1,5 +1,6 @@
 [env]
 RUSTFLAGS = "-Dwarnings"
+BUILD_TIMESTAMP = { script = ["date +%s"] }
 
 [config]
 init_task = "init"
@@ -78,18 +79,63 @@ clear = true
 description = "Build the app for production"
 run_task = { name = [
 	"run-pre-build-scripts",
+	"remove-app-dist-folder",
 	"build-css",
-	"build-wasm",
-	"minify-wasm-js-binding",
-	"minify-html",
+	"build-website",
+	"move-website-assets",
+	#"minify-wasm-js-binding",
+	#"minify-html",
 ] }
+
+[tasks.remove-app-dist-folder]
+description = "Remove the app dist folder if it exists"
+script_runner = "@duckscript"
+script = '''
+exec rm -rf ./app/dist
+'''
 
 [tasks.build-wasm]
 description = "Build the WASM app for production"
-install_crate = { crate_name = "trunk", binary = "trunk", test_arg = "--help" }
-command = "trunk"
-args = ["--config", "Trunk.prod.toml", "build", "--release", "--minify"]
+install_crate = { crate_name = "wasm-pack", binary = "wasm-pack", test_arg = "--help" }
+command = "wasm-pack"
+args = [
+	"build",
+	".",
+	"--no-pack",
+	"--no-typescript",
+	"--release",
+	"--target",
+	"web",
+	"-d",
+	"./dist/",
+	"--out-name",
+	"simple-icons-website-app",
+]
 cwd = "./app"
+
+[tasks.build-website]
+description = "Build the website for production"
+install_crate = { crate_name = "wasm-pack", binary = "wasm-pack", test_arg = "--help", force = false }
+script_runner = "@duckscript"
+script = '''
+build_timestamp = get_env BUILD_TIMESTAMP
+
+template = readfile ./app/index.template.html
+template = replace ${template} "{{build_timestamp}}" ${build_timestamp}
+
+index = replace ${template} "{{initial_title}}" "Simple Icons"
+index = replace ${index} "{{out_name}}" "simple-icons-website"
+writefile app/index.dist.html ${index}
+cd ./app
+exec wasm-pack build . --no-pack --no-typescript --release --target web -d ./dist/ --out-name simple-icons-website-${build_timestamp}
+'''
+
+[tasks.move-website-assets]
+description = "Move website assets to the dist folder"
+script_runner = "@duckscript"
+script = '''
+exec mv ./app/index.dist.html ./app/dist/index.html
+'''
 
 [tasks.minify-wasm-js-binding]
 description = "Minify the WASM JS binding"
@@ -125,7 +171,7 @@ args = [
 cwd = "./app"
 
 [tasks.serve-for-prod]
-description = "Serve the app with serve"
+description = "Serve the app with npx serve"
 command = "npx"
 args = ["serve", "--no-clipboard", "-l", "8000"]
 cwd = "./app/dist"
