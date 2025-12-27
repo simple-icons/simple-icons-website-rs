@@ -32,6 +32,16 @@ args = ["install"]
 [tasks.default]
 alias = "serve"
 
+[tasks.run-serve]
+description = "Serve the app with npx serve"
+command = "npx"
+args = ["serve", "--no-clipboard", "-l", "8000"]
+cwd = "./app/dist"
+
+[tasks.serve]
+description = "Build and serve"
+run_task = { name = ["build", "run-serve"] }
+
 [tasks.watch-css]
 description = "Build CSS with PostCSS on development"
 command = "npx"
@@ -64,6 +74,18 @@ run_task = { name = [
 	"minify-wasm-js-bindings",
 	"minify-html",
 ] }
+
+[tasks.build-css]
+description = "Build CSS with PostCSS for production"
+env = { "NODE_ENV" = "production" }
+command = "npx"
+args = [
+	"postcss",
+	"./stylesheet.css",
+	"--output",
+	"./public/assets/stylesheet.css",
+]
+cwd = "./app"
 
 [tasks.build-wasm]
 description = "Build the WASM app for production"
@@ -238,18 +260,6 @@ for file in ${files}
 	exec minhtml --minify-css --minify-js --keep-closing-tags --output ${file} ${file}
 end
 '''
-
-[tasks.build-css]
-description = "Build CSS with PostCSS for production"
-env = { "NODE_ENV" = "production" }
-command = "npx"
-args = [
-	"postcss",
-	"./stylesheet.css",
-	"--output",
-	"./public/assets/stylesheet.css",
-]
-cwd = "./app"
 
 [tasks.lint-rust]
 description = "Lint Rust code"
