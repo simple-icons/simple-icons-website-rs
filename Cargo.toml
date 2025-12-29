@@ -132,7 +132,7 @@ leptos = { version = "0.8", default-features = false, features = [
 leptos_meta = "0.8"
 leptos_router = "0.8"
 leptos-use = "0.16.0-beta"
-leptos-fluent = { version = "0.3", features = ["nightly"] }
+leptos-fluent = { version = "0.3.1", features = ["nightly"] }
 unic-langid = "0.9"
 leptos_icons = "0.6"
 icondata = { version = "0.6", default-features = false, features = [
