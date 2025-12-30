@@ -6,7 +6,56 @@
 		<title>{{initial_title}}</title>
 		<script type="module">
 			import init from "/{{out_name}}-{{build_timestamp}}.js";
-			init({module_or_path: "/{{out_name}}-{{build_timestamp}}_bg.wasm"});
+
+			const ESTIMATED_WASM_SIZE = parseInt("{{estimated_wasm_size}}", 10);
+			const $secondaryLoaderText = document.getElementById('secondary-loader-text');
+
+			async function loadWasmWithProgress() {
+				const wasmUrl = "/{{out_name}}-{{build_timestamp}}_bg.wasm";
+
+				$secondaryLoaderText.textContent = 'Fetching WASM';
+
+				const response = await fetch(wasmUrl);
+				const contentLength = response.headers.get('content-length');
+				const total = contentLength ? parseInt(contentLength, 10) : ESTIMATED_WASM_SIZE;
+
+				let loaded = 0;
+				const reader = response.body.getReader();
+				const chunks = [];
+
+				while (true) {
+					const { done, value } = await reader.read();
+
+					if (done) break;
+
+					chunks.push(value);
+					loaded += value.length;
+
+					updateProgressBar(loaded, total);
+				}
+
+				const chunksAll = new Uint8Array(loaded);
+				let position = 0;
+				for (const chunk of chunks) {
+					chunksAll.set(chunk, position);
+					position += chunk.length;
+				}
+
+				$secondaryLoaderText.innerHTML = '&nbsp;Initializing';
+
+				await init({ module_or_path: chunksAll.buffer });
+			}
+
+			function updateProgressBar(loaded, total) {
+				const percentage = Math.min((loaded / total) * 100, 100);
+				let text = '.';
+				if (percentage > 33) text = '..';
+				if (percentage > 66) text = '...';
+				document.getElementById('loader-text').textContent =
+					`${percentage.toFixed(0)}%${text}`;
+			}
+
+			loadWasmWithProgress();
 		</script>
 		{{js_libs}}
 		<link rel="stylesheet" href="{{stylesheet}}" />
@@ -21,11 +70,22 @@
 			id="loader"
 		>
 			<path
+				id="loader-path"
 				transform="translate(0,-25) scale(4.3)"
 				fill="#d4d4d4"
 				d="M12 0C8.688 0 6 2.688 6 6s2.688 6 6 6c4.64-.001 7.526 5.039 5.176 9.04h1.68A7.507 7.507 0 0 0 12 10.5 4.502 4.502 0 0 1 7.5 6c0-2.484 2.016-4.5 4.5-4.5s4.5 2.016 4.5 4.5H18c0-3.312-2.688-6-6-6Zm0 3a3 3 0 0 0 0 6c4 0 4-6 0-6Zm0 1.5A1.5 1.5 0 0 1 13.5 6v.002c-.002 1.336-1.617 2.003-2.561 1.058C9.995 6.115 10.664 4.5 12 4.5ZM7.5 15v1.5H9v6H4.5V24h15v-1.5H15v-6h1.5V15Zm3 1.5h3v6h-3zm-6 1.47c0 1.09.216 2.109.644 3.069h1.684A5.957 5.957 0 0 1 6 17.97Z"
 			/>
-			<text transform="translate(2,110)" fill="#d4d4d4">Loading...</text>
+			<text id="loader-text" transform="translate(21,110)" fill="#d4d4d4">
+				0%
+			</text>
+			<text
+				id="secondary-loader-text"
+				transform="translate(21,130)"
+				fill="#d4d4d4"
+				style="font-size: 8px; opacity: 0.65;"
+			>
+				Loading
+			</text>
 		</svg>
 	</body>
 </html>

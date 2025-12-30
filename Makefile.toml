@@ -155,27 +155,47 @@ writefile app/public/404/index.dist.html ${index}
 cd ./app
 
 # Index page
+estimated_wasm_size = set 0
 if contains ${APPS} "index"
   exec wasm-pack build . --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ./dist/ --out-name simple-icons-website-${build_timestamp}
+  estimated_wasm_size = get_file_size ./dist/simple-icons-website-${build_timestamp}_bg.wasm
 end
+index = readfile ./index.dist.html
+index = replace ${index} "{{estimated_wasm_size}}" ${estimated_wasm_size}
+writefile ./index.dist.html ${index}
 
 # Deprecations page
+estimated_wasm_size = set 0
 mkdir ./dist/deprecations/
 if contains ${APPS} "deprecations"
   exec wasm-pack build pages/deprecations --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-deprecations-${build_timestamp}
+  estimated_wasm_size = get_file_size ./dist/simple-icons-website-deprecations-${build_timestamp}_bg.wasm
 end
+deprecations_index = readfile ./public/deprecations/index.dist.html
+deprecations_index = replace ${deprecations_index} "{{estimated_wasm_size}}" ${estimated_wasm_size}
+writefile ./public/deprecations/index.dist.html ${deprecations_index}
 
 # Preview generator page
+estimated_wasm_size = set 0
 mkdir ./dist/preview/
 if contains ${APPS} "preview"
   exec wasm-pack build pages/preview --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-preview-${build_timestamp}
+  estimated_wasm_size = get_file_size ./dist/simple-icons-website-preview-${build_timestamp}_bg.wasm
 end
+preview_index = readfile ./public/preview/index.dist.html
+preview_index = replace ${preview_index} "{{estimated_wasm_size}}" ${estimated_wasm_size}
+writefile ./public/preview/index.dist.html ${preview_index}
 
 # 404 page
+estimated_wasm_size = set 0
 mkdir ./dist/404/
 if contains ${APPS} "404"
   exec wasm-pack build pages/404 --no-pack --no-typescript ${wasm_pack_build_env} --target web -d ../../dist/ --out-name simple-icons-website-404-${build_timestamp}
+  estimated_wasm_size = get_file_size ./dist/simple-icons-website-404-${build_timestamp}_bg.wasm
 end
+not_found_index = readfile ./public/404/index.dist.html
+not_found_index = replace ${not_found_index} "{{estimated_wasm_size}}" ${estimated_wasm_size}
+writefile ./public/404/index.dist.html ${not_found_index}
 '''
 
 [tasks.move-website-assets]
