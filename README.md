@@ -7,7 +7,7 @@ Website for the Simple Icons library for popular brands. Find it at <a href="htt
 
 <p align="center">
 <a href="https://github.com/simple-icons/simple-icons-website-rs/actions/workflows/auto-release.yml"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=simpleIconsVersion&prefix=v&label=&logo=simpleicons" alt="Simple Icons version" /></a>
-<a href="https://github.com/simple-icons/simple-icons-website-rs/actions?query=workflow%3AVerify+branch%3Amaster"><img src="https://img.shields.io/github/actions/workflow/status/simple-icons/simple-icons-website-rs/verify.yml?branch=master&logo=github&label=tests" alt="Tests status"/></a>
+<a href="https://github.com/simple-icons/simple-icons-website-rs/actions?query=workflow%3AVerify+branch%3Amaster"><img src="https://img.shields.io/github/actions/workflow/status/simple-icons/simple-icons-website-rs/verify.yml?branch=master&logo=github&label=" alt="Tests status"/></a>
 <br/>
 <a href="https://simpleicons.org"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=numberOfIcons&suffix=%20icons&label=&color=1A8865" alt="Number of icons"/></a>
 <a href="https://simpleicons.org/deprecations/"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=numberOfDeprecatedIcons&suffix=%20deprecated&label=&color=ED7117" alt="Number of deprecated icons"/></a>
