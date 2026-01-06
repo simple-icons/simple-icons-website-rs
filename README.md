@@ -10,8 +10,8 @@ Website for the Simple Icons library for popular brands. Find it at <a href="htt
 <a href="https://github.com/simple-icons/simple-icons-website-rs/actions?query=workflow%3AVerify+branch%3Amaster"><img src="https://img.shields.io/github/actions/workflow/status/simple-icons/simple-icons-website-rs/verify.yml?branch=master&logo=github&label=" alt="Tests status"/></a>
 <br/>
 <a href="https://simpleicons.org"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=numberOfIcons&suffix=%20icons&label=&color=1A8865" alt="Number of icons"/></a>
-<a href="https://simpleicons.org/deprecations/"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=numberOfDeprecatedIcons&suffix=%20deprecated&label=&color=ED7117" alt="Number of deprecated icons"/></a>
-<a href="https://simpleicons.org?modal=languages"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=numberOfLanguages&suffix=%20languages&label=&color=purple" alt="Number of languages"/></a>
+<a href="https://simpleicons.org/deprecations/"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=numberOfDeprecatedIcons&suffix=%20deprecated&label=&color=EC9706" alt="Number of deprecated icons"/></a>
+<a href="https://simpleicons.org?modal=languages"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=numberOfLanguages&suffix=%20languages&label=&color=B2560D" alt="Number of languages"/></a>
 <br/>
 <a href="https://simpleicons.org?modal=extensions"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=numberOfExtensions&suffix=%20extensions&label=&color=483d8b" alt="Number of third-party extensions"/></a>
 <a href="https://simpleicons.org?modal=extensions"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fsimpleicons.org%2Fstats.json&query=numberOfLibraries&suffix=%20libraries&label=&color=009698" alt="Number of third-party libraries"/></a>
