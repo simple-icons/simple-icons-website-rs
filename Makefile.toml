@@ -229,6 +229,8 @@ cp ./app/public/404.html ./app/dist/404.html
 cp ./app/public/assets/CNAME ./app/dist/CNAME
 # Sitemap
 cp ./app/public/assets/sitemap.xml ./app/dist/sitemap.xml
+# Stats
+cp ./app/public/assets/stats.json ./app/dist/stats.json
 # Favicon
 cp ./app/public/assets/favicon.ico ./app/dist/favicon.ico
 cp ./app/public/assets/favicon.png ./app/dist/favicon.png
@@ -419,12 +421,18 @@ description = "Create sitemap.xml asset"
 command = "npx"
 args = ["tsx", "scripts/create-sitemap.ts"]
 
+[tasks.create-stats]
+description = "Create statistics asset"
+command = "npx"
+args = ["tsx", "scripts/create-stats.ts"]
+
 [tasks.run-pre-build-scripts]
 description = "Run pre-build scripts"
 run_task = { name = [
 	"build-js-libs",
 	"fetch-deprecated-icons",
 	"create-sitemap",
+	"create-stats",
 ], parallel = true }
 
 [tasks.install-leptosfmt]
