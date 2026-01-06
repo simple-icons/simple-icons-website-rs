@@ -1,3 +1,5 @@
+<!-- markdownlint-disable no-inline-html first-line-heading -->
+
 <p align="center">
 <img src="https://cdn.simpleicons.org/simpleicons/000/fff" alt="Simple Icons" width=70>
 <h2 align="center">Simple Icons: <em>Website</em></h2>
