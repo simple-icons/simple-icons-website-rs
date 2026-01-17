@@ -41,7 +41,7 @@ const countNumberOfLibrariesAndExtensions = (
 			continue;
 		}
 
-		if (line.startsWith('| [')) {
+		if (line.startsWith('| <a href="')) {
 			if (insideExtensions) {
 				numberOfExtensions += 1;
 			} else if (insideLibraries) {
@@ -56,6 +56,12 @@ const countNumberOfLibrariesAndExtensions = (
 		) {
 			break;
 		}
+	}
+
+	if (numberOfExtensions === 0 || numberOfLibraries === 0) {
+		throw new Error(
+			"Failed to count the number of libraries or extensions from simple-icons' README.md",
+		);
 	}
 
 	return {
