@@ -174,17 +174,28 @@ jobs:
           WINDOW_SIZE: ${{ matrix.window-size }}
       - uses: actions/create-github-app-token@v1
         if: |
-          startsWith(matrix.name, 'Chrome Desktop') &&
+          matrix.browser == 'chrome' &&
+          matrix.suite == 'desktop' &&
           github.ref == 'refs/heads/master'
         id: app-token
         with:
           app-id: ${{ vars.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
-      - name: Publish website
+      - name: Check is fork
+        uses: ./.github/actions/check-is-fork
+        id: check-is-fork
         if: |
           matrix.browser == 'chrome' &&
           matrix.suite == 'desktop' &&
           github.ref == 'refs/heads/master'
+        with:
+          in-fork-message: 'Publish only can be executed in the main repository, skipping.'
+      - name: Publish website
+        if: |
+          matrix.browser == 'chrome' &&
+          matrix.suite == 'desktop' &&
+          github.ref == 'refs/heads/master' &&
+          steps.check-is-fork.outputs.is-fork == 'false'
         run: |
           git config --global user.name "simple-icons[bot]"
           git config --global user.email "simple-icons[bot]@users.noreply.github.com"
