@@ -1,8 +1,6 @@
 [env]
 RUSTFLAGS = "-Dwarnings"
 BUILD_TIMESTAMP = { script = ["date +%s"] }
-APPS = "index,deprecations,preview,404"
-RELEASE = "false"
 
 [config]
 init_task = "init"
@@ -115,6 +113,9 @@ script_runner = "@duckscript"
 script = '''
 build_timestamp = get_env BUILD_TIMESTAMP
 APPS = get_env APPS
+if is_empty ${APPS}
+  APPS = set "index,deprecations,preview,404"
+end
 
 wasm_pack_build_env = set "--dev"
 build_timestamp = get_env BUILD_TIMESTAMP
