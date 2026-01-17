@@ -68,8 +68,14 @@ fn get_simple_icons_3rd_party_extensions_libraries_impl(
             break;
         }
 
-        let name = line.split_once('[').unwrap().1.split_once("](").unwrap().0;
-        let url = line.split_once("](").unwrap().1.split_once(')').unwrap().0;
+        let url = line.split_once('"').unwrap().1.split_once('"').unwrap().0;
+        let name = line
+            .split_once("</a>")
+            .unwrap()
+            .0
+            .split_once("height=24>")
+            .unwrap()
+            .1;
 
         let author_part = line.split_once('|').unwrap().1;
         let author_name = author_part
