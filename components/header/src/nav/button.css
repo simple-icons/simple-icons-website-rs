@@ -14,5 +14,5 @@ header > nav > div > ul > a {
 
 header > nav > div > ul > li > span,
 header > nav > div > ul > a > span {
-	@apply align-middle text-sm;
+	@apply align-middle text-[15px];
 }

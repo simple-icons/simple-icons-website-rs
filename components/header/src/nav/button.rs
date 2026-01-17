@@ -20,10 +20,10 @@ pub fn HeaderMenuLink(
     #[prop(into)]
     icon: IconOrSvg,
     /// Width for the icon
-    #[prop(default = 24)]
+    #[prop(default = 25)]
     width: usize,
     /// Height for the icon
-    #[prop(default = 24)]
+    #[prop(default = 25)]
     height: usize,
     /// Optional text for the button
     #[prop(optional)]
@@ -90,10 +90,10 @@ pub fn HeaderMenuButton(
     #[prop(optional)]
     children: Option<Children>,
     /// Width for the icon
-    #[prop(default = 24)]
+    #[prop(default = 25)]
     width: usize,
     /// Height for the icon
-    #[prop(default = 24)]
+    #[prop(default = 25)]
     height: usize,
 ) -> impl IntoView {
     view! {
