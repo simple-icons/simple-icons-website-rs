@@ -23,3 +23,12 @@ Feature: Upload SVG file
 
 	Scenario: Click "Upload SVG" button file input by pressing Ctrl + ⇧ keyboard shortcut
 		When I press the "Ctrl" + "ArrowUp" keys, the event "onclick" is executed on the element "#preview-upload-svg-button"
+
+	Scenario: Upload an icon with the attribute fill="#..." updates the color input
+		When I upload the file "tests/end2end/assets/nodejs-3178C6.svg" in the "#preview-upload-svg-button" input
+		Then the brand input value is "Node.js"
+		Then the title in the preview is "Node.js Preview"
+		Then the color input value is "3178C6"
+		Then the color in the preview is "Color: #3178C6"
+		Then the background color of the preview is #3178C6
+		Then the color of the badges in the preview is #3178C6
