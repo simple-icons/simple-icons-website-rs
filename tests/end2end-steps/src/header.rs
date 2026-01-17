@@ -105,3 +105,50 @@ async fn select_language(
         .await?;
     Ok(())
 }
+
+#[when("I click on the extensions button")]
+async fn click_extensions_button(world: &mut AppWorld) -> Result<()> {
+    world
+        .driver()
+        .find(By::Css("header > nav > ul > li:nth-last-of-type(2)"))
+        .await?
+        .click()
+        .await?;
+    Ok(())
+}
+
+#[then("I see the extensions tables")]
+async fn check_extensions_tables(world: &mut AppWorld) -> Result<()> {
+    let tables = world
+        .driver()
+        .query(By::Css(".third-party-extensions"))
+        .and_displayed()
+        .all_from_selector_required()
+        .await?;
+    assert_eq!(tables.len(), 2, "There should be 2 extensions tables");
+    Ok(())
+}
+
+#[then(
+    regex = r#"I see an extension with the name "([^"]+)" and author "([^"]+)"#
+)]
+async fn check_extension_in_table(
+    world: &mut AppWorld,
+    name: String,
+    author: String,
+) -> Result<()> {
+    // XPath que busca una fila <tr> que tenga:
+    // 1️⃣ un <span> exactamente igual al nombre
+    // 2️⃣ un <a> (autor) exactamente igual al author
+    let xpath = format!(
+        "//table[contains(@class, 'third-party-extensions')]//tr[
+            .//span[text() = '{}'] and
+            .//td/a[text() = '{}']
+        ]",
+        name, author
+    );
+
+    _ = world.driver().find(By::XPath(&xpath)).await?;
+
+    Ok(())
+}
