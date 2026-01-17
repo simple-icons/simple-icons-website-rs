@@ -58,7 +58,9 @@ async fn check_app_language(
 async fn click_language_selector_button(world: &mut AppWorld) -> Result<()> {
     world
         .driver()
-        .find(By::Css("header > nav > ul > li:last-of-type"))
+        .find(By::Css(
+            "header > nav > div > ul:first-child > li:last-of-type",
+        ))
         .await?
         .click()
         .await?;
@@ -110,7 +112,9 @@ async fn select_language(
 async fn click_extensions_button(world: &mut AppWorld) -> Result<()> {
     world
         .driver()
-        .find(By::Css("header > nav > ul > li:nth-last-of-type(2)"))
+        .find(By::Css(
+            "header > nav > div > ul:first-child > li:nth-last-of-type(2)",
+        ))
         .await?
         .click()
         .await?;
