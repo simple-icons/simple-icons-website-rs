@@ -82,9 +82,13 @@ pub fn ControlsToggler() -> impl IntoView {
     let controls_state = expect_context::<ControlsStateSignal>().0;
 
     let is_xs_screen = use_media_query("(max-width: 475px)");
-    let size = Signal::derive(
-        move || if is_xs_screen() { XS_ICON_SIZE } else { "24" },
-    );
+    let size = Signal::derive(move || {
+        if is_xs_screen() {
+            XS_ICON_SIZE.to_string()
+        } else {
+            "24".to_string()
+        }
+    });
 
     view! {
         <div class="control">

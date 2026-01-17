@@ -3,13 +3,26 @@
 @import './third_party_extensions.css';
 
 header > nav {
-	@apply flex h-[71px] w-full flex-row justify-between self-center lg:w-auto;
+	@apply flex w-full flex-row justify-end gap-4 lg:w-auto;
 }
 
-header > nav > ul:first-child {
-	@apply m-auto grid grid-cols-5 gap-1 self-center md:flex md:flex-row;
+header > nav > div {
+	@apply flex flex-col gap-3;
 }
 
-header > nav > ul:last-child {
-	@apply flex self-center;
+header > nav > div > ul {
+	@apply flex flex-row justify-end gap-1;
+}
+
+header > nav > div > ul:first-child {
+	@apply gap-2.5;
+}
+
+header > nav > div > ul:first-child > li,
+header > nav > div > ul:first-child > a {
+	@apply rounded-full px-3;
+}
+
+header > nav > ul {
+	@apply flex justify-end;
 }

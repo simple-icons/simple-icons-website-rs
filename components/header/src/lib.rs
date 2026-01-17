@@ -4,6 +4,7 @@ pub mod nav;
 mod title;
 
 use leptos::prelude::*;
+use leptos_use::{UseWindowSizeReturn, use_window_size};
 use nav::HeaderMenu;
 use title::HeaderTitle;
 
@@ -29,6 +30,16 @@ pub struct HeaderStateSignal(pub RwSignal<HeaderState>);
 pub fn Header() -> impl IntoView {
     let header_state = RwSignal::new(HeaderState::default());
     provide_context(HeaderStateSignal(header_state));
+
+    let UseWindowSizeReturn { width, .. } = use_window_size();
+
+    Effect::new(move |_| {
+        let header_state = expect_context::<HeaderStateSignal>().0;
+
+        if width() > 1024.0 && header_state().menu_open {
+            header_state.update(|state| state.menu_open = false);
+        }
+    });
 
     view! {
         <header>

@@ -93,3 +93,5 @@ libraries = 第三方庫
 copy-icon-modal-url = 复制图标詳情 URL
 copy-icon-url = 复制图标 URL
 copy-icon-svg-path = 复制图标 SVG 路径
+legal = 法律
+language = 語言

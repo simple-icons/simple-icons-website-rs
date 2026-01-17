@@ -93,3 +93,5 @@ libraries = ライブラリ
 copy-icon-modal-url = アイコン モーダル URL をコピー
 copy-icon-url = アイコン URL をコピー
 copy-icon-svg-path = アイコン SVG パスをコピー
+legal = 法的
+language = 言語

@@ -93,3 +93,5 @@ libraries = Βιβλιοθήκες
 copy-icon-modal-url = Αντιγραφή URL παραθύρου εικονιδίου
 copy-icon-url = Αντιγραφή URL εικονιδίου
 copy-icon-svg-path = Αντιγραφή διαδρομής SVG εικονιδίου
+legal = Νομικό
+language = Γλώσσα

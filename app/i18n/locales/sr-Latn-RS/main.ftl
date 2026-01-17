@@ -95,3 +95,5 @@ libraries = Biblioteke
 copy-icon-modal-url = Kopiraj URL modala za ikonicu
 copy-icon-url = Kopiraj URL ikonice
 copy-icon-svg-path = Kopiraj SVG putanju ikonice
+legal = Pravni
+language = Jezik

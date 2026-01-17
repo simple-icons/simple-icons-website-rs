@@ -93,3 +93,5 @@ libraries = Bibliotheken
 copy-icon-modal-url = Icoon modal URL kopiëren
 copy-icon-url = Icoon URL kopiëren
 copy-icon-svg-path = Icoon SVG-pad kopiëren
+legal = Juridisch
+language = Taal

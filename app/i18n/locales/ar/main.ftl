@@ -93,3 +93,5 @@ libraries = المكتبات
 copy-icon-modal-url = نسخ رابط نافذة الأيقونة
 copy-icon-url = نسخ رابط الأيقونة
 copy-icon-svg-path = نسخ مسار SVG للأيقونة
+legal = قانوني
+language = لغة

@@ -3073,6 +3073,7 @@ dependencies = [
  "icondata",
  "leptos",
  "leptos-fluent",
+ "leptos-use",
  "leptos_icons",
  "simple-icons-macros",
  "simple-icons-website-modal",

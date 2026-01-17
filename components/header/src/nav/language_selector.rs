@@ -44,9 +44,19 @@ pub fn LanguageSelectorButton() -> impl IntoView {
         <HeaderMenuButton
             on:click=move |_| modal_open.set_languages()
             icon=IoLanguageSharp
-            attr:class=move || if header_state().menu_open { "block" } else { "hidden lg:block" }
+            attr:class=move || {
+                if header_state().menu_open {
+                    "gap-2 inline-flex"
+                } else {
+                    "gap-2 hidden lg:inline-flex"
+                }
+            }
             attr:title=move_tr!("change-language")
-        />
+            width=23
+            height=23
+        >
+            {move_tr!("language")}
+        </HeaderMenuButton>
     }
 }
 

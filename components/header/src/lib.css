@@ -2,5 +2,5 @@
 @import './nav/mod.css';
 
 header {
-	@apply page-margin-x flex flex-row justify-between pb-14 pt-7 md:columns-2 md:pt-4;
+	@apply page-margin-x flex flex-row justify-between py-8 md:columns-2 md:pt-4;
 }

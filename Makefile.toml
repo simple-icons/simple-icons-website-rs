@@ -369,26 +369,34 @@ run_task = { name = [
 description = "Build libraries built with esbuild"
 script_runner = "@duckscript"
 script = '''
-rm -r ./app/public/assets/js
-mkdir ./app/public/assets/js
+if not is_path_exists ./app/public/assets/js
+  mkdir ./app/public/assets/js
+end
 jslibs = set ./app/public/js-libs.html
 writefile ${jslibs} ""
 
 # fast-fuzzy
 packagejson = readfile node_modules/fast-fuzzy/package.json
 fast_fuzzy = json_parse ${packagejson}
-exec npx esbuild ./libs/fast-fuzzy/src/fast-fuzzy.js --bundle --outfile=./app/public/assets/js/fast-fuzzy-${fast_fuzzy.version}.js --minify --log-level=error
+if not is_path_exists "./app/public/assets/js/fast-fuzzy-${fast_fuzzy.version}.js"
+  exec npx esbuild ./libs/fast-fuzzy/src/fast-fuzzy.js --bundle --outfile=./app/public/assets/js/fast-fuzzy-${fast_fuzzy.version}.js --minify --log-level=error
+end
 appendfile ${jslibs} "<script type=\"module\" src=\"/js/fast-fuzzy-${fast_fuzzy.version}.js\" defer></script>"
 
 # svg-path-bbox
 packagejson = readfile node_modules/svg-path-bbox/package.json
 svg_path_bbox = json_parse ${packagejson}
-exec npx esbuild ./libs/svg-path-bbox/src/svg-path-bbox.js --bundle --outfile=./app/public/assets/js/svg-path-bbox-${svg_path_bbox.version}.js --minify --log-level=error
+if not is_path_exists "./app/public/assets/js/svg-path-bbox-${svg_path_bbox.version}.js"
+  exec npx esbuild ./libs/svg-path-bbox/src/svg-path-bbox.js --bundle --outfile=./app/public/assets/js/svg-path-bbox-${svg_path_bbox.version}.js --minify --log-level=error
+end
+appendfile ${jslibs} "<script type=\"module\" src=\"/js/svg-path-bbox-${svg_path_bbox.version}.js\" defer></script>"
 
 # badge-maker
 packagejson = readfile node_modules/badge-maker/package.json
 badge_maker = json_parse ${packagejson}
-exec npx esbuild ./libs/badge-maker/src/bindings.js --bundle --outfile=./app/public/assets/js/badge-maker-${badge_maker.version}.js --minify --log-level=error
+if not is_path_exists "./app/public/assets/js/badge-maker-${badge_maker.version}.js"
+  exec npx esbuild ./libs/badge-maker/src/bindings.js --bundle --outfile=./app/public/assets/js/badge-maker-${badge_maker.version}.js --minify --log-level=error
+end
 '''
 
 [tasks.build-pdfkit]

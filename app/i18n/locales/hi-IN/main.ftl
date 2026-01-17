@@ -93,3 +93,5 @@ libraries = लाइब्रेरी
 copy-icon-modal-url = आइकन मोडल URL कॉपी करें
 copy-icon-url = आइकन URL कॉपी करें
 copy-icon-svg-path = आइकन SVG पथ कॉपी करें
+legal = कानूनी
+language = भाषा

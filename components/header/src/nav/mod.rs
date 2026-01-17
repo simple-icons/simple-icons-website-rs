@@ -18,40 +18,48 @@ static LEGAL_DISCLAIMER_SVG_PATH: &str = "m23.9 9.7-3.54-7.89-.005-.01a.542.542 
 pub fn HeaderMenu() -> impl IntoView {
     view! {
         <nav>
-            <ul>
-                <HeaderMenuLink
-                    title=move_tr!("main-repository")
-                    href="https://github.com/simple-icons/simple-icons"
-                    icon=get_simple_icon_svg_path!("github")
-                />
-                <HeaderMenuLink
-                    title="npm"
-                    href="https://www.npmjs.com/package/simple-icons"
-                    icon=get_simple_icon_svg_path!("npm")
-                />
-                <HeaderMenuLink
-                    title="Packagist"
-                    href="https://packagist.org/packages/simple-icons/simple-icons"
-                    icon=get_simple_icon_svg_path!("packagist")
-                />
-                <HeaderMenuLink
-                    title=move_tr!("discord")
-                    href="https://discord.gg/vUXFa7t5xJ"
-                    icon=get_simple_icon_svg_path!("discord")
-                />
-                <HeaderMenuLink
-                    title=move_tr!("open-collective")
-                    href="https://opencollective.com/simple-icons"
-                    icon=get_simple_icon_svg_path!("opencollective")
-                />
-                <HeaderMenuLink
-                    title=move_tr!("legal-disclaimer")
-                    href="https://github.com/simple-icons/simple-icons/blob/master/DISCLAIMER.md"
-                    icon=LEGAL_DISCLAIMER_SVG_PATH
-                />
-                <ThirdPartyExtensions />
-                <LanguageSelector />
-            </ul>
+            <div>
+                <ul>
+                    <HeaderMenuLink
+                        title=move_tr!("legal-disclaimer")
+                        href="https://github.com/simple-icons/simple-icons/blob/master/DISCLAIMER.md"
+                        icon=LEGAL_DISCLAIMER_SVG_PATH
+                        width=21
+                        height=21
+                    >
+                        {move_tr!("legal")}
+                    </HeaderMenuLink>
+                    <ThirdPartyExtensions />
+                    <LanguageSelector />
+                </ul>
+                <ul>
+                    <HeaderMenuLink
+                        title=move_tr!("main-repository")
+                        href="https://github.com/simple-icons/simple-icons"
+                        icon=get_simple_icon_svg_path!("github")
+                    />
+                    <HeaderMenuLink
+                        title="npm"
+                        href="https://www.npmjs.com/package/simple-icons"
+                        icon=get_simple_icon_svg_path!("npm")
+                    />
+                    <HeaderMenuLink
+                        title="Packagist"
+                        href="https://packagist.org/packages/simple-icons/simple-icons"
+                        icon=get_simple_icon_svg_path!("packagist")
+                    />
+                    <HeaderMenuLink
+                        title=move_tr!("discord")
+                        href="https://discord.gg/vUXFa7t5xJ"
+                        icon=get_simple_icon_svg_path!("discord")
+                    />
+                    <HeaderMenuLink
+                        title=move_tr!("open-collective")
+                        href="https://opencollective.com/simple-icons"
+                        icon=get_simple_icon_svg_path!("opencollective")
+                    />
+                </ul>
+            </div>
             <ul>
                 <HeaderMenuBurgerButton />
                 <HeaderMenuCloseButton />
@@ -71,8 +79,12 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
         <HeaderMenuButton
             on:click=move |_| header_state.update(|state| state.toggle_menu())
             icon=ChMenuHamburger
-            attr:class=move || if header_state().menu_open { "hidden" } else { "block lg:hidden" }
+            attr:class=move || {
+                if header_state().menu_open { "hidden" } else { "rounded-full block lg:hidden" }
+            }
             attr:title=move_tr!("open-menu")
+            width=28
+            height=28
         />
     }
 }
@@ -84,10 +96,14 @@ pub fn HeaderMenuCloseButton() -> impl IntoView {
 
     view! {
         <HeaderMenuButton
-            attr:class=move || if header_state().menu_open { "block" } else { "hidden" }
+            attr:class=move || {
+                if header_state().menu_open { "rounded-full block" } else { "hidden" }
+            }
             icon=ChCross
             on:click=move |_| header_state.update(|state| state.toggle_menu())
             attr:title=move_tr!("close-menu")
+            width=28
+            height=28
         />
     }
 }

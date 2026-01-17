@@ -93,3 +93,5 @@ libraries = Библиотеки
 copy-icon-modal-url = Копировать URL-адрес модального значка
 copy-icon-url = Копировать URL значка
 copy-icon-svg-path = Копировать путь SVG значка
+legal = Юридический
+language = Язык

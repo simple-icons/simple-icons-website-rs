@@ -87,9 +87,15 @@ fn ThirdPartyExtensionsButton() -> impl IntoView {
         <HeaderMenuButton
             on:click=move |_| modal_open.set_extensions()
             icon=FaPuzzlePieceSolid
-            attr:class=move || if header_state().menu_open { "block" } else { "hidden lg:block" }
+            attr:class=move || {
+                if header_state().menu_open { "inline-flex" } else { "hidden lg:inline-flex" }
+            }
             attr:title=move_tr!("third-party-extensions")
-        />
+            width=22
+            height=22
+        >
+            {move_tr!("extensions")}
+        </HeaderMenuButton>
     }
 }
 

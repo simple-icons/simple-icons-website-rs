@@ -13,9 +13,21 @@ pub fn HeaderMenuLink(
     title: Signal<String>,
     /// URL of the link
     href: &'static str,
+    /// Class of the link
+    #[prop(default = "")]
+    class: &'static str,
     /// SVG path of the icon
     #[prop(into)]
     icon: IconOrSvg,
+    /// Width for the icon
+    #[prop(default = 24)]
+    width: usize,
+    /// Height for the icon
+    #[prop(default = 24)]
+    height: usize,
+    /// Optional text for the button
+    #[prop(optional)]
+    children: Option<Children>,
 ) -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
 
@@ -25,28 +37,44 @@ pub fn HeaderMenuLink(
             title=title
             target="_blank"
             class=move || match header_state().menu_open {
-                true => "block",
-                false => "hidden lg:block",
+                true => format!("rounded-md flex flex-row {class}"),
+                false => format!("rounded-md hidden lg:flex flex-row {class}"),
             }
         >
             {match icon {
                 IconOrSvg::Icon(icon) => {
-                    view! { <Icon icon width="36px" height="36px" /> }.into_any()
+                    view! {
+                        <Icon
+                            icon
+                            width=format!("{width}")
+                            height=format!("{height}")
+                            attr:class="inline-flex"
+                        />
+                    }
+                        .into_any()
                 }
                 value => {
                     view! {
                         <SVGIcon
-                            width="36"
-                            height="36"
+                            width=format!("{width}")
+                            height=format!("{height}")
                             path=match value {
                                 IconOrSvg::SvgPath(svg_path) => svg_path,
                                 IconOrSvg::SvgDef(svg_def) => svg_def.d(),
                                 _ => unreachable!(),
                             }
+                            class="inline-flex"
                         />
                     }
                         .into_any()
                 }
+            }}
+            {match children {
+                Some(children) => {
+                    view! { <span class="relative top-[0.5px]">{children()}</span> }.into_any()
+                }
+                #[allow(clippy::unit_arg, clippy::unused_unit)]
+                None => view! {  }.into_any(),
             }}
         </a>
     }
@@ -56,10 +84,33 @@ pub fn HeaderMenuLink(
 ///
 /// Each button of the header menu that is not a link
 #[component]
-pub fn HeaderMenuButton(icon: icondata::Icon) -> impl IntoView {
+pub fn HeaderMenuButton(
+    icon: icondata::Icon,
+    /// Optional text for the button
+    #[prop(optional)]
+    children: Option<Children>,
+    /// Width for the icon
+    #[prop(default = 24)]
+    width: usize,
+    /// Height for the icon
+    #[prop(default = 24)]
+    height: usize,
+) -> impl IntoView {
     view! {
-        <li tabindex=0>
-            <Icon icon width="36px" height="36px" />
+        <li tabindex=0 class="inline-flex justify-center rounded-lg">
+            <Icon
+                icon
+                width=format!("{width}")
+                height=format!("{height}")
+                attr:class="inline-block"
+            />
+            {match children {
+                Some(children) => {
+                    view! { <span class="relative top-[1.5px]">{children()}</span> }.into_any()
+                }
+                #[allow(clippy::unit_arg, clippy::unused_unit)]
+                None => view! {  }.into_any(),
+            }}
         </li>
     }
 }

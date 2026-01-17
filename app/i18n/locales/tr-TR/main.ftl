@@ -93,3 +93,5 @@ libraries = Kütüphaneler
 copy-icon-modal-url = İkon modal URL'sini kopyala
 copy-icon-url = İkon URL'sini kopyala
 copy-icon-svg-path = İkon SVG yolunu kopyala
+legal = Yasal
+language = Dil

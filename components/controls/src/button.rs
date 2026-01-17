@@ -45,12 +45,13 @@ pub fn ControlButtonIcon(
             "24".to_string()
         }
     });
-    let size_for_svgicon =
-        Signal::derive(
-            move || {
-                if is_xs_screen() { XS_ICON_SIZE } else { "24" }
-            },
-        );
+    let size_for_svgicon = Signal::derive(move || {
+        if is_xs_screen() {
+            XS_ICON_SIZE.to_string()
+        } else {
+            "24".to_string()
+        }
+    });
 
     view! {
         <ControlButton active class attr:title=title>

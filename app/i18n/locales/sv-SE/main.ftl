@@ -93,3 +93,5 @@ libraries = Bibliotek
 copy-icon-modal-url = Kopiera ikon modal-URL
 copy-icon-url = Kopiera ikon-URL
 copy-icon-svg-path = Kopiera ikon SVG-sökväg
+legal = Juridisk
+language = Språk

@@ -93,3 +93,5 @@ libraries = Librerie
 copy-icon-modal-url = Copia URL del modal dell'icona
 copy-icon-url = Copia URL dell'icona
 copy-icon-svg-path = Copia percorso SVG dell'icona
+legal = Legale
+language = Lingua
