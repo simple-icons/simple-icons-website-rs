@@ -357,6 +357,20 @@ description = "Format JS/TS and files affected by Prettier with XO"
 command = "npx"
 args = ["xo", "--fix"]
 
+[tasks.prepare-previous-build-assets]
+description = "Prepare assets from the previous build to avoid rebuilding them if unchanged on development"
+script_runner = "@duckscript"
+script = '''
+if get_env RELEASE == "true"
+  rm -r ./app/public/assets/js
+  mkdir ./app/public/assets/js
+else
+  if not is_path_exists ./app/public/assets/js
+    mkdir ./app/public/assets/js
+  end
+end
+'''
+
 [tasks.build-js-libs]
 description = "Build JS libraries for the web"
 run_task = { name = [
@@ -369,9 +383,6 @@ run_task = { name = [
 description = "Build libraries built with esbuild"
 script_runner = "@duckscript"
 script = '''
-if not is_path_exists ./app/public/assets/js
-  mkdir ./app/public/assets/js
-end
 jslibs = set ./app/public/js-libs.html
 writefile ${jslibs} ""
 
@@ -406,7 +417,9 @@ script = '''
 # pdfkit
 packagejson = readfile node_modules/pdfkit/package.json
 pdfkit = json_parse ${packagejson}
-exec npx terser --compress --mangle --output ./app/public/assets/js/pdfkit-${pdfkit.version}.js ./node_modules/pdfkit/js/pdfkit.standalone.js
+if not is_path_exists "./app/public/assets/js/pdfkit-${pdfkit.version}.js"
+  exec npx terser --compress --mangle --output ./app/public/assets/js/pdfkit-${pdfkit.version}.js ./node_modules/pdfkit/js/pdfkit.standalone.js
+end
 '''
 
 [tasks.build-blob-stream]
@@ -416,7 +429,9 @@ script = '''
 # blob-stream
 packagejson = readfile node_modules/blob-stream/package.json
 blob_stream = json_parse ${packagejson}
-exec npx terser --compress --mangle --output ./app/public/assets/js/blob-stream-${blob_stream.version}.js ./node_modules/blob-stream/.js
+if not is_path_exists "./app/public/assets/js/blob-stream-${blob_stream.version}.js"
+  exec npx terser --compress --mangle --output ./app/public/assets/js/blob-stream-${blob_stream.version}.js ./node_modules/blob-stream/.js
+end
 '''
 
 [tasks.fetch-deprecated-icons]
@@ -438,6 +453,7 @@ args = ["tsx", "scripts/create-stats.ts"]
 description = "Run pre-build scripts"
 run_task = { name = [
 	"fetch-deprecated-icons",
+	"prepare-previous-build-assets",
 	"run-parallel-pre-build-scripts",
 ], parallel = false }
 

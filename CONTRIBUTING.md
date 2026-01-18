@@ -19,7 +19,7 @@
 
 Use the next environment variables to customize the build:
 
-- `RELEASE=true` to build in release mode.
+- `RELEASE=true` to build for production.
 - `APPS=index,deprecations,preview,404` to build only specific apps (comma separated list).
 
 ## Testing
