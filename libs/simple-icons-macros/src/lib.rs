@@ -75,7 +75,8 @@ fn get_simple_icons_3rd_party_extensions_libraries_impl(
             .0
             .split_once("height=24>")
             .unwrap()
-            .1;
+            .1
+            .replace("&nbsp;", "");
 
         let author_part = line.split_once('|').unwrap().1;
         let author_name = author_part
