@@ -129,11 +129,19 @@ jobs:
         uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           target: wasm32-unknown-unknown
+      - name: Should publish?
+        id: check-publish
+        run: |
+          if [ "${{ matrix.browser }}" = "chrome" ] && [ "${{ matrix.suite }}" = "desktop" ] && [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            echo "publishing=true" >> $GITHUB_OUTPUT
+          else
+            echo "publishing=false" >> $GITHUB_OUTPUT
+          fi
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
+          cache: ${{ steps.check-publish.outputs.publishing == 'true' && '' || 'npm' }}
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
@@ -172,29 +180,23 @@ jobs:
         env:
           BROWSER: ${{ matrix.browser }}
           WINDOW_SIZE: ${{ matrix.window-size }}
+      - name: Check is fork
+        uses: ./.github/actions/check-is-fork
+        id: check-is-fork
+        if: steps.check-publish.outputs.publishing == 'true'
+        with:
+          in-fork-message: 'Publish only can be executed in the main repository, skipping.'
       - uses: actions/create-github-app-token@v1
         if: |
-          matrix.browser == 'chrome' &&
-          matrix.suite == 'desktop' &&
-          github.ref == 'refs/heads/master'
+          steps.check-publish.outputs.publishing == 'true' &&
+          steps.check-is-fork.outputs.is-fork == 'false'
         id: app-token
         with:
           app-id: ${{ vars.BOT_APP_ID }}
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
-      - name: Check is fork
-        uses: ./.github/actions/check-is-fork
-        id: check-is-fork
-        if: |
-          matrix.browser == 'chrome' &&
-          matrix.suite == 'desktop' &&
-          github.ref == 'refs/heads/master'
-        with:
-          in-fork-message: 'Publish only can be executed in the main repository, skipping.'
       - name: Publish website
         if: |
-          matrix.browser == 'chrome' &&
-          matrix.suite == 'desktop' &&
-          github.ref == 'refs/heads/master' &&
+          steps.check-publish.outputs.publishing == 'true' &&
           steps.check-is-fork.outputs.is-fork == 'false'
         run: |
           git config --global user.name "simple-icons[bot]"
@@ -204,7 +206,7 @@ jobs:
           cd gh-pages-temp
 
           git init
-          git remote add origin https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/${{ github.repository }}.git
+          git remote add origin "https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/${{ github.repository }}.git"
 
           git fetch origin gh-pages --depth=1 || true
           git checkout origin/gh-pages -- CNAME 2>/dev/null || true
