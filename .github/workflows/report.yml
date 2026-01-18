@@ -3,6 +3,10 @@ on:
   schedule:
     - cron: 0 0 * * 1,3,5
   workflow_dispatch:
+  push:
+    branches:
+      - master
+  pull_request:
 
 permissions:
   contents: read
