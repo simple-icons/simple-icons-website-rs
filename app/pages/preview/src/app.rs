@@ -24,7 +24,7 @@ pub fn Preview() -> impl IntoView {
     add_preview_generator_scripts();
 
     view! {
-        <menu class="page-padding-x -mt-4 xl:bg-transparent flex flex-row xl:flex-col">
+        <menu class="page-padding-x -mt-4 lg:bg-transparent flex flex-row lg:flex-col">
             <ColorSchemeControl />
         </menu>
         <div class="page-padding-x flex justify-center">
