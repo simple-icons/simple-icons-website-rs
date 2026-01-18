@@ -42,7 +42,7 @@ jobs:
         run: tree -ah -L 1 app/dist
       - name: Create WebAssembly report
         run: |
-          echo "## 📦 WASM Bundle Sizes" >> $GITHUB_STEP_SUMMARY
+          echo "## 📦 WASM bundles sizes" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| App | Bytes | KB | MB |" >> $GITHUB_STEP_SUMMARY
           echo "|-----|-------|----|----|" >> $GITHUB_STEP_SUMMARY
@@ -72,7 +72,7 @@ jobs:
           website_size_kb=$(echo "scale=2; $website_size_bytes / 1024" | bc -l)
           website_size_mb=$(echo "scale=2; $website_size_kb / 1024" | bc -l)
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "## Website (dist folder) Size" >> $GITHUB_STEP_SUMMARY
+          echo "## Website's dist folder size" >> $GITHUB_STEP_SUMMARY
           echo "| Bytes | KB | MB |" >> $GITHUB_STEP_SUMMARY
           echo "|-------|----|----|" >> $GITHUB_STEP_SUMMARY
           echo "| $website_size_bytes | $website_size_kb | $website_size_mb |" >> $GITHUB_STEP_SUMMARY
