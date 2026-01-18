@@ -134,15 +134,15 @@ jobs:
         shell: bash
         run: |
           if [ "${{ matrix.browser }}" = "chrome" ] && [ "${{ matrix.suite }}" = "desktop" ] && [ "${{ github.ref }}" = "refs/heads/master" ]; then
-            echo "publishing=true" >> $GITHUB_OUTPUT
+            echo "publish=true" >> $GITHUB_OUTPUT
           else
-            echo "publishing=false" >> $GITHUB_OUTPUT
+            echo "publish=false" >> $GITHUB_OUTPUT
           fi
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: ${{ steps.check-publish.outputs.publishing == 'true' && '' || 'npm' }}
+          cache: ${{ steps.check-publish.outputs.publish == 'true' && '' || 'npm' }}
       - name: Install tooling dependencies
         uses: taiki-e/install-action@v2
         with:
@@ -184,12 +184,12 @@ jobs:
       - name: Check is fork
         uses: ./.github/actions/check-is-fork
         id: check-is-fork
-        if: steps.check-publish.outputs.publishing == 'true'
+        if: steps.check-publish.outputs.publish == 'true'
         with:
           in-fork-message: "Publish only can be executed in the main repository, skipping."
       - uses: actions/create-github-app-token@v1
         if: |
-          steps.check-publish.outputs.publishing == 'true' &&
+          steps.check-publish.outputs.publish == 'true' &&
           steps.check-is-fork.outputs.is-fork == 'false'
         id: app-token
         with:
@@ -197,7 +197,7 @@ jobs:
           private-key: ${{ secrets.BOT_PRIVATE_KEY }}
       - name: Publish website
         if: |
-          steps.check-publish.outputs.publishing == 'true' &&
+          steps.check-publish.outputs.publish == 'true' &&
           steps.check-is-fork.outputs.is-fork == 'false'
         run: |
           git config --global user.name "simple-icons[bot]"
