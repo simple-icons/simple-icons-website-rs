@@ -1,7 +1,9 @@
 name: Automated Releases
 on:
-  schedule:
-    - cron: 0 0 * * 1,3,5
+  push:
+    branches:
+      - master
+  pull_request:
   workflow_dispatch:
 
 permissions:

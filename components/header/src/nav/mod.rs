@@ -4,10 +4,14 @@ mod third_party_extensions;
 
 use super::HeaderStateSignal;
 use button::{HeaderMenuButton, HeaderMenuLink};
-use icondata::{ChCross, ChMenuHamburger};
+use icondata::{
+    AiHomeOutlined, AiMoreOutlined, ChCross, ChMenuHamburger,
+    RiErrorWarningSystemLine, VsPreview,
+};
 use language_selector::LanguageSelector;
 use leptos::prelude::*;
 use leptos_fluent::move_tr;
+use leptos_use::on_click_outside;
 use simple_icons_macros::get_simple_icon_svg_path;
 use third_party_extensions::ThirdPartyExtensions;
 
@@ -58,6 +62,8 @@ pub fn HeaderMenu() -> impl IntoView {
                         href="https://opencollective.com/simple-icons"
                         icon=get_simple_icon_svg_path!("opencollective")
                     />
+                    <VerticalDivider />
+                    <HeaderMenuMoreInfoButton />
                 </ul>
             </div>
             <ul>
@@ -65,6 +71,18 @@ pub fn HeaderMenu() -> impl IntoView {
                 <HeaderMenuCloseButton />
             </ul>
         </nav>
+    }
+}
+
+#[component]
+fn VerticalDivider() -> impl IntoView {
+    let header_state = expect_context::<HeaderStateSignal>().0;
+
+    view! {
+        <div
+            class:hidden=move || !header_state().menu_open
+            class="h-[33px] w-px bg-[var(--divider-color)] bg-opacity-20 ml-2 relative top-[5px] lg:block"
+        />
     }
 }
 
@@ -79,6 +97,7 @@ pub fn HeaderMenuBurgerButton() -> impl IntoView {
         <HeaderMenuButton
             on:click=move |_| header_state.update(|state| state.toggle_menu())
             icon=ChMenuHamburger
+            icon_class="relative -top-[2px]"
             attr:class=move || {
                 if header_state().menu_open { "hidden" } else { "rounded-full block lg:hidden" }
             }
@@ -100,10 +119,76 @@ pub fn HeaderMenuCloseButton() -> impl IntoView {
                 if header_state().menu_open { "rounded-full block" } else { "hidden" }
             }
             icon=ChCross
+            icon_class="relative -top-[2px]"
             on:click=move |_| header_state.update(|state| state.toggle_menu())
             attr:title=move_tr!("close-menu")
             width=28
             height=28
         />
+    }
+}
+
+/// Button to show more information on the header hidden under a menu
+#[component]
+pub fn HeaderMenuMoreInfoButton() -> impl IntoView {
+    let header_state = expect_context::<HeaderStateSignal>().0;
+
+    let menu_ref = NodeRef::new();
+    let more_menu_open = RwSignal::new(false);
+    _ = on_click_outside(menu_ref, move |_| {
+        if more_menu_open.get_untracked() {
+            more_menu_open.set(false);
+        }
+    });
+
+    let render_links = move || {
+        let links = vec![
+            (move_tr!("home"), "/", AiHomeOutlined),
+            (move_tr!("preview-generator"), "/preview/", VsPreview),
+            (
+                move_tr!("deprecations"),
+                "/deprecations/",
+                RiErrorWarningSystemLine,
+            ),
+        ];
+        links
+            .into_iter()
+            .filter(|(_title, href, _icon)| {
+                let location = window().location();
+                let current_path = location.pathname().unwrap_or_default();
+                if current_path == "/" {
+                    if *href == "/" {
+                        return false;
+                    }
+                    return true;
+                }
+                if *href == "/" {
+                    return true;
+                }
+                !current_path
+                    .starts_with::<&str>(href[0..href.len() - 1].as_ref())
+            })
+            .map(|(title, href, icon)| {
+                view! {
+                    <HeaderMenuLink title=title href=href icon=icon blank=false>
+                        {title}
+                    </HeaderMenuLink>
+                }
+            })
+            .collect::<Vec<_>>()
+    };
+
+    view! {
+        <li
+            class:hidden=move || !header_state().menu_open
+            id="more"
+            node_ref=menu_ref
+            on:click=move |_| more_menu_open.update(|is_open| *is_open = !*is_open)
+        >
+            <HeaderMenuButton icon=AiMoreOutlined width=25 height=25 />
+            <div class:hidden=move || !more_menu_open()>
+                <ul>{render_links()}</ul>
+            </div>
+        </li>
     }
 }

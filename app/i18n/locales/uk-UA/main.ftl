@@ -95,3 +95,4 @@ copy-icon-url = Копіювати URL значка
 copy-icon-svg-path = Копіювати шлях SVG значка
 legal = Юридичний
 language = Мова
+home = Головна

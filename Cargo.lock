@@ -1312,6 +1312,7 @@ version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "278d66461d56cdaa2ff2a395e2e0b033330ed0c16171cc3f8f3f3857ea164832"
 dependencies = [
+ "icondata_ai",
  "icondata_bi",
  "icondata_bs",
  "icondata_ch",
@@ -1322,6 +1323,15 @@ dependencies = [
  "icondata_ri",
  "icondata_tb",
  "icondata_vs",
+]
+
+[[package]]
+name = "icondata_ai"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "153b31389f611b00f7392c2f79b5bb8332e30a5eee5bffd66fc4fe767c1de59c"
+dependencies = [
+ "icondata_core",
 ]
 
 [[package]]
@@ -3179,10 +3189,7 @@ name = "simple-icons-website-preview-page"
 version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
- "icondata",
  "leptos",
- "leptos-fluent",
- "leptos_icons",
  "simple-icons-website-controls",
  "simple-icons-website-grid-constants",
  "simple-icons-website-page-layout",

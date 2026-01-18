@@ -95,3 +95,4 @@ copy-icon-url = İkon URL'sini kopyala
 copy-icon-svg-path = İkon SVG yolunu kopyala
 legal = Yasal
 language = Dil
+home = Ana sayfa

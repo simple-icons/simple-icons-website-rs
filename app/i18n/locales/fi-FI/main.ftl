@@ -95,3 +95,4 @@ copy-icon-url = Kopioi kuvakkeen URL
 copy-icon-svg-path = Kopioi kuvakkeen SVG-polku
 legal = Oikeudellinen
 language = Kieli
+home = Etusivu

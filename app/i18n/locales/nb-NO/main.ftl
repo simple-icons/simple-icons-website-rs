@@ -95,3 +95,4 @@ copy-icon-url = Kopier ikon-URL
 copy-icon-svg-path = Kopier ikon SVG-sti
 legal = Juridisk
 language = Språk
+home = Hjem

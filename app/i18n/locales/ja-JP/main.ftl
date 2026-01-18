@@ -95,3 +95,4 @@ copy-icon-url = アイコン URL をコピー
 copy-icon-svg-path = アイコン SVG パスをコピー
 legal = 法的
 language = 言語
+home = ホーム

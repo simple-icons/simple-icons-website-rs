@@ -95,3 +95,4 @@ copy-icon-url = Icoon URL kopiëren
 copy-icon-svg-path = Icoon SVG-pad kopiëren
 legal = Juridisch
 language = Taal
+home = Home

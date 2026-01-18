@@ -28,6 +28,9 @@ pub fn HeaderMenuLink(
     /// Optional text for the button
     #[prop(optional)]
     children: Option<Children>,
+    /// Whether the link has a blank target
+    #[prop(default = true)]
+    blank: bool,
 ) -> impl IntoView {
     let header_state = expect_context::<HeaderStateSignal>().0;
 
@@ -35,7 +38,7 @@ pub fn HeaderMenuLink(
         <a
             href=href
             title=title
-            target="_blank"
+            target=if blank { "_blank" } else { "_self" }
             class=move || match header_state().menu_open {
                 true => format!("rounded-md flex flex-row {class}"),
                 false => format!("rounded-md hidden lg:flex flex-row {class}"),
@@ -95,6 +98,9 @@ pub fn HeaderMenuButton(
     /// Height for the icon
     #[prop(default = 25)]
     height: usize,
+    /// Class of the icon
+    #[prop(default = "")]
+    icon_class: &'static str,
 ) -> impl IntoView {
     view! {
         <li tabindex=0 class="inline-flex justify-center rounded-lg">
@@ -102,7 +108,7 @@ pub fn HeaderMenuButton(
                 icon
                 width=format!("{width}")
                 height=format!("{height}")
-                attr:class="inline-block"
+                attr:class=format!("inline-block {icon_class}")
             />
             {match children {
                 Some(children) => {

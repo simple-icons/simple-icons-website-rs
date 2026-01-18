@@ -95,3 +95,4 @@ copy-icon-url = نسخ رابط الأيقونة
 copy-icon-svg-path = نسخ مسار SVG للأيقونة
 legal = قانوني
 language = لغة
+home = الصفحة الرئيسية
