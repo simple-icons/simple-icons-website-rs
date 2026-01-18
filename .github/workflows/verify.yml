@@ -131,6 +131,7 @@ jobs:
           target: wasm32-unknown-unknown
       - name: Should publish?
         id: check-publish
+        shell: bash
         run: |
           if [ "${{ matrix.browser }}" = "chrome" ] && [ "${{ matrix.suite }}" = "desktop" ] && [ "${{ github.ref }}" = "refs/heads/master" ]; then
             echo "publishing=true" >> $GITHUB_OUTPUT
@@ -185,7 +186,7 @@ jobs:
         id: check-is-fork
         if: steps.check-publish.outputs.publishing == 'true'
         with:
-          in-fork-message: 'Publish only can be executed in the main repository, skipping.'
+          in-fork-message: "Publish only can be executed in the main repository, skipping."
       - uses: actions/create-github-app-token@v1
         if: |
           steps.check-publish.outputs.publishing == 'true' &&
