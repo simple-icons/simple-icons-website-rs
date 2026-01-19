@@ -95,4 +95,3 @@ copy-icon-url = Icon URL kopieren
 copy-icon-svg-path = Icon SVG Pfad kopieren
 legal = Rechtlich
 language = Sprache
-home = Startseite

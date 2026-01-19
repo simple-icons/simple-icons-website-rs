@@ -1,7 +1,7 @@
 use super::button::{HeaderMenuButton, HeaderMenuLink};
 use crate::HeaderStateSignal;
 use icondata::{
-    AiHomeOutlined, AiMoreOutlined, RiErrorWarningSystemLine, VsPreview,
+    AiMoreOutlined, BsGrid3x2GapFill, RiErrorWarningSystemLine, VsPreview,
 };
 use leptos::{prelude::*, task::spawn_local};
 use leptos_fluent::move_tr;
@@ -65,7 +65,7 @@ pub fn HeaderMenuMoreInfoButton() -> impl IntoView {
             .unwrap_or_default();
 
         let links = vec![
-            (move_tr!("home"), "/", AiHomeOutlined, ""),
+            (move_tr!("icons"), "/", BsGrid3x2GapFill, ""),
             (
                 move_tr!("preview-generator"),
                 "/preview/",
