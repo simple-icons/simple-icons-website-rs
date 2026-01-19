@@ -1,0 +1,15 @@
+#more {
+	@apply relative rounded-md lg:block;
+}
+
+#more > div {
+	@apply absolute right-0 top-12 z-50 rounded-md border border-[var(--divider-color)] border-opacity-10 bg-[var(--grid-item-background-color)] shadow-lg;
+}
+
+#more > div > ul {
+	@apply flex flex-col;
+}
+
+#more > div > ul > a {
+	@apply button flex flex-row gap-1;
+}
