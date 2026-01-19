@@ -3086,6 +3086,7 @@ dependencies = [
  "leptos-use",
  "leptos_icons",
  "simple-icons-macros",
+ "simple-icons-website-ids",
  "simple-icons-website-modal",
  "simple-icons-website-svg-icon",
  "simple-icons-website-types",

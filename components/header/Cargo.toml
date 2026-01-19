@@ -14,6 +14,7 @@ icondata.workspace = true
 leptos-fluent.workspace = true
 leptos-use.workspace = true
 simple-icons-website-types.workspace = true
+simple-icons-website-ids.workspace = true
 simple-icons-website-svg-icon.workspace = true
 simple-icons-website-modal.workspace = true
 simple-icons-macros.workspace = true

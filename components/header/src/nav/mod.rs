@@ -13,6 +13,7 @@ use leptos::prelude::*;
 use leptos_fluent::move_tr;
 use leptos_use::on_click_outside;
 use simple_icons_macros::get_simple_icon_svg_path;
+use simple_icons_website_ids::Ids;
 use third_party_extensions::ThirdPartyExtensions;
 
 static LEGAL_DISCLAIMER_SVG_PATH: &str = "m23.9 9.7-3.54-7.89-.005-.01a.542.542 0 0 0-.041-.076l-.014-.018a.533.533 0 0 0-.122-.122l-.015-.011a.528.528 0 0 0-.08-.044l-.024-.009a.527.527 0 0 0-.067-.02l-.028-.007a.524.524 0 0 0-.096-.01h-6.85c-1.02-1.52-1.02-1.54-2 0h-6.86a.543.543 0 0 0-.096.01l-.028.007a.516.516 0 0 0-.067.02l-.024.01a.537.537 0 0 0-.08.043l-.015.011a.51.51 0 0 0-.057.047l-.02.02a.543.543 0 0 0-.045.055l-.014.018a.522.522 0 0 0-.041.075l-.005.01v.001L.116 9.72a.531.531 0 0 0-.096.304c0 2.28 1.86 4.14 4.14 4.14s4.14-1.86 4.14-4.14a.53.53 0 0 0-.096-.304l-3.25-6.37 6.07-.023v18.2c-2.55.294-7.01.381-7 2.5h16c0-2.03-4.48-2.27-7-2.5v-18.1l5.69-.02-2.92 6.49c0 .002 0 .003-.002.005l-.006.018a.545.545 0 0 0-.023.075l-.005.02a.524.524 0 0 0-.01.092v.008c0 2.28 1.86 4.14 4.14 4.14 2.28 0 4.14-1.86 4.14-4.14a.528.528 0 0 0-.12-.332z";
@@ -181,7 +182,7 @@ pub fn HeaderMenuMoreInfoButton() -> impl IntoView {
     view! {
         <li
             class:hidden=move || !header_state().menu_open
-            id="more"
+            id=Ids::More
             node_ref=menu_ref
             on:click=move |_| more_menu_open.update(|is_open| *is_open = !*is_open)
         >

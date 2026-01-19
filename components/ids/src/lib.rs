@@ -19,6 +19,7 @@ use leptos_unique_ids::leptos_unique_ids;
     "preview-color",
     "preview-path",
     "preview-brand",
-    "preview-card-image-for-canvas"
+    "preview-card-image-for-canvas",
+    "more"
 )]
 pub enum Ids {}
