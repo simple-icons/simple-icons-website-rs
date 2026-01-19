@@ -1,4 +1,4 @@
-/// A rewriting in Rust of some rules linting SVGs in the Simple Icons repository.
+/// A rewriting in Rust of some linting rules of the Simple Icons repository.
 use svg_path_cst::{SVGPathCSTNode, SVGPathCommand, SVGPathSegment};
 
 static PATH_VALID_CHARACTERS: &str = "mMzZlLhHvVcCsSqQtTaAeE0123456789,.- ";
@@ -102,6 +102,19 @@ pub mod errors {
         ViewboxSyntaxError {
             /// Error message
             message: String,
+        },
+
+        /// Number can be simplified
+        #[snafu(display(
+            "Number \"{original}\" at index {index} must be simplified to \"{simplified}\""
+        ))]
+        SimplifiableNumber {
+            /// Original number representation
+            original: String,
+            /// Simplified number representation
+            simplified: String,
+            /// Index where the number starts
+            index: u32,
         },
     }
 }
@@ -531,9 +544,111 @@ pub fn collinear_segments(segments: &[SVGPathCSTNode]) -> Vec<LintError> {
     errors
 }
 
+/// Check if numbers can be simplified (e.g., "2.0" should be "2")
+pub fn simplifiable_numbers(path: &str) -> Vec<LintError> {
+    let mut errors: Vec<LintError> = vec![];
+    let chars: Vec<char> = path.chars().collect();
+    let len = chars.len();
+
+    let mut i = 0;
+    while i < len {
+        let ch = chars[i];
+
+        // Check if this is the start of a number that doesn't start with 0, . or -
+        if ch.is_ascii_digit() && ch != '0' {
+            // Check previous character to ensure it's not a digit or dot
+            let prev_is_valid = if i > 0 {
+                let prev = chars[i - 1];
+                !prev.is_ascii_digit() && prev != '.'
+            } else {
+                true
+            };
+
+            if prev_is_valid {
+                // Try to extract the full number
+                let mut number_str = String::new();
+                let start_idx = i;
+
+                // Collect integer part
+                while i < len && chars[i].is_ascii_digit() {
+                    number_str.push(chars[i]);
+                    i += 1;
+                }
+
+                // Check for decimal point
+                if i < len && chars[i] == '.' {
+                    number_str.push(chars[i]);
+                    i += 1;
+
+                    // Collect fractional part
+                    let has_fraction = i < len && chars[i].is_ascii_digit();
+                    while i < len && chars[i].is_ascii_digit() {
+                        number_str.push(chars[i]);
+                        i += 1;
+                    }
+
+                    // Ensure there's no digit after (already handled by loop)
+                    // and that we have a valid decimal number
+                    if has_fraction {
+                        // Parse and simplify
+                        if let Ok(parsed) = number_str.parse::<f64>() {
+                            let simplified = parsed.to_string();
+
+                            if simplified != number_str {
+                                errors.push((
+                                    errors::PathLintError::SimplifiableNumber {
+                                        original: number_str.clone(),
+                                        simplified: simplified.clone(),
+                                        index: start_idx as u32,
+                                    },
+                                    Some((start_idx as u32, i as u32)),
+                                    Some(&fix_simplifiable_number),
+                                ));
+                            }
+                        }
+                    }
+                    continue;
+                }
+            }
+        }
+        i += 1;
+    }
+
+    errors
+}
+
+/// Lint error fixer function that simplifies a number
+fn fix_simplifiable_number(path: &str, range: Range) -> LintErrorFix {
+    let number_str: String = path
+        .chars()
+        .skip(range.0 as usize)
+        .take((range.1 - range.0) as usize)
+        .collect();
+
+    if let Ok(parsed) = number_str.parse::<f64>() {
+        let simplified = parsed.to_string();
+        let mut new_path = String::with_capacity(path.len());
+
+        for (i, character) in path.chars().enumerate() {
+            if i == range.0 as usize {
+                new_path.push_str(&simplified);
+            } else if (i as u32) >= range.0 && (i as u32) < range.1 {
+                continue;
+            } else {
+                new_path.push(character);
+            }
+        }
+
+        (new_path, range)
+    } else {
+        (path.to_string(), range)
+    }
+}
+
 pub fn lint_path_characters(path: &str) -> Vec<LintError> {
     let mut errors: Vec<LintError> = path_format(path);
     errors.extend(negative_zeros(path));
+    errors.extend(simplifiable_numbers(path));
     errors
 }
 
