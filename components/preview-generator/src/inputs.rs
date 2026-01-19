@@ -5,7 +5,10 @@ use fast_fuzzy::search;
 use leptos::{html::Input, prelude::*, task::spawn_local};
 use leptos_fluent::{move_tr, tr};
 use leptos_use::{on_click_outside, use_device_pixel_ratio};
-use simple_icons::lint::{LintError, LintErrorFixer, errors::PathLintError};
+use simple_icons::lint::{
+    LintError, LintErrorFixer, errors::PathLintError, lint_path_bbox,
+    lint_path_characters, lint_path_segments,
+};
 use simple_icons_sdk as sdk;
 use simple_icons_website_grid_constants::ICONS;
 use simple_icons_website_ids::Ids;
@@ -137,8 +140,7 @@ pub fn PathInput(
         path: &str,
         set_path_lint_errors: WriteSignal<Vec<LintError>>,
     ) {
-        let mut new_lint_errors =
-            simple_icons::lint::lint_path_characters(path);
+        let mut new_lint_errors = lint_path_characters(path);
         if !new_lint_errors.is_empty() {
             set_path_lint_errors(new_lint_errors);
             return;
@@ -171,9 +173,8 @@ pub fn PathInput(
         }
         let path_bbox = maybe_path_bbox.unwrap();
 
-        new_lint_errors
-            .extend(simple_icons::lint::lint_path_segments(&path_segments));
-        new_lint_errors.extend(simple_icons::lint::lint_path_bbox(&path_bbox));
+        new_lint_errors.extend(lint_path_segments(&path_segments));
+        new_lint_errors.extend(lint_path_bbox(&path_bbox));
         set_path_lint_errors(new_lint_errors);
     }
 
