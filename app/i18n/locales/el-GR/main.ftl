@@ -95,4 +95,3 @@ copy-icon-url = Αντιγραφή URL εικονιδίου
 copy-icon-svg-path = Αντιγραφή διαδρομής SVG εικονιδίου
 legal = Νομικό
 language = Γλώσσα
-home = Αρχική σελίδα

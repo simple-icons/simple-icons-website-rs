@@ -97,4 +97,3 @@ copy-icon-url = Копирај URL иконице
 copy-icon-svg-path = Копирај SVG путању иконице
 legal = Правни
 language = Језик
-home = Почетна

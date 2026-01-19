@@ -95,4 +95,3 @@ copy-icon-url = Copiază URL-ul pictogramei
 copy-icon-svg-path = Copiază calea SVG a pictogramei
 legal = Legal
 language = Limbă
-home = Acasă
