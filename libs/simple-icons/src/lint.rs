@@ -116,6 +116,17 @@ pub mod errors {
             /// Index where the number starts
             index: u32,
         },
+
+        /// Multiple consecutive spaces found
+        #[snafu(display(
+            "Found {count} consecutive spaces at index {index} (should be single space)"
+        ))]
+        MultipleConsecutiveSpaces {
+            /// Number of consecutive spaces
+            count: usize,
+            /// Index where the spaces start
+            index: u32,
+        },
     }
 }
 
@@ -645,10 +656,74 @@ fn fix_simplifiable_number(path: &str, range: Range) -> LintErrorFix {
     }
 }
 
+/// Check for multiple consecutive spaces in the path
+pub fn spacing_consistency(path: &str) -> Vec<LintError> {
+    let mut errors: Vec<LintError> = vec![];
+    let chars: Vec<char> = path.chars().collect();
+    let len = chars.len();
+
+    let mut i = 0;
+    while i < len {
+        if chars[i] == ' ' {
+            let start_idx = i;
+            let mut space_count = 0;
+
+            // Count consecutive spaces
+            while i < len && chars[i] == ' ' {
+                space_count += 1;
+                i += 1;
+            }
+
+            // Report if more than one space
+            if space_count >= 2 {
+                errors.push((
+                    errors::PathLintError::MultipleConsecutiveSpaces {
+                        count: space_count,
+                        index: start_idx as u32,
+                    },
+                    Some((start_idx as u32, (start_idx + space_count) as u32)),
+                    Some(&fix_multiple_spaces),
+                ));
+            }
+        } else {
+            i += 1;
+        }
+    }
+
+    errors
+}
+
+/// Lint error fixer function that replaces multiple spaces with a single space
+fn fix_multiple_spaces(path: &str, range: Range) -> LintErrorFix {
+    let mut new_path = String::with_capacity(path.len());
+    let mut in_range = false;
+
+    for (i, character) in path.chars().enumerate() {
+        let idx = i as u32;
+
+        if idx == range.0 {
+            // Start of multiple spaces - add single space
+            new_path.push(' ');
+            in_range = true;
+        } else if idx >= range.1 {
+            // Past the range
+            in_range = false;
+            new_path.push(character);
+        } else if !in_range {
+            // Before the range
+            new_path.push(character);
+        }
+        // Skip characters inside the range (after the first space)
+    }
+
+    (new_path, range)
+}
+
 pub fn lint_path_characters(path: &str) -> Vec<LintError> {
     let mut errors: Vec<LintError> = path_format(path);
     errors.extend(negative_zeros(path));
     errors.extend(simplifiable_numbers(path));
+    errors.extend(spacing_consistency(path));
     errors
 }
 
