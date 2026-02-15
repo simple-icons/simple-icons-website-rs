@@ -43,7 +43,7 @@
 		"prettier-plugin-tailwindcss": "0.6.11",
 		"prettier-plugin-toml": "2.0.4",
 		"serve": "14.2.4",
-		"simple-icons": "16.8.0",
+		"simple-icons": "16.9.0",
 		"stylelint": "16.14.0",
 		"stylelint-config-standard": "36.0.0",
 		"stylelint-config-tailwindcss": "0.0.7",
