@@ -133,7 +133,7 @@ fn FacebookButton() -> impl IntoView {
 fn MastodonButton() -> impl IntoView {
     view! {
         <SocialButton
-            href="https://mastodonshare.com/?text=Simple%20Icons%3A%20SVG%20icons%20for%20popular%20brands.&url=https%3A%2F%2Fsimpleicons.org"
+            href="https://share.joinmastodon.org/#text=Simple%20Icons%3A%20SVG%20icons%20for%20popular%20brands%20at%20https%3A%2F%2Fsimpleicons.org"
             icon=get_simple_icon_svg_path!("mastodon")
             class="mastodon-button"
             title="Mastodon"
