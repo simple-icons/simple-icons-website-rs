@@ -16,7 +16,9 @@
 	"scripts": {
 		"postinstall": "npm run setup:husky && npm run patches",
 		"patches": "patch-package",
-		"setup:husky": "node -e 'process.exit(process.env.CI ? 0 : 1)' || husky"
+		"setup:husky": "node -e 'process.exit(process.env.CI ? 0 : 1)' || husky",
+		"lint:svgo": "node scripts/check-svgo.mjs",
+		"test": "npm run lint:svgo && npm run other-lint-tasks..."
 	},
 	"dependencies": {
 		"@fontsource/open-sans": "5.0.8",
@@ -47,6 +49,7 @@
 		"stylelint": "16.14.0",
 		"stylelint-config-standard": "36.0.0",
 		"stylelint-config-tailwindcss": "0.0.7",
+		"svgo": "4.0.1",
 		"tailwindcss": "3.4.3",
 		"terser": "5.37.0",
 		"tsx": "4.19.4",
