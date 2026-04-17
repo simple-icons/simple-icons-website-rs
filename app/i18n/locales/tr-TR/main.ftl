@@ -55,6 +55,7 @@ close-menu = Menüyü kapat
 change-language = Dili değiştir
 select-a-language = Bir dil seçin
 copy-icon-slug = { $icon } slug'ını kopyala ({ $slug })
+copy-aliases = Copy aliases
 brand-guidelines = Marka yönergeleri
 license = Lisans
 custom-license = Özel lisans

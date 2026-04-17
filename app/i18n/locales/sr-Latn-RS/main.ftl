@@ -57,6 +57,7 @@ close-menu = Zatvori meni
 change-language = Promeni jezik
 select-a-language = Odaberi jezik
 copy-icon-slug = Kopiraj ime { $icon } ({ $slug })
+copy-aliases = Kopiraj алијase
 brand-guidelines = Smernice brenda
 license = Licenca
 custom-license = Prilagođena licenca

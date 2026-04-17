@@ -55,6 +55,7 @@ close-menu = 메뉴 닫기
 change-language = 언어 변경
 select-a-language = 언어를 선택하세요
 copy-icon-slug = { $icon } 슬러그({ $slug }) 복사
+copy-aliases = 별칭 복사
 brand-guidelines = 브랜드 가이드라인
 license = 라이센스
 custom-license = 커스텀 라이센스

@@ -55,6 +55,7 @@ close-menu = Închide meniul
 change-language = Schimbă limba
 select-a-language = Selectează o limbă
 copy-icon-slug = Copiază slug-ul { $icon } ({ $slug })
+copy-aliases = Copiați alias
 brand-guidelines = Ghiduri de brand
 license = Licență
 custom-license = Licență personalizată

@@ -55,6 +55,7 @@ close-menu = Κλείσιμο μενού
 change-language = Αλλαγή γλώσσας
 select-a-language = Επιλέξτε μια γλώσσα
 copy-icon-slug = Αντιγραφή slug εικονιδίου { $icon } ({ $slug })
+copy-aliases = Αντιγραφή ψευδωνύμων
 brand-guidelines = Οδηγίες μάρκας
 license = Άδεια
 custom-license = Προσαρμοσμένη άδεια

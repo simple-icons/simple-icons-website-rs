@@ -55,6 +55,7 @@ close-menu = Sulje valikko
 change-language = Vaihda kieli
 select-a-language = Valitse kieli
 copy-icon-slug = Kopioi { $icon } slug ({ $slug })
+copy-aliases = Kopioi aliakset
 brand-guidelines = Brändin ohjeet
 license = Lisenssi
 custom-license = Mukautettu lisenssi

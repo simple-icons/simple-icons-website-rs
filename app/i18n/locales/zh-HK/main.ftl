@@ -55,6 +55,7 @@ close-menu = 關閉選單
 change-language = 更改語言
 select-a-language = 選擇語言
 copy-icon-slug = 複製 { $icon } slug ({ $slug })
+copy-aliases = 複製別名
 brand-guidelines = 品牌指南
 license = 授權條款
 custom-license = 自訂授權條款

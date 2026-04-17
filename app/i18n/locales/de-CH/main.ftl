@@ -55,6 +55,7 @@ close-menu = Menü schliessen
 change-language = Sprache ändern
 select-a-language = Sprache Wählen
 copy-icon-slug = { $icon } ID kopieren ({ $slug })
+copy-aliases = Aliasnamen kopieren
 brand-guidelines = Markenrichtlinien
 license = Lizenz
 custom-license = Benutzerdefinierte Lizenz

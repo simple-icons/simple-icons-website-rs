@@ -55,6 +55,7 @@ close-menu = Stäng meny
 change-language = Byt språk
 select-a-language = Välj ett språk
 copy-icon-slug = Kopiera { $icon } slug ({ $slug })
+copy-aliases = Copy aliases
 brand-guidelines = Varumärkesriktlinjer
 license = Licens
 custom-license = Anpassad licens

@@ -55,6 +55,7 @@ close-menu = メニューを閉じる
 change-language = 言語を変えてください
 select-a-language = 言語を選択
 copy-icon-slug = { $icon } スラッグ ({ $slug }) をコピー
+copy-aliases = エイリアスをコピー
 brand-guidelines = ブランドガイドライン
 license = ライセンス
 custom-license = カスタムライセンス

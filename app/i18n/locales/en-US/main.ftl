@@ -55,6 +55,7 @@ close-menu = Close menu
 change-language = Change language
 select-a-language = Select a language
 copy-icon-slug = Copy { $icon } slug ({ $slug })
+copy-aliases = Copy aliases
 brand-guidelines = Brand guidelines
 license = License
 custom-license = Custom license

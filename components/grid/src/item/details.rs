@@ -49,6 +49,17 @@ fn get_slug_from_modal_container() -> String {
         .inner_text()
 }
 
+fn get_aliases_from_modal_container() -> String {
+    document()
+        .get_element_by_id(Ids::IconDetailsModal.as_str())
+        .unwrap()
+        .get_elements_by_tag_name("h4")
+        .item(0)
+        .unwrap()
+        .unchecked_into::<web_sys::HtmlElement>()
+        .inner_text()
+}
+
 fn get_hex_from_modal_container() -> String {
     document()
         .get_element_by_id(Ids::IconDetailsModal.as_str())
@@ -101,6 +112,28 @@ pub fn fill_icon_details_modal_with_icon(
             "slug" => icon.slug,
         }),
     );
+
+    // Set the aliases
+    let modal_aliases = modal_body
+        .get_elements_by_tag_name("h4")
+        .item(0)
+        .unwrap()
+        .unchecked_into::<web_sys::HtmlElement>();
+
+    let aliases = icon.plain_aliases();
+    if !aliases.is_empty() {
+        modal_aliases.set_inner_text(&aliases.join(", "));
+        _ = modal_aliases.class_list().remove_1("hidden");
+        _ = modal_aliases.class_list().add_1(
+            match icon.hex_is_relatively_light {
+                true => "copy-button-black",
+                false => "copy-button-white",
+            },
+        );
+        _ = modal_aliases.set_attribute("title", &tr!(i18n, "copy-aliases"));
+    } else {
+        _ = modal_aliases.class_list().add_1("hidden");
+    }
 
     // Set the copy hex color button
     let modal_hex_color_button = modal_body
@@ -265,6 +298,7 @@ fn IconDetailsModalInformation() -> impl IntoView {
     view! {
         <div>
             <h3 on:click=on_click></h3>
+            <h4 on:click=on_click></h4>
             <button on:click=on_click title=move || tr!("copy-hex-color")></button>
             <a target="_blank">{move || tr!("brand-guidelines")}</a>
             <a target="_blank" title=move || tr!("license")></a>
@@ -459,6 +493,22 @@ pub fn IconDetailsModal() -> impl IntoView {
             BiCheckRegular
         } else {
             BiLinkAltRegular
+        }
+    });
+
+    let (copying_aliases, set_copying_aliases) = signal(false);
+    #[allow(unused_parens)]
+    let copy_aliases_msg = move_tr!(if (copying_aliases()) {
+        "copied"
+    } else {
+        "copy-aliases"
+    });
+
+    let copy_aliases_icon = Signal::derive(move || {
+        if copying_aliases() {
+            BiCheckRegular
+        } else {
+            VsSymbolNamespace
         }
     });
 
@@ -762,6 +812,26 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     );
                                     set_timeout(
                                         move || set_copying_brand_name(false),
+                                        std::time::Duration::from_secs(1),
+                                    );
+                                }
+                            />
+
+                            <DetailsMenuItem
+                                text=copy_aliases_msg
+                                icon=copy_aliases_icon
+                                on:click=move |ev| {
+                                    let aliases = get_aliases_from_modal_container();
+                                    set_copying_aliases(true);
+                                    copy_and_set_copied_transition(
+                                        &aliases,
+                                        ev
+                                            .target()
+                                            .unwrap()
+                                            .unchecked_into::<web_sys::HtmlElement>(),
+                                    );
+                                    set_timeout(
+                                        move || set_copying_aliases(false),
                                         std::time::Duration::from_secs(1),
                                     );
                                 }

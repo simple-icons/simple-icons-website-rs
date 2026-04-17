@@ -55,6 +55,7 @@ close-menu = मेनू बंद करें
 change-language = भाषा बदलें
 select-a-language = एक भाषा चुनें
 copy-icon-slug = { $icon } स्लग ({ $slug }) कॉपी करें
+copy-aliases = उपनाम कॉपी करें
 brand-guidelines = ब्रांड दिशानिर्देश
 license = लाइसेंस
 custom-license = कस्टम लाइसेंस

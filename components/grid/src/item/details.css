@@ -29,8 +29,17 @@
 	@apply pr-12;
 }
 
-/*   Copy hex color button */
+/*   Icon aliases */
 .icon-details-modal > :first-child > :last-child > :nth-child(2) {
+	@apply copy-button-color-scheme before:[background-position-x:95%];
+}
+
+:dir(ltr) .icon-details-modal > :first-child > :last-child > :nth-child(2) {
+	@apply pr-12;
+}
+
+/*   Copy hex color button */
+.icon-details-modal > :first-child > :last-child > :nth-child(3) {
 	@apply w-20 rounded py-0.5 before:-mt-0.5 before:bg-[size:1.2rem] before:bg-center hover:!text-transparent focus:!text-transparent;
 }
 
