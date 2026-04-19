@@ -584,36 +584,30 @@ pub fn IconDetailsModal() -> impl IntoView {
         if let Some(h4) = document()
             .get_element_by_id(Ids::IconDetailsModal.as_str())
             .and_then(|el| el.get_elements_by_tag_name("h4").item(0))
+            && let Ok(spans_list) = h4.query_selector_all("span")
         {
-            if let Ok(spans_list) = h4.query_selector_all("span") {
-                for i in 0..spans_list.length() {
-                    if let Some(span) = spans_list.item(i) {
-                        let span_el =
-                            span.unchecked_into::<web_sys::HtmlElement>();
-                        let value = span_el.inner_text();
-                        let class_list = span_el.class_list();
+            for i in 0..spans_list.length() {
+                if let Some(span) = spans_list.item(i) {
+                    let span_el = span.unchecked_into::<web_sys::HtmlElement>();
+                    let value = span_el.inner_text();
+                    let class_list = span_el.class_list();
 
-                        let label = if class_list.contains("alias-aka") {
-                            format!("{} {}", tr!("aka"), value)
-                        } else if class_list.contains("alias-dup") {
-                            format!("{} {}", tr!("dup"), value)
-                        } else if class_list.contains("alias-loc") {
-                            let lang = span_el
-                                .get_attribute("data-lang")
-                                .unwrap_or_default();
-                            format!(
-                                "{} {}",
-                                tr!("loc", {"lang" => lang}),
-                                value
-                            )
-                        } else if class_list.contains("alias-old") {
-                            format!("{} {}", tr!("old"), value)
-                        } else {
-                            value.clone()
-                        };
+                    let label = if class_list.contains("alias-aka") {
+                        format!("{} {}", tr!("aka"), value)
+                    } else if class_list.contains("alias-dup") {
+                        format!("{} {}", tr!("dup"), value)
+                    } else if class_list.contains("alias-loc") {
+                        let lang = span_el
+                            .get_attribute("data-lang")
+                            .unwrap_or_default();
+                        format!("{} {}", tr!("loc", {"lang" => lang}), value)
+                    } else if class_list.contains("alias-old") {
+                        format!("{} {}", tr!("old"), value)
+                    } else {
+                        value.clone()
+                    };
 
-                        menus.push((label, value));
-                    }
+                    menus.push((label, value));
                 }
             }
         }
