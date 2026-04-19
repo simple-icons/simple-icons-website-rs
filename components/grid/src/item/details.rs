@@ -1,8 +1,9 @@
 use crate::{CurrentIconViewSignal, item::title::get_icon_localized_title};
 use icondata::{
-    BiCheckRegular, BiLinkAltRegular, BiMenuAltRightRegular, BiMenuRegular,
-    BsCode, BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline,
-    TbPngOutline, TbSvgOutline, VsSymbolNamespace,
+    BiCheckRegular, BiChevronDownRegular, BiChevronRightRegular,
+    BiLinkAltRegular, BiMenuAltRightRegular, BiMenuRegular, BsCode,
+    BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline, TbPngOutline,
+    TbSvgOutline, VsSymbolNamespace,
 };
 use leptos::{ev::MouseEvent, prelude::*, task::spawn_local};
 use leptos_fluent::{I18n, move_tr, tr};
@@ -21,6 +22,7 @@ use simple_icons_website_menu::{Menu, MenuItem};
 use simple_icons_website_modal::{Modal, ModalOpenSignal};
 use simple_icons_website_types::SimpleIcon;
 use wasm_bindgen::JsCast;
+use wasm_bindgen::closure::Closure;
 use web_sys_simple_fetch::fetch_text;
 
 fn get_brand_name_from_modal_container() -> String {
@@ -43,17 +45,6 @@ fn get_slug_from_modal_container() -> String {
         .get_element_by_id(Ids::IconDetailsModal.as_str())
         .unwrap()
         .get_elements_by_tag_name("h3")
-        .item(0)
-        .unwrap()
-        .unchecked_into::<web_sys::HtmlElement>()
-        .inner_text()
-}
-
-fn get_aliases_from_modal_container() -> String {
-    document()
-        .get_element_by_id(Ids::IconDetailsModal.as_str())
-        .unwrap()
-        .get_elements_by_tag_name("h4")
         .item(0)
         .unwrap()
         .unchecked_into::<web_sys::HtmlElement>()
@@ -120,17 +111,107 @@ pub fn fill_icon_details_modal_with_icon(
         .unwrap()
         .unchecked_into::<web_sys::HtmlElement>();
 
-    let aliases = icon.plain_aliases();
-    if !aliases.is_empty() {
-        modal_aliases.set_inner_text(&aliases.join(", "));
+    if let Some(aliases) = icon.aliases {
         _ = modal_aliases.class_list().remove_1("hidden");
-        _ = modal_aliases.class_list().add_1(
-            match icon.hex_is_relatively_light {
-                true => "copy-button-black",
-                false => "copy-button-white",
-            },
-        );
-        _ = modal_aliases.set_attribute("title", &tr!(i18n, "copy-aliases"));
+        // Set every section of aliases
+        let mut html = String::new();
+        if let Some(akas) = aliases.aka {
+            html.push_str("<div class=\"alias-akas\">");
+            for aka in akas {
+                html.push_str(&format!(
+                    "<span title=\"{}\" class=\"alias-aka\">{}</span>",
+                    tr!(
+                        i18n, "copy-alias", {
+                            "icon" => icon_localized_title,
+                            "type" => tr!("aka").to_lowercase(),
+                            "alias" => *aka
+                        }
+                    ),
+                    *aka
+                ));
+            }
+            html.push_str("</div>");
+        }
+        if let Some(dups) = aliases.dup {
+            html.push_str("<div class=\"alias-dups\">");
+            for dup in dups {
+                html.push_str(&format!(
+                    "<span title=\"{}\" class=\"alias-dup\">{}</span>",
+                    tr!(
+                        i18n, "copy-alias", {
+                            "icon" => icon_localized_title,
+                            "type" => tr!("dup").to_lowercase(),
+                            "alias" => *dup
+                        }
+                    ),
+                    *dup
+                ));
+            }
+            html.push_str("</div>");
+        }
+        if let Some(locs) = aliases.loc {
+            html.push_str("<div class=\"alias-locs\">");
+            for (lang, loc) in locs {
+                html.push_str(&format!(
+                    "<span data-lang=\"{}\" title=\"{}\" class=\"alias-loc\">{}</span>",
+                    lang,
+                    tr!(
+                        i18n, "copy-alias", {
+                            "icon" => icon_localized_title,
+                            "type" => tr!(i18n, "loc", { "lang" => *lang }),
+                            "alias" => *loc
+                        }
+                    ),
+                    *loc
+                ));
+            }
+            html.push_str("</div>");
+        }
+        if let Some(olds) = aliases.old {
+            html.push_str("<div class=\"alias-olds\">");
+            for old in olds {
+                html.push_str(&format!(
+                    "<span title=\"{}\" class=\"alias-old\">{}</span>",
+                    tr!(
+                        i18n, "copy-alias", {
+                            "icon" => icon_localized_title,
+                            "type" => tr!("old").to_lowercase(),
+                            "alias" => *old
+                        }
+                    ),
+                    *old
+                ));
+            }
+            html.push_str("</div>");
+        }
+        modal_aliases.set_inner_html(&html);
+        // Set alias copy capability
+        spawn_local(async move {
+            if let Ok(spans) = modal_aliases.query_selector_all("span") {
+                for i in 0..spans.length() {
+                    if let Some(span) = spans.item(i) {
+                        let span_el =
+                            span.unchecked_into::<web_sys::HtmlElement>();
+                        let onclick =
+                            Closure::wrap(Box::new(|ev: web_sys::MouseEvent| {
+                                let target =
+                                    event_target::<web_sys::HtmlElement>(&ev);
+                                let value = target.text_content().unwrap();
+                                copy_and_set_copied_transition(&value, target);
+                                ev.stop_propagation();
+                            })
+                                as Box<dyn FnMut(web_sys::MouseEvent)>);
+                        span_el
+                            .add_event_listener_with_callback(
+                                "click",
+                                onclick.as_ref().unchecked_ref(),
+                            )
+                            .unwrap();
+                        onclick.forget();
+                    }
+                }
+            }
+        });
     } else {
         _ = modal_aliases.class_list().add_1("hidden");
     }
@@ -298,7 +379,7 @@ fn IconDetailsModalInformation() -> impl IntoView {
     view! {
         <div>
             <h3 on:click=on_click></h3>
-            <h4 on:click=on_click></h4>
+            <h4></h4>
             <button on:click=on_click title=move || tr!("copy-hex-color")></button>
             <a target="_blank">{move || tr!("brand-guidelines")}</a>
             <a target="_blank" title=move || tr!("license")></a>
@@ -496,19 +577,61 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    let (copying_aliases, set_copying_aliases) = signal(false);
-    #[allow(unused_parens)]
-    let copy_aliases_msg = move_tr!(if (copying_aliases()) {
-        "copied"
-    } else {
-        "copy-aliases"
-    });
+    // Alias list visibility
+    let (show_aliases_menu, set_show_aliases_menu) = signal(false);
+    let aliases_menu = Signal::derive(move || {
+        let mut menus: Vec<(String, String)> = Vec::new();
+        if let Some(h4) = document()
+            .get_element_by_id(Ids::IconDetailsModal.as_str())
+            .and_then(|el| el.get_elements_by_tag_name("h4").item(0))
+        {
+            if let Ok(spans_list) = h4.query_selector_all("span") {
+                for i in 0..spans_list.length() {
+                    if let Some(span) = spans_list.item(i) {
+                        let span_el =
+                            span.unchecked_into::<web_sys::HtmlElement>();
+                        let value = span_el.inner_text();
+                        let class_list = span_el.class_list();
 
-    let copy_aliases_icon = Signal::derive(move || {
-        if copying_aliases() {
-            BiCheckRegular
+                        let label = if class_list.contains("alias-aka") {
+                            format!("{} {}", tr!("aka"), value)
+                        } else if class_list.contains("alias-dup") {
+                            format!("{} {}", tr!("dup"), value)
+                        } else if class_list.contains("alias-loc") {
+                            let lang = span_el
+                                .get_attribute("data-lang")
+                                .unwrap_or_default();
+                            format!(
+                                "{} {}",
+                                tr!("loc", {"lang" => lang}),
+                                value
+                            )
+                        } else if class_list.contains("alias-old") {
+                            format!("{} {}", tr!("old"), value)
+                        } else {
+                            value.clone()
+                        };
+
+                        menus.push((label, value));
+                    }
+                }
+            }
+        }
+        menus
+    });
+    let has_aliases = Signal::derive(move || !aliases_menu().is_empty());
+    let show_aliases_text = Signal::derive(move || {
+        if show_aliases_menu() {
+            tr!("hide-copyable-aliases")
         } else {
-            VsSymbolNamespace
+            tr!("show-copyable-aliases")
+        }
+    });
+    let show_aliases_icon = Signal::derive(move || {
+        if show_aliases_menu() {
+            BiChevronDownRegular
+        } else {
+            BiChevronRightRegular
         }
     });
 
@@ -817,25 +940,60 @@ pub fn IconDetailsModal() -> impl IntoView {
                                 }
                             />
 
-                            <DetailsMenuItem
-                                text=copy_aliases_msg
-                                icon=copy_aliases_icon
-                                on:click=move |ev| {
-                                    let aliases = get_aliases_from_modal_container();
-                                    set_copying_aliases(true);
-                                    copy_and_set_copied_transition(
-                                        &aliases,
-                                        ev
-                                            .target()
-                                            .unwrap()
-                                            .unchecked_into::<web_sys::HtmlElement>(),
-                                    );
-                                    set_timeout(
-                                        move || set_copying_aliases(false),
-                                        std::time::Duration::from_secs(1),
-                                    );
-                                }
-                            />
+                            <Show when=has_aliases>
+                                <DetailsMenuItem
+                                    text=show_aliases_text
+                                    icon=show_aliases_icon
+                                    on:click=move |_| {
+                                        set_show_aliases_menu.update(|v| *v = !*v);
+                                    }
+                                />
+
+                                <Show when=show_aliases_menu>
+                                    <For
+                                        each=move || aliases_menu()
+                                        key=|(label, _)| label.clone()
+                                        children=move |(label, value)| {
+                                            let (copying_alias, set_copying_alias) = signal(false);
+                                            #[allow(unused_parens)]
+                                            let alias_msg = Signal::derive(move || {
+                                                if (copying_alias()) {
+                                                    tr!("copied")
+                                                } else {
+                                                    label.clone()
+                                                }
+                                            });
+                                            let copy_value = value.clone();
+                                            // alias list (text-only)
+                                            view! {
+                                                <li
+                                                    class=concat!(
+                                                        "flex flex-row gap-x-2 px-3 py-1.5 cursor-pointer rounded-sm",
+                                                        " whitespace-nowrap my-auto dark:bg-gray-700 bg-slate-300 text-sm",
+                                                        " hover:bg-slate-200 dark:hover:bg-slate-600 z-50 ml-8",
+                                                    )
+                                                    on:click=move |ev| {
+                                                        set_copying_alias(true);
+                                                        copy_and_set_copied_transition(
+                                                            &copy_value,
+                                                            ev
+                                                                .target()
+                                                                .unwrap()
+                                                                .unchecked_into::<web_sys::HtmlElement>(),
+                                                        );
+                                                        set_timeout(
+                                                            move || set_copying_alias(false),
+                                                            std::time::Duration::from_secs(1),
+                                                        );
+                                                    }
+                                                >
+                                                    {alias_msg}
+                                                </li>
+                                            }
+                                        }
+                                    />
+                                </Show>
+                            </Show>
 
                             <DetailsMenuItem
                                 text=copy_icon_modal_url_msg

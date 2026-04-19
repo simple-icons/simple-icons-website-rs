@@ -30,12 +30,18 @@
 }
 
 /*   Icon aliases */
-.icon-details-modal > :first-child > :last-child > :nth-child(2) {
-	@apply copy-button-color-scheme before:[background-position-x:95%];
+.icon-details-modal > :first-child > :last-child > :nth-child(2) div span {
+	@apply copy-button-color-scheme inline-block before:bg-[size:1rem] before:[background-position-x:95%];
 }
 
-:dir(ltr) .icon-details-modal > :first-child > :last-child > :nth-child(2) {
-	@apply pr-12;
+:dir(ltr)
+	.icon-details-modal
+	> :first-child
+	> :last-child
+	> :nth-child(2)
+	div
+	span {
+	@apply pr-8;
 }
 
 /*   Copy hex color button */
