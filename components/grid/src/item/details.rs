@@ -1,9 +1,8 @@
 use crate::{CurrentIconViewSignal, item::title::get_icon_localized_title};
 use icondata::{
-    BiCheckRegular, BiChevronDownRegular, BiChevronRightRegular,
-    BiLinkAltRegular, BiMenuAltRightRegular, BiMenuRegular, BsCode,
-    BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline, TbPngOutline,
-    TbSvgOutline, VsSymbolNamespace,
+    BiCheckRegular, BiLinkAltRegular, BiMenuAltRightRegular, BiMenuRegular,
+    BsCode, BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline,
+    TbPngOutline, TbSvgOutline, VsSymbolNamespace,
 };
 use leptos::{ev::MouseEvent, prelude::*, task::spawn_local};
 use leptos_fluent::{I18n, move_tr, tr};
@@ -577,58 +576,6 @@ pub fn IconDetailsModal() -> impl IntoView {
         }
     });
 
-    // Alias list visibility
-    let (show_aliases_menu, set_show_aliases_menu) = signal(false);
-    let aliases_menu = Signal::derive(move || {
-        let mut menus: Vec<(String, String)> = Vec::new();
-        if let Some(h4) = document()
-            .get_element_by_id(Ids::IconDetailsModal.as_str())
-            .and_then(|el| el.get_elements_by_tag_name("h4").item(0))
-            && let Ok(spans_list) = h4.query_selector_all("span")
-        {
-            for i in 0..spans_list.length() {
-                if let Some(span) = spans_list.item(i) {
-                    let span_el = span.unchecked_into::<web_sys::HtmlElement>();
-                    let value = span_el.inner_text();
-                    let class_list = span_el.class_list();
-
-                    let label = if class_list.contains("alias-aka") {
-                        format!("{} {}", tr!("aka"), value)
-                    } else if class_list.contains("alias-dup") {
-                        format!("{} {}", tr!("dup"), value)
-                    } else if class_list.contains("alias-loc") {
-                        let lang = span_el
-                            .get_attribute("data-lang")
-                            .unwrap_or_default();
-                        format!("{} {}", tr!("loc", {"lang" => lang}), value)
-                    } else if class_list.contains("alias-old") {
-                        format!("{} {}", tr!("old"), value)
-                    } else {
-                        value.clone()
-                    };
-
-                    menus.push((label, value));
-                }
-            }
-        }
-        menus
-    });
-    let has_aliases = Signal::derive(move || !aliases_menu().is_empty());
-    let show_aliases_text = Signal::derive(move || {
-        if show_aliases_menu() {
-            tr!("hide-copyable-aliases")
-        } else {
-            tr!("show-copyable-aliases")
-        }
-    });
-    let show_aliases_icon = Signal::derive(move || {
-        if show_aliases_menu() {
-            BiChevronDownRegular
-        } else {
-            BiChevronRightRegular
-        }
-    });
-
     view! {
         <Modal
             title_is_copyable=true
@@ -933,61 +880,6 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     );
                                 }
                             />
-
-                            <Show when=has_aliases>
-                                <DetailsMenuItem
-                                    text=show_aliases_text
-                                    icon=show_aliases_icon
-                                    on:click=move |_| {
-                                        set_show_aliases_menu.update(|v| *v = !*v);
-                                    }
-                                />
-
-                                <Show when=show_aliases_menu>
-                                    <For
-                                        each=move || aliases_menu()
-                                        key=|(label, _)| label.clone()
-                                        children=move |(label, value)| {
-                                            let (copying_alias, set_copying_alias) = signal(false);
-                                            #[allow(unused_parens)]
-                                            let alias_msg = Signal::derive(move || {
-                                                if (copying_alias()) {
-                                                    tr!("copied")
-                                                } else {
-                                                    label.clone()
-                                                }
-                                            });
-                                            let copy_value = value.clone();
-                                            // alias list (text-only)
-                                            view! {
-                                                <li
-                                                    class=concat!(
-                                                        "flex flex-row gap-x-2 px-3 py-1.5 cursor-pointer rounded-sm",
-                                                        " whitespace-nowrap my-auto dark:bg-gray-700 bg-slate-300 text-sm",
-                                                        " hover:bg-slate-200 dark:hover:bg-slate-600 z-50 ml-8",
-                                                    )
-                                                    on:click=move |ev| {
-                                                        set_copying_alias(true);
-                                                        copy_and_set_copied_transition(
-                                                            &copy_value,
-                                                            ev
-                                                                .target()
-                                                                .unwrap()
-                                                                .unchecked_into::<web_sys::HtmlElement>(),
-                                                        );
-                                                        set_timeout(
-                                                            move || set_copying_alias(false),
-                                                            std::time::Duration::from_secs(1),
-                                                        );
-                                                    }
-                                                >
-                                                    {alias_msg}
-                                                </li>
-                                            }
-                                        }
-                                    />
-                                </Show>
-                            </Show>
 
                             <DetailsMenuItem
                                 text=copy_icon_modal_url_msg
