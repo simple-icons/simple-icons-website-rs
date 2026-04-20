@@ -1,4 +1,5 @@
 use crate::{CurrentIconViewSignal, item::title::get_icon_localized_title};
+use html_escape::encode_text;
 use icondata::{
     BiCheckRegular, BiLinkAltRegular, BiMenuAltRightRegular, BiMenuRegular,
     BsCode, BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline,
@@ -97,7 +98,7 @@ pub fn fill_icon_details_modal_with_icon(
     modal_slug.set_inner_text(icon.slug);
     _ = modal_slug.set_attribute(
         "title",
-        &tr!(i18n, "copy-icon-slug", {
+        &tr!("copy-icon-slug", {
             "icon" => icon_localized_title,
             "slug" => icon.slug,
         }),
@@ -119,12 +120,12 @@ pub fn fill_icon_details_modal_with_icon(
             for aka in akas {
                 html.push_str(&format!(
                     "<span title=\"{}\" class=\"alias-aka\">{}</span>",
-                    tr!("copy-alias-aka", {
+                    encode_text(&tr!("copy-alias-aka", {
                             "icon" => icon_localized_title,
                             "alias" => *aka
                         }
-                    ),
-                    *aka
+                    )),
+                    encode_text(aka)
                 ));
             }
             html.push_str("</div>");
@@ -134,12 +135,12 @@ pub fn fill_icon_details_modal_with_icon(
             for dup in dups {
                 html.push_str(&format!(
                     "<span title=\"{}\" class=\"alias-dup\">{}</span>",
-                    tr!("copy-alias-dup", {
+                    encode_text(&tr!("copy-alias-dup", {
                             "icon" => icon_localized_title,
                             "alias" => *dup
                         }
-                    ),
-                    *dup
+                    )),
+                    encode_text(dup)
                 ));
             }
             html.push_str("</div>");
@@ -149,14 +150,14 @@ pub fn fill_icon_details_modal_with_icon(
             for (lang, loc) in locs {
                 html.push_str(&format!(
                     "<span data-lang=\"{}\" title=\"{}\" class=\"alias-loc\">{}</span>",
-                    lang,
-                    tr!("copy-alias-loc", {
+                    encode_text(lang),
+                    encode_text(&tr!("copy-alias-loc", {
                             "icon" => icon_localized_title,
                             "lang" => *lang,
                             "alias" => *loc
                         }
-                    ),
-                    *loc
+                    )),
+                    encode_text(loc)
                 ));
             }
             html.push_str("</div>");
@@ -166,12 +167,12 @@ pub fn fill_icon_details_modal_with_icon(
             for old in olds {
                 html.push_str(&format!(
                     "<span title=\"{}\" class=\"alias-old\">{}</span>",
-                    tr!("copy-alias-old", {
+                    encode_text(&tr!("copy-alias-old", {
                             "icon" => icon_localized_title,
                             "alias" => *old
                         }
-                    ),
-                    *old
+                    )),
+                    encode_text(old)
                 ));
             }
             html.push_str("</div>");
@@ -237,7 +238,7 @@ pub fn fill_icon_details_modal_with_icon(
         .unchecked_into::<web_sys::HtmlButtonElement>();
     _ = modal_preview_button.set_attribute(
         "title",
-        &tr!(i18n, "copy-icon-svg", {
+        &tr!("copy-icon-svg", {
             "icon" => icon_localized_title,
         }),
     );
@@ -323,7 +324,6 @@ pub fn fill_icon_details_modal_with_icon(
         );
 
         let modal_deprecation_paragraph_html = tr!(
-            i18n,
             #[allow(unused_parens)]
             if (deprecation.renamed) {
                 "will-be-renamed-at-extended"
