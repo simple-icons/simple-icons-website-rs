@@ -119,10 +119,8 @@ pub fn fill_icon_details_modal_with_icon(
             for aka in akas {
                 html.push_str(&format!(
                     "<span title=\"{}\" class=\"alias-aka\">{}</span>",
-                    tr!(
-                        i18n, "copy-alias", {
+                    tr!("copy-alias-aka", {
                             "icon" => icon_localized_title,
-                            "type" => tr!("aka").to_lowercase(),
                             "alias" => *aka
                         }
                     ),
@@ -136,10 +134,8 @@ pub fn fill_icon_details_modal_with_icon(
             for dup in dups {
                 html.push_str(&format!(
                     "<span title=\"{}\" class=\"alias-dup\">{}</span>",
-                    tr!(
-                        i18n, "copy-alias", {
+                    tr!("copy-alias-dup", {
                             "icon" => icon_localized_title,
-                            "type" => tr!("dup").to_lowercase(),
                             "alias" => *dup
                         }
                     ),
@@ -154,10 +150,9 @@ pub fn fill_icon_details_modal_with_icon(
                 html.push_str(&format!(
                     "<span data-lang=\"{}\" title=\"{}\" class=\"alias-loc\">{}</span>",
                     lang,
-                    tr!(
-                        i18n, "copy-alias", {
+                    tr!("copy-alias-loc", {
                             "icon" => icon_localized_title,
-                            "type" => tr!(i18n, "loc", { "lang" => *lang }),
+                            "lang" => *lang,
                             "alias" => *loc
                         }
                     ),
@@ -171,10 +166,8 @@ pub fn fill_icon_details_modal_with_icon(
             for old in olds {
                 html.push_str(&format!(
                     "<span title=\"{}\" class=\"alias-old\">{}</span>",
-                    tr!(
-                        i18n, "copy-alias", {
+                    tr!("copy-alias-old", {
                             "icon" => icon_localized_title,
-                            "type" => tr!("old").to_lowercase(),
                             "alias" => *old
                         }
                     ),
@@ -187,28 +180,24 @@ pub fn fill_icon_details_modal_with_icon(
         // Set alias copy capability
         spawn_local(async move {
             if let Ok(spans) = modal_aliases.query_selector_all("span") {
-                for i in 0..spans.length() {
-                    if let Some(span) = spans.item(i) {
-                        let span_el =
-                            span.unchecked_into::<web_sys::HtmlElement>();
-                        let onclick =
-                            Closure::wrap(Box::new(|ev: web_sys::MouseEvent| {
-                                let target =
-                                    event_target::<web_sys::HtmlElement>(&ev);
-                                let value = target.text_content().unwrap();
-                                copy_and_set_copied_transition(&value, target);
-                                ev.stop_propagation();
-                            })
-                                as Box<dyn FnMut(web_sys::MouseEvent)>);
-                        span_el
-                            .add_event_listener_with_callback(
-                                "click",
-                                onclick.as_ref().unchecked_ref(),
-                            )
-                            .unwrap();
-                        onclick.forget();
-                    }
+                let on_click =
+                    Closure::wrap(Box::new(|ev: web_sys::MouseEvent| {
+                        let target = event_target::<web_sys::HtmlElement>(&ev);
+                        let value = target.text_content().unwrap();
+                        copy_and_set_copied_transition(&value, target);
+                        ev.stop_propagation();
+                    })
+                        as Box<dyn FnMut(web_sys::MouseEvent)>);
+                for span_container in js_sys::Array::from(&spans).iter() {
+                    let span =
+                        span_container.unchecked_into::<web_sys::HtmlElement>();
+                    span.add_event_listener_with_callback(
+                        "click",
+                        on_click.as_ref().unchecked_ref(),
+                    )
+                    .unwrap();
                 }
+                on_click.forget();
             }
         });
     } else {
