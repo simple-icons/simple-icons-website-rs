@@ -102,3 +102,4 @@ copy-icon-url = Icon-URL kopieren
 copy-icon-svg-path = Icon-SVG-Pfad kopieren
 legal = Rechtliches
 language = Sprache
+
