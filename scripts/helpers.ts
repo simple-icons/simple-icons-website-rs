@@ -53,17 +53,19 @@ export const deprecatedIconsFile = path.join(
 	'simple-icons-deprecated.json',
 );
 
-const isPreviewOnlyBuild = () => {
+const canUseEmptyDeprecatedIcons = () => {
 	const apps = (process.env.APPS ?? '')
 		.split(',')
 		.map((app) => app.trim())
 		.filter(Boolean);
 
-	return apps.length > 0 && apps.every((app) => app === 'preview');
+	return (
+		apps.length > 0 && apps.every((app) => app === 'preview' || app === '404')
+	);
 };
 
 const emptyDeprecatedIconsResponse = {
-	previewOnly: true,
+	emptyDeprecatedIcons: true,
 	data: {
 		repository: {
 			milestones: {
@@ -111,7 +113,10 @@ export const fetchDeprecatedIcons = async (
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const deprecatedIcons = JSON.parse(deprecatedIconsContent);
 
-		if (!deprecatedIcons.previewOnly || isPreviewOnlyBuild()) {
+		if (
+			(!deprecatedIcons.emptyDeprecatedIcons && !deprecatedIcons.previewOnly) ||
+			canUseEmptyDeprecatedIcons()
+		) {
 			onSuccess();
 			return;
 		}
@@ -119,7 +124,7 @@ export const fetchDeprecatedIcons = async (
 		await fs.unlink(deprecatedIconsFile);
 	}
 
-	if (isPreviewOnlyBuild()) {
+	if (canUseEmptyDeprecatedIcons()) {
 		await fs.writeFile(
 			deprecatedIconsFile,
 			JSON.stringify(emptyDeprecatedIconsResponse),

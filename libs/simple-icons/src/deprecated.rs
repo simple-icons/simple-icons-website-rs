@@ -28,7 +28,7 @@ impl PartialEq for IconDeprecation {
     }
 }
 
-fn is_preview_only_build() -> bool {
+fn can_use_empty_deprecated_icons() -> bool {
     let Ok(apps) = env::var("APPS") else {
         return false;
     };
@@ -39,7 +39,8 @@ fn is_preview_only_build() -> bool {
         .filter(|app| !app.is_empty())
         .collect::<Vec<_>>();
 
-    !apps.is_empty() && apps.iter().all(|app| *app == "preview")
+    !apps.is_empty()
+        && apps.iter().all(|app| *app == "preview" || *app == "404")
 }
 
 /**
@@ -49,7 +50,7 @@ fn is_preview_only_build() -> bool {
 pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
     let tmp_file_name = "simple-icons-deprecated.json";
     let tmp_file_path = Path::new(&env::temp_dir()).join(tmp_file_name);
-    if !tmp_file_path.exists() && is_preview_only_build() {
+    if !tmp_file_path.exists() && can_use_empty_deprecated_icons() {
         return Vec::new();
     }
 
@@ -69,10 +70,11 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
     }
 
     if resp
-        .get("previewOnly")
+        .get("emptyDeprecatedIcons")
+        .or_else(|| resp.get("previewOnly"))
         .and_then(serde_json::Value::as_bool)
         .unwrap_or_default()
-        && !is_preview_only_build()
+        && !can_use_empty_deprecated_icons()
     {
         fs::remove_file(&tmp_file_path).unwrap();
         panic!(
