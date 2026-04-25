@@ -21,6 +21,16 @@ Feature: Upload SVG file
 		Then the background color of the preview is #EF3939
 		Then the color of the badges in the preview is #EF3939
 
+	Scenario: Change preview icon by dropping a file on the preview generator
+		When I drop the file "node_modules/simple-icons/icons/leptos.svg" on the element ".preview"
+		Then the brand input value is "Leptos"
+		Then the title in the preview is "Leptos Preview"
+		Then the filename in the preview is "leptos.svg"
+		Then the path input value starts with "M10.097 17.876"
+		Then the SVG paths of the preview start with "M10.097 17.876"
+		Then the color input value is "EF3939"
+		Then the background color of the preview is #EF3939
+
 	Scenario: Click "Upload SVG" button file input by pressing Ctrl + ⇧ keyboard shortcut
 		When I press the "Ctrl" + "ArrowUp" keys, the event "onclick" is executed on the element "#preview-upload-svg-button"
 

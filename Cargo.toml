@@ -152,8 +152,10 @@ wasm-bindgen = "0.2"
 web-sys = { version = "0.3", default-features = false, features = [
 	"Blob",
 	"DomTokenList",
+	"DataTransfer",
 	"CanvasRenderingContext2d",
 	"Clipboard",
+	"DragEvent",
 	"Element",
 	"Event",
 	"EventInit",
@@ -169,6 +171,7 @@ web-sys = { version = "0.3", default-features = false, features = [
 	"HtmlInputElement",
 	"Location",
 	"MediaQueryList",
+	"MouseEvent",
 	"Navigator",
 	"OffscreenCanvasRenderingContext2d",
 	"Storage",
@@ -178,6 +181,7 @@ web-sys = { version = "0.3", default-features = false, features = [
 	"Url",
 	"UrlSearchParams",
 	"Selection",
+	"UiEvent",
 ] }
 js-sys = "0.3"
 wasm-bindgen-futures = "0.4"

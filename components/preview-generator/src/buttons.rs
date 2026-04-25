@@ -1,11 +1,10 @@
 use crate::{
-    Brand, canvas::canvas as canvas_container, helpers::is_valid_hex_color,
+    Brand, canvas::canvas as canvas_container, upload::upload_svg_file,
 };
 use leptos::{prelude::*, task::spawn_local};
 use leptos_fluent::{move_tr, tr};
 use simple_icons_sdk as sdk;
 use simple_icons_website_controls::download::download;
-use simple_icons_website_grid_constants::ICONS;
 use simple_icons_website_ids::Ids;
 use simple_icons_website_svg_defs::SVGDef;
 use simple_icons_website_svg_icon::{SVGIcon, svg_with_title_path_opt_fill};
@@ -39,76 +38,6 @@ fn PreviewUploadSVGButton(
 ) -> impl IntoView {
     let brand = expect_context::<RwSignal<Brand>>();
 
-    async fn on_upload_svg_file(
-        file: web_sys::File,
-        set_color: WriteSignal<String>,
-        set_path: WriteSignal<String>,
-        brand: RwSignal<Brand>,
-    ) {
-        match wasm_bindgen_futures::JsFuture::from(file.text()).await {
-            Ok(text) => {
-                let file_content = text.as_string().unwrap();
-
-                // Set color
-                if file_content.contains("fill=\"") {
-                    let hex = sdk::normalize_color(
-                        file_content
-                            .split("fill=\"")
-                            .nth(1)
-                            .unwrap()
-                            .split('"')
-                            .next()
-                            .unwrap(),
-                    );
-                    if is_valid_hex_color(&hex) {
-                        set_color(hex.to_string());
-                    }
-                }
-
-                // Set brand
-                if file_content.contains("<title>")
-                    && file_content.contains("</title>")
-                {
-                    let brand_title = file_content
-                        .split("<title>")
-                        .nth(1)
-                        .unwrap()
-                        .split("</title>")
-                        .next()
-                        .unwrap();
-                    brand.update(|b| b.0 = brand_title.to_string());
-
-                    if !file_content.contains("fill=\"") {
-                        for icon in ICONS.iter() {
-                            if icon.title == brand_title {
-                                set_color(icon.hex.to_string());
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                // Set path
-                if file_content.contains(" d=\"") {
-                    let path = file_content
-                        .split(" d=\"")
-                        .nth(1)
-                        .unwrap()
-                        .split('"')
-                        .next()
-                        .unwrap();
-                    set_path(path.to_string());
-                }
-            }
-            Err(err) => {
-                ::leptos::logging::error!(
-                    "Error reading uploaded SVG file: {:?}",
-                    err
-                )
-            }
-        }
-    }
-
     // File input hiding needs `max-w-0` and/or `invisible` on Safari:
 
     view! {
@@ -122,7 +51,7 @@ fn PreviewUploadSVGButton(
                 on:change=move |ev| {
                     let input = event_target::<web_sys::HtmlInputElement>(&ev);
                     let file = input.files().unwrap().get(0).unwrap();
-                    spawn_local(on_upload_svg_file(file, set_color, set_path, brand));
+                    spawn_local(upload_svg_file(file, set_color, set_path, brand));
                     input.set_value("");
                 }
             />

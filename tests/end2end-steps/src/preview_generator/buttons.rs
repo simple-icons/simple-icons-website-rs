@@ -23,6 +23,57 @@ async fn upload_file_to_input(
     Ok(())
 }
 
+#[when(regex = r#"I drop the file "([^"]+)" on the element "([^"]+)""#)]
+async fn drop_file_on_element(
+    world: &mut AppWorld,
+    filepath: String,
+    selector: String,
+) -> Result<()> {
+    let rooted_path = std::env::current_dir()
+        .unwrap()
+        .join("../..")
+        .join(filepath);
+    let file_content = std::fs::read_to_string(&rooted_path)?;
+    let filename = rooted_path
+        .file_name()
+        .unwrap()
+        .to_string_lossy()
+        .to_string();
+
+    world
+        .driver()
+        .execute(
+            r#"
+                const target = document.querySelector(arguments[0]);
+                const file = new File(
+                    [arguments[1]],
+                    arguments[2],
+                    { type: 'image/svg+xml' },
+                );
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+
+                for (const type of ['dragenter', 'dragover', 'drop']) {
+                    const event = new DragEvent(type, {
+                        bubbles: true,
+                        cancelable: true,
+                    });
+                    Object.defineProperty(event, 'dataTransfer', {
+                        value: dataTransfer,
+                    });
+                    target.dispatchEvent(event);
+                }
+            "#,
+            vec![
+                serde_json::Value::String(selector),
+                serde_json::Value::String(file_content),
+                serde_json::Value::String(filename),
+            ],
+        )
+        .await?;
+    Ok(())
+}
+
 #[when(
     regex = r#"I press the "([^"]+)" \+ "([^"]+)" keys, the event "([^"]+)" is executed on the element "([^"]+)""#
 )]
