@@ -28,6 +28,20 @@ impl PartialEq for IconDeprecation {
     }
 }
 
+fn is_preview_only_build() -> bool {
+    let Ok(apps) = env::var("APPS") else {
+        return false;
+    };
+
+    let apps = apps
+        .split(',')
+        .map(str::trim)
+        .filter(|app| !app.is_empty())
+        .collect::<Vec<_>>();
+
+    !apps.is_empty() && apps.iter().all(|app| *app == "preview")
+}
+
 /**
  * Get all the icons that will be removed in the next major versions
  * ordered by version.
@@ -35,6 +49,10 @@ impl PartialEq for IconDeprecation {
 pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
     let tmp_file_name = "simple-icons-deprecated.json";
     let tmp_file_path = Path::new(&env::temp_dir()).join(tmp_file_name);
+    if !tmp_file_path.exists() && is_preview_only_build() {
+        return Vec::new();
+    }
+
     assert!(
         tmp_file_path.exists(),
         "Run `cargo make` to execute the script fetch-deprecated-icons.rs and build."
@@ -46,8 +64,20 @@ pub fn fetch_deprecated_simple_icons() -> Vec<IconDeprecation> {
     .unwrap();
 
     if let Some(message) = resp.get("message") {
-        fs::remove_file(tmp_file_path).unwrap();
+        fs::remove_file(&tmp_file_path).unwrap();
         panic!("Error retrieving data from GITHUB Graphql API: {message}");
+    }
+
+    if resp
+        .get("previewOnly")
+        .and_then(serde_json::Value::as_bool)
+        .unwrap_or_default()
+        && !is_preview_only_build()
+    {
+        fs::remove_file(&tmp_file_path).unwrap();
+        panic!(
+            "Run `cargo make` to fetch real deprecated icons data and build."
+        );
     }
 
     let milestones_data = resp

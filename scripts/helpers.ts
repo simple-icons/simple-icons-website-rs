@@ -53,6 +53,26 @@ export const deprecatedIconsFile = path.join(
 	'simple-icons-deprecated.json',
 );
 
+const isPreviewOnlyBuild = () => {
+	const apps = (process.env.APPS ?? '')
+		.split(',')
+		.map((app) => app.trim())
+		.filter(Boolean);
+
+	return apps.length > 0 && apps.every((app) => app === 'preview');
+};
+
+const emptyDeprecatedIconsResponse = {
+	previewOnly: true,
+	data: {
+		repository: {
+			milestones: {
+				nodes: [],
+			},
+		},
+	},
+};
+
 export const fetchDeprecatedIcons = async (
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	onSuccess: () => void = () => {},
@@ -84,6 +104,26 @@ export const fetchDeprecatedIcons = async (
 	}`;
 
 	if (await fileExists(deprecatedIconsFile)) {
+		const deprecatedIconsContent = await fs.readFile(
+			deprecatedIconsFile,
+			'utf8',
+		);
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		const deprecatedIcons = JSON.parse(deprecatedIconsContent);
+
+		if (!deprecatedIcons.previewOnly || isPreviewOnlyBuild()) {
+			onSuccess();
+			return;
+		}
+
+		await fs.unlink(deprecatedIconsFile);
+	}
+
+	if (isPreviewOnlyBuild()) {
+		await fs.writeFile(
+			deprecatedIconsFile,
+			JSON.stringify(emptyDeprecatedIconsResponse),
+		);
 		onSuccess();
 		return;
 	}
