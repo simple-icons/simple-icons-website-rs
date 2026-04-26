@@ -3019,6 +3019,7 @@ dependencies = [
 name = "simple-icons-website-grid"
 version = "0.1.0"
 dependencies = [
+ "html-escape",
  "icondata",
  "js-sys",
  "leptos",
