@@ -1,6 +1,10 @@
 @layer components {
 	.preview {
-		@apply relative my-3 w-[790px] rounded-md border border-[var(--divider-color)] border-opacity-10 bg-[var(--grid-item-background-color)] px-6 py-5 text-[var(--text-default-color)] lg:z-30 lg:-mt-11 lg:ml-36;
+		@apply relative my-3 w-[790px] rounded-md border border-[var(--divider-color)] border-opacity-10 bg-[var(--grid-item-background-color)] px-6 py-5 text-[var(--text-default-color)] transition-shadow lg:z-30 lg:-mt-11 lg:ml-36;
+	}
+
+	.preview.dragging-file {
+		@apply border-custom-button-background-selected-color shadow-[0_0_0_3px_var(--shadows-color)];
 	}
 
 	.preview > div:not(:last-child) {

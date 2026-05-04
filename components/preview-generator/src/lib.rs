@@ -4,6 +4,7 @@ mod deps;
 mod helpers;
 mod inputs;
 mod keyboard;
+mod upload;
 
 use badge_maker::make_badge;
 use buttons::PreviewButtons;
@@ -21,6 +22,7 @@ use simple_icons_website_grid_constants::ICONS;
 use simple_icons_website_svg_icon::svg_with_path_opt_fill;
 use simple_icons_website_types::SimpleIcon;
 use simple_icons_website_url as Url;
+use upload::upload_svg_file;
 use web_sys_simple_fetch::fetch_text;
 
 static DEFAULT_INITIAL_BRAND: &str = "Simple Icons";
@@ -73,6 +75,26 @@ fn initial_icon() -> (Brand, String, String, Option<&'static SimpleIcon>) {
     }
 }
 
+fn data_transfer_has_files(data_transfer: &web_sys::DataTransfer) -> bool {
+    if let Some(files) = data_transfer.files()
+        && files.length() > 0
+    {
+        return true;
+    }
+
+    let types = data_transfer.types();
+    for index in 0..types.length() {
+        if types
+            .get(index)
+            .as_string()
+            .is_some_and(|value| value == "Files")
+        {
+            return true;
+        }
+    }
+    false
+}
+
 /// Preview generator
 #[component]
 pub fn PreviewGenerator() -> impl IntoView {
@@ -81,6 +103,8 @@ pub fn PreviewGenerator() -> impl IntoView {
     let brand = RwSignal::new(initial_brand);
     let (color, set_color) = signal(initial_color);
     let (path, set_path) = signal(initial_path.clone());
+    let (is_dragging_file, set_is_dragging_file) = signal(false);
+    let drag_depth = RwSignal::new(0);
 
     provide_context::<RwSignal<Brand>>(brand);
 
@@ -104,7 +128,65 @@ pub fn PreviewGenerator() -> impl IntoView {
     keyboard::listen_keyboard_shortcuts();
 
     view! {
-        <div class="preview">
+        <div
+            class=move || { if is_dragging_file() { "preview dragging-file" } else { "preview" } }
+            on:dragenter=move |event: web_sys::DragEvent| {
+                let Some(data_transfer) = event.data_transfer() else {
+                    return;
+                };
+                if !data_transfer_has_files(&data_transfer) {
+                    return;
+                }
+                event.prevent_default();
+                event.stop_propagation();
+                data_transfer.set_drop_effect("copy");
+                drag_depth
+                    .update(|depth| {
+                        *depth += 1;
+                    });
+                set_is_dragging_file(true);
+            }
+            on:dragover=move |event: web_sys::DragEvent| {
+                let Some(data_transfer) = event.data_transfer() else {
+                    return;
+                };
+                if !data_transfer_has_files(&data_transfer) {
+                    return;
+                }
+                event.prevent_default();
+                event.stop_propagation();
+                data_transfer.set_drop_effect("copy");
+                set_is_dragging_file(true);
+            }
+            on:dragleave=move |event: web_sys::DragEvent| {
+                if !is_dragging_file.get_untracked() {
+                    return;
+                }
+                event.prevent_default();
+                event.stop_propagation();
+                drag_depth
+                    .update(|depth| {
+                        *depth = (*depth - 1).max(0);
+                        set_is_dragging_file(*depth > 0);
+                    });
+            }
+            on:drop=move |event: web_sys::DragEvent| {
+                let data_transfer = event.data_transfer();
+                let has_files = data_transfer.as_ref().is_some_and(data_transfer_has_files);
+                if !has_files && !is_dragging_file.get_untracked() {
+                    return;
+                }
+                event.prevent_default();
+                event.stop_propagation();
+                drag_depth.set(0);
+                set_is_dragging_file(false);
+                if let Some(data_transfer) = data_transfer
+                    && let Some(files) = data_transfer.files() && let Some(file) = files.get(0)
+                {
+                    spawn_local(upload_svg_file(file, set_color, set_path, brand));
+                }
+            }
+        >
             <div>
                 <BrandInput set_color />
                 <ColorInput color set_color />
