@@ -1,12 +1,10 @@
-use crate::{Brand, helpers::is_valid_hex_color};
+use crate::{
+    Brand,
+    helpers::{is_svg_file, is_valid_hex_color},
+};
 use leptos::prelude::*;
 use simple_icons_sdk as sdk;
 use simple_icons_website_grid_constants::ICONS;
-
-fn is_svg_file(file: &web_sys::File) -> bool {
-    file.name().to_lowercase().ends_with(".svg")
-        || file.type_() == "image/svg+xml"
-}
 
 pub(crate) async fn upload_svg_file(
     file: web_sys::File,
@@ -32,18 +30,12 @@ pub(crate) async fn upload_svg_file(
             };
 
             // Set color
-            if file_content.contains("fill=\"") {
-                let hex = sdk::normalize_color(
-                    file_content
-                        .split("fill=\"")
-                        .nth(1)
-                        .unwrap()
-                        .split('"')
-                        .next()
-                        .unwrap(),
-                );
-                if is_valid_hex_color(&hex) {
-                    set_color(hex.to_string());
+            if let Some(after) = file_content.split("fill=\"").nth(1)
+                && let Some(hex) = after.split('"').next()
+            {
+                let normalized = sdk::normalize_color(hex);
+                if is_valid_hex_color(&normalized) {
+                    set_color(normalized.to_string());
                 }
             }
 

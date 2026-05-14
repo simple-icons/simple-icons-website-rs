@@ -45,10 +45,14 @@ async fn drop_file_on_element(
         .execute(
             r#"
                 const target = document.querySelector(arguments[0]);
+                const filename = arguments[2];
+                const mimeType = filename.toLowerCase().endsWith('.svg')
+                    ? 'image/svg+xml'
+                    : 'application/octet-stream';
                 const file = new File(
                     [arguments[1]],
-                    arguments[2],
-                    { type: 'image/svg+xml' },
+                    filename,
+                    { type: mimeType },
                 );
                 const dataTransfer = new DataTransfer();
                 dataTransfer.items.add(file);

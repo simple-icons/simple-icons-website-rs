@@ -7,6 +7,10 @@
 		@apply border-custom-button-background-selected-color shadow-[0_0_0_3px_var(--shadows-color)];
 	}
 
+	.preview.invalid-file {
+		@apply border-[rgb(180,0,0)] shadow-[0_0_0_3px_rgba(180,0,0,0.3)];
+	}
+
 	.preview > div:not(:last-child) {
 		@apply mb-3 whitespace-nowrap;
 	}

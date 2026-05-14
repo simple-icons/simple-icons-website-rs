@@ -6,8 +6,8 @@ Feature: Change SVG path by manual input
 	Background:
 		Given I see the preview generator page
 		Then the brand input value is "Simple Icons"
-		Then the path input value starts with "M12 0"
-		Then the SVG paths of the preview start with "M12 0"
+		Then the path input value starts with "M18 6"
+		Then the SVG paths of the preview start with "M18 6"
 
 	Scenario: Change SVG path by manual input
 		When I type "M0 0h24v24h-24z" in the path input

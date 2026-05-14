@@ -8,6 +8,35 @@ use end2end_helpers::{equality_predicate, starts_with_predicate};
 use std::time::Duration;
 use thirtyfour::{prelude::*, stringmatch::StringMatch};
 
+#[then(regex = r#"the element "([^"]+)" has the class "([^"]+)""#)]
+async fn element_has_class(
+    world: &mut AppWorld,
+    selector: String,
+    class_name: String,
+) -> Result<()> {
+    let found = world
+        .driver()
+        .query(By::Css(&selector))
+        .with_filter(move |element: thirtyfour::WebElement| {
+            let class_name = class_name.clone();
+            async move {
+                let class = element.attr("class").await;
+                std::result::Result::Ok(matches!(
+                    class,
+                    std::result::Result::Ok(Some(ref c))
+                        if c.split_whitespace().any(|c| c == class_name)
+                ))
+            }
+        })
+        .exists()
+        .await?;
+    assert!(
+        found,
+        "The element {selector} does not have the expected class"
+    );
+    Ok(())
+}
+
 #[then(
     regex = r#"the (title|filename|brand|color) in the preview is "([^"]+)""#
 )]

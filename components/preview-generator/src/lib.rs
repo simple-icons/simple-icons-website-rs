@@ -12,6 +12,7 @@ use canvas::update_preview_canvas;
 pub use deps::add_preview_generator_scripts;
 use fast_fuzzy::search;
 use helpers::contrast_color_for;
+use helpers::is_svg_file;
 use helpers::is_valid_hex_color;
 use inputs::{BrandInput, ColorInput, PathInput};
 use leptos::{prelude::*, task::spawn_local};
@@ -23,6 +24,7 @@ use simple_icons_website_svg_icon::svg_with_path_opt_fill;
 use simple_icons_website_types::SimpleIcon;
 use simple_icons_website_url as Url;
 use upload::upload_svg_file;
+use wasm_bindgen::JsCast;
 use web_sys_simple_fetch::fetch_text;
 
 static DEFAULT_INITIAL_BRAND: &str = "Simple Icons";
@@ -76,23 +78,10 @@ fn initial_icon() -> (Brand, String, String, Option<&'static SimpleIcon>) {
 }
 
 fn data_transfer_has_files(data_transfer: &web_sys::DataTransfer) -> bool {
-    if let Some(files) = data_transfer.files()
-        && files.length() > 0
-    {
-        return true;
-    }
-
-    let types = data_transfer.types();
-    for index in 0..types.length() {
-        if types
-            .get(index)
-            .as_string()
-            .is_some_and(|value| value == "Files")
-        {
-            return true;
-        }
-    }
-    false
+    data_transfer
+        .types()
+        .iter()
+        .any(|v| v.as_string().as_deref() == Some("Files"))
 }
 
 /// Preview generator
@@ -104,7 +93,7 @@ pub fn PreviewGenerator() -> impl IntoView {
     let (color, set_color) = signal(initial_color);
     let (path, set_path) = signal(initial_path.clone());
     let (is_dragging_file, set_is_dragging_file) = signal(false);
-    let drag_depth = RwSignal::new(0);
+    let (is_invalid_file, set_is_invalid_file) = signal(false);
 
     provide_context::<RwSignal<Brand>>(brand);
 
@@ -129,7 +118,9 @@ pub fn PreviewGenerator() -> impl IntoView {
 
     view! {
         <div
-            class=move || { if is_dragging_file() { "preview dragging-file" } else { "preview" } }
+            class="preview"
+            class:dragging-file=is_dragging_file
+            class:invalid-file=is_invalid_file
             on:dragenter=move |event: web_sys::DragEvent| {
                 let Some(data_transfer) = event.data_transfer() else {
                     return;
@@ -140,10 +131,6 @@ pub fn PreviewGenerator() -> impl IntoView {
                 event.prevent_default();
                 event.stop_propagation();
                 data_transfer.set_drop_effect("copy");
-                drag_depth
-                    .update(|depth| {
-                        *depth += 1;
-                    });
                 set_is_dragging_file(true);
             }
             on:dragover=move |event: web_sys::DragEvent| {
@@ -156,19 +143,19 @@ pub fn PreviewGenerator() -> impl IntoView {
                 event.prevent_default();
                 event.stop_propagation();
                 data_transfer.set_drop_effect("copy");
-                set_is_dragging_file(true);
             }
             on:dragleave=move |event: web_sys::DragEvent| {
-                if !is_dragging_file.get_untracked() {
+                let related = event
+                    .related_target()
+                    .and_then(|t| t.dyn_into::<web_sys::Node>().ok());
+                if let Some(current) = event.current_target() && let Some(related) = related
+                    && current
+                        .dyn_ref::<web_sys::Node>()
+                        .is_some_and(|node| node.contains(Some(&related)))
+                {
                     return;
                 }
-                event.prevent_default();
-                event.stop_propagation();
-                drag_depth
-                    .update(|depth| {
-                        *depth = (*depth - 1).max(0);
-                        set_is_dragging_file(*depth > 0);
-                    });
+                set_is_dragging_file(false);
             }
             on:drop=move |event: web_sys::DragEvent| {
                 let data_transfer = event.data_transfer();
@@ -178,12 +165,19 @@ pub fn PreviewGenerator() -> impl IntoView {
                 }
                 event.prevent_default();
                 event.stop_propagation();
-                drag_depth.set(0);
                 set_is_dragging_file(false);
                 if let Some(data_transfer) = data_transfer
                     && let Some(files) = data_transfer.files() && let Some(file) = files.get(0)
                 {
-                    spawn_local(upload_svg_file(file, set_color, set_path, brand));
+                    if is_svg_file(&file) {
+                        spawn_local(upload_svg_file(file, set_color, set_path, brand));
+                    } else {
+                        set_is_invalid_file(true);
+                        set_timeout(
+                            move || set_is_invalid_file(false),
+                            std::time::Duration::from_millis(1500),
+                        );
+                    }
                 }
             }
         >
