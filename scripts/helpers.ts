@@ -24,7 +24,11 @@ export const getGithubToken = async () => {
 	for (const line of envFile.split('\n')) {
 		const [key, value] = line.split('=');
 		if (key.trim() === 'GITHUB_TOKEN') {
-			return value.split('"')[1].trim();
+			if (value.includes('"')) {
+				return value.split('"')[1].trim();
+			}
+
+			return value;
 		}
 	}
 

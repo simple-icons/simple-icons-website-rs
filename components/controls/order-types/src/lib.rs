@@ -81,16 +81,16 @@ impl FromStr for OrderMode {
 pub fn sort_icons(order_mode: &OrderModeVariant, icons: &mut Vec<&SimpleIcon>) {
     match order_mode {
         OrderModeVariant::Alphabetic => {
-            icons.sort_by(|a, b| a.order_alpha.cmp(&b.order_alpha));
+            icons.sort_by_key(|a| a.order_alpha);
         }
         OrderModeVariant::AlphabeticReverse => {
-            icons.sort_by(|a, b| b.order_alpha.cmp(&a.order_alpha));
+            icons.sort_by_key(|a| std::cmp::Reverse(a.order_alpha));
         }
         OrderModeVariant::Color => {
-            icons.sort_by(|a, b| a.order_color.cmp(&b.order_color));
+            icons.sort_by_key(|a| a.order_color);
         }
         OrderModeVariant::ColorReverse => {
-            icons.sort_by(|a, b| b.order_color.cmp(&a.order_color));
+            icons.sort_by_key(|a| std::cmp::Reverse(a.order_color));
         }
         OrderModeVariant::Random => {
             // Durstenfeld shuffle

@@ -648,7 +648,7 @@ pub fn IconDetailsModal() -> impl IntoView {
                                     let slug = get_slug_from_modal_container();
                                     let hex = get_hex_from_modal_container();
                                     spawn_local(async move {
-                                        match fetch_text(&format!("/icons/{}.svg", &slug)).await {
+                                        match fetch_text(&format!("/icons/{slug}.svg")).await {
                                             Ok(svg) => {
                                                 let colored_icon_svg = svg
                                                     .replacen("<svg", &format!("<svg fill=\"{hex}\""), 1);

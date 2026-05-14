@@ -23,3 +23,9 @@ pub fn contrast_color_for(hex: &str) -> String {
         color::is_relatively_light_icon_hex(&sdk::normalize_color(hex));
     if is_light_hex { "black" } else { "white" }.to_string()
 }
+
+/// Check if a file is an SVG by its name or MIME type
+pub fn is_svg_file(file: &web_sys::File) -> bool {
+    file.name().to_lowercase().ends_with(".svg")
+        || file.type_() == "image/svg+xml"
+}

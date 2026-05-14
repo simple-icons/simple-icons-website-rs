@@ -4,6 +4,7 @@ mod deps;
 mod helpers;
 mod inputs;
 mod keyboard;
+mod upload;
 
 use badge_maker::make_badge;
 use buttons::PreviewButtons;
@@ -11,6 +12,7 @@ use canvas::update_preview_canvas;
 pub use deps::add_preview_generator_scripts;
 use fast_fuzzy::search;
 use helpers::contrast_color_for;
+use helpers::is_svg_file;
 use helpers::is_valid_hex_color;
 use inputs::{BrandInput, ColorInput, PathInput};
 use leptos::{prelude::*, task::spawn_local};
@@ -21,6 +23,8 @@ use simple_icons_website_grid_constants::ICONS;
 use simple_icons_website_svg_icon::svg_with_path_opt_fill;
 use simple_icons_website_types::SimpleIcon;
 use simple_icons_website_url as Url;
+use upload::upload_svg_file;
+use wasm_bindgen::JsCast;
 use web_sys_simple_fetch::fetch_text;
 
 static DEFAULT_INITIAL_BRAND: &str = "Simple Icons";
@@ -73,6 +77,13 @@ fn initial_icon() -> (Brand, String, String, Option<&'static SimpleIcon>) {
     }
 }
 
+fn data_transfer_has_files(data_transfer: &web_sys::DataTransfer) -> bool {
+    data_transfer
+        .types()
+        .iter()
+        .any(|v| v.as_string().as_deref() == Some("Files"))
+}
+
 /// Preview generator
 #[component]
 pub fn PreviewGenerator() -> impl IntoView {
@@ -81,6 +92,8 @@ pub fn PreviewGenerator() -> impl IntoView {
     let brand = RwSignal::new(initial_brand);
     let (color, set_color) = signal(initial_color);
     let (path, set_path) = signal(initial_path.clone());
+    let (is_dragging_file, set_is_dragging_file) = signal(false);
+    let (is_invalid_file, set_is_invalid_file) = signal(false);
 
     provide_context::<RwSignal<Brand>>(brand);
 
@@ -104,7 +117,70 @@ pub fn PreviewGenerator() -> impl IntoView {
     keyboard::listen_keyboard_shortcuts();
 
     view! {
-        <div class="preview">
+        <div
+            class="preview"
+            class:dragging-file=is_dragging_file
+            class:invalid-file=is_invalid_file
+            on:dragenter=move |event: web_sys::DragEvent| {
+                let Some(data_transfer) = event.data_transfer() else {
+                    return;
+                };
+                if !data_transfer_has_files(&data_transfer) {
+                    return;
+                }
+                event.prevent_default();
+                event.stop_propagation();
+                data_transfer.set_drop_effect("copy");
+                set_is_dragging_file(true);
+            }
+            on:dragover=move |event: web_sys::DragEvent| {
+                let Some(data_transfer) = event.data_transfer() else {
+                    return;
+                };
+                if !data_transfer_has_files(&data_transfer) {
+                    return;
+                }
+                event.prevent_default();
+                event.stop_propagation();
+                data_transfer.set_drop_effect("copy");
+            }
+            on:dragleave=move |event: web_sys::DragEvent| {
+                let related = event
+                    .related_target()
+                    .and_then(|t| t.dyn_into::<web_sys::Node>().ok());
+                if let Some(current) = event.current_target() && let Some(related) = related
+                    && current
+                        .dyn_ref::<web_sys::Node>()
+                        .is_some_and(|node| node.contains(Some(&related)))
+                {
+                    return;
+                }
+                set_is_dragging_file(false);
+            }
+            on:drop=move |event: web_sys::DragEvent| {
+                let data_transfer = event.data_transfer();
+                let has_files = data_transfer.as_ref().is_some_and(data_transfer_has_files);
+                if !has_files && !is_dragging_file.get_untracked() {
+                    return;
+                }
+                event.prevent_default();
+                event.stop_propagation();
+                set_is_dragging_file(false);
+                if let Some(data_transfer) = data_transfer
+                    && let Some(files) = data_transfer.files() && let Some(file) = files.get(0)
+                {
+                    if is_svg_file(&file) {
+                        spawn_local(upload_svg_file(file, set_color, set_path, brand));
+                    } else {
+                        set_is_invalid_file(true);
+                        set_timeout(
+                            move || set_is_invalid_file(false),
+                            std::time::Duration::from_millis(1500),
+                        );
+                    }
+                }
+            }
+        >
             <div>
                 <BrandInput set_color />
                 <ColorInput color set_color />
@@ -422,7 +498,7 @@ fn PreviewBadge(
                     badge_svg = badge_svg
                         .replace(
                             "text id=\"rlink\"",
-                            &format!("text id=\"rlink\" fill=\"#{}\"", &text_color),
+                            &format!("text id=\"rlink\" fill=\"#{text_color}\""),
                         );
                 }
                 badge_svg
