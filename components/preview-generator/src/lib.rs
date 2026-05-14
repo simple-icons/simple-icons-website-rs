@@ -498,7 +498,7 @@ fn PreviewBadge(
                     badge_svg = badge_svg
                         .replace(
                             "text id=\"rlink\"",
-                            &format!("text id=\"rlink\" fill=\"#{}\"", &text_color),
+                            &format!("text id=\"rlink\" fill=\"#{text_color}\""),
                         );
                 }
                 badge_svg

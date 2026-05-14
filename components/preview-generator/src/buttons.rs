@@ -122,7 +122,7 @@ fn PreviewSaveButton() -> impl IntoView {
             on:click=move |_| {
                 let canvas = canvas_container();
                 let brand_title = brand().0.clone();
-                let filename = format!("{}.png", &sdk::title_to_slug(&brand_title));
+                let filename = format!("{}.png", sdk::title_to_slug(&brand_title));
                 let url = canvas.to_data_url().unwrap();
                 download(&filename, &url);
             }
@@ -145,7 +145,7 @@ fn PreviewDownloadSVGButton(path: ReadSignal<String>) -> impl IntoView {
             tabindex=0
             on:click=move |_| {
                 let brand_title = brand().0.clone();
-                let filename = format!("{}.svg", &sdk::title_to_slug(&brand_title));
+                let filename = format!("{}.svg", sdk::title_to_slug(&brand_title));
                 let title = brand().0.clone();
                 let url = format!(
                     "data:image/svg+xml;utf8,{}",
