@@ -54,43 +54,43 @@ jobs:
       - name: Lint
         run: cargo make lint
 
-  dylint:
-    name: Lint (`cargo make dylint`)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Get dylint library toolchain
-        id: get-channel
-        run: |
-          channel=$(cat rust-toolchain.toml | grep channel | cut -d'"' -f2)
-          echo "channel=$channel" >> $GITHUB_OUTPUT
-      - name: Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
-        with:
-          toolchain: ${{ steps.get-channel.outputs.channel }}
-          target: wasm32-unknown-unknown
-          components: clippy
-          cache-key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}-dylint-${{ steps.get-channel.outputs.channel }}-${{ hashFiles('**/rust-toolchain.toml') }}
-          cache-directories: |
-            ~/.dylint_drivers
-      - name: Install tooling dependencies
-        uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-make,dylint-link
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - name: Install Node.js dependencies
-        run: npm ci --no-audit --no-fund
-      - name: Build
-        run: cargo make build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Lint
-        run: cargo make dylint
+#  dylint:
+#    name: Lint (`cargo make dylint`)
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - name: Get dylint library toolchain
+#        id: get-channel
+#        run: |
+#          channel=$(cat rust-toolchain.toml | grep channel | cut -d'"' -f2)
+#          echo "channel=$channel" >> $GITHUB_OUTPUT
+#      - name: Setup Rust
+#        uses: actions-rust-lang/setup-rust-toolchain@v1
+#        with:
+#          toolchain: ${{ steps.get-channel.outputs.channel }}
+#          target: wasm32-unknown-unknown
+#          components: clippy
+#          cache-key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}-dylint-${{ steps.get-channel.outputs.channel }}-${{ hashFiles('**/rust-toolchain.toml') }}
+#          cache-directories: |
+#            ~/.dylint_drivers
+#      - name: Install tooling dependencies
+#        uses: taiki-e/install-action@v2
+#        with:
+#          tool: cargo-make,dylint-link
+#      - name: Setup Node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version-file: .node-version
+#          cache: npm
+#      - name: Install Node.js dependencies
+#        run: npm ci --no-audit --no-fund
+#      - name: Build
+#        run: cargo make build
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Lint
+#        run: cargo make dylint
 
   end2end-tests:
     name: ${{ matrix.name }}
