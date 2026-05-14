@@ -55,6 +55,10 @@ close-menu = Menü schließen
 change-language = Sprache ändern
 select-a-language = Sprache auswählen
 copy-icon-slug = { $icon }-Slug kopieren ({ $slug })
+copy-alias-aka = AKA von { $icon } kopieren ({ $alias })
+copy-alias-dup = Doppelte Marke von { $icon } kopieren ({ $alias })
+copy-alias-loc = Lokalisierten Namen von { $icon } auf { $lang } kopieren ({ $alias })
+copy-alias-old = Alten Namen von { $icon } kopieren ({ $alias })
 brand-guidelines = Markenrichtlinien
 license = Lizenz
 custom-license = Eigene Lizenz
@@ -95,3 +99,4 @@ copy-icon-url = Icon-URL kopieren
 copy-icon-svg-path = Icon-SVG-Pfad kopieren
 legal = Rechtliches
 language = Sprache
+

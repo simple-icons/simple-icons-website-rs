@@ -1,4 +1,5 @@
 use crate::{CurrentIconViewSignal, item::title::get_icon_localized_title};
+use html_escape::encode_text;
 use icondata::{
     BiCheckRegular, BiLinkAltRegular, BiMenuAltRightRegular, BiMenuRegular,
     BsCode, BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline,
@@ -21,6 +22,7 @@ use simple_icons_website_menu::{Menu, MenuItem};
 use simple_icons_website_modal::{Modal, ModalOpenSignal};
 use simple_icons_website_types::SimpleIcon;
 use wasm_bindgen::JsCast;
+use wasm_bindgen::closure::Closure;
 use web_sys_simple_fetch::fetch_text;
 
 fn get_brand_name_from_modal_container() -> String {
@@ -96,11 +98,112 @@ pub fn fill_icon_details_modal_with_icon(
     modal_slug.set_inner_text(icon.slug);
     _ = modal_slug.set_attribute(
         "title",
-        &tr!(i18n, "copy-icon-slug", {
+        &tr!("copy-icon-slug", {
             "icon" => icon_localized_title,
             "slug" => icon.slug,
         }),
     );
+
+    // Set the aliases
+    let modal_aliases = modal_body
+        .get_elements_by_tag_name("h4")
+        .item(0)
+        .unwrap()
+        .unchecked_into::<web_sys::HtmlElement>();
+
+    if let Some(aliases) = icon.aliases {
+        _ = modal_aliases.class_list().remove_1("hidden");
+        // Set every section of aliases
+        let mut html = String::new();
+        if let Some(akas) = aliases.aka {
+            html.push_str("<div class=\"alias-akas\">");
+            for aka in akas {
+                html.push_str(&format!(
+                    "<span title=\"{}\" class=\"alias-aka\">{}</span>",
+                    encode_text(&tr!("copy-alias-aka", {
+                            "icon" => icon_localized_title,
+                            "alias" => *aka
+                        }
+                    )),
+                    encode_text(aka)
+                ));
+            }
+            html.push_str("</div>");
+        }
+        if let Some(dups) = aliases.dup {
+            html.push_str("<div class=\"alias-dups\">");
+            for dup in dups {
+                html.push_str(&format!(
+                    "<span title=\"{}\" class=\"alias-dup\">{}</span>",
+                    encode_text(&tr!("copy-alias-dup", {
+                            "icon" => icon_localized_title,
+                            "alias" => *dup
+                        }
+                    )),
+                    encode_text(dup)
+                ));
+            }
+            html.push_str("</div>");
+        }
+        if let Some(locs) = aliases.loc {
+            html.push_str("<div class=\"alias-locs\">");
+            for (lang, loc) in locs {
+                html.push_str(&format!(
+                    "<span data-lang=\"{}\" title=\"{}\" class=\"alias-loc\">{}</span>",
+                    encode_text(lang),
+                    encode_text(&tr!("copy-alias-loc", {
+                            "icon" => icon_localized_title,
+                            "lang" => *lang,
+                            "alias" => *loc
+                        }
+                    )),
+                    encode_text(loc)
+                ));
+            }
+            html.push_str("</div>");
+        }
+        if let Some(olds) = aliases.old {
+            html.push_str("<div class=\"alias-olds\">");
+            for old in olds {
+                html.push_str(&format!(
+                    "<span title=\"{}\" class=\"alias-old\">{}</span>",
+                    encode_text(&tr!("copy-alias-old", {
+                            "icon" => icon_localized_title,
+                            "alias" => *old
+                        }
+                    )),
+                    encode_text(old)
+                ));
+            }
+            html.push_str("</div>");
+        }
+        modal_aliases.set_inner_html(&html);
+        // Set alias copy capability
+        spawn_local(async move {
+            if let Ok(spans) = modal_aliases.query_selector_all("span") {
+                let on_click =
+                    Closure::wrap(Box::new(|ev: web_sys::MouseEvent| {
+                        let target = event_target::<web_sys::HtmlElement>(&ev);
+                        let value = target.text_content().unwrap();
+                        copy_and_set_copied_transition(&value, target);
+                        ev.stop_propagation();
+                    })
+                        as Box<dyn FnMut(web_sys::MouseEvent)>);
+                for span_container in js_sys::Array::from(&spans).iter() {
+                    let span =
+                        span_container.unchecked_into::<web_sys::HtmlElement>();
+                    span.add_event_listener_with_callback(
+                        "click",
+                        on_click.as_ref().unchecked_ref(),
+                    )
+                    .unwrap();
+                }
+                on_click.forget();
+            }
+        });
+    } else {
+        _ = modal_aliases.class_list().add_1("hidden");
+    }
 
     // Set the copy hex color button
     let modal_hex_color_button = modal_body
@@ -135,7 +238,7 @@ pub fn fill_icon_details_modal_with_icon(
         .unchecked_into::<web_sys::HtmlButtonElement>();
     _ = modal_preview_button.set_attribute(
         "title",
-        &tr!(i18n, "copy-icon-svg", {
+        &tr!("copy-icon-svg", {
             "icon" => icon_localized_title,
         }),
     );
@@ -221,7 +324,6 @@ pub fn fill_icon_details_modal_with_icon(
         );
 
         let modal_deprecation_paragraph_html = tr!(
-            i18n,
             #[allow(unused_parens)]
             if (deprecation.renamed) {
                 "will-be-renamed-at-extended"
@@ -265,6 +367,7 @@ fn IconDetailsModalInformation() -> impl IntoView {
     view! {
         <div>
             <h3 on:click=on_click></h3>
+            <h4></h4>
             <button on:click=on_click title=move || tr!("copy-hex-color")></button>
             <a target="_blank">{move || tr!("brand-guidelines")}</a>
             <a target="_blank" title=move || tr!("license")></a>

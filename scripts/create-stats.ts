@@ -165,7 +165,6 @@ const main = async () => {
 	const {numberOfLibraries, numberOfExtensions} =
 		countNumberOfLibrariesAndExtensions(readmeContent);
 
-	await fetchDeprecatedIcons();
 	const [
 		numberOfIcons,
 		numberOfLanguages,

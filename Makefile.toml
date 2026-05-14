@@ -434,8 +434,28 @@ if not is_path_exists "./app/public/assets/js/blob-stream-${blob_stream.version}
 end
 '''
 
+[tasks.check-apps-needs-deprecated]
+# Execute a task only when it needs to build the deprecations page or the index page
+private = true
+condition_script = '''
+#!@duckscript
+APPS = get_env APPS
+if is_empty ${APPS}
+  exit 0
+end
+if contains ${APPS} "deprecations"
+  exit 0
+end
+if contains ${APPS} "index"
+  exit 0
+end
+exit 1
+'''
+
 [tasks.fetch-deprecated-icons]
 description = "Fetch deprecated icons from simple-icons repository"
+private = false
+extend = "check-apps-needs-deprecated"
 command = "npx"
 args = ["tsx", "scripts/fetch-deprecated-icons.ts"]
 
@@ -446,6 +466,7 @@ args = ["tsx", "scripts/create-sitemap.ts"]
 
 [tasks.create-stats]
 description = "Create statistics asset"
+extend = "check-apps-needs-deprecated"
 command = "npx"
 args = ["tsx", "scripts/create-stats.ts"]
 
