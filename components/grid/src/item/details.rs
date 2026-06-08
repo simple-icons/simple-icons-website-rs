@@ -1,5 +1,5 @@
 use crate::{CurrentIconViewSignal, item::title::get_icon_localized_title};
-use html_escape::encode_text;
+use html_escape::{encode_double_quoted_attribute, encode_text};
 use icondata::{
     BiCheckRegular, BiLinkAltRegular, BiMenuAltRightRegular, BiMenuRegular,
     BsCode, BsWindowFullscreen, IoColorWand, TbJpgOutline, TbPdfOutline,
@@ -120,7 +120,7 @@ pub fn fill_icon_details_modal_with_icon(
             for aka in akas {
                 html.push_str(&format!(
                     "<span title=\"{}\" class=\"alias-aka\">{}</span>",
-                    encode_text(&tr!("copy-alias-aka", {
+                    encode_double_quoted_attribute(&tr!("copy-alias-aka", {
                             "icon" => icon_localized_title,
                             "alias" => *aka
                         }
@@ -135,7 +135,7 @@ pub fn fill_icon_details_modal_with_icon(
             for dup in dups {
                 html.push_str(&format!(
                     "<span title=\"{}\" class=\"alias-dup\">{}</span>",
-                    encode_text(&tr!("copy-alias-dup", {
+                    encode_double_quoted_attribute(&tr!("copy-alias-dup", {
                             "icon" => icon_localized_title,
                             "alias" => *dup
                         }
@@ -150,8 +150,8 @@ pub fn fill_icon_details_modal_with_icon(
             for (lang, loc) in locs {
                 html.push_str(&format!(
                     "<span data-lang=\"{}\" title=\"{}\" class=\"alias-loc\">{}</span>",
-                    encode_text(lang),
-                    encode_text(&tr!("copy-alias-loc", {
+                    encode_double_quoted_attribute(lang),
+                    encode_double_quoted_attribute(&tr!("copy-alias-loc", {
                             "icon" => icon_localized_title,
                             "lang" => *lang,
                             "alias" => *loc
@@ -167,7 +167,7 @@ pub fn fill_icon_details_modal_with_icon(
             for old in olds {
                 html.push_str(&format!(
                     "<span title=\"{}\" class=\"alias-old\">{}</span>",
-                    encode_text(&tr!("copy-alias-old", {
+                    encode_double_quoted_attribute(&tr!("copy-alias-old", {
                             "icon" => icon_localized_title,
                             "alias" => *old
                         }
@@ -303,10 +303,11 @@ pub fn fill_icon_details_modal_with_icon(
             .unwrap();
 
         // TODO: refactor this improving leptos-fluent
+        let milestone_url = deprecation.get_milestone_url();
         let version = format!(
             "<a href=\"{}\" target=\"_blank\">v{}</a>",
-            deprecation.get_milestone_url(),
-            deprecation.at_version,
+            encode_double_quoted_attribute(&milestone_url),
+            encode_text(deprecation.at_version),
         );
         let date = js_sys::Date::new(&wasm_bindgen::JsValue::from(
             deprecation.milestone_due_on,
@@ -317,9 +318,10 @@ pub fn fill_icon_details_modal_with_icon(
         )
         .as_string()
         .unwrap();
+        let pull_request_url = deprecation.get_pull_request_url();
         let pr = format!(
             "<a href=\"{}\" target=\"_blank\">#{}</a>",
-            deprecation.get_pull_request_url(),
+            encode_double_quoted_attribute(&pull_request_url),
             deprecation.pull_request_number,
         );
 
@@ -331,9 +333,9 @@ pub fn fill_icon_details_modal_with_icon(
                 "will-be-removed-at-extended"
             },
             {
-                "icon" => icon_localized_title,
+                "icon" => encode_text(icon_localized_title),
                 "version" => version,
-                "date" => date,
+                "date" => encode_text(&date),
                 "pr" => pr,
             },
         );
