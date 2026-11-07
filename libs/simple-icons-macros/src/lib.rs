@@ -73,7 +73,10 @@ fn get_simple_icons_3rd_party_extensions_libraries_impl(
             .split_once("</a>")
             .unwrap()
             .0
-            .split_once("height=24>")
+            .split_once("<img ")
+            .unwrap()
+            .1
+            .split_once('>')
             .unwrap()
             .1
             .replace("&nbsp;", "");
